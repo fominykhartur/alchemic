@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Алхимия — игра смешивания элементов</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>✦ Алхимия</h1>
+    <div class="stats">
+      Открыто: <span id="discovered-count">5</span>/<span id="total-count">61</span>
+      | Рецептов: <span id="recipe-count">0</span>
+      | <a href="#" onclick="openAchievements();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Достижения">🏆 <span id="ach-count">0</span></a>
+      | <a href="#" onclick="resetGame();return false" style="color:#ff6b6b;text-decoration:none;font-size:12px" title="Сбросить прогресс">⟳ Сброс</a>
+      | <a href="#" onclick="openStats();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Статистика">📊</a>
+    </div>
+  </div>
+
+  <div id="inventory-panel" class="panel">
+    <div class="panel-title">Инвентарь</div>
+    <div id="inventory-grid"></div>
+  </div>
+
+  <div id="center-panel" class="panel">
+    <canvas id="game-canvas"></canvas>
+    <div id="cauldron-controls">
+      <span id="cauldron-indicator">Перетащите элементы в круг</span>
+      <button id="clear-btn">✕ Очистить</button>
+      <button id="mix-btn">⚗ Смешать!</button>
+    </div>
+  </div>
+
+  <div id="recipes-panel" class="panel">
+    <div class="panel-title">Книга рецептов</div>
+    <div id="recipes-list"></div>
+  </div>
+
+  <div id="log-panel" class="panel">
+    <div class="panel-title">Журнал</div>
+    <div id="log-content"></div>
+  </div>
+</div>
+
+<div id="qty-popup">
+  <div class="qty-label">Сколько единиц?</div>
+  <div class="qty-buttons"></div>
+  <div class="qty-cancel" onclick="closeQtyPopup()">отмена</div>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="ach-toast">
+  <div class="ach-toast-title">🏆 Достижение!</div>
+  <div class="ach-toast-desc"></div>
+</div>
+
+<div id="achievement-modal" class="modal-overlay" style="display:none" onclick="closeAchievements(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>🏆 Достижения</span>
+      <span class="modal-close" onclick="closeAchievements()">&times;</span>
+    </div>
+    <div class="modal-body" id="achievement-list"></div>
+  </div>
+</div>
+
+<div id="stats-modal" class="modal-overlay" style="display:none" onclick="closeStats(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>📊 Статистика</span>
+      <span class="modal-close" onclick="closeStats()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="stat-grid">
+        <div class="stat-item"><div class="stat-value" id="stats-time">—</div><div class="stat-label">Время в игре</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-discovered">—</div><div class="stat-label">Открыто элементов</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-recipes">—</div><div class="stat-label">Найдено рецептов</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-mixes">0</div><div class="stat-label">Смешиваний</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-explosions">0</div><div class="stat-label">Взрывов</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-from-ashes">0</div><div class="stat-label">Открыто из взрывов</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-created">0</div><div class="stat-label">Всего создано</div></div>
+        <div class="stat-item"><div class="stat-value" id="stats-achievements">—</div><div class="stat-label">Достижений</div></div>
+        <div class="stat-item full"><div class="stat-value" id="stats-top-element">—</div><div class="stat-label">Самый создаваемый</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tree-modal" class="modal-overlay" style="display:none" onclick="closeTree(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>🌳 Древо рецептов</span>
+      <span class="modal-close" onclick="closeTree()">&times;</span>
+    </div>
+    <div class="modal-body" id="tree-content"></div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
