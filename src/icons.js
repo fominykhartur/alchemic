@@ -42,6 +42,9 @@ export const GLYPH_PATHS = {
   droplet: { d: 'M10,1 C14,8 15,13 12.5,16.5 C11,18.5 9,18.5 7.5,16.5 C5,13 6,8 10,1 Z', fill: true },
   bolt:    { d: 'M12,2 L6,11 L11,11 L7,18 L16,8 L11,8 Z', fill: true },
   flask:   { d: 'M8,2 L8,8 C4,10 4,17 10,17 C16,17 16,10 12,8 L12,2 Z', useShapeFill: true },
+  vial:    { d: 'M8,5 L8,15 A3,3 0 0,0 12,15 L12,5 Z', useShapeFill: true },
+  flaskBubbly: { d: 'M8,2 L8,8 C4,10 4,17 10,17 C16,17 16,10 12,8 L12,2 Z M12,6 A1.5,1.5 0 1,0 15,6 A1.5,1.5 0 1,0 12,6', useShapeFill: true },
+  heart:   { d: 'M10,15 C5,11 5,6 7,5 C10,4 10,8 10,8 C10,8 10,4 13,5 C15,6 15,11 10,15 Z', useShapeFill: true },
 
 
   comet:   { d: 'M14,2 C9,6 5,10 3,14 C8,12 12,8 14,2 Z', fill: true },
@@ -89,7 +92,7 @@ export const ICON_DESIGNS = {
   wood:     { shape: 'diamond',  glyph: 'pipe',    rot: 0 },
   forest:   { shape: 'diamond',  glyph: 'aster',   rot: 0 },
   flower:   { shape: 'diamond',  glyph: 'starlet', rot: 0 },
-  life:     { shape: 'diamond',  glyph: 'cross',   rot: 0 },
+  life:     { shape: 'diamond',  glyph: 'heart',   rot: 0 },
   swamp:    { shape: 'diamond',  glyph: 'wave',    rot: 0 },
   poison:   { shape: 'diamond',  glyph: 'xmark',   rot: 0 },
   spring:   { shape: 'diamond',  glyph: 'droplet', rot: 0 },
@@ -153,7 +156,7 @@ export const ICON_DESIGNS = {
   galaxy:   { shape: 'circle',   glyph: 'wave',    rot: 90 },
   // alchemy (diamond)
   potion:   { shape: 'diamond',  glyph: 'flask',   rot: 0 },
-  acid:     { shape: 'diamond',  glyph: 'flask',   rot: 45 },
+  acid:     { shape: 'diamond',  glyph: 'flaskBubbly',   rot: 30 },
   pearl:    { shape: 'diamond',  glyph: 'dot',     rot: 90 },
   sand:     { shape: 'diamond',  glyph: 'dot',     rot: 135 },
   obsidian: { shape: 'diamond',  glyph: 'diamond', rot: 90 },
@@ -164,7 +167,7 @@ export const ICON_DESIGNS = {
   plasma:   { shape: 'diamond',  glyph: 'cross',   rot: 135 },
   death:    { shape: 'diamond',  glyph: 'xmark',   rot: 45 },
   amber:    { shape: 'diamond',  glyph: 'dot',     rot: 45 },
-  elixir:   { shape: 'diamond',  glyph: 'flask',   rot: 135 },
+  elixir:   { shape: 'diamond',  glyph: 'vial',   rot: 0 },
   catalyst: { shape: 'diamond',  glyph: 'chevron', rot: 90 },
   salt:     { shape: 'diamond',  glyph: 'bar',     rot: 45 },
 };
@@ -193,39 +196,29 @@ export function buildIconSVG(id, size) {
 
   const lighter = lightenColor(color, 40);
   const gradId = `g-${id.replace(/[^a-zA-Z0-9]/g, '')}`;
-
-  const shapeAlpha = glyphData.useShapeFill ? '0.25' : '0.85';
-  const gradDef = `<radialGradient id="${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="${shapeAlpha}"/><stop offset="100%" stop-color="${color}" stop-opacity="${shapeAlpha}"/></radialGradient>`;
-
-  const glowAlpha = glyphData.useShapeFill ? '0.05' : '0.12';
-  const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="${glowAlpha}"/>`;
-
-  let shapeEl;
-  if (shape === 'circle') {
-    shapeEl = `<circle cx="10" cy="10" r="9" fill="url(#${gradId})"/>`;
-  } else {
-    shapeEl = `<path d="${shapePath}" fill="url(#${gradId})"/>`;
-  }
-
-  let rimEl;
-  if (shape === 'circle') {
-    rimEl = `<circle cx="10" cy="10" r="7.7" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
-  } else {
-    rimEl = `<path d="${shapePath}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" transform="translate(10,10) scale(0.86) translate(-10,-10)"/>`;
-  }
+  const gradDef = `<radialGradient id="${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.95"/><stop offset="100%" stop-color="${color}" stop-opacity="0.95"/></radialGradient>`;
 
   const glyphColor = isLightColor(color) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
-  let gFill, gStroke;
+
   if (glyphData.useShapeFill) {
-    gFill = `url(#${gradId})`;
-    gStroke = glyphColor;
-  } else {
-    gFill = glyphData.fill ? glyphColor : 'none';
-    gStroke = glyphData.fill ? 'none' : glyphColor;
+    const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.08"/>`;
+    const glyphEl = `<path d="${glyphData.d}" fill="url(#${gradId})" stroke="${glyphColor}" stroke-width="1.6"${rotAttr}/>`;
+    return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDef}</defs>${glowEl}${glyphEl}</svg>`;
   }
+
+  const gradShape = `<radialGradient id="s-${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.85"/><stop offset="100%" stop-color="${color}" stop-opacity="0.85"/></radialGradient>`;
+  const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.12"/>`;
+  const shapeEl = shape === 'circle'
+    ? `<circle cx="10" cy="10" r="9" fill="url(#s-${gradId})"/>`
+    : `<path d="${shapePath}" fill="url(#s-${gradId})"/>`;
+  const rimEl = shape === 'circle'
+    ? `<circle cx="10" cy="10" r="7.7" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`
+    : `<path d="${shapePath}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" transform="translate(10,10) scale(0.86) translate(-10,-10)"/>`;
+  const gFill = glyphData.fill ? glyphColor : 'none';
+  const gStroke = glyphData.fill ? 'none' : glyphColor;
   const glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6"${rotAttr}/>`;
 
-  return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDef}</defs>${glowEl}${shapeEl}${rimEl}${glyphEl}</svg>`;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradShape}</defs>${glowEl}${shapeEl}${rimEl}${glyphEl}</svg>`;
 }
 
 export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
