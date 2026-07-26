@@ -9,6 +9,16 @@ export function isLightColor(hex) {
   return (0.299 * r + 0.587 * g + 0.114 * b) > 180;
 }
 
+export function lightenColor(hex, percent) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const lr = Math.min(255, Math.round(r + (255 - r) * percent / 100));
+  const lg = Math.min(255, Math.round(g + (255 - g) * percent / 100));
+  const lb = Math.min(255, Math.round(b + (255 - b) * percent / 100));
+  return `#${lr.toString(16).padStart(2,'0')}${lg.toString(16).padStart(2,'0')}${lb.toString(16).padStart(2,'0')}`;
+}
+
 export const GLYPH_PATHS = {
   dot:     { d: 'M10,10 m-3.5,0 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0', fill: true },
   cross:   { d: 'M6,6 L14,14 M14,6 L6,14' },
@@ -25,6 +35,12 @@ export const GLYPH_PATHS = {
   diamond: { d: 'M10,5 L15,10 L10,15 L5,10 Z', fill: true },
   aster:   { d: 'M10,4 L10,16 M4,10 L16,10 M6,6 L14,14 M14,6 L6,14' },
   wave:    { d: 'M4,11 Q7,7 10,11 T16,11' },
+  flame:   { d: 'M10,1 C12,4 14,7 14,11 C14,14 12,17 10,19 C9,17 7,15 7,13 C6,14 5,13 4,11 C4,8 6,5 8,4 C8.5,3 9,2 10,1 Z', fill: true },
+  molten:  { d: 'M9,17 C5,12 4,8 6,5 C7,3 9.5,1 10,1 C10.5,1 13,3 14,5 C16,8 15,12 11,17 L10,19 Z', fill: true },
+  sunray:  { d: 'M10,1 L10,3 M15,5 L13.5,6.5 M17,10 L15,10 M15,15 L13.5,13.5 M10,17 L10,15 M5,15 L6.5,13.5 M3,10 L5,10 M5,5 L6.5,6.5 M10,7 A3,3 0 1,1 10,13 A3,3 0 1,1 10,7 Z' },
+  burst:   { d: 'M10,0 L11,8 L19,9 L11,10 L10,18 L9,10 L1,9 L9,8 Z', fill: true },
+  droplet: { d: 'M10,1 C14,8 15,13 12.5,16.5 C11,18.5 9,18.5 7.5,16.5 C5,13 6,8 10,1 Z', fill: true },
+  comet:   { d: 'M14,2 C9,6 5,10 3,14 C8,12 12,8 14,2 Z', fill: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -38,26 +54,26 @@ export const SHAPE_POLYGONS = {
 
 export const ICON_DESIGNS = {
   // starter (circle)
-  fire:     { shape: 'circle',   glyph: 'cross',   rot: 0 },
-  water:    { shape: 'circle',   glyph: 'wave',    rot: 0 },
+  fire:     { shape: 'circle',   glyph: 'flame',   rot: 0 },
+  water:    { shape: 'circle',   glyph: 'droplet', rot: 0 },
   earth:    { shape: 'circle',   glyph: 'diamond', rot: 0 },
   air:      { shape: 'circle',   glyph: 'ring',    rot: 0 },
   void:     { shape: 'circle',   glyph: 'dot',     rot: 0 },
   // state (triangle)
   steam:    { shape: 'triangle', glyph: 'wave',    rot: 0 },
   hotSteam: { shape: 'triangle', glyph: 'cross',   rot: 0 },
-  wetSteam: { shape: 'triangle', glyph: 'vee',     rot: 0 },
+  wetSteam: { shape: 'triangle', glyph: 'droplet', rot: 0 },
   ice:      { shape: 'triangle', glyph: 'starlet', rot: 0 },
   mist:     { shape: 'triangle', glyph: 'ring',    rot: 0 },
   dust:     { shape: 'triangle', glyph: 'dot',     rot: 0 },
   ash:      { shape: 'triangle', glyph: 'dot',     rot: 45 },
-  lava:     { shape: 'triangle', glyph: 'chevron', rot: 0 },
-  magma:    { shape: 'triangle', glyph: 'diamond', rot: 0 },
+  lava:     { shape: 'triangle', glyph: 'molten',  rot: 0 },
+  magma:    { shape: 'triangle', glyph: 'molten',  rot: 180 },
   scoria:   { shape: 'triangle', glyph: 'diamond', rot: 45 },
   mud:      { shape: 'triangle', glyph: 'bar',     rot: 0 },
   sludge:   { shape: 'triangle', glyph: 'wave',    rot: 45 },
   storm:    { shape: 'triangle', glyph: 'aster',   rot: 0 },
-  inferno:  { shape: 'triangle', glyph: 'cross',   rot: 45 },
+  inferno:  { shape: 'triangle', glyph: 'flame',   rot: 45 },
   gale:     { shape: 'triangle', glyph: 'chevron', rot: 45 },
   thunder:  { shape: 'triangle', glyph: 'xmark',   rot: 0 },
   frost:    { shape: 'triangle', glyph: 'starlet', rot: 45 },
@@ -70,7 +86,7 @@ export const ICON_DESIGNS = {
   life:     { shape: 'diamond',  glyph: 'cross',   rot: 0 },
   swamp:    { shape: 'diamond',  glyph: 'wave',    rot: 0 },
   poison:   { shape: 'diamond',  glyph: 'xmark',   rot: 0 },
-  spring:   { shape: 'diamond',  glyph: 'diamond', rot: 0 },
+  spring:   { shape: 'diamond',  glyph: 'droplet', rot: 0 },
   mountain: { shape: 'diamond',  glyph: 'chevron', rot: 0 },
   moss:     { shape: 'diamond',  glyph: 'dot',     rot: 0 },
   coral:    { shape: 'diamond',  glyph: 'starlet', rot: 45 },
@@ -110,7 +126,7 @@ export const ICON_DESIGNS = {
   essence:  { shape: 'star',     glyph: 'dot',     rot: 0 },
   ghost:    { shape: 'star',     glyph: 'ring',    rot: 0 },
   golem:    { shape: 'star',     glyph: 'diamond', rot: 0 },
-  phoenix:  { shape: 'star',     glyph: 'chevron', rot: 0 },
+  phoenix:  { shape: 'star',     glyph: 'flame',   rot: 0 },
   chimera:  { shape: 'star',     glyph: 'aster',   rot: 45 },
   abyss:    { shape: 'star',     glyph: 'dot',     rot: 45 },
   rift:     { shape: 'star',     glyph: 'xmark',   rot: 45 },
@@ -123,11 +139,11 @@ export const ICON_DESIGNS = {
   // cosmos (circle)
   ether:    { shape: 'circle',   glyph: 'aster',   rot: 0 },
   star:     { shape: 'circle',   glyph: 'starlet', rot: 0 },
-  nova:     { shape: 'circle',   glyph: 'cross',   rot: 90 },
-  meteor:   { shape: 'circle',   glyph: 'chevron', rot: 0 },
+  nova:     { shape: 'circle',   glyph: 'burst',   rot: 0 },
+  meteor:   { shape: 'circle',   glyph: 'comet',   rot: 0 },
   eclipse:  { shape: 'circle',   glyph: 'dot',     rot: 90 },
   moon:     { shape: 'circle',   glyph: 'ring',    rot: 135 },
-  sun:      { shape: 'circle',   glyph: 'aster',   rot: 45 },
+  sun:      { shape: 'circle',   glyph: 'sunray',  rot: 0 },
   galaxy:   { shape: 'circle',   glyph: 'wave',    rot: 90 },
   // alchemy (diamond)
   potion:   { shape: 'diamond',  glyph: 'ring',    rot: 45 },
@@ -168,17 +184,34 @@ export function buildIconSVG(id, size) {
   const color = el.color;
   const s = size || SIZE;
   const rotAttr = rot ? ` transform="rotate(${rot} 10 10)"` : '';
+
+  const lighter = lightenColor(color, 40);
+  const gradId = `g-${id.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+  const gradDef = `<radialGradient id="${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.95"/><stop offset="100%" stop-color="${color}" stop-opacity="0.85"/></radialGradient>`;
+
+  const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.12"/>`;
+
   let shapeEl;
   if (shape === 'circle') {
-    shapeEl = `<circle cx="10" cy="10" r="9" fill="${color}" opacity="0.85"/>`;
+    shapeEl = `<circle cx="10" cy="10" r="9" fill="url(#${gradId})"/>`;
   } else {
-    shapeEl = `<path d="${shapePath}" fill="${color}" opacity="0.85"/>`;
+    shapeEl = `<path d="${shapePath}" fill="url(#${gradId})"/>`;
   }
+
+  let rimEl;
+  if (shape === 'circle') {
+    rimEl = `<circle cx="10" cy="10" r="7.7" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
+  } else {
+    rimEl = `<path d="${shapePath}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" transform="translate(10,10) scale(0.86) translate(-10,-10)"/>`;
+  }
+
   const glyphColor = isLightColor(color) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
   const gFill = glyphData.fill ? glyphColor : 'none';
   const gStroke = glyphData.fill ? 'none' : glyphColor;
   const glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6"${rotAttr}/>`;
-  return `<svg width="${s}" height="${s}" viewBox="0 0 20 20">${shapeEl}${glyphEl}</svg>`;
+
+  return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDef}</defs>${glowEl}${shapeEl}${rimEl}${glyphEl}</svg>`;
 }
 
 export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
