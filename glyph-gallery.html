@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глифы — Алхимия</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a1a; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 20px; min-height: 100vh;
+}
+h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size: 28px; margin-bottom: 4px; }
+.subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 24px; }
+
+/* stats */
+.stats { text-align: center; margin-bottom: 28px; font-size: 14px; color: #aaa; }
+.stats span { color: #ffd700; font-weight: bold; }
+
+/* category */
+.category { margin-bottom: 32px; }
+.cat-header {
+  font-size: 18px; font-weight: bold; padding: 8px 12px; margin-bottom: 10px;
+  border-bottom: 2px solid currentColor; display: flex; align-items: center; gap: 8px;
+}
+.cat-count { font-size: 12px; font-weight: normal; opacity: 0.5; }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+.card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 10px 6px 8px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: background 0.15s;
+}
+.card:hover { background: rgba(255,255,255,0.08); }
+.card .icon { width: 48px; height: 48px; margin-bottom: 6px; }
+.card .name { font-size: 11px; font-weight: 600; line-height: 1.2; color: #fff; }
+.card .color { font-size: 9px; color: #888; font-family: monospace; margin-top: 2px; }
+.card .id { font-size: 8px; color: #555; font-family: monospace; margin-top: 1px; }
+.card .tier {
+  font-size: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 1px 5px; border-radius: 3px; margin-top: 4px;
+}
+.tier-starter { background: #ffd70022; color: #ffd700; }
+.tier-normal { background: transparent; color: transparent; display: none; }
+.tier-self { background: #9370db33; color: #b388ff; }
+.tier-variant { background: #32cd3233; color: #32cd32; }
+.tier-legendary { background: #ff450033; color: #ff6347; }
+
+/* glyph reference */
+.section-title { font-size: 22px; color: #ffd700; font-family: Georgia, serif; text-align: center; margin: 48px 0 20px; }
+.glyph-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px; max-width: 700px; margin: 0 auto;
+}
+.glyph-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 14px 8px 10px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.glyph-card svg { width: 44px; height: 44px; margin-bottom: 6px; }
+.glyph-card .glyph-name { font-size: 12px; font-weight: 600; color: #ccc; }
+.glyph-card .glyph-type { font-size: 9px; color: #666; font-family: monospace; }
+
+/* tooltip */
+.tooltip {
+  position: fixed; z-index: 100; pointer-events: none;
+  background: #15152a; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 10px 12px; max-width: 300px;
+  font-size: 11px; line-height: 1.5; opacity: 0;
+  transition: opacity 0.12s; box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+.tooltip.visible { opacity: 1; }
+.tooltip .tt-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #fff; }
+.tooltip .tt-section { margin-top: 6px; }
+.tooltip .tt-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 2px; }
+.tooltip .tt-recipe { color: #ccc; }
+.tooltip .tt-recipe span { color: #ffd700; }
+.tooltip .tt-none { color: #555; font-style: italic; }
+.tooltip .tt-arrow { display: inline-block; margin: 0 4px; color: #888; }
+
+/* scroll to top */
+.top-link {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #ffd70022; color: #ffd700; border: 1px solid #ffd70044;
+  font-size: 18px; cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+}
+.top-link:hover { background: #ffd70033; }
+.top-link.visible { display: flex; }
+</style>
+</head>
+<body>
+
+<h1>✦ Алхимия</h1>
+<p class="subtitle">Галерея всех элементов и глифов</p>
+
+<div class="stats" id="stats">Загрузка…</div>
+
+<div id="gallery"></div>
+
+<div class="section-title">✧ Все глифы</div>
+<div class="glyph-grid" id="glyph-grid"></div>
+
+<button class="top-link" id="top-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="tooltip" id="tooltip"></div>
+
+<script type="module">
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES } from './src/data.js';
+import { buildIconSVG, GLYPH_PATHS, TIER } from './src/icons.js';
+
+// ─── Stats ───
+document.getElementById('stats').innerHTML =
+  `Всего: <span>${ELEMENT_IDS.length}</span> элементов · ` +
+  `<span>${Object.keys(GLYPH_PATHS).length}</span> глифов · ` +
+  `<span>${CAT_ORDER.length}</span> категорий`;
+
+// ─── Recipe Index ───
+const recipesByOutput = {};
+const recipesByInput = {};
+RECIPES.forEach(r => {
+  const out = r.output;
+  if (!recipesByOutput[out]) recipesByOutput[out] = [];
+  recipesByOutput[out].push(r);
+  r.inputs.forEach(inp => {
+    if (!recipesByInput[inp.id]) recipesByInput[inp.id] = [];
+    recipesByInput[inp.id].push({ recipe: r, amount: inp.a });
+  });
+});
+
+// ─── Recipe Formatting ───
+const tooltipEl = document.getElementById('tooltip');
+
+function fmtRecipe(r) {
+  return r.inputs.map(i => `<span>${ELEMENTS[i.id]?.name || i.id}</span> ×${i.a}`).join(' + ');
+}
+
+function fmtTooltip(id) {
+  const el = ELEMENTS[id];
+  const name = el?.name || id;
+  let html = `<div class="tt-title" style="color:${el?.color || '#fff'}">${name}</div>`;
+
+  const asOutput = recipesByOutput[id];
+  if (asOutput && asOutput.length > 0) {
+    html += `<div class="tt-section"><div class="tt-section-title">Как получить</div>`;
+    asOutput.forEach(r => {
+      html += `<div class="tt-recipe">${fmtRecipe(r)} <span class="tt-arrow">→</span> <span>${name}</span></div>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="tt-section"><div class="tt-section-title">Как получить</div>`;
+    html += `<div class="tt-none">Базовый элемент (стартовый)</div></div>`;
+  }
+
+  const asInput = recipesByInput[id];
+  if (asInput && asInput.length > 0) {
+    html += `<div class="tt-section"><div class="tt-section-title">Используется в рецептах</div>`;
+    asInput.forEach(({ recipe: r, amount }) => {
+      const outName = ELEMENTS[r.output]?.name || r.output;
+      html += `<div class="tt-recipe"><span>${name}</span> ×${amount} <span class="tt-arrow">→</span> <span>${outName}</span></div>`;
+    });
+    html += `</div>`;
+  }
+
+  return html;
+}
+
+function showTooltip(e, id) {
+  tooltipEl.innerHTML = fmtTooltip(id);
+  tooltipEl.classList.add('visible');
+  posTooltip(e);
+}
+
+function posTooltip(e) {
+  const pad = 12;
+  let x = e.clientX + pad;
+  let y = e.clientY + pad;
+  const tw = tooltipEl.offsetWidth;
+  const th = tooltipEl.offsetHeight;
+  if (x + tw > window.innerWidth - 10) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 10) y = e.clientY - th - pad;
+  tooltipEl.style.left = x + 'px';
+  tooltipEl.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  tooltipEl.classList.remove('visible');
+}
+
+// ─── Gallery ───
+const gallery = document.getElementById('gallery');
+
+const tierLabel = { starter: 'Стартер', normal: '', self: 'Само-рец.', variant: 'Вариант', legendary: 'Легенда' };
+const tierClass = t => 'tier-' + t;
+
+const byCat = {};
+ELEMENT_IDS.forEach(id => {
+  const cat = ELEMENT_CATS[id] || 'alchemy';
+  if (!byCat[cat]) byCat[cat] = [];
+  byCat[cat].push(id);
+});
+
+CAT_ORDER.forEach(cat => {
+  const ids = byCat[cat] || [];
+  if (ids.length === 0) return;
+  const info = CATEGORIES[cat];
+  const catColor = info?.color || '#888';
+
+  const section = document.createElement('div');
+  section.className = 'category';
+
+  const header = document.createElement('div');
+  header.className = 'cat-header';
+  header.style.color = catColor;
+  header.innerHTML = `${info?.label || cat} <span class="cat-count">${ids.length}</span>`;
+  section.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  ids.forEach(id => {
+    const el = ELEMENTS[id];
+    const t = TIER[id] || 'normal';
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.addEventListener('mouseenter', e => showTooltip(e, id));
+    card.addEventListener('mouseleave', hideTooltip);
+    card.addEventListener('mousemove', posTooltip);
+
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'icon';
+    iconDiv.innerHTML = buildIconSVG(id, 48);
+    card.appendChild(iconDiv);
+
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = el.name;
+    card.appendChild(name);
+
+    const color = document.createElement('div');
+    color.className = 'color';
+    color.textContent = el.color;
+    card.appendChild(color);
+
+    const idEl = document.createElement('div');
+    idEl.className = 'id';
+    idEl.textContent = id;
+    card.appendChild(idEl);
+
+    if (t !== 'normal') {
+      const badge = document.createElement('div');
+      badge.className = 'tier ' + tierClass(t);
+      badge.textContent = tierLabel[t];
+      card.appendChild(badge);
+    }
+
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  gallery.appendChild(section);
+});
+
+// ─── Glyph Reference ───
+const glyphGrid = document.getElementById('glyph-grid');
+
+Object.entries(GLYPH_PATHS).forEach(([name, data]) => {
+  const fill = data.fill ? '#ffd700' : 'none';
+  const stroke = data.fill ? 'none' : 'rgba(255,255,255,0.85)';
+  const svg = `<svg viewBox="0 0 20 20"><path d="${data.d}" fill="${fill}" stroke="${stroke}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const card = document.createElement('div');
+  card.className = 'glyph-card';
+  card.innerHTML = svg;
+  card.innerHTML += `<div class="glyph-name">${name}</div>`;
+  card.innerHTML += `<div class="glyph-type">${data.fill ? 'fill' : 'stroke'}</div>`;
+  glyphGrid.appendChild(card);
+});
+
+// ─── Scroll-to-top ───
+const topLink = document.getElementById('top-link');
+window.addEventListener('scroll', () => {
+  topLink.classList.toggle('visible', window.scrollY > 400);
+});
+</script>
+</body>
+</html>
