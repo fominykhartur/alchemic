@@ -77,15 +77,66 @@ export const GLYPH_PATHS = {
   log:     { d: 'M2,10 A8,8 0 1,1 18,10 A8,8 0 1,1 2,10 M6,10 A4,4 0 1,0 14,10 A4,4 0 1,0 6,10 M9,3 L9.5,3 L9.5,7 L9,7 Z M10,17 L10.5,17 L10.5,13 L10,13 Z', fill: true },
   trunk:   { d: 'M8,3 L12,3 L12,14 L8,14 Z M8,13 L6,17 M12,13 L14,17 M9,6 L11,6 M9,9 L11,9', useShapeFill: true },
   trees:   { d: 'M2,18 L5,8 L8,18 Z M7,18 L11,5 L15,18 Z M12,18 L16,9 L19,18 Z', useShapeFill: true },
-  swampReeds:{ d: 'M3,14 Q8,12 13,14 T19,13 L19,18 L3,18 Z M6,18 L6,11 M14,18 L14,12', fill: true },
+  swampReeds:{ d: 'M2,15 Q10,17 18,15 L18,18 L2,18 Z M5,15 L5.5,15 L5.5,8 L5,8 Z M4.5,6 A0.8,1.2 0 1,1 5.5,6 A0.8,1.2 0 1,1 4.5,6 M15,15 L15.5,15 L15.5,7 L15,7 Z M14.5,5 A0.8,1.2 0 1,1 15.5,5 A0.8,1.2 0 1,1 14.5,5 M10,4 a0.6,0.6 0 1,1 1.2,0 a0.6,0.6 0 1,1 -1.2,0 M6,10 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M14,10 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', fill: true },
   peak:    { d: 'M2,18 L6,9 L9,14 L13,4 L19,18 Z M9,14 L13,4 L13,8 M6,9 L6,12', useShapeFill: true },
   clump:   { d: 'M2,15 C2,12 5,11 7,12 C9,10 11,10 13,12 C15,11 18,12 18,15 Z', useShapeFill: true },
-  coralBranch:{ d: 'M7,18 L7,8 L5,6 M7,8 L9,6 M7,12 L5,10 M7,12 L9,10 M7,15 L5,13 M7,15 L9,13', useShapeFill: true },
-  tendril: { d: 'M3,18 C6,12 9,14 12,8 C13,6 12,4 10,5 C8,6 9,8 10,7', useShapeFill: true },
-  taproot: { d: 'M10,3 L10,17 M10,17 L7,19 M10,17 L13,19 M10,12 L6,14 M10,14 L14,15', useShapeFill: true },
-  fungus:  { d: 'M9,17 L9,12 L11,12 L11,17 Z M7,12 C7,7 9,4 10,4 C11,4 13,7 13,12 Z', useShapeFill: true },
-  flowerBloom:{ d: 'M10,2 C11,5 14,4 14,7 C17,7 17,10 14,11 C15,14 13,16 10,14 C7,16 5,14 6,11 C3,10 3,7 6,7 C6,4 9,5 10,2 Z', fill: true },
-  springFountain:{ d: 'M10,3 C13,8 14,12 12,15 C11,17 9,17 8,15 C6,12 7,8 10,3 Z M7,15 L13,15 M10,3 L9,1 L11,1 Z', fill: true },
+  coralBranch:{ d: 'M2,17 Q10,19 18,17 L18,18 L2,18 Z M7.5,18 L8.5,18 L8.5,12 L7.5,12 Z M8,14.5 L11.5,10 L12,9.5 L8.5,14 Z M7.5,13 L4,10 L4.5,9.5 L8,13.5 Z M7.5,12 L11,7 L11.5,7.5 L8.5,12 Z M14,8 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M4,7 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M6,5 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M13,14 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', fill: true },
+  tendril: { d: 'M9,18 Q6,13 11,10 Q14,7 9,5 L10.5,5 Q15.5,8 12,11 Q7,14 10,18 Z M6.5,14 a1,1.5 0 1,1 2,0 a1,1.5 0 1,1 -2,0 M12,10.5 a1,1.5 0 1,1 2,0 a1,1.5 0 1,1 -2,0 M8.5,7 a0.8,1.2 0 1,1 1.6,0 a0.8,1.2 0 1,1 -1.6,0', fill: true },
+  taproot: { d: 'M9,3 L11,3 L11,5 L9,5 Z M9.5,5 Q7,9 9.5,12 L10.5,12 Q8,9 10.5,5 Z M10.5,12 Q13,14 14,16.5 L13.5,16.5 Q12.5,14 10,12 Z M8.5,9 Q6,10.5 5,13 L5.5,13 Q6.5,10.5 9,9 Z M10,3 L9.5,1.5 L10.5,1.5 Z', fill: true },
+  fungus:  { d: 'M6,11 C6,6 8,4 10,4 C12,4 14,6 14,11 Z M9.5,17 L10.5,17 L10.5,11 L9.5,11 Z M8,17 L6.5,15 L7,17 Z M12,17 L13.5,15 L13,17 Z M7,8.5 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M12.5,8 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M5,16 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0', fill: true },
+  flowerBloom:{ d: 'M10,2 C9,4 6,5 6,8 C6,10 8,11 10,11 C12,11 14,10 14,8 C14,5 11,4 10,2 Z M9.5,11 L9.5,17 L10.5,17 L10.5,11 Z M8,13 L6,14 L7,16 Z M12,14 L14,15 L13,17 Z M4,8 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M16,9 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0', fill: true },
+  springFountain:{ d: 'M5,18 L10,10 L15,18 Z M10,2 C12,6 13,9 11,11 C10.5,12 9.5,12 9,11 C7,9 8,6 10,2 Z M7,13 L5,11 L6,13 Z M14,9 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M6,9 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M13,16 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', fill: true },
+  // metal
+  cog:     { d: 'M9,5 L11,5 L11,6 L12,6 L12,7 L14,7 L14,9 L15,9 L15,11 L14,11 L14,13 L12,13 L12,14 L11,14 L11,15 L9,15 L9,14 L8,14 L8,13 L6,13 L6,11 L5,11 L5,9 L6,9 L6,7 L8,7 L8,6 L9,6 Z M9,10 a1.5,1.5 0 1,0 2,0 a1.5,1.5 0 1,0 -2,0 M7,8 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M13,8 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0', fill: true },
+  // gems
+  roughgem: { d: 'M10,2 L12,5 L14,5 L16,9 L13,14 L11,14 L10,17 L9,14 L7,14 L4,9 L6,5 L8,5 Z M9.5,8 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0 M11.5,10 a0.4,0.4 0 1,0 0.8,0 a0.4,0.4 0 1,0 -0.8,0 M8,12 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M12,8 a0.3,0.3 0 1,1 0.6,0 a0.3,0.3 0 1,1 -0.6,0', useShapeFill: true },
+  gemfacets:{ d: 'M10,2 L12,5 L14,5 L16,9 L13,14 L11,14 L10,17 L9,14 L7,14 L4,9 L6,5 L8,5 Z M10,2 L10,17 M4,9 L16,9 M12,5 L10,8 M8,5 L10,8 M11,14 L10,12 M9,14 L10,12', useShapeFill: true },
+  gemdia:  { d: 'M10,2 L12,5 L14,5 L16,9 L13,14 L11,14 L10,17 L9,14 L7,14 L4,9 L6,5 L8,5 Z M10,2 L10,17 M4,9 L16,9 M12,5 L10,8 M8,5 L10,8 M11,14 L10,12 M9,14 L10,12 M6,7 L7,7 M6.5,6.5 L6.5,7.5 M13,11 L14,11 M13.5,10.5 L13.5,11.5', useShapeFill: true },
+
+  ingot:   { d: 'M6,5 L14,5 A2,2 0 0,1 16,7 L16,13 A2,2 0 0,1 14,15 L6,15 A2,2 0 0,1 4,13 L4,7 A2,2 0 0,1 6,5 Z', useShapeFill: true },
+  ingotRust:{ d: 'M6,5 L14,5 A2,2 0 0,1 16,7 L16,13 A2,2 0 0,1 14,15 L6,15 A2,2 0 0,1 4,13 L4,7 A2,2 0 0,1 6,5 Z M9,9 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M11.5,11 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0 M7,11.5 a0.4,0.4 0 1,0 0.8,0 a0.4,0.4 0 1,0 -0.8,0 M9,12 L10.5,13 M12,8.5 L11,10 M13.5,9 L12.5,10.5', useShapeFill: true },
+  ingotIron:{ d: 'M6,5 L14,5 A2,2 0 0,1 16,7 L16,13 A2,2 0 0,1 14,15 L6,15 A2,2 0 0,1 4,13 L4,7 A2,2 0 0,1 6,5 Z M9,9 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M12,12 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M7,11 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', useShapeFill: true },
+  sword:   { d: 'M10,2 L13,11 L7,11 Z M6,12 L14,12 L14,13 L6,13 Z M9.5,13 L10.5,13 L10.5,17 L9.5,17 Z M9,17 L11,17 L10.5,18 L9.5,18 Z M10,3 L10,11 M10,1 L10,1.8 M9.6,1.4 L10.4,1.4', useShapeFill: true },
+  coin:    { d: 'M5,10 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0 M8.5,10 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M5,7 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M15,10 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M10,4 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', fill: true },
+  lunar:   { d: 'M7,6 L13,6 L15,10 L13,14 L7,14 L5,10 Z M10,8 C11.5,8 12.5,9 11.5,10 C11,10.5 10,10.5 9.5,10 C9,9.5 9,8.5 10,8 Z M12,11 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0 M8,7 a0.4,0.4 0 1,1 0.8,0 a0.4,0.4 0 1,1 -0.8,0', fill: true },
+  // earth
+  clayblob:{ d: 'M6,6 L14,6 Q15,6 15,7 L15,13 Q15,14 14,14 L6,14 Q5,14 5,13 L5,7 Q5,6 6,6 Z M9,9 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M11.5,11 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', useShapeFill: true },
+  brickblk:{ d: 'M5,6 L15,6 L15,14 L5,14 Z M7,8 L7,10 L9,10 L9,8 Z M11,8 L11,10 L13,10 L13,8 Z M8,11 L8,13 L12,13 L12,11 Z', useShapeFill: true },
+  ceramicblk:{ d: 'M5,6 L15,6 L15,14 L5,14 Z M6,7 L14,7', useShapeFill: true },
+  // transparent
+  glasspn: { d: 'M10,4 L16,10 L10,16 L4,10 Z M6,8 L8,6 M14,8 L12,6 M10,11 L10,13', useShapeFill: true },
+  prismshp:{ d: 'M10,3 L17,15 L3,15 Z M10,3 L10,15 M6,10 L14,10', useShapeFill: true },
+  mirrorpn:{ d: 'M6,5 L14,5 A1,1 0 0,1 15,6 L15,14 A1,1 0 0,1 14,15 L6,15 A1,1 0 0,1 5,14 L5,6 A1,1 0 0,1 6,5 Z M7,7 L13,7 M7,8 L7,9', useShapeFill: true },
+  // artifacts
+  crownsym:{ d: 'M3,9 L4.5,13 L6.5,9 L8.5,13 L10.5,9 L12.5,13 L14.5,9 L16,13 L17.5,9 L17.5,14 L3,14 Z M6,12.5 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M10,12.5 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0 M14,12.5 a0.5,0.5 0 1,1 1,0 a0.5,0.5 0 1,1 -1,0', useShapeFill: true, solidFill: true },
+  runesym: { d: 'M4,7 L16,7 L14,15 L6,15 Z M10,8 L10,13 M8,10 L12,10', useShapeFill: true },
+  amuletsym:{ d: 'M5,10 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0 M8,10 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M10,5 L10,3', useShapeFill: true },
+  scrollsym:{ d: 'M6,5 L14,5 Q15,5 15,6 L15,14 Q15,15 14,15 L6,15 Q5,15 5,14 L5,6 Q5,5 6,5 Z M6,8 L14,8 M6,11 L14,11', useShapeFill: true },
+  lantrnsym:{ d: 'M7,4 L13,4 L13,5 L14,5 L14,14 L13,14 L13,16 L7,16 L7,14 L6,14 L6,5 L7,5 Z M8,6 L12,6 L12,13 L8,13 Z M10,4 L10,3', useShapeFill: true },
+  keysym:  { d: 'M8,9 L8,16 L12,16 L12,9 Z M10,6 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0 M12,11 L14,11 M12,13 L15,13 M12,15 L14,15', useShapeFill: true },
+  // magic & energy
+  lightsym: { d: 'M10,3 L12,9 L18,10 L12,11 L10,17 L8,11 L2,10 L8,9 Z', useShapeFill: true },
+  shadowsym:{ d: 'M4,10 C4,7 6,5 9,6 C10,4 13,4 14,6 C16,5 18,7 17,10 C18,13 16,16 14,15 C13,17 10,17 9,15 C6,16 4,14 4,10 Z', useShapeFill: true },
+  essencesym:{ d: 'M10,2 L15,15 A5,5 0 0,1 5,15 Z M10,11 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0', useShapeFill: true },
+  ghostsym:{ d: 'M5,14 L5,8 C5,4 15,4 15,8 L15,14 L14,14 L13,12 L12,14 L11,12 L10,14 L9,12 L8,14 L7,12 L6,14 Z', useShapeFill: true },
+  golemsym:{ d: 'M5,5 L15,5 L15,11 L17,14 L14,18 L6,18 L3,14 L5,11 Z M9,9 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0', useShapeFill: true },
+  abysssym:{ d: 'M4,10 L6,6 L10,4 L14,6 L16,10 L14,14 L10,16 L6,14 Z M10,8 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0', useShapeFill: true },
+  chimerasym:{ d: 'M5,10 C5,6 15,6 15,10 C15,14 5,14 5,10 Z M7,8 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M12,7 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0', useShapeFill: true },
+  riftsym:{ d: 'M8,3 L11,8 L7,9 L10,12 L6,14 L13,12 L15,17 L12,15 L14,12 L10,13 L8,10 L12,8 Z', useShapeFill: true },
+  miragesym:{ d: 'M4,7 Q8,4 12,7 T18,7 L18,10 Q14,7 10,10 T4,10 Z M4,11 Q8,8 12,11 T18,11 L18,14 Q14,11 10,14 T4,14 Z', useShapeFill: true },
+  sirensym:{ d: 'M3,11 Q7,7 11,11 Q15,15 19,11 L19,14 Q15,18 11,14 Q7,10 3,14 Z M10,9 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M11.5,5 L14,5 L14,9 L12.5,9 L12.5,6.5 L11.5,6.5 Z', fill: true },
+  wandsym:{ d: 'M9,4 L11,4 L11,15 L9,15 Z M8,15 L12,15 L12,18 L8,18 Z M10,2 L12,6 L10,8 L8,6 Z', useShapeFill: true },
+  cursesym:{ d: 'M6,6 L10,4 L14,6 L14,11 L10,16 L6,11 Z M10,8 a0.8,0.8 0 1,1 1.6,0 a0.8,0.8 0 1,1 -1.6,0 M10,11 L10,13', useShapeFill: true },
+  fairysym:{ d: 'M10,10 L13,16 L7,16 Z M10,8 L8,10 L6,5 Z M10,8 L14,5 L12,10 Z', fill: true },
+  phantomsym:{ d: 'M5,11 L5,7 C5,4 15,4 15,7 L15,11 L17,14 L16,18 L14,16 L12,18 L10,16 L8,18 L6,16 L4,18 L3,14 Z', useShapeFill: true },
+  // cosmos
+  ethersym:{ d: 'M10,2 C15,4 16,8 14,11 C12,14 8,15 6,13 C4,11 4,7 7,5 C10,3 12,6 11,9 C10,12 7,11 7,9', useShapeFill: true },
+  starsym:{ d: 'M10,1 L12.5,7.5 L19,7.5 L14,12 L15.5,19 L10,15 L4.5,19 L6,12 L1,7.5 L7.5,7.5 Z', useShapeFill: true },
+  novasym:{ d: 'M10,2 L11,7 L16,5 L13,9 L19,10 L13,11 L16,15 L11,13 L10,18 L9,13 L4,15 L7,11 L1,10 L7,9 L4,5 L9,7 Z', useShapeFill: true },
+  meteorsym:{ d: 'M14,5 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M14,5 L6,17 L4,15 Z', useShapeFill: true },
+  eclipsesym:{ d: 'M4,10 A6,6 0 1,1 16,10 A6,6 0 1,1 4,10', useShapeFill: true },
+  moonsym:{ d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M6,8 a1.5,1.5 0 0,1 3,0 M11,7 a1.2,1.2 0 0,1 2.4,0 M13.5,9 a0.8,0.8 0 0,1 1.6,0 M8,9 a0.5,0.5 0 1,1 0,1 M14,8 a0.4,0.4 0 0,1 0.8,0', strokePath: 'M17,10 A7,7 0 0,0 3,10 M6,8 a1.5,1.5 0 0,1 3,0 M11,7 a1.2,1.2 0 0,1 2.4,0 M13.5,9 a0.8,0.8 0 0,1 1.6,0 M8,9 a0.5,0.5 0 1,1 0,1 M14,8 a0.4,0.4 0 0,1 0.8,0', useShapeFill: true },
+  galaxysym:{ d: 'M10,5 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M13,8 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M14.5,12 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M11.5,15 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M7,14 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M4.5,10 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M6.5,7 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M15,9 a0.5,0.5 0 1,1 1,0 M5,9 a0.5,0.5 0 1,1 1,0 M10,11 a0.5,0.5 0 1,1 1,0', fill: true },
 
 
   comet:   { d: 'M14,2 C9,6 5,10 3,14 C8,12 12,8 14,2 Z', fill: true },
@@ -145,56 +196,56 @@ export const ICON_DESIGNS = {
   mushroom: { shape: 'diamond',  glyph: 'fungus',   rot: 0 },
   seed:     { shape: 'diamond',  glyph: 'seed',     rot: 0 },
   // metal (square)
-  metal:    { shape: 'square',   glyph: 'slash',   rot: 0 },
-  steel:    { shape: 'square',   glyph: 'cross',   rot: 0 },
-  blade:    { shape: 'square',   glyph: 'slash',   rot: 45 },
-  rust:     { shape: 'square',   glyph: 'xmark',   rot: 0 },
-  stone:    { shape: 'square',   glyph: 'diamond', rot: 0 },
-  crystal:  { shape: 'square',   glyph: 'starlet', rot: 0 },
-  diamond:  { shape: 'square',   glyph: 'diamond', rot: 45 },
-  gold:     { shape: 'square',   glyph: 'dot',     rot: 0 },
-  silver:   { shape: 'square',   glyph: 'ring',    rot: 0 },
-  iron:     { shape: 'square',   glyph: 'bar',    rot: 0 },
+  metal:    { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  steel:    { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  blade:    { shape: 'square',   glyph: 'sword',    rot: 0 },
+  rust:     { shape: 'square',   glyph: 'ingotRust', rot: 0 },
+  stone:    { shape: 'square',   glyph: 'roughgem',  rot: 0 },
+  crystal:  { shape: 'square',   glyph: 'gemfacets', rot: 0 },
+  diamond:  { shape: 'square',   glyph: 'gemdia',    rot: 0 },
+  gold:     { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  silver:   { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  iron:     { shape: 'square',   glyph: 'ingotIron', rot: 0 },
   // artifact (hexagon)
-  glass:    { shape: 'hexagon',  glyph: 'ring',    rot: 0 },
-  brick:    { shape: 'hexagon',  glyph: 'cross',   rot: 0 },
-  ceramic:  { shape: 'hexagon',  glyph: 'diamond', rot: 0 },
-  clay:     { shape: 'hexagon',  glyph: 'bar',     rot: 0 },
-  crown:    { shape: 'hexagon',  glyph: 'starlet', rot: 0 },
-  amulet:   { shape: 'hexagon',  glyph: 'ring',    rot: 45 },
-  rune:     { shape: 'hexagon',  glyph: 'cross',   rot: 45 },
-  prism:    { shape: 'hexagon',  glyph: 'aster',   rot: 0 },
-  mirror:   { shape: 'hexagon',  glyph: 'ring',    rot: 90 },
-  clockwork:{ shape: 'hexagon',  glyph: 'gear',    rot: 0 },
-  scroll:   { shape: 'hexagon',  glyph: 'bar',     rot: 45 },
-  lantern:  { shape: 'hexagon',  glyph: 'diamond', rot: 45 },
-  key:      { shape: 'hexagon',  glyph: 'cross',   rot: 90 },
+  glass:    { shape: 'hexagon',  glyph: 'glasspn',   rot: 0 },
+  brick:    { shape: 'hexagon',  glyph: 'brickblk',   rot: 0 },
+  ceramic:  { shape: 'hexagon',  glyph: 'ceramicblk', rot: 0 },
+  clay:     { shape: 'hexagon',  glyph: 'clayblob',   rot: 0 },
+  crown:    { shape: 'hexagon',  glyph: 'crownsym',   rot: 0 },
+  amulet:   { shape: 'hexagon',  glyph: 'amuletsym',  rot: 0 },
+  rune:     { shape: 'hexagon',  glyph: 'runesym',    rot: 0 },
+  prism:    { shape: 'hexagon',  glyph: 'prismshp',   rot: 0 },
+  mirror:   { shape: 'hexagon',  glyph: 'mirrorpn',   rot: 0 },
+  clockwork:{ shape: 'hexagon',  glyph: 'gear',       rot: 0 },
+  scroll:   { shape: 'hexagon',  glyph: 'scrollsym',  rot: 0 },
+  lantern:  { shape: 'hexagon',  glyph: 'lantrnsym',  rot: 0 },
+  key:      { shape: 'hexagon',  glyph: 'keysym',     rot: 0 },
   shield:   { shape: 'hexagon',  glyph: 'tee',     rot: 45 },
   // magic (star)
-  light:    { shape: 'star',     glyph: 'aster',   rot: 0 },
-  shadow:   { shape: 'star',     glyph: 'xmark',   rot: 0 },
-  essence:  { shape: 'star',     glyph: 'dot',     rot: 0 },
-  ghost:    { shape: 'star',     glyph: 'ring',    rot: 0 },
-  golem:    { shape: 'star',     glyph: 'diamond', rot: 0 },
+  light:    { shape: 'star',     glyph: 'lightsym',   rot: 0 },
+  shadow:   { shape: 'star',     glyph: 'shadowsym',  rot: 0 },
+  essence:  { shape: 'star',     glyph: 'essencesym', rot: 0 },
+  ghost:    { shape: 'star',     glyph: 'ghostsym',   rot: 0 },
+  golem:    { shape: 'star',     glyph: 'golemsym',   rot: 0 },
   phoenix:  { shape: 'star',     glyph: 'phoenixGlyph',   rot: 0 },
-  chimera:  { shape: 'star',     glyph: 'aster',   rot: 45 },
-  abyss:    { shape: 'star',     glyph: 'dot',     rot: 45 },
-  rift:     { shape: 'star',     glyph: 'xmark',   rot: 45 },
-  mirage:   { shape: 'star',     glyph: 'ring',    rot: 45 },
-  siren:    { shape: 'star',     glyph: 'wave',    rot: 0 },
-  wand:     { shape: 'star',     glyph: 'pipe',    rot: 0 },
-  curse:    { shape: 'star',     glyph: 'xmark',   rot: 90 },
-  fairy:    { shape: 'star',     glyph: 'starlet', rot: 0 },
-  phantom:  { shape: 'star',     glyph: 'ring',    rot: 90 },
+  chimera:  { shape: 'star',     glyph: 'chimerasym', rot: 0 },
+  abyss:    { shape: 'star',     glyph: 'abysssym',   rot: 0 },
+  rift:     { shape: 'star',     glyph: 'riftsym',    rot: 0 },
+  mirage:   { shape: 'star',     glyph: 'miragesym',  rot: 0 },
+  siren:    { shape: 'diamond',  glyph: 'sirensym',   rot: 0 },
+  wand:     { shape: 'star',     glyph: 'wandsym',    rot: 0 },
+  curse:    { shape: 'star',     glyph: 'cursesym',   rot: 0 },
+  fairy:    { shape: 'star',     glyph: 'fairysym',   rot: 0 },
+  phantom:  { shape: 'star',     glyph: 'phantomsym', rot: 0 },
   // cosmos (circle)
-  ether:    { shape: 'circle',   glyph: 'aster',   rot: 0 },
-  star:     { shape: 'circle',   glyph: 'starlet', rot: 0 },
-  nova:     { shape: 'circle',   glyph: 'burst',   rot: 0 },
-  meteor:   { shape: 'circle',   glyph: 'comet',   rot: 0 },
-  eclipse:  { shape: 'circle',   glyph: 'dot',     rot: 90 },
-  moon:     { shape: 'circle',   glyph: 'ring',    rot: 135 },
-  sun:      { shape: 'circle',   glyph: 'sunray',  rot: 0 },
-  galaxy:   { shape: 'circle',   glyph: 'wave',    rot: 90 },
+  ether:    { shape: 'circle',   glyph: 'ethersym',   rot: 0 },
+  star:     { shape: 'circle',   glyph: 'starsym',    rot: 0 },
+  nova:     { shape: 'circle',   glyph: 'novasym',    rot: 0 },
+  meteor:   { shape: 'circle',   glyph: 'meteorsym',  rot: 0 },
+  eclipse:  { shape: 'circle',   glyph: 'eclipsesym', rot: 0 },
+  moon:     { shape: 'circle',   glyph: 'moonsym',    rot: 0 },
+  sun:      { shape: 'circle',   glyph: 'sunray',     rot: 0 },
+  galaxy:   { shape: 'circle',   glyph: 'galaxysym',  rot: 0 },
   // alchemy (diamond)
   potion:   { shape: 'diamond',  glyph: 'flask',   rot: 0 },
   acid:     { shape: 'diamond',  glyph: 'flaskBubbly',   rot: 30 },
@@ -243,8 +294,12 @@ export function buildIconSVG(id, size) {
 
   if (glyphData.useShapeFill) {
     const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.08"/>`;
-    const glyphEl = `<path d="${glyphData.d}" fill="url(#${gradId})" stroke="${glyphColor}" stroke-width="1.6"${rotAttr}/>`;
-    return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDef}</defs>${glowEl}${glyphEl}</svg>`;
+    const fillStyle = glyphData.strokeOnly ? 'none' : (glyphData.solidFill ? color : `url(#${gradId})`);
+    const strokeStyle = glyphData.solidFill ? color : glyphColor;
+    const gradDefs = (glyphData.solidFill || glyphData.strokeOnly) ? '' : gradDef;
+    const strokeD = glyphData.strokePath || glyphData.d;
+    const glyphEl = `<path d="${glyphData.d}" fill="${fillStyle}"/><path d="${strokeD}" fill="none" stroke="${strokeStyle}" stroke-width="1.6"${rotAttr}/>`;
+    return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDefs}</defs>${glowEl}${glyphEl}</svg>`;
   }
 
   const gradShape = `<radialGradient id="s-${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.85"/><stop offset="100%" stop-color="${color}" stop-opacity="0.85"/></radialGradient>`;
@@ -284,14 +339,19 @@ export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
   }
   const path = new Path2D(glyphData.d);
   if (glyphData.useShapeFill) {
-    const grad = ctx.createRadialGradient(x - 2, y - 2, 0, x, y, 10);
-    grad.addColorStop(0, lightenColor(el.color, 40));
-    grad.addColorStop(1, el.color);
-    ctx.fillStyle = grad;
-    ctx.fill(path);
-    ctx.strokeStyle = glyphColor;
+    if (!glyphData.strokeOnly) {
+      ctx.fillStyle = glyphData.solidFill ? el.color : (() => {
+        const grad = ctx.createRadialGradient(x - 2, y - 2, 0, x, y, 10);
+        grad.addColorStop(0, lightenColor(el.color, 40));
+        grad.addColorStop(1, el.color);
+        return grad;
+      })();
+      ctx.fill(path);
+    }
+    ctx.strokeStyle = glyphData.solidFill ? el.color : glyphColor;
     ctx.lineWidth = 1.6;
-    ctx.stroke(path);
+    const strokePath = glyphData.strokePath ? new Path2D(glyphData.strokePath) : path;
+    ctx.stroke(strokePath);
   } else if (glyphData.fill) {
     ctx.fillStyle = glyphColor;
     ctx.fill(path);
