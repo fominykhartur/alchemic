@@ -37,7 +37,7 @@ export const GLYPH_PATHS = {
   wave:    { d: 'M4,11 Q7,7 10,11 T16,11' },
   flame:   { d: 'M5,12 C5,15 7,17 10,17 C13,17 15,15 15,12 L14,7 L12,10 L10,3 L8,10 L6,7 Z', fill: true },
   molten:  { d: 'M9,17 C5,12 4,8 6,5 C7,3 9.5,1 10,1 C10.5,1 13,3 14,5 C16,8 15,12 11,17 L10,19 Z', fill: true },
-  sunray:  { d: 'M10,1 L10,3 M15,5 L13.5,6.5 M17,10 L15,10 M15,15 L13.5,13.5 M10,17 L10,15 M5,15 L6.5,13.5 M3,10 L5,10 M5,5 L6.5,6.5 M10,7 A3,3 0 1,1 10,13 A3,3 0 1,1 10,7 Z', round: true },
+  sunray:  { d: 'M10,3 L10,5 M15,5 L13.5,6.5 M17,10 L15,10 M15,15 L13.5,13.5 M10,17 L10,15 M5,15 L6.5,13.5 M3,10 L5,10 M5,5 L6.5,6.5 M10,7 A3,3 0 1,1 10,13 A3,3 0 1,1 10,7 Z', round: true },
   burst:   { d: 'M10,0 L11,8 L19,9 L11,10 L10,18 L9,10 L1,9 L9,8 Z', fill: true },
   droplet: { d: 'M10,1 C14,8 15,13 12.5,16.5 C11,18.5 9,18.5 7.5,16.5 C5,13 6,8 10,1 Z', fill: true },
   bolt:    { d: 'M12,2 L6,11 L11,11 L7,18 L16,8 L11,8 Z', useShapeFill: true },
@@ -131,7 +131,8 @@ export const GLYPH_PATHS = {
   fairysym:{ d: 'M10,10 L13,16 L7,16 Z M10,8 L8,10 L6,5 Z M10,8 L14,5 L12,10 Z', fill: true },
   phantomsym:{ d: 'M5,11 L5,7 C5,4 15,4 15,7 L15,11 L17,14 L16,18 L14,16 L12,18 L10,16 L8,18 L6,16 L4,18 L3,14 Z', useShapeFill: true },
   // cosmos
-  ethersym:{ d: 'M10,2 C15,4 16,8 14,11 C12,14 8,15 6,13 C4,11 4,7 7,5 C10,3 12,6 11,9 C10,12 7,11 7,9', useShapeFill: true },
+  voidsym: { d: 'M10,1.5 A6.8,6.8 0 0,1 15.1,10 A4.08,4.08 0 0,1 10,13.06 A2.45,2.45 0 0,1 8.16,10 A1.47,1.47 0 0,1 10,8.9 A0.88,0.88 0 0,1 10.66,10', round: true },
+  ethersym:{ d: 'M10,2 C15,4 16,8 14,11 C12,14 8,15 6,13 C4,11 4,7 7,5 C10,3 12,6 11,9 C10,12 7,11 7,9', useShapeFill: true, round: true },
   starsym:{ d: 'M10,1 L12.5,7.5 L19,7.5 L14,12 L15.5,19 L10,15 L4.5,19 L6,12 L1,7.5 L7.5,7.5 Z', useShapeFill: true },
   novasym:{ d: 'M10,2 L11,7 L16,5 L13,9 L19,10 L13,11 L16,15 L11,13 L10,18 L9,13 L4,15 L7,11 L1,10 L7,9 L4,5 L9,7 Z', useShapeFill: true },
   meteorsym:{ d: 'M14,2 L17,1 L19,4 L17,8 L13,9 L11,6 Z M12,5 L5,12 L2,9 Z M13,7 L7,15 L4,12 Z M14,4 L9,11 L6,9 Z', useShapeFill: true },
@@ -173,7 +174,7 @@ export const ICON_DESIGNS = {
   water:    { shape: 'circle',   glyph: 'waves',   rot: 0 },
   earth:    { shape: 'circle',   glyph: 'mountains', rot: 0 },
   air:      { shape: 'circle',   glyph: 'airsym',  rot: 0 },
-  void:     { shape: 'circle',   glyph: 'dot',     rot: 0 },
+  void:     { shape: 'circle',   glyph: 'voidsym',  rot: 0 },
   // state (triangle)
   steam:    { shape: 'triangle', glyph: 'vapor',    rot: 0 },
   hotSteam: { shape: 'triangle', glyph: 'vaporHot', rot: 0 },
