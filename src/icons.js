@@ -40,7 +40,7 @@ export const GLYPH_PATHS = {
   sunray:  { d: 'M10,1 L10,3 M15,5 L13.5,6.5 M17,10 L15,10 M15,15 L13.5,13.5 M10,17 L10,15 M5,15 L6.5,13.5 M3,10 L5,10 M5,5 L6.5,6.5 M10,7 A3,3 0 1,1 10,13 A3,3 0 1,1 10,7 Z' },
   burst:   { d: 'M10,0 L11,8 L19,9 L11,10 L10,18 L9,10 L1,9 L9,8 Z', fill: true },
   droplet: { d: 'M10,1 C14,8 15,13 12.5,16.5 C11,18.5 9,18.5 7.5,16.5 C5,13 6,8 10,1 Z', fill: true },
-  bolt:    { d: 'M12,2 L6,11 L11,11 L7,18 L16,8 L11,8 Z', fill: true },
+  bolt:    { d: 'M12,2 L6,11 L11,11 L7,18 L16,8 L11,8 Z', useShapeFill: true },
   flask:   { d: 'M8,2 L8,8 C4,10 4,17 10,17 C16,17 16,10 12,8 L12,2 Z', useShapeFill: true },
   vial:    { d: 'M8,5 L8,15 A3,3 0 0,0 12,15 L12,5 Z', useShapeFill: true },
   flaskBubbly: { d: 'M8,2 L8,8 C4,10 4,17 10,17 C16,17 16,10 12,8 L12,2 Z M12,6 A1.5,1.5 0 1,0 15,6 A1.5,1.5 0 1,0 12,6', useShapeFill: true },
@@ -52,7 +52,8 @@ export const GLYPH_PATHS = {
   teardrop:{ d: 'M7,15 C7,18 13,18 13,15 L10,3 Z', fill: true },
   waves:   { d: 'M4,7 Q7,3 10,7 T16,7 M4,10 Q7,6 10,10 T16,10 M4,13 Q7,9 10,13 T16,13' },
   mountains:{ d: 'M4,14 L6,7 L9,14 Z M7,14 L10,3 L13,14 Z M11,14 L14,7 L16,14 Z', fill: true },
-  breeze:  { d: 'M8,15 Q6,10 5,6 M10,15 Q10,9 10,4 M12,15 Q14,10 15,6' },
+  breezsym:  { d: 'M8,15 Q6,10 5,6 M10,15 Q10,9 10,4 M12,15 Q14,10 15,6' },
+  airsym:  { d: 'M8,3.8 A1.7,1.7 0 1,1 9.2,6.7 H1.7 M14.8,6.4 A2.1,2.1 0 1,1 16.3,10 H1.7 M10.5,16.2 A1.7,1.7 0 1,0 11.7,13.3 H1.7' },
   phoenixGlyph:{ d: 'M10,2 L11,4 L14,3 L13,6 L16,5 L14,8 L17,9 L14,11 L15,15 L12,14 L10,17 L8,14 L5,15 L6,11 L3,9 L6,8 L4,5 L7,6 L6,3 L9,4 Z', useShapeFill: true },
   iceCube: { d: 'M10,4 L16,8 L10,12 L4,8 Z M16,8 L16,14 L10,18 L10,12 Z M10,12 L10,18 L4,14 L4,8 Z', useShapeFill: true },
   vapor:   { d: 'M7,16 C4,16 3,12 5,10 C3,8 4,5 7,5 C8,3 12,3 13,5 C16,5 17,8 15,10 C17,12 16,16 13,16 Z', useShapeFill: true },
@@ -133,14 +134,27 @@ export const GLYPH_PATHS = {
   ethersym:{ d: 'M10,2 C15,4 16,8 14,11 C12,14 8,15 6,13 C4,11 4,7 7,5 C10,3 12,6 11,9 C10,12 7,11 7,9', useShapeFill: true },
   starsym:{ d: 'M10,1 L12.5,7.5 L19,7.5 L14,12 L15.5,19 L10,15 L4.5,19 L6,12 L1,7.5 L7.5,7.5 Z', useShapeFill: true },
   novasym:{ d: 'M10,2 L11,7 L16,5 L13,9 L19,10 L13,11 L16,15 L11,13 L10,18 L9,13 L4,15 L7,11 L1,10 L7,9 L4,5 L9,7 Z', useShapeFill: true },
-  meteorsym:{ d: 'M14,5 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M14,5 L6,17 L4,15 Z', useShapeFill: true },
+  meteorsym:{ d: 'M14,2 L17,1 L19,4 L17,8 L13,9 L11,6 Z M12,5 L5,12 L2,9 Z M13,7 L7,15 L4,12 Z M14,4 L9,11 L6,9 Z', useShapeFill: true },
   eclipsesym:{ d: 'M4,10 A6,6 0 1,1 16,10 A6,6 0 1,1 4,10', useShapeFill: true },
-  moonsym:{ d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M6,8 a1.5,1.5 0 0,1 3,0 M11,7 a1.2,1.2 0 0,1 2.4,0 M13.5,9 a0.8,0.8 0 0,1 1.6,0 M8,9 a0.5,0.5 0 1,1 0,1 M14,8 a0.4,0.4 0 0,1 0.8,0', strokePath: 'M17,10 A7,7 0 0,0 3,10 M6,8 a1.5,1.5 0 0,1 3,0 M11,7 a1.2,1.2 0 0,1 2.4,0 M13.5,9 a0.8,0.8 0 0,1 1.6,0 M8,9 a0.5,0.5 0 1,1 0,1 M14,8 a0.4,0.4 0 0,1 0.8,0', useShapeFill: true },
+  moonsym:{ d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M7,4.8 A1.2,1.2 0 1,1 7,7.2 A1.2,1.2 0 1,1 7,4.8 M11.5,7 A1,1 0 0,0 13.5,7 M13.5,9.4 A0.6,0.6 0 1,1 13.5,10.6 A0.6,0.6 0 1,1 13.5,9.4 M7.2,10 A1.3,1.3 0 0,1 9.8,10 M11,11.2 A0.8,0.8 0 1,1 11,12.8 A0.8,0.8 0 1,1 11,11.2 M6.3,13 A0.7,0.7 0 0,0 7.7,13 M14.5,8.2 A0.3,0.3 0 1,1 14.5,8.8 A0.3,0.3 0 1,1 14.5,8.2 M8.5,10.5 A0.5,0.5 0 0,1 9.5,10.5 M5,9.1 A0.4,0.4 0 1,1 5,9.9 A0.4,0.4 0 1,1 5,9.1', useShapeFill: true },
   galaxysym:{ d: 'M10,5 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M13,8 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M14.5,12 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M11.5,15 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M7,14 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M4.5,10 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M6.5,7 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0 M15,9 a0.5,0.5 0 1,1 1,0 M5,9 a0.5,0.5 0 1,1 1,0 M10,11 a0.5,0.5 0 1,1 1,0', fill: true },
 
 
   comet:   { d: 'M14,2 C9,6 5,10 3,14 C8,12 12,8 14,2 Z', fill: true },
 
+  // energy & elements
+  lightningsym:{ d: 'M12,2 L8,9 L11,9 L5,17 L9,9 L7,8 Z M15,4 L12,7 M4,13 L1,15 M9.5,9.5 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0', useShapeFill: true },
+  plasmasym:{ d: 'M6,14 C3,11 4,6 8,5 C10,2 15,3 16,7 C19,10 17,15 13,15 C12,18 8,17 6,14 Z M14,4 L17,2 M17,8 L19,6 M13,15 L15,18 M4,10 L2,12', useShapeFill: true },
+  geysersym:{ d: 'M5,18 L5,8 C5,6 7,6 7,8 L7,18 Z M11,18 L11,5 C11,3 13,3 13,5 L13,18 Z M17,18 L17,10 C17,8 19,8 19,10 L19,18 Z M5,5 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M11,2 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0 M17,7 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0', useShapeFill: true },
+  hurricanSym:{ d: 'M10,2 C16,3 18,8 15,13 C12,18 6,17 5,12 C4,7 8,3 13,5 C17,7 17,13 12,15 C8,17 5,13 7,10 C9,7 12,9 11,12 C10,14 8,13 9,11 L10,10 Z', useShapeFill: true },
+  // earth & minerals
+  sandsym: { d: 'M5,8 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M12,5 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0 M8,14 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M15,12 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M5,11 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 M13,8 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M10,10 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', fill: true },
+  pearlsym:{ d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M7,7 A1,1 0 1,0 9,7 A1,1 0 1,0 7,7', useShapeFill: true },
+  obsidiansym:{ d: 'M4,16 L10,2 L16,16 Z M8,17 L11,6 L14,17 Z M12,18 L14,9 L16,18 Z', useShapeFill: true },
+  fossilsym:{ d: 'M10,2 C16,2 18,8 15,13 C12,18 5,16 4,10 C3,5 7,3 10,5 C13,7 14,12 10,14 C7,16 5,12 7,9 C9,7 11,9 10,11 C9,12 8,11 9,10 L10,10 Z', useShapeFill: true },
+  ambersym:{ d: 'M10,3 C10,3 16,8 16,13 C16,17 13,19 10,19 C7,19 4,17 4,13 C4,8 10,3 10,3 Z M10,11 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0', useShapeFill: true },
+  saltsym: { d: 'M10,3 L17,7 L17,15 L10,19 L3,15 L3,7 Z M10,3 L10,19 M3,7 L17,15 M17,7 L3,15', useShapeFill: true },
+  catalystsym:{ d: 'M10,2 L16,6 L16,14 L10,18 L4,14 L4,6 Z M10,6 L13,8 L13,12 L10,14 L7,12 L7,8 Z M10,10 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', useShapeFill: true },
 
 };
 
@@ -158,7 +172,7 @@ export const ICON_DESIGNS = {
   fire:     { shape: 'circle',   glyph: 'flame',   rot: 0 },
   water:    { shape: 'circle',   glyph: 'waves',   rot: 0 },
   earth:    { shape: 'circle',   glyph: 'mountains', rot: 0 },
-  air:      { shape: 'circle',   glyph: 'breeze',  rot: 0 },
+  air:      { shape: 'circle',   glyph: 'airsym',  rot: 0 },
   void:     { shape: 'circle',   glyph: 'dot',     rot: 0 },
   // state (triangle)
   steam:    { shape: 'triangle', glyph: 'vapor',    rot: 0 },
@@ -249,19 +263,19 @@ export const ICON_DESIGNS = {
   // alchemy (diamond)
   potion:   { shape: 'diamond',  glyph: 'flask',   rot: 0 },
   acid:     { shape: 'diamond',  glyph: 'flaskBubbly',   rot: 30 },
-  pearl:    { shape: 'diamond',  glyph: 'dot',     rot: 90 },
-  sand:     { shape: 'diamond',  glyph: 'dot',     rot: 135 },
+  pearl:    { shape: 'diamond',  glyph: 'pearlsym',     rot: 0 },
+  sand:     { shape: 'diamond',  glyph: 'sandsym',     rot: 0 },
   obsidian: { shape: 'diamond',  glyph: 'diamond', rot: 90 },
-  fossil:   { shape: 'diamond',  glyph: 'cross',   rot: 90 },
-  geyser:   { shape: 'diamond',  glyph: 'pipe',    rot: 0 },
-  hurricane:{ shape: 'diamond',  glyph: 'wave',    rot: 135 },
+  fossil:   { shape: 'diamond',  glyph: 'fossilsym',   rot: 0 },
+  geyser:   { shape: 'diamond',  glyph: 'geysersym',    rot: 0 },
+  hurricane:{ shape: 'diamond',  glyph: 'hurricanSym',  rot: 0 },
   lightning:{ shape: 'diamond',  glyph: 'bolt',    rot: 0 },
-  plasma:   { shape: 'diamond',  glyph: 'cross',   rot: 135 },
-  death:    { shape: 'diamond',  glyph: 'xmark',   rot: 0 },
-  amber:    { shape: 'diamond',  glyph: 'dot',     rot: 45 },
+  plasma:   { shape: 'diamond',  glyph: 'plasmasym',    rot: 0 },
+  death:    { shape: 'diamond',  glyph: 'skull',   rot: 0 },
+  amber:    { shape: 'diamond',  glyph: 'ambersym',     rot: 0 },
   elixir:   { shape: 'diamond',  glyph: 'vial',   rot: 0 },
-  catalyst: { shape: 'diamond',  glyph: 'chevron', rot: 90 },
-  salt:     { shape: 'diamond',  glyph: 'bar',     rot: 45 },
+  catalyst: { shape: 'diamond',  glyph: 'catalystsym', rot: 0 },
+  salt:     { shape: 'diamond',  glyph: 'saltsym',     rot: 0 },
 };
 
 export const TIER = (() => {
@@ -298,7 +312,7 @@ export function buildIconSVG(id, size) {
     const strokeStyle = glyphData.solidFill ? color : glyphColor;
     const gradDefs = (glyphData.solidFill || glyphData.strokeOnly) ? '' : gradDef;
     const strokeD = glyphData.strokePath || glyphData.d;
-    const glyphEl = `<path d="${glyphData.d}" fill="${fillStyle}"/><path d="${strokeD}" fill="none" stroke="${strokeStyle}" stroke-width="1.6"${rotAttr}/>`;
+    const glyphEl = `<g${rotAttr}><path d="${glyphData.d}" fill="${fillStyle}"/><path d="${strokeD}" fill="none" stroke="${strokeStyle}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>`;
     return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDefs}</defs>${glowEl}${glyphEl}</svg>`;
   }
 
@@ -312,7 +326,7 @@ export function buildIconSVG(id, size) {
     : `<path d="${shapePath}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" transform="translate(10,10) scale(0.86) translate(-10,-10)"/>`;
   const gFill = glyphData.fill ? glyphColor : 'none';
   const gStroke = glyphData.fill ? 'none' : glyphColor;
-  const glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6"${rotAttr}/>`;
+  const glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"${rotAttr}/>`;
 
   return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradShape}</defs>${glowEl}${shapeEl}${rimEl}${glyphEl}</svg>`;
 }
@@ -350,6 +364,8 @@ export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
     }
     ctx.strokeStyle = glyphData.solidFill ? el.color : glyphColor;
     ctx.lineWidth = 1.6;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     const strokePath = glyphData.strokePath ? new Path2D(glyphData.strokePath) : path;
     ctx.stroke(strokePath);
   } else if (glyphData.fill) {
@@ -358,6 +374,8 @@ export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
   } else {
     ctx.strokeStyle = glyphColor;
     ctx.lineWidth = 1.6;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.stroke(path);
   }
   ctx.restore();
