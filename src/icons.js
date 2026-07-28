@@ -253,7 +253,7 @@ export const ICON_DESIGNS = {
   curse:    { shape: 'star',     glyph: 'cursesym',   rot: 0 },
   fairy:    { shape: 'star',     glyph: 'fairysym',   rot: 0 },
   phantom:  { shape: 'star',     glyph: 'phantomsym', rot: 0 },
-  philosophersStone: { shape: 'star', glyph: 'sigil', rot: 0 },
+  philosophersStone: { shape: 'star', glyph: 'sigil', rot: 0, glow: 0.25 },
   // cosmos (circle)
   ether:    { shape: 'circle',   glyph: 'ethersym',   rot: 0 },
   star:     { shape: 'circle',   glyph: 'starsym',    rot: 0 },
@@ -310,7 +310,10 @@ export function buildIconSVG(id, size) {
   const glyphColor = isLightColor(color) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';
 
   if (glyphData.useShapeFill) {
-    const glowEl = `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.08"/>`;
+    const g = design.glow;
+    const glowEl = g
+      ? `<circle cx="10" cy="10" r="13" fill="${color}" opacity="${g * 0.35}"/><circle cx="10" cy="10" r="11" fill="${color}" opacity="${g}"/>`
+      : `<circle cx="10" cy="10" r="11" fill="${color}" opacity="0.08"/>`;
     const fillStyle = glyphData.strokeOnly ? 'none' : (glyphData.solidFill ? color : `url(#${gradId})`);
     const strokeStyle = glyphData.solidFill ? color : glyphColor;
     const gradDefs = (glyphData.solidFill || glyphData.strokeOnly) ? '' : gradDef;
