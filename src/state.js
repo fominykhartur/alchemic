@@ -7,6 +7,7 @@ export const state = {
   cauldron: {},
   messages: [],
   particles: [],
+  cauldronEntryTime: {},
   animating: false,
   pendingAction: null,
   achievements: new Set(),

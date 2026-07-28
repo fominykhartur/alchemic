@@ -55,8 +55,13 @@ export function addToCauldron(id, amount) {
   const el = ELEMENTS[id];
   if (!el) return;
   if (!el.starter && (!state.inventory[id] || state.inventory[id] < amount)) return;
-  state.cauldron[id] = (state.cauldron[id] || 0) + amount;
-  if (!el.starter) state.inventory[id] -= amount;
+  const currentTotal = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+  const space = 10 - currentTotal;
+  if (space <= 0) return;
+  const addAmt = Math.min(amount, space);
+  state.cauldron[id] = (state.cauldron[id] || 0) + addAmt;
+  state.cauldronEntryTime[id] = performance.now();
+  if (!el.starter) state.inventory[id] -= addAmt;
   playDrop();
   updateUI();
 }

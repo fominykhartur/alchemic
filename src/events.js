@@ -22,8 +22,17 @@ export function setupEventListeners() {
     const el = ELEMENTS[id];
     if (!el) return;
     if (!el.starter && (!state.inventory[id] || state.inventory[id] < amount)) return;
-    state.cauldron[id] = (state.cauldron[id] || 0) + amount;
-    if (!el.starter) state.inventory[id] -= amount;
+    const currentTotal = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+    const space = 10 - currentTotal;
+    if (space <= 0) {
+      log('⚠ Котёл полон (10/10)!', 'info');
+      return;
+    }
+    const addAmt = Math.min(amount, space);
+    state.cauldron[id] = (state.cauldron[id] || 0) + addAmt;
+    state.cauldronEntryTime[id] = performance.now();
+    if (!el.starter) state.inventory[id] -= addAmt;
+    if (addAmt < amount) log(`⚠ В котле осталось только ${space} места`, 'info');
     playDrop();
     updateUI();
   });
@@ -114,6 +123,7 @@ export function setupEventListeners() {
     });
     const total = entries.reduce((s, [,v]) => s + v, 0);
     state.cauldron = {};
+    state.cauldronEntryTime = {};
     if (total > 0) log(`↩ ${total} ед. возвращено в инвентарь`, 'info');
     updateUI();
   });

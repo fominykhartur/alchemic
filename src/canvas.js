@@ -1,5 +1,5 @@
 import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey } from './data.js';
-import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS } from './icons.js';
+import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
 import { log, updateUI, checkAchievements } from './ui.js';
@@ -43,6 +43,7 @@ function drawScene() {
   ctx.fillStyle = '#0a0a1a';
   ctx.fillRect(0, 0, W, H);
   drawCircle();
+  drawCapacityIndicator();
   const entries = Object.entries(state.cauldron);
   if (entries.length > 0 && !state.animating) {
     drawCauldronElements();
@@ -102,6 +103,35 @@ function drawCircle() {
   ctx.fillText('✧', CX, CY);
 }
 
+function drawCapacityIndicator() {
+  const total = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+  const cap = 10;
+  const frac = total / cap;
+
+  // Fullness arc on outer ring
+  if (total > 0) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(255,215,0,${0.3 + 0.5 * frac})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(CX, CY, RADIUS + 4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * frac);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Text indicator
+  const textAlpha = 0.5 + 0.4 * frac;
+  ctx.save();
+  ctx.globalAlpha = textAlpha;
+  ctx.fillStyle = '#ffd700';
+  ctx.font = '9px sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`${total}/${cap}`, CX + RADIUS - 2, CY - RADIUS + 16);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
 function drawDropHint() {
   const t = time * 0.001;
   const alpha = 0.3 + 0.15 * Math.sin(t);
@@ -120,55 +150,181 @@ function drawCauldronElements() {
   const count = entries.length;
   if (count === 0) return;
   const t = time * 0.001;
+  const items = [];
   entries.forEach(([id, qty], i) => {
     const el = ELEMENTS[id];
     if (!el) return;
     const design = ICON_DESIGNS[id];
     const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
-    const dist = RADIUS * 0.4;
-    const x = CX + Math.cos(angle) * dist;
-    const y = CY + Math.sin(angle) * dist;
+    const targetDist = RADIUS * 0.4;
+    const entryTime = state.cauldronEntryTime[id] || 0;
+    const age = time - entryTime;
+    const animDuration = 400;
+    let animT = Math.min(1, age / animDuration);
+    const easeOut = 1 - Math.pow(1 - animT, 3);
+    let dist = targetDist + (RADIUS * 0.8 - targetDist) * (1 - easeOut);
+
+    // Settle bounce after fly-in
+    let distOffset = 0;
+    if (animT >= 1) {
+      const settleAge = age - animDuration;
+      distOffset = -6 * Math.exp(-settleAge / 180) * Math.sin(settleAge / 80 * Math.PI);
+    }
+    dist += distOffset;
+
+    // Idle float after settle
+    let floatY = 0;
+    if (age > animDuration + 400) {
+      floatY = Math.sin(t * 0.8 + i * 1.7) * 1.2;
+    }
+
+    const alpha = 0.3 + 0.7 * animT;
+    const baseX = CX + Math.cos(angle) * dist;
+    const baseY = CY + Math.sin(angle) * dist;
+    const x = baseX;
+    const y = baseY + floatY;
+    items.push({ id, qty, el, design, i, x, y, alpha, angle, baseX, baseY, floatY });
+  });
+  if (items.length === 0) return;
+
+  // Connecting constellation lines with animated dashes
+  if (items.length > 1) {
+    ctx.save();
+    ctx.setLineDash([2, 6]);
+    ctx.lineDashOffset = -t * 12;
+    for (let i = 0; i < items.length; i++) {
+      const a = items[i];
+      const b = items[(i + 1) % items.length];
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = 'rgba(255,215,0,0.12)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // Spawn element sparkles
+  if (Math.random() < 0.3 && items.length > 0) {
+    const src = items[Math.floor(Math.random() * items.length)];
+    const sparkleAngle = Math.random() * Math.PI * 2;
+    const sparkleDist = 6 + Math.random() * 10;
+    state.particles.push({
+      x: src.x + Math.cos(sparkleAngle) * sparkleDist,
+      y: src.y + Math.sin(sparkleAngle) * sparkleDist,
+      vx: Math.cos(sparkleAngle) * 0.2,
+      vy: Math.sin(sparkleAngle) * 0.2 - 0.3,
+      life: 0.4 + Math.random() * 0.4,
+      color: src.el.glow || 'rgba(255,215,0,0.6)',
+      size: 0.8 + Math.random() * 1.2,
+    });
+  }
+
+  items.forEach(({ id, qty, el, design, i, x, y, alpha }) => {
     const gData = design ? GLYPH_PATHS[design.glyph] : null;
+    const pulse = 1 + 0.05 * Math.sin(t * 0.5 + i);
+    const r = 14 * pulse;
+    ctx.globalAlpha = alpha;
+
+    // Pulsing ambient glow
+    const glowPulse = 0.7 + 0.3 * Math.sin(t * 0.6 + i * 1.1);
     const glowR = gData?.useShapeFill ? 14 : 22;
-    const glowGrad = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+    const glowGrad = ctx.createRadialGradient(x, y, 0, x, y, glowR * (0.85 + 0.15 * glowPulse));
     glowGrad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
     glowGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = glowGrad;
     ctx.beginPath();
     ctx.arc(x, y, glowR, 0, Math.PI * 2);
     ctx.fill();
+
     if (design?.shape) {
-      const pulse = 1 + 0.05 * Math.sin(t * 0.5 + i);
-      const r = 14 * pulse;
       const lighter = lightenColor(el.color, 40);
       const shapeGrad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, 0, x, y, r);
       shapeGrad.addColorStop(0, lighter);
       shapeGrad.addColorStop(1, el.color);
+
       ctx.save();
-      ctx.shadowColor = el.color;
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = shapeGrad;
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.shadowColor = el.color;
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = shapeGrad;
       ctx.fill();
       ctx.shadowBlur = 0;
+
+      // Highlight
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(x, y, r * 0.86, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.clip();
+      const hlGrad = ctx.createRadialGradient(x - r * 0.4, y - r * 0.4, 0, x, y, r * 0.7);
+      hlGrad.addColorStop(0, 'rgba(255,255,255,0.12)');
+      hlGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = hlGrad;
+      ctx.fillRect(x - r, y - r, r * 2, r * 2);
+      ctx.restore();
+
+      // Goldish rim
+      ctx.beginPath();
+      ctx.arc(x, y, r * 0.9, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,215,0,0.2)';
       ctx.lineWidth = 1;
       ctx.stroke();
+
       ctx.restore();
     }
-    drawGlyph(ctx, id, x, y, 0.85);
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+
+    // Glyph
+    drawGlyph(ctx, id, x, y, 0.8);
+
+    // Name plate with quantity badge
+    const label = el.name;
     ctx.font = '8px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-    ctx.shadowBlur = 3;
-    const label = el.name + (qty > 1 ? ' ×' + qty : '');
-    ctx.fillText(label, x, y + 26);
     ctx.shadowBlur = 0;
+    const textW = ctx.measureText(label).width;
+    const plateW = textW + 8;
+    const plateH = 12;
+    const plateX = x - plateW / 2;
+    const plateY = y + 19;
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(plateX, plateY, plateW, plateH, 3);
+    } else {
+      ctx.rect(plateX, plateY, plateW, plateH);
+    }
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText(label, x, y + 25);
+
+    if (qty > 1) {
+      const badgeText = '' + qty;
+      ctx.font = 'bold 7px sans-serif';
+      const bw = ctx.measureText(badgeText).width;
+      const bpad = 3;
+      const br = Math.max(5, bw / 2 + bpad);
+      const bx = x + plateW / 2 + br + 1;
+      const by = y + 25;
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,215,0,0.4)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,215,0,0.9)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badgeText, bx, by + 0.5);
+    }
+
+    ctx.globalAlpha = 1;
   });
 }
 
@@ -419,10 +575,11 @@ function finishMix() {
     const id = inp.id;
     const amt = inp.a;
     state.cauldron[id] -= amt;
-    if (state.cauldron[id] <= 0) delete state.cauldron[id];
+    if (state.cauldron[id] <= 0) { delete state.cauldron[id]; delete state.cauldronEntryTime[id]; }
   });
 
   state.cauldron[outputId] = (state.cauldron[outputId] || 0) + 1;
+  state.cauldronEntryTime[outputId] = performance.now();
 
   const rkey = recipeKey(recipe);
   state.foundRecipes.add(rkey);
@@ -455,13 +612,16 @@ function finishMix() {
 
 function finishExplosion() {
   const totalUnits = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+  const types = Object.keys(state.cauldron).length;
   state.cauldron = {};
+  state.cauldronEntryTime = {};
 
   log(`💥 Взрыв! ${totalUnits} ед. материи уничтожено`, 'fail');
   playExplode();
 
   const undiscovered = ELEMENT_IDS.filter(id => !state.discovered.has(id));
-  if (undiscovered.length > 0 && Math.random() < 0.25 + totalUnits * 0.02) {
+  const chaosChance = Math.max(0, 0.25 + totalUnits * 0.02 - (types - 1) * 0.05);
+  if (undiscovered.length > 0 && Math.random() < chaosChance) {
     const picked = undiscovered[Math.floor(Math.random() * undiscovered.length)];
     state.discovered.add(picked);
     state.inventory[picked] = 2;
