@@ -100,6 +100,26 @@ export const ELEMENTS = {
   elixir:   { id: 'elixir',   name: 'Эликсир',   color: '#00FF7F', glow: 'rgba(0,255,127,0.4)', desc: 'Чистая субстанция' },
   catalyst: { id: 'catalyst', name: 'Катализатор',color: '#FFD700', glow: 'rgba(255,215,0,0.5)',desc: 'Ускоритель реакций' },
   salt:     { id: 'salt',     name: 'Соль',      color: '#F5F5F5', glow: 'rgba(245,245,245,0.3)',desc: 'Кристаллический осадок' },
+  // Tria Prima
+  rawSulfur:  { id: 'rawSulfur',  name: 'Неочищенная Сера', color: '#D4A843', glow: 'rgba(212,168,67,0.4)', desc: 'Жёлтый минерал' },
+  rawMercury: { id: 'rawMercury', name: 'Неочищенная Ртуть',color: '#B8C4D0', glow: 'rgba(184,196,208,0.3)',desc: 'Тяжёлая жидкость' },
+  sulfurPhil: { id: 'sulfurPhil', name: 'Философская Сера', color: '#FFD700', glow: 'rgba(255,215,0,0.5)', desc: 'Очищенная сера' },
+  mercuryPhil:{ id: 'mercuryPhil',name: 'Философская Ртуть',color: '#E0E8F8', glow: 'rgba(224,232,248,0.4)',desc: 'Очищенная ртуть' },
+  saltPhil:   { id: 'saltPhil',   name: 'Философская Соль', color: '#F5F0E8', glow: 'rgba(245,240,232,0.3)',desc: 'Очищенная соль' },
+  // Magnum Opus
+  nigredo:    { id: 'nigredo',    name: 'Нигредо',          color: '#0A0A0A', glow: 'rgba(10,10,10,0.5)',  desc: 'Чернение, смерть материи' },
+  albedo:     { id: 'albedo',     name: 'Альбедо',           color: '#F0F0FF', glow: 'rgba(240,240,255,0.4)',desc: 'Обеление, очищение' },
+  citrinitas: { id: 'citrinitas', name: 'Цитринитас',       color: '#FFD700', glow: 'rgba(255,215,0,0.5)', desc: 'Пожелтение, просветление' },
+  rubedo:     { id: 'rubedo',     name: 'Рубедо',            color: '#DC143C', glow: 'rgba(220,20,60,0.5)', desc: 'Покраснение, завершение' },
+  // Rebis
+  rex:        { id: 'rex',        name: 'Король',           color: '#FF8C00', glow: 'rgba(255,140,0,0.4)', desc: 'Солнечный принцип' },
+  regina:     { id: 'regina',     name: 'Королева',         color: '#A8C4E0', glow: 'rgba(168,196,224,0.3)',desc: 'Лунный принцип' },
+  rebis:      { id: 'rebis',      name: 'Ребис',             color: '#9370DB', glow: 'rgba(147,112,219,0.5)',desc: 'Священный брак' },
+  // Athanor
+  athanor:    { id: 'athanor',    name: 'Атанор',           color: '#8B5E3C', glow: 'rgba(139,94,60,0.4)', desc: 'Алхимическая печь' },
+  philosophersEgg: { id: 'philosophersEgg', name: 'Философское Яйцо', color: '#E8D8B8', glow: 'rgba(232,216,184,0.3)', desc: 'Герметичный сосуд' },
+  // Quintessence
+  quintessence:{ id: 'quintessence', name: 'Квинтэссенция', color: '#00CED1', glow: 'rgba(0,206,209,0.4)', desc: 'Пятый элемент' },
 };
 
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
@@ -141,6 +161,13 @@ export const ELEMENT_CATS = {
   moon:'cosmos', sun:'cosmos', galaxy:'cosmos',
   elixir:'alchemy', catalyst:'alchemy', salt:'alchemy',
   philosophersStone:'legendary',
+  // New craft branches
+  rawSulfur:'alchemy', rawMercury:'alchemy',
+  sulfurPhil:'alchemy', mercuryPhil:'alchemy', saltPhil:'alchemy',
+  nigredo:'alchemy', albedo:'alchemy', citrinitas:'alchemy', rubedo:'alchemy',
+  rex:'magic', regina:'magic', rebis:'magic',
+  athanor:'artifact', philosophersEgg:'artifact',
+  quintessence:'cosmos',
 };
 
 export const RECIPES = [
@@ -176,7 +203,6 @@ export const RECIPES = [
   { inputs: [{ id: 'shadow', a: 1 }, { id: 'void', a: 1 }], output: 'death' },
   { inputs: [{ id: 'light', a: 1 }, { id: 'shadow', a: 1 }], output: 'essence' },
   { inputs: [{ id: 'steam', a: 1 }, { id: 'air', a: 1 }], output: 'mist' },
-  { inputs: [{ id: 'fire', a: 1 }, { id: 'stone', a: 1 }], output: 'lava' },
   { inputs: [{ id: 'water', a: 1 }, { id: 'stone', a: 1 }], output: 'sand' },
   { inputs: [{ id: 'life', a: 1 }, { id: 'death', a: 1 }], output: 'essence' },
   { inputs: [{ id: 'ice', a: 1 }, { id: 'fire', a: 1 }], output: 'steam' },
@@ -360,6 +386,35 @@ export const RECIPES = [
   { inputs: [{ id: 'clockwork', a: 1 }, { id: 'essence', a: 1 }], output: 'golem' },
   { inputs: [{ id: 'flower', a: 1 }, { id: 'shadow', a: 1 }], output: 'curse' },
   { inputs: [{ id: 'mountain', a: 1 }, { id: 'earth', a: 1 }], output: 'stone' },
+  // Tria Prima
+  { inputs: [{ id: 'stone', a: 1 }, { id: 'fire', a: 1 }], output: 'rawSulfur' },
+  { inputs: [{ id: 'moon', a: 1 }, { id: 'metal', a: 1 }], output: 'rawMercury' },
+  { inputs: [{ id: 'rawSulfur', a: 1 }, { id: 'essence', a: 1 }], output: 'sulfurPhil' },
+  { inputs: [{ id: 'rawMercury', a: 1 }, { id: 'ether', a: 1 }], output: 'mercuryPhil' },
+  { inputs: [{ id: 'salt', a: 1 }, { id: 'light', a: 1 }], output: 'saltPhil' },
+  // Magnum Opus
+  { inputs: [{ id: 'death', a: 1 }, { id: 'shadow', a: 1 }], output: 'nigredo' },
+  { inputs: [{ id: 'nigredo', a: 1 }, { id: 'light', a: 1 }], output: 'albedo' },
+  { inputs: [{ id: 'albedo', a: 1 }, { id: 'sulfurPhil', a: 1 }], output: 'citrinitas' },
+  { inputs: [{ id: 'citrinitas', a: 1 }, { id: 'mercuryPhil', a: 1 }], output: 'rubedo' },
+  // Rebis
+  { inputs: [{ id: 'gold', a: 1 }, { id: 'sun', a: 1 }], output: 'rex' },
+  { inputs: [{ id: 'silver', a: 1 }, { id: 'moon', a: 1 }], output: 'regina' },
+  { inputs: [{ id: 'rex', a: 1 }, { id: 'regina', a: 1 }], output: 'rebis' },
+  // Athanor
+  { inputs: [{ id: 'brick', a: 1 }, { id: 'fire', a: 1 }], output: 'athanor' },
+  { inputs: [{ id: 'athanor', a: 1 }, { id: 'glass', a: 1 }], output: 'philosophersEgg' },
+  // Quintessence
+  { inputs: [{ id: 'ether', a: 1 }, { id: 'essence', a: 1 }], output: 'quintessence' },
+  // Philosopher's Stone (10 units — full cauldron)
+  { inputs: [
+    { id: 'sulfurPhil', a: 1 }, { id: 'mercuryPhil', a: 1 }, { id: 'saltPhil', a: 1 },
+    { id: 'rubedo', a: 1 },
+    { id: 'rebis', a: 1 },
+    { id: 'philosophersEgg', a: 1 },
+    { id: 'quintessence', a: 1 },
+    { id: 'elixir', a: 1 }, { id: 'catalyst', a: 1 }, { id: 'essence', a: 1 },
+  ], output: 'philosophersStone' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -380,6 +435,12 @@ export const ACHIEVEMENTS = [
   { id: 'allVariants', name: '🔄 Вариативность',        desc: 'Создать все 5 элементов-вариантов',                check: s => VARIANTS.every(v => s.discovered.has(v)) },
   { id: 'chimera',     name: '🐉 Химера',                desc: 'Создать легендарную Химеру',                       check: s => s.discovered.has('chimera') },
   { id: 'massProd',    name: '🏭 Алхимическая фабрика',  desc: 'Создать 500 единиц элементов',                     check: s => s.stats.totalCreated >= 500 },
+  { id: 'triaPrima',   name: '🧪 Tria Prima',           desc: 'Очистить три первоначала',                         check: s => ['sulfurPhil','mercuryPhil','saltPhil'].every(e => s.discovered.has(e)) },
+  { id: 'magnumOpus',  name: '⚗ Magnum Opus',          desc: 'Провести все стадии Великого Делания',              check: s => ['nigredo','albedo','citrinitas','rubedo'].every(e => s.discovered.has(e)) },
+  { id: 'rebis',       name: '💑 Священный брак',       desc: 'Создать Ребиса',                                   check: s => s.discovered.has('rebis') },
+  { id: 'athanorFull', name: '🏺 Философское яйцо',     desc: 'Завершить создание сосуда',                         check: s => s.discovered.has('philosophersEgg') },
+  { id: 'quintessence',name: '✨ Квинтэссенция',        desc: 'Извлечь пятый элемент',                            check: s => s.discovered.has('quintessence') },
+  { id: 'lapis',       name: '👑 Философский Камень',   desc: 'Завершить Великое Делание',                        check: s => s.discovered.has('philosophersStone') },
 ];
 
 export function recipeKey(recipe) {

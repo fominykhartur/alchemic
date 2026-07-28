@@ -157,7 +157,22 @@ export const GLYPH_PATHS = {
   ambersym:{ d: 'M10,3 C10,3 16,8 16,13 C16,17 13,19 10,19 C7,19 4,17 4,13 C4,8 10,3 10,3 Z M10,11 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0', useShapeFill: true },
   saltsym: { d: 'M10,3 L17,7 L17,15 L10,19 L3,15 L3,7 Z M10,3 L10,19 M3,7 L17,15 M17,7 L3,15', useShapeFill: true },
   catalystsym:{ d: 'M10,2 L16,6 L16,14 L10,18 L4,14 L4,6 Z M10,6 L13,8 L13,12 L10,14 L7,12 L7,8 Z M10,10 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', useShapeFill: true },
-
+  // Tria Prima
+  rawSulfurSym:  { d: 'M10,2 L18,16 L2,16 Z M5,12 L15,12', useShapeFill: true, round: true },
+  rawMercurySym: { d: 'M10,3 A6,6 0 1,1 10,15 A6,6 0 1,1 10,3 M7,3.5 L10,0.5 L13,3.5 M10,15 L10,20 M7.5,18 L12.5,18', useShapeFill: true, round: true },
+  saltPhilSym:   { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M4,10 L16,10', useShapeFill: true, round: true },
+  // Magnum Opus
+  nigredoSym:    { d: 'M10,16 L17,3 L3,3 Z', useShapeFill: true, round: true },
+  albedoSym:     { d: 'M10,4 A6,6 0 1,1 10,16 A6,6 0 1,1 10,4 M10,2 L10,4 M6,5 L5,3.5 M14,5 L15,3.5', useShapeFill: true, round: true },
+  citrinitasSym: { d: 'M10,3 A6,6 0 1,1 10,15 A6,6 0 1,1 10,3 M10,1 L10,3 M10,15 L10,17 M4,9 L2,9 M16,9 L18,9 M6,5.5 L5,4.5 M14,5.5 L15,4.5 M6,12.5 L5,13.5 M14,12.5 L15,13.5', useShapeFill: true, round: true },
+  rubedoSym:     { d: 'M10,2 A6,6 0 1,1 10,14 A6,6 0 1,1 10,2 M10,0 L10,2 M10,14 L10,16 M3.5,9 L2,9 M16.5,9 L18,9 M5.5,5 L4.5,4 M14.5,5 L15.5,4 M5.5,11 L4.5,12 M14.5,11 L15.5,12', useShapeFill: true, round: true },
+  // Rebis
+  rexSym:        { d: 'M4,16 L5,6 L8,12 L10,4 L12,12 L15,6 L16,16 Z', useShapeFill: true, round: true },
+  reginaSym:     { d: 'M12,3 A7,7 0 1,1 7,16 A5,5 0 1,0 12,3 Z M4,5 L5,6.5 L7,7 L5.5,7.5 L5,9 L4.5,7.5 L3,7 L4.5,6.5 Z', useShapeFill: true, round: true },
+  rebisSym:      { d: 'M7,10 C7,4 13,4 13,10 C13,16 7,16 7,10', useShapeFill: true, round: true },
+  // Athanor
+  athanorSym:    { d: 'M7,4 L7,16 L13,16 L13,4 Z M10,2 L10,4 M8.5,7 L11.5,7 M8.5,10 L11.5,10 M8.5,13 L11.5,13', useShapeFill: true, round: true },
+  eggSym:        { d: 'M10,2 C16,2 18,9 10,18 C2,9 4,2 10,2 Z', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -279,6 +294,26 @@ export const ICON_DESIGNS = {
   elixir:   { shape: 'diamond',  glyph: 'vial',   rot: 0 },
   catalyst: { shape: 'diamond',  glyph: 'catalystsym', rot: 0 },
   salt:     { shape: 'diamond',  glyph: 'saltsym',     rot: 0 },
+  // Tria Prima (alchemy)
+  rawSulfur:    { shape: 'diamond', glyph: 'rawSulfurSym',  rot: 0 },
+  rawMercury:   { shape: 'diamond', glyph: 'rawMercurySym', rot: 0 },
+  sulfurPhil:   { shape: 'diamond', glyph: 'rawSulfurSym',  rot: 0 },
+  mercuryPhil:  { shape: 'diamond', glyph: 'rawMercurySym', rot: 0 },
+  saltPhil:     { shape: 'diamond', glyph: 'saltPhilSym',   rot: 0 },
+  // Magnum Opus (alchemy)
+  nigredo:      { shape: 'diamond', glyph: 'nigredoSym',    rot: 0 },
+  albedo:       { shape: 'diamond', glyph: 'albedoSym',     rot: 0 },
+  citrinitas:   { shape: 'diamond', glyph: 'citrinitasSym', rot: 0 },
+  rubedo:       { shape: 'diamond', glyph: 'rubedoSym',     rot: 0 },
+  // Rebis (magic)
+  rex:          { shape: 'star',    glyph: 'rexSym',        rot: 0 },
+  regina:       { shape: 'star',    glyph: 'reginaSym',     rot: 0 },
+  rebis:        { shape: 'star',    glyph: 'rebisSym',      rot: 0 },
+  // Athanor (artifact)
+  athanor:      { shape: 'hexagon', glyph: 'athanorSym',    rot: 0 },
+  philosophersEgg: { shape: 'hexagon', glyph: 'eggSym',     rot: 0 },
+  // Quintessence (cosmos)
+  quintessence: { shape: 'circle',  glyph: 'starsym',       rot: 0 },
 };
 
 export const TIER = (() => {
