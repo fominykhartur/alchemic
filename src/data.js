@@ -93,6 +93,7 @@ export const ELEMENTS = {
   curse:    { id: 'curse',    name: 'Проклятие', color: '#4A0033', glow: 'rgba(74,0,51,0.5)',   desc: 'Тёмное заклятие' },
   fairy:    { id: 'fairy',    name: 'Фея',       color: '#FFB7C5', glow: 'rgba(255,183,197,0.4)',desc: 'Крылатый дух' },
   phantom:  { id: 'phantom',  name: 'Фантом',    color: '#A0A0C0', glow: 'rgba(160,160,192,0.3)',desc: 'Бестелесная тень' },
+  philosophersStone: { id: 'philosophersStone', name: 'Философский Камень', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Венец алхимии' },
   moon:     { id: 'moon',     name: 'Луна',      color: '#F5F5DC', glow: 'rgba(245,245,220,0.3)',desc: 'Ночное светило' },
   sun:      { id: 'sun',      name: 'Солнце',    color: '#FF8C00', glow: 'rgba(255,140,0,0.5)', desc: 'Дневное светило' },
   galaxy:   { id: 'galaxy',   name: 'Галактика', color: '#9370DB', glow: 'rgba(147,112,219,0.4)',desc: 'Звёздный вихрь' },
@@ -113,6 +114,7 @@ export const CATEGORIES = {
   magic:   { label: '🔮 Магия', color: '#9370db' },
   cosmos:  { label: '🌌 Космос', color: '#4a6fa5' },
   alchemy: { label: '⚗ Алхимия', color: '#7cfc00' },
+  legendary: { label: '👑 Легендарное', color: '#C9A227' },
 };
 
 export const ELEMENT_CATS = {
@@ -138,6 +140,7 @@ export const ELEMENT_CATS = {
   wand:'magic', curse:'magic', fairy:'magic', phantom:'magic',
   moon:'cosmos', sun:'cosmos', galaxy:'cosmos',
   elixir:'alchemy', catalyst:'alchemy', salt:'alchemy',
+  philosophersStone:'legendary',
 };
 
 export const RECIPES = [
@@ -385,4 +388,4 @@ export function recipeKey(recipe) {
 
 export const SAVE_KEY = 'alchemic_save_v1';
 export const TREE_MAX_DEPTH = 3;
-export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'magic', 'cosmos', 'alchemy'];
+export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'magic', 'cosmos', 'alchemy', 'legendary'];

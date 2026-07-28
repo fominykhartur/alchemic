@@ -68,7 +68,7 @@ export const GLYPH_PATHS = {
   ember:   { d: 'M3,15 Q10,7 17,15 Z', useShapeFill: true, round: true },
   cyclone: { d: 'M4,8 C3,5 5,3 8,4 C10,2 14,2 15,5 C17,4 19,6 18,9 C19,11 17,13 14,12 C12,14 8,14 6,12 C4,13 2,11 4,8 Z M10,13 L7,16 L10,16 L7,19 L14,15 L10,15 Z', useShapeFill: true, round: true },
   gust:    { d: 'M10,3 C14,4 16,8 14,12 C12,16 8,16 6,12 C5,10 5,8 7,6 M10,13 L8,15 L10,15 L9,17', useShapeFill: true, round: true },
-  thunderBolt:{ d: 'M9,2 L4,9 L8,9 L6,16 L13,8 L8,8 Z M5,15 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M12,14 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0', fill: true },
+  thunderBolt:{ d: 'M4,11 A2.8,2.8 0 0,1 6.3,5.8 A3.6,3.6 0 0,1 13.5,5.3 A2.6,2.6 0 0,1 16,9.5 A2.2,2.2 0 0,1 14.3,13.5 L5.5,13.5 A2,2 0 0,1 4,11 Z M6.5,16.2 A3,3 0 0,0 13.5,16.2 M4,18.4 A6,6 0 0,0 16,18.4', useShapeFill: true, round: true },
   infernal:{ d: 'M10,3 L11,6 L14,4 L13,7 L16,6 L14,10 C14,14 16,17 13,18 C12,19 10,20 10,20 C10,20 8,19 7,18 C4,17 6,14 6,10 L4,6 L7,7 L6,4 L9,6 Z', useShapeFill: true },
   cinder:  { d: 'M5,16 L3,10 L6,7 L5,4 L9,5 L12,3 L15,6 L17,10 L15,15 L12,18 L8,17 Z M7,10 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M12,9 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0', useShapeFill: true },
   dendrite:{ d: 'M10,1 L18,15 L2,15 Z M10,19 L18,5 L2,5 Z', useShapeFill: true },
@@ -118,6 +118,7 @@ export const GLYPH_PATHS = {
   // magic & energy
   lightsym: { d: 'M10,3 L12,9 L18,10 L12,11 L10,17 L8,11 L2,10 L8,9 Z', useShapeFill: true },
   shadowsym:{ d: 'M4,10 C4,7 6,5 9,6 C10,4 13,4 14,6 C16,5 18,7 17,10 C18,13 16,16 14,15 C13,17 10,17 9,15 C6,16 4,14 4,10 Z', useShapeFill: true },
+  sigil:    { d: 'M10,2.5 A7.5,7.5 0 1,1 10,17.5 A7.5,7.5 0 1,1 10,2.5 M10,5.5 A4.5,4.5 0 1,0 10,14.5 A4.5,4.5 0 1,0 10,5.5 M10,7.5 L13.5,13 L6.5,13 Z', useShapeFill: true, round: true },
   essencesym:{ d: 'M10,2 L15,15 A5,5 0 0,1 5,15 Z M10,11 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0', useShapeFill: true },
   ghostsym:{ d: 'M5,14 L5,8 C5,4 15,4 15,8 L15,14 L14,14 L13,12 L12,14 L11,12 L10,14 L9,12 L8,14 L7,12 L6,14 Z', useShapeFill: true },
   golemsym:{ d: 'M5,5 L15,5 L15,11 L17,14 L14,18 L6,18 L3,14 L5,11 Z M9,9 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0', useShapeFill: true },
@@ -252,6 +253,7 @@ export const ICON_DESIGNS = {
   curse:    { shape: 'star',     glyph: 'cursesym',   rot: 0 },
   fairy:    { shape: 'star',     glyph: 'fairysym',   rot: 0 },
   phantom:  { shape: 'star',     glyph: 'phantomsym', rot: 0 },
+  philosophersStone: { shape: 'star', glyph: 'sigil', rot: 0 },
   // cosmos (circle)
   ether:    { shape: 'circle',   glyph: 'ethersym',   rot: 0 },
   star:     { shape: 'circle',   glyph: 'starsym',    rot: 0 },
@@ -314,8 +316,13 @@ export function buildIconSVG(id, size) {
     const gradDefs = (glyphData.solidFill || glyphData.strokeOnly) ? '' : gradDef;
     const strokeD = glyphData.strokePath || glyphData.d;
     const roundAttr = glyphData.round ? ' stroke-linecap="round" stroke-linejoin="round"' : '';
-    const glyphEl = `<g${rotAttr}><path d="${glyphData.d}" fill="${fillStyle}"/><path d="${strokeD}" fill="none" stroke="${strokeStyle}" stroke-width="1.6"${roundAttr}/></g>`;
-    return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDefs}</defs>${glowEl}${glyphEl}</svg>`;
+    const transforms = [];
+    if (design.gs) transforms.push(`translate(10,10) scale(${design.gs}) translate(-10,-10)`);
+    if (design.rot) transforms.push(`rotate(${design.rot} 10 10)`);
+    const glyphInner = `<path d="${glyphData.d}" fill="${fillStyle}"/><path d="${strokeD}" fill="none" stroke="${strokeStyle}" stroke-width="1.6"${roundAttr}/>`;
+    const glyphEl = transforms.length ? `<g transform="${transforms.join(' ')}">${glyphInner}</g>` : glyphInner;
+    const rimEl = design.rim ? `<circle cx="10" cy="10" r="${design.rim}" fill="none" stroke="${color}" stroke-width="0.8" opacity="0.45"/>` : '';
+    return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradDefs}</defs>${glowEl}${rimEl}${glyphEl}</svg>`;
   }
 
   const gradShape = `<radialGradient id="s-${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.85"/><stop offset="100%" stop-color="${color}" stop-opacity="0.85"/></radialGradient>`;
@@ -329,7 +336,11 @@ export function buildIconSVG(id, size) {
   const gFill = glyphData.fill ? glyphColor : 'none';
   const gStroke = glyphData.fill ? 'none' : glyphColor;
   const roundAttr = glyphData.round ? ' stroke-linecap="round" stroke-linejoin="round"' : '';
-  const glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6"${roundAttr}${rotAttr}/>`;
+  let glyphEl = `<path d="${glyphData.d}" fill="${gFill}" stroke="${gStroke}" stroke-width="1.6"${roundAttr}/>`;
+  const transforms = [];
+  if (design.gs) transforms.push(`translate(10,10) scale(${design.gs}) translate(-10,-10)`);
+  if (rot) transforms.push(`rotate(${rot} 10 10)`);
+  if (transforms.length) glyphEl = `<g transform="${transforms.join(' ')}">${glyphEl}</g>`;
 
   return `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><defs>${gradShape}</defs>${glowEl}${shapeEl}${rimEl}${glyphEl}</svg>`;
 }
@@ -354,8 +365,23 @@ export function drawGlyph(ctx, id, x, y, scale, color, alpha) {
     ctx.rotate(design.rot * Math.PI / 180);
     ctx.translate(-10, -10);
   }
+  if (design.gs) {
+    ctx.translate(10, 10);
+    ctx.scale(design.gs, design.gs);
+    ctx.translate(-10, -10);
+  }
   const path = new Path2D(glyphData.d);
   if (glyphData.useShapeFill) {
+    if (design.rim) {
+      ctx.save();
+      ctx.strokeStyle = el.color;
+      ctx.lineWidth = 0.8;
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath();
+      ctx.arc(10, 10, design.rim, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
     if (!glyphData.strokeOnly) {
       ctx.fillStyle = glyphData.solidFill ? el.color : (() => {
         const grad = ctx.createRadialGradient(x - 2, y - 2, 0, x, y, 10);
