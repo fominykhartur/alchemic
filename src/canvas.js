@@ -123,38 +123,33 @@ function drawCauldronElements() {
   entries.forEach(([id, qty], i) => {
     const el = ELEMENTS[id];
     if (!el) return;
+    const design = ICON_DESIGNS[id];
     const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
     const dist = RADIUS * 0.4;
     const x = CX + Math.cos(angle) * dist;
     const y = CY + Math.sin(angle) * dist;
-    const gData = ICON_DESIGNS[id] ? GLYPH_PATHS[ICON_DESIGNS[id].glyph] : null;
-    if (gData?.useShapeFill) {
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, 14);
-      grad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, y, 14, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, 20);
-      grad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, y, 22, 0, Math.PI * 2);
-      ctx.fill();
+    const gData = design ? GLYPH_PATHS[design.glyph] : null;
+    const glowR = gData?.useShapeFill ? 14 : 22;
+    const glowGrad = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+    glowGrad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
+    glowGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = glowGrad;
+    ctx.beginPath();
+    ctx.arc(x, y, glowR, 0, Math.PI * 2);
+    ctx.fill();
+    if (design?.shape) {
       const pulse = 1 + 0.05 * Math.sin(t * 0.5 + i);
       const r = 14 * pulse;
       const lighter = lightenColor(el.color, 40);
       const shapeGrad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, 0, x, y, r);
       shapeGrad.addColorStop(0, lighter);
       shapeGrad.addColorStop(1, el.color);
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fillStyle = shapeGrad;
+      ctx.save();
       ctx.shadowColor = el.color;
       ctx.shadowBlur = 10;
+      ctx.fillStyle = shapeGrad;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
       ctx.beginPath();
@@ -162,19 +157,18 @@ function drawCauldronElements() {
       ctx.strokeStyle = 'rgba(255,255,255,0.12)';
       ctx.lineWidth = 1;
       ctx.stroke();
+      ctx.restore();
     }
-    drawGlyph(ctx, id, x, y, 0.7);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px sans-serif';
+    drawGlyph(ctx, id, x, y, 0.85);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '8px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = 'rgba(0,0,0,0.8)';
     ctx.shadowBlur = 3;
-    ctx.fillText(qty > 1 ? qty : '', x, y + 1);
+    const label = el.name + (qty > 1 ? ' ×' + qty : '');
+    ctx.fillText(label, x, y + 26);
     ctx.shadowBlur = 0;
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.font = '8px sans-serif';
-    ctx.fillText(el.name, x, y + 24);
   });
 }
 
@@ -192,7 +186,7 @@ function drawCauldronSigils() {
       const sx = CX + Math.cos(angle) * dist;
       const sy = CY + Math.sin(angle) * dist;
       const alpha = 0.2 + 0.15 * Math.sin(t + i * 0.7 + j * 1.3);
-      drawGlyph(ctx, id, sx, sy, 0.55, color, alpha);
+      drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
     }
   });
 }
