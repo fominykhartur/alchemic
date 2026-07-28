@@ -21,7 +21,7 @@ export function setupEventListeners() {
     if (!state.discovered.has(id)) return;
     const el = ELEMENTS[id];
     if (!el) return;
-    if (!el.starter && (!state.inventory[id] || state.inventory[id] < amount)) return;
+    if (!el.starter && !el.infinite && (!state.inventory[id] || state.inventory[id] < amount)) return;
     const currentTotal = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
     const space = 10 - currentTotal;
     if (space <= 0) {
@@ -31,7 +31,7 @@ export function setupEventListeners() {
     const addAmt = Math.min(amount, space);
     state.cauldron[id] = (state.cauldron[id] || 0) + addAmt;
     state.cauldronEntryTime[id] = performance.now();
-    if (!el.starter) state.inventory[id] -= addAmt;
+    if (!el.starter && !el.infinite) state.inventory[id] -= addAmt;
     if (addAmt < amount) log(`⚠ В котле осталось только ${space} места`, 'info');
     playDrop();
     updateUI();
@@ -61,7 +61,7 @@ export function setupEventListeners() {
         const amt = state.cauldron[id];
         if (amt > 0) {
           state.cauldron[id]--;
-          if (ELEMENTS[id]?.starter) {
+          if (ELEMENTS[id]?.starter || ELEMENTS[id]?.infinite) {
             log(`↩ ${ELEMENTS[id].name} возвращён (бесконечный)`, 'info');
           } else {
             state.inventory[id] = (state.inventory[id] || 0) + 1;
@@ -101,7 +101,7 @@ export function setupEventListeners() {
     if (closest && closestDist < 25 * 25) {
       const { id, qty } = closest;
       delete state.cauldron[id];
-      if (ELEMENTS[id]?.starter) {
+      if (ELEMENTS[id]?.starter || ELEMENTS[id]?.infinite) {
         log(`↩ ${ELEMENTS[id].name} ×${qty} возвращён (бесконечный)`, 'info');
       } else {
         state.inventory[id] = (state.inventory[id] || 0) + qty;
@@ -119,7 +119,7 @@ export function setupEventListeners() {
     if (state.animating) return;
     const entries = Object.entries(state.cauldron);
     entries.forEach(([id, qty]) => {
-      if (!ELEMENTS[id]?.starter) state.inventory[id] = (state.inventory[id] || 0) + qty;
+      if (!ELEMENTS[id]?.starter && !ELEMENTS[id]?.infinite) state.inventory[id] = (state.inventory[id] || 0) + qty;
     });
     const total = entries.reduce((s, [,v]) => s + v, 0);
     state.cauldron = {};

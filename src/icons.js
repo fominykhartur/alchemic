@@ -173,6 +173,24 @@ export const GLYPH_PATHS = {
   // Athanor
   athanorSym:    { d: 'M7,4 L7,16 L13,16 L13,4 Z M10,2 L10,4 M8.5,7 L11.5,7 M8.5,10 L11.5,10 M8.5,13 L11.5,13', useShapeFill: true, round: true },
   eggSym:        { d: 'M10,2 C16,2 18,9 10,18 C2,9 4,2 10,2 Z', useShapeFill: true, round: true },
+  // Solve et Coagula
+  azothSym:      { d: 'M10,2 L18,14 L2,14 Z M10,18 L2,6 L18,6 Z', useShapeFill: true, round: true },
+  solveSym:      { d: 'M10,3 L18,17 L2,17 Z', useShapeFill: true, round: true },
+  coagulaSym:    { d: 'M10,17 L18,3 L2,3 Z', useShapeFill: true, round: true },
+  alkahestSym:   { d: 'M10,2 L18,16 L2,16 Z M6,12 L14,12', useShapeFill: true, round: true },
+  // Микрокосм
+  vesselSym:     { d: 'M5,7 L5,16 L15,16 L15,7 C15,3 5,3 5,7 Z M8,2 L12,2 M10,2 L10,5', useShapeFill: true, round: true },
+  homunculusSym: { d: 'M10,4 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0 M7,10 L13,10 L13,16 L7,16 Z', useShapeFill: true, round: true },
+  adeptSym:      { d: 'M10,1 L14,5 L18,5 L15,9 L18,13 L14,13 L10,17 L6,13 L2,13 L5,9 L2,5 L6,5 Z', useShapeFill: true, round: true },
+  // Эликсиры
+  aurumPotabileSym:{ d: 'M10,3 A6,6 0 1,1 10,15 A6,6 0 1,1 10,3 M16,6 L13,4 M16,12 L13,14', useShapeFill: true, round: true },
+  elixirVitaeSym:{ d: 'M10,3 L10,17 M4,10 L16,10 M14,5 L12,3 M6,15 L8,17', useShapeFill: true, round: true },
+  panaceaSym:    { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M10,6 L10,14 M6,10 L14,10', useShapeFill: true, round: true },
+  ambrosiaSym:   { d: 'M8,18 C8,12 5,8 8,6 C11,8 8,12 8,18 M12,18 C12,12 9,8 12,6 C15,8 12,12 12,18 M16,18 C16,12 13,8 16,6 C19,8 16,12 16,18', useShapeFill: true, round: true },
+  // Макрокосм
+  macrocosmSym:  { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,5 A5,5 0 1,1 10,15 A5,5 0 1,1 10,5 M10,10 a1.5,1.5 0 1,1 3,0', useShapeFill: true, round: true },
+  hermeticSym:   { d: 'M4,4 L16,4 L16,16 L4,16 Z M10,6 A4,4 0 1,1 10,14 A4,4 0 1,1 10,6', useShapeFill: true, round: true },
+  animaMundiSym: { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,5 A5,5 0 1,1 10,15 A5,5 0 1,1 10,5 M10,10 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M10,0 L10,2 M10,18 L10,20 M2,10 L0,10 M18,10 L20,10', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -314,6 +332,25 @@ export const ICON_DESIGNS = {
   philosophersEgg: { shape: 'hexagon', glyph: 'eggSym',     rot: 0 },
   // Quintessence (cosmos)
   quintessence: { shape: 'circle',  glyph: 'starsym',       rot: 0 },
+  // Solve et Coagula (alchemy)
+  azoth:        { shape: 'star',    glyph: 'azothSym',       rot: 0 },
+  solve:        { shape: 'diamond', glyph: 'solveSym',       rot: 0 },
+  coagula:      { shape: 'diamond', glyph: 'coagulaSym',     rot: 0 },
+  alkahest:     { shape: 'diamond', glyph: 'alkahestSym',    rot: 0 },
+  // Микрокосм
+  vesselOfLife: { shape: 'hexagon', glyph: 'vesselSym',      rot: 0 },
+  homunculus:   { shape: 'star',    glyph: 'homunculusSym',  rot: 0 },
+  adept:        { shape: 'star',    glyph: 'adeptSym',       rot: 0 },
+  // Эликсиры
+  aurumPotabile:{ shape: 'diamond', glyph: 'aurumPotabileSym', rot: 0 },
+  elixirVitae:  { shape: 'diamond', glyph: 'elixirVitaeSym', rot: 0 },
+  panacea:      { shape: 'star',    glyph: 'panaceaSym',     rot: 0 },
+  ambrosia:     { shape: 'circle',  glyph: 'ambrosiaSym',    rot: 0 },
+  // Макрокосм
+  macrocosm:    { shape: 'circle',  glyph: 'macrocosmSym',   rot: 0 },
+  hermeticSeal: { shape: 'hexagon', glyph: 'hermeticSym',    rot: 0 },
+  // Финал
+  animaMundi:   { shape: 'star',    glyph: 'animaMundiSym',  rot: 0, glow: 0.15 },
 };
 
 export const TIER = (() => {

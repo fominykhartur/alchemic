@@ -11,7 +11,7 @@ export function onDragStart(e) {
   if (!id || !state.discovered.has(id)) { e.preventDefault(); return; }
   const el = ELEMENTS[id];
   if (!el) { e.preventDefault(); return; }
-  if (!el.starter && (!state.inventory[id] || state.inventory[id] <= 0)) { e.preventDefault(); return; }
+  if (!el.starter && !el.infinite && (!state.inventory[id] || state.inventory[id] <= 0)) { e.preventDefault(); return; }
   dragData = { id, amount: 1 };
   e.dataTransfer.setData('text/plain', JSON.stringify(dragData));
   e.dataTransfer.effectAllowed = 'copy';
@@ -30,7 +30,7 @@ export function showQtyPopup(e, elementId) {
   const btnContainer = popup.querySelector('.qty-buttons');
   btnContainer.innerHTML = '';
   const el = ELEMENTS[elementId];
-  const maxQty = el?.starter ? 9 : Math.min(state.inventory[elementId] || 0, 9);
+  const maxQty = el?.starter || el?.infinite ? 9 : Math.min(state.inventory[elementId] || 0, 9);
   if (maxQty <= 0) return;
   for (let i = 1; i <= maxQty; i++) {
     const btn = document.createElement('button');
@@ -54,14 +54,14 @@ export function addToCauldron(id, amount) {
   if (!state.discovered.has(id)) return;
   const el = ELEMENTS[id];
   if (!el) return;
-  if (!el.starter && (!state.inventory[id] || state.inventory[id] < amount)) return;
+  if (!el.starter && !el.infinite && (!state.inventory[id] || state.inventory[id] < amount)) return;
   const currentTotal = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
   const space = 10 - currentTotal;
   if (space <= 0) return;
   const addAmt = Math.min(amount, space);
   state.cauldron[id] = (state.cauldron[id] || 0) + addAmt;
   state.cauldronEntryTime[id] = performance.now();
-  if (!el.starter) state.inventory[id] -= addAmt;
+  if (!el.starter && !el.infinite) state.inventory[id] -= addAmt;
   playDrop();
   updateUI();
 }
@@ -129,7 +129,7 @@ function showTooltip(id, e) {
     </div>
     <div class="tt-cat">${catInfo ? catInfo.label : ''}</div>
     <div class="tt-desc">${el.desc}</div>
-    <div class="tt-qty">${el.starter ? '∞ в запасе' : 'В наличии: ' + qty}</div>
+    <div class="tt-qty">${el.starter || el.infinite ? '∞ в запасе' : 'В наличии: ' + qty}</div>
   `;
   tip.style.display = 'block';
   positionTooltip(e);
@@ -178,18 +178,18 @@ function renderItem(grid, id) {
     item.appendChild(iconDiv);
     const qtyEl = document.createElement('div');
     qtyEl.className = 'quantity';
-    qtyEl.textContent = el.starter ? '∞' : qty;
-    if (qty > 0 || el.starter) item.appendChild(qtyEl);
+    qtyEl.textContent = el.starter || el.infinite ? '∞' : qty;
+    if (qty > 0 || el.starter || el.infinite) item.appendChild(qtyEl);
     const label = document.createElement('div');
     label.className = 'name-label';
     label.textContent = el.name;
     item.appendChild(label);
-    item.draggable = qty > 0 || el.starter;
+    item.draggable = qty > 0 || el.starter || el.infinite;
     item.addEventListener('dragstart', onDragStart);
     item.addEventListener('dragend', onDragEnd);
-    item.addEventListener('click', (e) => { if (qty > 0 || el.starter) showElementInfo(id); });
+    item.addEventListener('click', (e) => { if (qty > 0 || el.starter || el.infinite) showElementInfo(id); });
     item.addEventListener('mousedown', (e) => {
-      if (e.shiftKey && (qty > 0 || el.starter)) { e.preventDefault(); showQtyPopup(e, id); }
+      if (e.shiftKey && (qty > 0 || el.starter || el.infinite)) { e.preventDefault(); showQtyPopup(e, id); }
     });
     item.addEventListener('mouseenter', (e) => { showTooltip(id, e); });
     item.addEventListener('mouseleave', hideTooltip);
@@ -271,7 +271,7 @@ export function showElementInfo(id) {
   addSection.appendChild(addLabel);
   const btnRow = document.createElement('div');
   btnRow.style.cssText = 'display:flex;gap:3px;flex-wrap:wrap';
-  const maxAdd = el.starter ? 9 : Math.min(state.inventory[id] || 0, 9);
+  const maxAdd = el.starter || el.infinite ? 9 : Math.min(state.inventory[id] || 0, 9);
   for (let i = 1; i <= maxAdd && i <= 5; i++) {
     const btn = document.createElement('button');
     btn.style.cssText = 'background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:3px 8px;font-size:11px;cursor:pointer';

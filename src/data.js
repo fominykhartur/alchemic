@@ -93,7 +93,7 @@ export const ELEMENTS = {
   curse:    { id: 'curse',    name: 'Проклятие', color: '#4A0033', glow: 'rgba(74,0,51,0.5)',   desc: 'Тёмное заклятие' },
   fairy:    { id: 'fairy',    name: 'Фея',       color: '#FFB7C5', glow: 'rgba(255,183,197,0.4)',desc: 'Крылатый дух' },
   phantom:  { id: 'phantom',  name: 'Фантом',    color: '#A0A0C0', glow: 'rgba(160,160,192,0.3)',desc: 'Бестелесная тень' },
-  philosophersStone: { id: 'philosophersStone', name: 'Философский Камень', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Венец алхимии' },
+  philosophersStone: { id: 'philosophersStone', name: 'Философский Камень', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Венец алхимии', infinite: true },
   moon:     { id: 'moon',     name: 'Луна',      color: '#F5F5DC', glow: 'rgba(245,245,220,0.3)',desc: 'Ночное светило' },
   sun:      { id: 'sun',      name: 'Солнце',    color: '#FF8C00', glow: 'rgba(255,140,0,0.5)', desc: 'Дневное светило' },
   galaxy:   { id: 'galaxy',   name: 'Галактика', color: '#9370DB', glow: 'rgba(147,112,219,0.4)',desc: 'Звёздный вихрь' },
@@ -120,6 +120,25 @@ export const ELEMENTS = {
   philosophersEgg: { id: 'philosophersEgg', name: 'Философское Яйцо', color: '#E8D8B8', glow: 'rgba(232,216,184,0.3)', desc: 'Герметичный сосуд' },
   // Quintessence
   quintessence:{ id: 'quintessence', name: 'Квинтэссенция', color: '#00CED1', glow: 'rgba(0,206,209,0.4)', desc: 'Пятый элемент' },
+  // Solve et Coagula
+  azoth:        { id: 'azoth',        name: 'Азот',            color: '#B8A0FF', glow: 'rgba(184,160,255,0.5)', desc: 'Дух-Ртуть, не путать с газом — начало и конец Делания' },
+  solve:        { id: 'solve',        name: 'Растворение',      color: '#5DDCFF', glow: 'rgba(93,220,255,0.4)',  desc: 'Принцип разложения формы' },
+  coagula:      { id: 'coagula',      name: 'Соединение',       color: '#C97B4A', glow: 'rgba(201,123,74,0.4)',  desc: 'Принцип связывания сущности' },
+  alkahest:     { id: 'alkahest',     name: 'Алкагест',         color: '#7CFF9E', glow: 'rgba(124,255,158,0.5)', desc: 'Универсальный растворитель' },
+  // Микрокосм
+  vesselOfLife: { id: 'vesselOfLife', name: 'Сосуд Жизни',      color: '#E8C4C8', glow: 'rgba(232,196,200,0.4)', desc: 'Вместилище для зарождения' },
+  homunculus:   { id: 'homunculus',   name: 'Гомункул',         color: '#E8B4B8', glow: 'rgba(232,180,184,0.4)', desc: 'Искусственно созданная жизнь' },
+  adept:        { id: 'adept',        name: 'Адепт',            color: '#FFEFC0', glow: 'rgba(255,239,192,0.5)', desc: 'Совершенный посвящённый' },
+  // Эликсиры
+  aurumPotabile:{ id: 'aurumPotabile',name: 'Питьевое Золото',  color: '#FFC400', glow: 'rgba(255,196,0,0.5)',   desc: 'Золото, обращённое в эликсир' },
+  elixirVitae:  { id: 'elixirVitae',  name: 'Эликсир Жизни',    color: '#4AFF7A', glow: 'rgba(74,255,122,0.5)',  desc: 'Отдельный от обычных зелий состав' },
+  panacea:      { id: 'panacea',      name: 'Панацея',          color: '#00FFC8', glow: 'rgba(0,255,200,0.5)',   desc: 'Средство от всех бед' },
+  ambrosia:     { id: 'ambrosia',     name: 'Амброзия',         color: '#FFF4D0', glow: 'rgba(255,244,208,0.5)', desc: 'Пища богов' },
+  // Макрокосм
+  macrocosm:    { id: 'macrocosm',    name: 'Макрокосм',        color: '#5A3FA0', glow: 'rgba(90,63,160,0.5)',   desc: 'Вселенная как единое тело' },
+  hermeticSeal: { id: 'hermeticSeal', name: 'Герметическая Печать', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Связь малого и великого' },
+  // Финал
+  animaMundi:   { id: 'animaMundi',   name: 'Мировая Душа',     color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'Душа, пронизывающая всё сущее' },
 };
 
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
@@ -168,6 +187,11 @@ export const ELEMENT_CATS = {
   rex:'magic', regina:'magic', rebis:'magic',
   athanor:'artifact', philosophersEgg:'artifact',
   quintessence:'cosmos',
+  azoth:'alchemy', solve:'alchemy', coagula:'alchemy', alkahest:'alchemy',
+  vesselOfLife:'artifact', homunculus:'magic', adept:'magic',
+  aurumPotabile:'legendary', elixirVitae:'alchemy', panacea:'legendary', ambrosia:'alchemy',
+  macrocosm:'cosmos', hermeticSeal:'artifact',
+  animaMundi:'legendary',
 };
 
 export const RECIPES = [
@@ -415,6 +439,28 @@ export const RECIPES = [
     { id: 'quintessence', a: 1 },
     { id: 'elixir', a: 1 }, { id: 'catalyst', a: 1 }, { id: 'essence', a: 1 },
   ], output: 'philosophersStone' },
+  // Solve et Coagula
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'quintessence', a: 1 }], output: 'azoth' },
+  { inputs: [{ id: 'azoth', a: 1 }, { id: 'acid', a: 1 }], output: 'solve' },
+  { inputs: [{ id: 'azoth', a: 1 }, { id: 'saltPhil', a: 1 }], output: 'coagula' },
+  { inputs: [{ id: 'solve', a: 1 }, { id: 'coagula', a: 1 }], output: 'alkahest' },
+  // Микрокосм
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'clay', a: 1 }, { id: 'life', a: 1 }], output: 'vesselOfLife' },
+  { inputs: [{ id: 'vesselOfLife', a: 1 }, { id: 'azoth', a: 1 }], output: 'homunculus' },
+  { inputs: [{ id: 'homunculus', a: 1 }, { id: 'panacea', a: 1 }], output: 'adept' },
+  // Эликсиры
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'gold', a: 1 }], output: 'aurumPotabile' },
+  { inputs: [{ id: 'aurumPotabile', a: 1 }, { id: 'elixir', a: 1 }], output: 'elixirVitae' },
+  { inputs: [{ id: 'elixirVitae', a: 1 }, { id: 'azoth', a: 1 }], output: 'panacea' },
+  { inputs: [{ id: 'panacea', a: 1 }, { id: 'alkahest', a: 1 }], output: 'ambrosia' },
+  // Макрокосм
+  { inputs: [{ id: 'quintessence', a: 1 }, { id: 'galaxy', a: 1 }], output: 'macrocosm' },
+  { inputs: [{ id: 'adept', a: 1 }, { id: 'macrocosm', a: 1 }], output: 'hermeticSeal' },
+  // Финал второго слоя
+  { inputs: [
+    { id: 'alkahest', a: 1 }, { id: 'ambrosia', a: 1 },
+    { id: 'hermeticSeal', a: 1 }, { id: 'azoth', a: 1 },
+  ], output: 'animaMundi' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -441,6 +487,13 @@ export const ACHIEVEMENTS = [
   { id: 'athanorFull', name: '🏺 Философское яйцо',     desc: 'Завершить создание сосуда',                         check: s => s.discovered.has('philosophersEgg') },
   { id: 'quintessence',name: '✨ Квинтэссенция',        desc: 'Извлечь пятый элемент',                            check: s => s.discovered.has('quintessence') },
   { id: 'lapis',       name: '👑 Философский Камень',   desc: 'Завершить Великое Делание',                        check: s => s.discovered.has('philosophersStone') },
+  { id: 'azothMade',   name: '🌀 Азот',                  desc: 'Извлечь Дух-Ртуть',                                check: s => s.discovered.has('azoth') },
+  { id: 'solveCoagula',name: '⚖️ Solve et Coagula',     desc: 'Освоить оба принципа Делания',                      check: s => ['solve','coagula'].every(e => s.discovered.has(e)) },
+  { id: 'homunculus',  name: '🧬 Гомункул',             desc: 'Создать искусственную жизнь',                       check: s => s.discovered.has('homunculus') },
+  { id: 'adept',       name: '🧙 Адепт',                desc: 'Достичь совершенного посвящения',                   check: s => s.discovered.has('adept') },
+  { id: 'ambrosia',    name: '🍯 Амброзия',             desc: 'Создать пищу богов',                                check: s => s.discovered.has('ambrosia') },
+  { id: 'macrocosm',   name: '🌌 Макрокосм',            desc: 'Постичь вселенную как тело',                        check: s => s.discovered.has('macrocosm') },
+  { id: 'animaMundi',  name: '🌍 Мировая Душа',         desc: 'Достичь истинного завершения Делания',               check: s => s.discovered.has('animaMundi') },
 ];
 
 export function recipeKey(recipe) {
