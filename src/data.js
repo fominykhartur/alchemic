@@ -139,6 +139,26 @@ export const ELEMENTS = {
   hermeticSeal: { id: 'hermeticSeal', name: 'Герметическая Печать', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Связь малого и великого' },
   // Финал
   animaMundi:   { id: 'animaMundi',   name: 'Мировая Душа',     color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'Душа, пронизывающая всё сущее' },
+  // Мутация
+  basilisk:    { id: 'basilisk',    name: 'Василиск',      color: '#6B8E3D', glow: 'rgba(107,142,61,0.4)',  desc: 'Взгляд, обращающий в камень' },
+  wyvern:      { id: 'wyvern',      name: 'Виверна',       color: '#B84A4A', glow: 'rgba(184,74,74,0.4)',   desc: 'Крылатый хищник бурь' },
+  leviathan:   { id: 'leviathan',   name: 'Левиафан',      color: '#1A3A5A', glow: 'rgba(26,58,90,0.5)',    desc: 'Древний повелитель глубин' },
+  // Поглощение
+  voidRift:    { id: 'voidRift',    name: 'Провал Пустоты', color: '#2A0A40', glow: 'rgba(42,10,64,0.5)',   desc: 'Разрыв между тьмой и бездной' },
+  blackHole:   { id: 'blackHole',   name: 'Чёрная Дыра',   color: '#000000', glow: 'rgba(80,0,120,0.6)',    desc: 'Точка, где гаснет свет' },
+  singularity: { id: 'singularity', name: 'Сингулярность', color: '#FFFFFF', glow: 'rgba(255,255,255,0.7)', desc: 'Бесконечность в точке' },
+  // Иллюзия
+  illusion:    { id: 'illusion',    name: 'Иллюзия',       color: '#D8A0E8', glow: 'rgba(216,160,232,0.4)', desc: 'Образ без сущности' },
+  trickster:   { id: 'trickster',   name: 'Плут',          color: '#E85A9C', glow: 'rgba(232,90,156,0.4)',  desc: 'Дух обмана и переменчивости' },
+  nemesis:     { id: 'nemesis',     name: 'Немезида',      color: '#8B0030', glow: 'rgba(139,0,48,0.5)',    desc: 'Неотвратимое возмездие' },
+  // Время
+  timepiece:   { id: 'timepiece',   name: 'Часовой Механизм', color: '#B8965A', glow: 'rgba(184,150,90,0.4)', desc: 'Устройство, пленившее время' },
+  chronomancer:{ id: 'chronomancer',name: 'Хрономант',     color: '#5A8FB8', glow: 'rgba(90,143,184,0.4)',  desc: 'Повелевающий течением времени' },
+  paradox:     { id: 'paradox',     name: 'Парадокс',      color: '#7A3FA0', glow: 'rgba(122,63,160,0.5)',  desc: 'Момент, противоречащий себе' },
+  // Разложение
+  spore:       { id: 'spore',       name: 'Спора',         color: '#9ACD5A', glow: 'rgba(154,205,90,0.4)',  desc: 'Семя грядущего заражения' },
+  plague:      { id: 'plague',      name: 'Мор',           color: '#5A6B3A', glow: 'rgba(90,107,58,0.5)',   desc: 'Болезнь, пожирающая земли' },
+  parasite:    { id: 'parasite',    name: 'Паразит',       color: '#7A4A5A', glow: 'rgba(122,74,90,0.4)',   desc: 'Жизнь за счёт чужой жизни' },
 };
 
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
@@ -192,6 +212,11 @@ export const ELEMENT_CATS = {
   aurumPotabile:'legendary', elixirVitae:'alchemy', panacea:'legendary', ambrosia:'alchemy',
   macrocosm:'cosmos', hermeticSeal:'artifact',
   animaMundi:'legendary',
+  basilisk:'magic', wyvern:'magic', leviathan:'magic',
+  voidRift:'cosmos', blackHole:'cosmos', singularity:'cosmos',
+  illusion:'magic', trickster:'magic', nemesis:'magic',
+  timepiece:'artifact', chronomancer:'magic', paradox:'magic',
+  spore:'nature', plague:'nature', parasite:'nature',
 };
 
 export const RECIPES = [
@@ -461,6 +486,26 @@ export const RECIPES = [
     { id: 'alkahest', a: 1 }, { id: 'ambrosia', a: 1 },
     { id: 'hermeticSeal', a: 1 }, { id: 'azoth', a: 1 },
   ], output: 'animaMundi' },
+  // Мутация
+  { inputs: [{ id: 'chimera', a: 1 }, { id: 'poison', a: 1 }], output: 'basilisk' },
+  { inputs: [{ id: 'chimera', a: 1 }, { id: 'storm', a: 1 }], output: 'wyvern' },
+  { inputs: [{ id: 'basilisk', a: 1 }, { id: 'wyvern', a: 1 }], output: 'leviathan' },
+  // Поглощение
+  { inputs: [{ id: 'eclipse', a: 1 }, { id: 'abyss', a: 1 }], output: 'voidRift' },
+  { inputs: [{ id: 'voidRift', a: 1 }, { id: 'star', a: 1 }], output: 'blackHole' },
+  { inputs: [{ id: 'blackHole', a: 1 }, { id: 'galaxy', a: 1 }], output: 'singularity' },
+  // Иллюзия
+  { inputs: [{ id: 'siren', a: 1 }, { id: 'mirror', a: 1 }], output: 'illusion' },
+  { inputs: [{ id: 'illusion', a: 1 }, { id: 'fairy', a: 1 }], output: 'trickster' },
+  { inputs: [{ id: 'trickster', a: 1 }, { id: 'curse', a: 1 }], output: 'nemesis' },
+  // Время
+  { inputs: [{ id: 'key', a: 1 }, { id: 'clockwork', a: 1 }], output: 'timepiece' },
+  { inputs: [{ id: 'timepiece', a: 1 }, { id: 'rune', a: 1 }], output: 'chronomancer' },
+  { inputs: [{ id: 'chronomancer', a: 1 }, { id: 'rift', a: 1 }], output: 'paradox' },
+  // Разложение
+  { inputs: [{ id: 'mushroom', a: 1 }, { id: 'poison', a: 1 }], output: 'spore' },
+  { inputs: [{ id: 'spore', a: 1 }, { id: 'swamp', a: 1 }], output: 'plague' },
+  { inputs: [{ id: 'plague', a: 1 }, { id: 'life', a: 1 }], output: 'parasite' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -492,6 +537,11 @@ export const ACHIEVEMENTS = [
   { id: 'homunculus',  name: '🧬 Гомункул',             desc: 'Создать искусственную жизнь',                       check: s => s.discovered.has('homunculus') },
   { id: 'adept',       name: '🧙 Адепт',                desc: 'Достичь совершенного посвящения',                   check: s => s.discovered.has('adept') },
   { id: 'ambrosia',    name: '🍯 Амброзия',             desc: 'Создать пищу богов',                                check: s => s.discovered.has('ambrosia') },
+  { id: 'leviathan',   name: '🐋 Левиафан',              desc: 'Создать повелителя глубин',                          check: s => s.discovered.has('leviathan') },
+  { id: 'singularity', name: '🕳 Сингулярность',         desc: 'Достичь точки бесконечности',                        check: s => s.discovered.has('singularity') },
+  { id: 'nemesis',     name: '⚔️ Немезида',              desc: 'Пробудить неотвратимое возмездие',                   check: s => s.discovered.has('nemesis') },
+  { id: 'paradox',     name: '⏳ Парадокс',               desc: 'Создать момент, противоречащий себе',                check: s => s.discovered.has('paradox') },
+  { id: 'parasite',    name: '🦠 Паразит',               desc: 'Вырастить жизнь на чужой жизни',                     check: s => s.discovered.has('parasite') },
   { id: 'macrocosm',   name: '🌌 Макрокосм',            desc: 'Постичь вселенную как тело',                        check: s => s.discovered.has('macrocosm') },
   { id: 'animaMundi',  name: '🌍 Мировая Душа',         desc: 'Достичь истинного завершения Делания',               check: s => s.discovered.has('animaMundi') },
 ];

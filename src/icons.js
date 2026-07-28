@@ -191,6 +191,26 @@ export const GLYPH_PATHS = {
   macrocosmSym:  { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,5 A5,5 0 1,1 10,15 A5,5 0 1,1 10,5 M10,10 a1.5,1.5 0 1,1 3,0', useShapeFill: true, round: true },
   hermeticSym:   { d: 'M4,4 L16,4 L16,16 L4,16 Z M10,6 A4,4 0 1,1 10,14 A4,4 0 1,1 10,6', useShapeFill: true, round: true },
   animaMundiSym: { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,5 A5,5 0 1,1 10,15 A5,5 0 1,1 10,5 M10,10 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0 M10,0 L10,2 M10,18 L10,20 M2,10 L0,10 M18,10 L20,10', useShapeFill: true, round: true },
+  // Мутация
+  basiliskSym:   { d: 'M3,16 C6,4 14,4 17,16 C13,18 7,18 3,16 Z M11,8 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0', useShapeFill: true, round: true },
+  wyvernSym:     { d: 'M2,16 L6,4 L10,10 L14,4 L18,16 L14,10 L10,14 L6,10 Z', useShapeFill: true, round: true },
+  leviathanSym:  { d: 'M2,12 C6,6 14,6 18,12 C14,16 6,16 2,12 Z M18,12 L20,10 M18,12 L20,14', useShapeFill: true, round: true },
+  // Поглощение
+  voidRiftSym:   { d: 'M5,3 L9,9 L7,12 L11,14 L8,19 M15,4 L12,9 L14,12 L11,14 L13,18', useShapeFill: true, round: true },
+  blackHoleSym:  { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,6 A4,4 0 1,0 10,14 A4,4 0 1,0 10,6', useShapeFill: true, round: true },
+  singularitySym:{ d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M10,10 L10,2 M10,10 L10,18 M10,10 L2,10 M10,10 L18,10 M10,10 L5,5 M10,10 L15,15 M10,10 L15,5 M10,10 L5,15 M10,10 a1.5,1.5 0 1,1 3,0', useShapeFill: true, round: true },
+  // Иллюзия
+  illusionSym:   { d: 'M4,10 C4,4 16,4 16,10 C16,16 4,16 4,10 Z M7,8 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M11,11 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M8,13 L12,13', useShapeFill: true, round: true },
+  tricksterSym:  { d: 'M10,3 L16,8 L14,14 L10,17 L6,14 L4,8 Z M7,9 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,9 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M8,12 L12,12', useShapeFill: true, round: true },
+  nemesisSym:    { d: 'M10,4 L10,7 M3,7 L17,7 M3,7 L7,16 M17,7 L13,16 M7,16 L13,16', useShapeFill: true, round: true },
+  // Время
+  timepieceSym:  { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M10,10 L10,6 M10,10 L14,10 M10,10 a1,1 0 1,1 2,0', useShapeFill: true, round: true },
+  chronomancerSym:{ d: 'M7,3 L13,3 L10,9 L13,17 L7,17 Z M6,3 L14,3 L10,10 L14,17 L6,17 Z', useShapeFill: true, round: true },
+  paradoxSym:    { d: 'M6,10 C6,3 14,3 14,10 C14,17 6,17 6,10 M10,5 C10,8 10,8 10,15', useShapeFill: true, round: true },
+  // Разложение
+  sporeSym:      { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M8,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M7,13 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M13,8 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0', useShapeFill: true, round: true },
+  plagueSym:     { d: 'M10,4 L12,9 L17,9 L13,12 L14,17 L10,14 L6,17 L7,12 L3,9 L8,9 Z', useShapeFill: true, round: true },
+  parasiteSym:   { d: 'M4,8 C4,2 16,2 16,8 C16,14 10,16 10,16 C10,16 4,14 4,8 Z M8,7 a0.8,0.8 0 1,0 1.6,0 M13,5 L15,3', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -351,6 +371,26 @@ export const ICON_DESIGNS = {
   hermeticSeal: { shape: 'hexagon', glyph: 'hermeticSym',    rot: 0 },
   // Финал
   animaMundi:   { shape: 'star',    glyph: 'animaMundiSym',  rot: 0, glow: 0.15 },
+  // Мутация
+  basilisk:     { shape: 'diamond', glyph: 'basiliskSym',    rot: 0 },
+  wyvern:       { shape: 'diamond', glyph: 'wyvernSym',      rot: 0 },
+  leviathan:    { shape: 'diamond', glyph: 'leviathanSym',  rot: 0 },
+  // Поглощение
+  voidRift:     { shape: 'star',    glyph: 'voidRiftSym',    rot: 0 },
+  blackHole:    { shape: 'circle',  glyph: 'blackHoleSym',   rot: 0 },
+  singularity:  { shape: 'star',    glyph: 'singularitySym', rot: 0, glow: 0.1 },
+  // Иллюзия
+  illusion:     { shape: 'hexagon', glyph: 'illusionSym',    rot: 0 },
+  trickster:    { shape: 'hexagon', glyph: 'tricksterSym',   rot: 0 },
+  nemesis:      { shape: 'star',    glyph: 'nemesisSym',     rot: 0 },
+  // Время
+  timepiece:    { shape: 'hexagon', glyph: 'timepieceSym',   rot: 0 },
+  chronomancer: { shape: 'star',    glyph: 'chronomancerSym',rot: 0 },
+  paradox:      { shape: 'star',    glyph: 'paradoxSym',     rot: 0 },
+  // Разложение
+  spore:        { shape: 'circle',  glyph: 'sporeSym',       rot: 0 },
+  plague:       { shape: 'diamond', glyph: 'plagueSym',      rot: 0 },
+  parasite:     { shape: 'diamond', glyph: 'parasiteSym',    rot: 0 },
 };
 
 export const TIER = (() => {
