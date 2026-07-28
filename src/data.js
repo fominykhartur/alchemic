@@ -389,3 +389,35 @@ export function recipeKey(recipe) {
 export const SAVE_KEY = 'alchemic_save_v1';
 export const TREE_MAX_DEPTH = 3;
 export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'magic', 'cosmos', 'alchemy', 'legendary'];
+
+export const ELEMENT_DEPTHS = (() => {
+  const depths = {};
+  STARTER_IDS.forEach(id => depths[id] = 0);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const r of RECIPES) {
+      if (!r.inputs.every(i => depths[i.id] !== undefined)) continue;
+      const d = Math.max(...r.inputs.map(i => depths[i.id])) + 1;
+      if (depths[r.output] === undefined || depths[r.output] > d) {
+        depths[r.output] = d;
+        changed = true;
+      }
+    }
+  }
+  return depths;
+})();
+
+export const MAX_DEPTH = Math.max(0, ...Object.values(ELEMENT_DEPTHS).filter(d => d !== undefined));
+
+export const DEPTH_GROUPS = (() => {
+  const groups = {};
+  for (const id of ELEMENT_IDS) {
+    const d = ELEMENT_DEPTHS[id];
+    if (d !== undefined) {
+      if (!groups[d]) groups[d] = [];
+      groups[d].push(id);
+    }
+  }
+  return groups;
+})();

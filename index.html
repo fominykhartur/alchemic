@@ -16,6 +16,7 @@
       | <a href="#" onclick="openAchievements();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Достижения">🏆 <span id="ach-count">0</span></a>
       | <a href="#" onclick="resetGame();return false" style="color:#ff6b6b;text-decoration:none;font-size:12px" title="Сбросить прогресс">⟳ Сброс</a>
       | <a href="#" onclick="openStats();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Статистика">📊</a>
+      | <a href="#" onclick="openCraftRoadmap();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Полное древо">🗺</a>
     </div>
   </div>
 
@@ -96,6 +97,20 @@
       <span class="modal-close" onclick="closeTree()">&times;</span>
     </div>
     <div class="modal-body" id="tree-content"></div>
+  </div>
+</div>
+
+<div id="roadmap-modal" class="modal-overlay" style="display:none" onclick="closeCraftRoadmap(event)">
+  <div class="modal-box roadmap-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>🗺 Полное древо крафта</span>
+      <label class="roadmap-spoiler-toggle" title="Показать неоткрытые элементы">
+        <input type="checkbox" id="roadmap-spoiler">
+        <span>Показать всё</span>
+      </label>
+      <span class="modal-close" onclick="closeCraftRoadmap()">&times;</span>
+    </div>
+    <div class="modal-body" id="roadmap-content"></div>
   </div>
 </div>
 

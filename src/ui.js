@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH } from './data.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
 import { playDrop, playAchievement } from './audio.js';
@@ -519,4 +519,96 @@ export function openStats() {
 export function closeStats(e) {
   if (e && e.target !== e.currentTarget) return;
   document.getElementById('stats-modal').style.display = 'none';
+}
+
+// ─── Craft Roadmap ───
+function createRoadmapCard(id) {
+  const el = ELEMENTS[id];
+  if (!el) return null;
+  const discovered = state.discovered.has(id);
+  const cat = ELEMENT_CATS[id];
+  const catColor = CATEGORIES[cat]?.color || '#888';
+  const recipesFor = RECIPES.filter(r => r.output === id && state.foundRecipes.has(recipeKey(r)));
+  const parents = recipesFor.length > 0 ? recipesFor[0].inputs.map(i => i.id) : [];
+
+  const card = document.createElement('div');
+  card.className = 'roadmap-card' + (discovered ? '' : ' roadmap-undiscovered');
+
+  if (discovered) {
+    card.style.borderColor = catColor;
+    card.innerHTML = `${buildIconSVG(id, 20)}<span class="roadmap-name">${el.name}</span>`;
+    if (parents.length > 0) {
+      const parentDots = document.createElement('div');
+      parentDots.className = 'roadmap-parents';
+      parents.forEach(pid => {
+        const pel = ELEMENTS[pid];
+        if (!pel) return;
+        const dot = document.createElement('span');
+        dot.className = 'roadmap-parent-dot';
+        dot.style.background = pel.color;
+        dot.title = pel.name;
+        parentDots.appendChild(dot);
+      });
+      card.appendChild(parentDots);
+    }
+    card.addEventListener('click', () => openTree(id));
+  } else {
+    card.innerHTML = `<div class="roadmap-unknown">?</div><span class="roadmap-name">???</span>`;
+  }
+
+  return card;
+}
+
+function renderCraftRoadmap() {
+  const content = document.getElementById('roadmap-content');
+  content.innerHTML = '';
+  const showAll = document.getElementById('roadmap-spoiler').checked;
+
+  for (let d = 0; d <= MAX_DEPTH; d++) {
+    const ids = DEPTH_GROUPS[d];
+    if (!ids || ids.length === 0) continue;
+
+    const toShow = showAll ? ids : ids.filter(id => state.discovered.has(id));
+    if (toShow.length === 0) continue;
+
+    const row = document.createElement('div');
+    row.className = 'roadmap-row';
+
+    const label = document.createElement('div');
+    label.className = 'roadmap-depth-label';
+    label.textContent = `${d}`;
+    const labelHint = document.createElement('div');
+    labelHint.className = 'roadmap-depth-hint';
+    labelHint.textContent = showAll ? `${ids.length} эл.` : `${toShow.length}/${ids.length}`;
+    label.appendChild(labelHint);
+    row.appendChild(label);
+
+    const cards = document.createElement('div');
+    cards.className = 'roadmap-cards';
+    toShow.forEach(id => {
+      const card = createRoadmapCard(id);
+      if (card) cards.appendChild(card);
+    });
+
+    if (cards.children.length > 0) {
+      row.appendChild(cards);
+      content.appendChild(row);
+    }
+  }
+
+}
+
+export function openCraftRoadmap() {
+  const modal = document.getElementById('roadmap-modal');
+  const content = document.getElementById('roadmap-content');
+  content.innerHTML = '';
+  const checkbox = document.getElementById('roadmap-spoiler');
+  checkbox.onchange = renderCraftRoadmap;
+  renderCraftRoadmap();
+  modal.style.display = '';
+}
+
+export function closeCraftRoadmap(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('roadmap-modal').style.display = 'none';
 }

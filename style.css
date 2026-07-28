@@ -500,3 +500,115 @@ body {
   80%  { border-color: #00ff80; box-shadow: 0 0 8px #00ff8044; }
   100% { border-color: #ff0040; box-shadow: 0 0 8px #ff004044; }
 }
+
+/* ─── Craft Roadmap ─── */
+.roadmap-box {
+  max-width: 700px !important;
+  max-height: 85vh !important;
+}
+.roadmap-spoiler-toggle {
+  font-size: 11px;
+  color: #8888aa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+}
+.roadmap-spoiler-toggle input {
+  accent-color: #ffd700;
+  cursor: pointer;
+}
+#roadmap-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 4px;
+  overflow-y: auto;
+  max-height: calc(85vh - 60px);
+}
+.roadmap-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.roadmap-depth-label {
+  min-width: 36px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffd70088;
+  padding-top: 6px;
+  flex-shrink: 0;
+}
+.roadmap-depth-hint {
+  font-size: 8px;
+  font-weight: normal;
+  color: #555;
+}
+.roadmap-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1;
+}
+.roadmap-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #0d0d20;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 44px;
+  position: relative;
+}
+.roadmap-card:hover {
+  transform: scale(1.08);
+  z-index: 10;
+  border-color: #ffd70088 !important;
+  box-shadow: 0 0 10px rgba(255,215,0,0.25);
+}
+.roadmap-card .roadmap-name {
+  font-size: 7px;
+  color: #ccc;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.roadmap-undiscovered {
+  opacity: 0.35;
+  cursor: default;
+  border-style: dashed;
+}
+.roadmap-undiscovered:hover {
+  transform: none;
+  border-color: #333 !important;
+  box-shadow: none;
+}
+.roadmap-unknown {
+  font-size: 16px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+.roadmap-parents {
+  display: flex;
+  gap: 2px;
+  margin-top: 1px;
+}
+.roadmap-parent-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  display: inline-block;
+}

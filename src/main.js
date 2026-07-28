@@ -1,6 +1,6 @@
 import { state, loadGame, resetGame } from './state.js';
 import { resizeCanvas, gameLoop } from './canvas.js';
-import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats } from './ui.js';
+import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap } from './ui.js';
 import { setupEventListeners } from './events.js';
 
 // Expose to window for onclick="" attributes in HTML
@@ -13,6 +13,8 @@ window.closeQtyPopup = closeQtyPopup;
 window.resetGame = resetGame;
 window.openStats = openStats;
 window.closeStats = closeStats;
+window.openCraftRoadmap = openCraftRoadmap;
+window.closeCraftRoadmap = closeCraftRoadmap;
 
 function init() {
   resizeCanvas();
