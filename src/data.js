@@ -207,8 +207,40 @@ export const ELEMENTS = {
   oneirograph:     { id: 'oneirograph',      name: 'Онейрограф',         color: '#6A4A9A', glow: 'rgba(106,74,154,0.5)', desc: 'Машина, что печатает чужие сны' },
   deathlessWarden: { id: 'deathlessWarden',  name: 'Бессмертный Страж',  color: '#2A4A3A', glow: 'rgba(42,74,58,0.5)',   desc: 'Часовой леса, вернувшийся из-за грани смерти' },
   apocalypse:      { id: 'apocalypse',       name: 'Апокалипсис',        color: '#8A0A0A', glow: 'rgba(138,10,10,0.7)', desc: 'Конец, к которому вело всё вне Делания' },
+  // Врата — Дух и Материя (через Философский Камень)
+  spirit:    { id: 'spirit',    name: 'Дух',          color: '#D8C8FF', glow: 'rgba(216,200,255,0.5)', infinite: true, gate: 'philosophersStone', desc: 'То, что остаётся, когда форма снята' },
+  matter:    { id: 'matter',    name: 'Материя',      color: '#8A7A6A', glow: 'rgba(138,122,106,0.4)', infinite: true, gate: 'philosophersStone', desc: 'То, что заполняет форму' },
+  // Врата — Время и Пространство (через Anima Mundi)
+  time:      { id: 'time',      name: 'Время',        color: '#B8965A', glow: 'rgba(184,150,90,0.5)',  infinite: true, gate: 'animaMundi',      desc: 'Течение, ставшее ощутимым' },
+  space:     { id: 'space',     name: 'Пространство', color: '#2A1A4A', glow: 'rgba(42,26,74,0.5)',    infinite: true, gate: 'animaMundi',      desc: 'Промежуток между всем сущим' },
+  // Врата — Хаос и Энтропия (через Апокалипсис)
+  chaos:     { id: 'chaos',     name: 'Хаос',         color: '#8A1A5A', glow: 'rgba(138,26,90,0.5)',   infinite: true, gate: 'apocalypse',      desc: 'То, что было до всякого порядка' },
+  entropy:   { id: 'entropy',   name: 'Энтропия',     color: '#4A4A3A', glow: 'rgba(74,74,58,0.5)',    infinite: true, gate: 'apocalypse',      desc: 'Медленное возвращение всего в ничто' },
+  // Дух — ветка
+  possession:{ id: 'possession',name: 'Одержимость',    color: '#9A4ABA', glow: 'rgba(154,74,186,0.4)', desc: 'Чужой дух в чужом теле' },
+  spellbound:{ id: 'spellbound',name: 'Очарование',     color: '#C86AF0', glow: 'rgba(200,106,240,0.4)',desc: 'Воля, переплетённая с волшебством' },
+  exorcism:  { id: 'exorcism',  name: 'Экзорцизм',      color: '#F0E68C', glow: 'rgba(240,230,140,0.4)',desc: 'Изгнание, возвращающее порядок' },
+  // Материя — ветка
+  mass:      { id: 'mass',      name: 'Масса',          color: '#6A5A4A', glow: 'rgba(106,90,74,0.4)',  desc: 'Материя, осознавшая свою тяжесть' },
+  density:   { id: 'density',   name: 'Плотность',      color: '#5A4A3A', glow: 'rgba(90,74,58,0.4)',   desc: 'Масса, стремящаяся к точке' },
+  compression:{id: 'compression',name: 'Компрессия',    color: '#3A3A2A', glow: 'rgba(58,58,42,0.4)',   desc: 'Давление, рождающее структуру' },
+  // Время — ветка
+  chronosphere:{id: 'chronosphere',name: 'Хроносфера', color: '#C8A85A', glow: 'rgba(200,168,90,0.4)',  desc: 'Пузырь, где время течёт иначе' },
+  eternalLoop:{id: 'eternalLoop',name: 'Вечная Петля', color: '#8A6A2A', glow: 'rgba(138,106,42,0.4)',  desc: 'Момент, запертый в кольце' },
+  temporalRift:{id: 'temporalRift',name: 'Временной Разлом',color: '#4A2A0A', glow: 'rgba(74,42,10,0.4)', desc: 'Трещина, сквозь которую видно всё сразу' },
+  // Пространство — ветка
+  vacuum:    { id: 'vacuum',    name: 'Вакуум',        color: '#1A0A2A', glow: 'rgba(26,10,42,0.4)',   desc: 'Пространство, очищенное от всего' },
+  nebula:    { id: 'nebula',    name: 'Туманность',    color: '#7A4A9A', glow: 'rgba(122,74,154,0.4)',  desc: 'Звёздная колыбель из газа и пыли' },
+  multiverse:{ id: 'multiverse',name: 'Мультивселенная',color: '#2A0A4A', glow: 'rgba(42,10,74,0.5)',   desc: 'Бесконечность, помноженная на себя' },
+  // Хаос — ветка
+  maelchaos: { id: 'maelchaos', name: 'Мальхаос',       color: '#8A2A4A', glow: 'rgba(138,42,74,0.4)',  desc: 'Воронка из неупорядоченной энергии' },
+  anarchy:   { id: 'anarchy',   name: 'Анархия',        color: '#6A1A3A', glow: 'rgba(106,26,58,0.4)',  desc: 'Порядок, утративший власть' },
+  primordialStorm:{id: 'primordialStorm',name: 'Первозданная Буря',color: '#4A0A2A', glow: 'rgba(74,10,42,0.5)', desc: 'Шторм, бывший до всякого творения' },
+  // Энтропия — ветка
+  decay:     { id: 'decay',     name: 'Распад',        color: '#6A5A3A', glow: 'rgba(106,90,58,0.4)',   desc: 'Тихий демонтаж всего сущего' },
+  ruin:      { id: 'ruin',      name: 'Руины',         color: '#4A3A2A', glow: 'rgba(74,58,42,0.4)',   desc: 'То, что осталось после распада' },
+  heatDeath: { id: 'heatDeath', name: 'Тепловая Смерть',color: '#2A2A2A', glow: 'rgba(42,42,42,0.5)',   desc: 'Последнее равновесие — покой без энергии' },
 };
-
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
 
@@ -277,7 +309,23 @@ export const ELEMENT_CATS = {
   grimoire:'artifact', necronomicon:'artifact', lich:'magic',
   abyssalSovereign:'magic', eternalBlight:'nature', choirOfSorrow:'magic', cosmicMonarch:'cosmos',
   fatebreaker:'magic', virulentSwarm:'nature', oneirograph:'artifact', deathlessWarden:'magic', apocalypse:'legendary',
+  spirit:'starter', matter:'starter', time:'starter', space:'starter', chaos:'starter', entropy:'starter',
+  possession:'magic', spellbound:'magic', exorcism:'magic',
+  mass:'nature', density:'nature', compression:'nature',
+  chronosphere:'magic', eternalLoop:'magic', temporalRift:'magic',
+  vacuum:'cosmos', nebula:'cosmos', multiverse:'cosmos',
+  maelchaos:'cosmos', anarchy:'magic', primordialStorm:'nature',
+  decay:'nature', ruin:'nature', heatDeath:'cosmos',
 };
+
+export const UNLOCKABLE_STARTERS = [
+  { id: 'spirit',  unlockedBy: 'philosophersStone' },
+  { id: 'matter',  unlockedBy: 'philosophersStone' },
+  { id: 'time',    unlockedBy: 'animaMundi' },
+  { id: 'space',   unlockedBy: 'animaMundi' },
+  { id: 'chaos',   unlockedBy: 'apocalypse' },
+  { id: 'entropy', unlockedBy: 'apocalypse' },
+];
 
 export const RECIPES = [
   { inputs: [{ id: 'fire', a: 1 }, { id: 'water', a: 1 }], output: 'steam' },
@@ -614,6 +662,30 @@ export const RECIPES = [
   { inputs: [{ id: 'somnium', a: 1 }, { id: 'engine', a: 1 }], output: 'oneirograph' },
   { inputs: [{ id: 'sentinel', a: 1 }, { id: 'revenant', a: 1 }], output: 'deathlessWarden' },
   { inputs: [{ id: 'cataclysm', a: 1 }, { id: 'abyssalSovereign', a: 1 }], output: 'apocalypse' },
+  // Дух
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'ghost', a: 1 }],      output: 'possession' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'wand', a: 1 }],       output: 'spellbound' },
+  { inputs: [{ id: 'possession', a: 1 }, { id: 'spellbound', a: 1 }], output: 'exorcism' },
+  // Материя
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'stone', a: 1 }],      output: 'mass' },
+  { inputs: [{ id: 'mass', a: 1 }, { id: 'gold', a: 1 }],         output: 'density' },
+  { inputs: [{ id: 'density', a: 1 }, { id: 'crystal', a: 1 }],   output: 'compression' },
+  // Время
+  { inputs: [{ id: 'time', a: 1 }, { id: 'clockwork', a: 1 }],    output: 'chronosphere' },
+  { inputs: [{ id: 'chronosphere', a: 1 }, { id: 'moon', a: 1 }], output: 'eternalLoop' },
+  { inputs: [{ id: 'eternalLoop', a: 1 }, { id: 'paradox', a: 1 }], output: 'temporalRift' },
+  // Пространство
+  { inputs: [{ id: 'space', a: 1 }, { id: 'void', a: 1 }],        output: 'vacuum' },
+  { inputs: [{ id: 'vacuum', a: 1 }, { id: 'star', a: 1 }],       output: 'nebula' },
+  { inputs: [{ id: 'nebula', a: 1 }, { id: 'galaxy', a: 1 }],     output: 'multiverse' },
+  // Хаос
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'storm', a: 1 }],       output: 'maelchaos' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'curse', a: 1 }],       output: 'anarchy' },
+  { inputs: [{ id: 'maelchaos', a: 1 }, { id: 'anarchy', a: 1 }], output: 'primordialStorm' },
+  // Энтропия
+  { inputs: [{ id: 'entropy', a: 1 }, { id: 'rust', a: 1 }],      output: 'decay' },
+  { inputs: [{ id: 'decay', a: 1 }, { id: 'dust', a: 1 }],        output: 'ruin' },
+  { inputs: [{ id: 'ruin', a: 1 }, { id: 'ash', a: 1 }],          output: 'heatDeath' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -667,6 +739,9 @@ export const ACHIEVEMENTS = [
   { id: 'choirOfSorrow',   name: '📖 Хор Скорби',       desc: 'Вписать крик Банши в книгу мёртвых',                  check: s => s.discovered.has('choirOfSorrow') },
   { id: 'cosmicMonarch',   name: '👑 Космический Монарх', desc: 'Короновать точку бесконечности',                      check: s => s.discovered.has('cosmicMonarch') },
   { id: 'apocalypse',      name: '☄️ Апокалипсис',       desc: 'Достичь конца, не пройдя Делания',                      check: s => s.discovered.has('apocalypse') },
+  { id: 'gateStone', name: '✨ Второе Начало',    desc: 'Открыть Дух и Материю через Философский Камень',                      check: s => s.discovered.has('spirit') && s.discovered.has('matter') },
+  { id: 'gateAnima', name: '🕰 Ткань Мира',       desc: 'Открыть Время и Пространство',                             check: s => s.discovered.has('time') && s.discovered.has('space') },
+  { id: 'gateApoc',  name: '🌀 Изнанка Порядка',   desc: 'Открыть Хаос и Энтропию',                                  check: s => s.discovered.has('chaos') && s.discovered.has('entropy') },
 ];
 
 export function recipeKey(recipe) {

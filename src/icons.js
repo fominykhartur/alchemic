@@ -219,6 +219,13 @@ export const GLYPH_PATHS = {
   sovereignSym:  { d: 'M4,12 L6,3 L10,7 L14,3 L16,12 L16,15 L14,17 L10,14 L6,17 L4,15 Z', useShapeFill: true, round: true },
   oneirographSym:{ d: 'M10,3 a7,7 0 1,1 0,14 a7,7 0 1,1 0,-14 M7,2 L7,0 M13,2 L13,0 M7,18 L7,20 M13,18 L13,20 M2,7 L0,7 M2,13 L0,13 M18,7 L20,7 M18,13 L20,13 M10,8 a1.5,1.5 0 1,0 0,3 a1.5,1.5 0 1,0 0,-3', useShapeFill: true, round: true },
   apocalypseSym: { d: 'M8,3 L12,3 L12,8 L17,8 L17,12 L12,12 L12,17 L8,17 L8,12 L3,12 L3,8 L8,8 Z M10,0 L10,3 M10,17 L10,20 M0,10 L3,10 M17,10 L20,10 M5,3 L7,5 M15,3 L13,5 M5,17 L7,15 M15,17 L13,15 M3,5 L5,7 M17,5 L15,7 M3,15 L5,13 M17,15 L15,13', useShapeFill: true, round: true },
+  // Врата
+  spiritSym:    { d: 'M10,3 a3.5,3.5 0 1,1 7,0 a3.5,3.5 0 1,1 -7,0 M10,6 C8,10 5,12 4,16 M10,6 C12,10 15,12 16,16', useShapeFill: true, round: true },
+  matterSym:    { d: 'M10,2 L18,6 L10,10 L2,6 Z M2,6 L2,14 L10,18 L10,10 M18,6 L18,14 L10,18', useShapeFill: true, round: true },
+  timeSym:      { d: 'M6,3 L14,3 L10,10 L14,17 L6,17 L10,10 Z', useShapeFill: true, round: true },
+  spaceSym:     { d: 'M10,3 a7,7 0 1,1 0,14 a7,7 0 1,1 0,-14 M6,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M14,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,6 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 M7,12 a0.7,0.7 0 1,0 1.4,0', useShapeFill: true, round: true },
+  chaosSym:     { d: 'M10,2 L13,8 L19,5 L14,11 L19,16 L12,14 L10,19 L8,14 L1,16 L6,11 L1,5 L7,8 Z', useShapeFill: true, round: true },
+  entropySym:   { d: 'M10,3 C15,3 17,8 14,11 C11,14 6,12 7,9 C8,6 12,7 12,9 L12,16', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -447,6 +454,39 @@ export const ICON_DESIGNS = {
   oneirograph:     { shape: 'square',  glyph: 'oneirographSym',   rot: 0 },
   deathlessWarden: { shape: 'square',  glyph: 'tee',             rot: 0 },
   apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0 },
+  // Врата — Дух и Материя
+  spirit:      { shape: 'circle',  glyph: 'spiritSym',    rot: 0 },
+  matter:      { shape: 'square',  glyph: 'matterSym',    rot: 0 },
+  // Врата — Время и Пространство
+  time:        { shape: 'diamond', glyph: 'timeSym',      rot: 0 },
+  space:       { shape: 'circle',  glyph: 'spaceSym',     rot: 0 },
+  // Врата — Хаос и Энтропия
+  chaos:       { shape: 'triangle',glyph: 'chaosSym',     rot: 0 },
+  entropy:     { shape: 'diamond', glyph: 'entropySym',   rot: 0 },
+  // Дух — ветка
+  possession:  { shape: 'star',    glyph: 'ghostsym',     rot: 0 },
+  spellbound:  { shape: 'hexagon', glyph: 'runesym',      rot: 0 },
+  exorcism:    { shape: 'star',    glyph: 'cross',        rot: 0 },
+  // Материя — ветка
+  mass:        { shape: 'diamond', glyph: 'mountains',    rot: 0 },
+  density:     { shape: 'diamond', glyph: 'gemfacets',    rot: 0 },
+  compression: { shape: 'square',  glyph: 'engineSym',    rot: 0 },
+  // Время — ветка
+  chronosphere:{ shape: 'circle',  glyph: 'timepieceSym', rot: 0 },
+  eternalLoop: { shape: 'circle',  glyph: 'paradoxSym',   rot: 0 },
+  temporalRift:{ shape: 'star',    glyph: 'voidRiftSym',  rot: 0 },
+  // Пространство — ветка
+  vacuum:      { shape: 'circle',  glyph: 'voidsym',      rot: 0 },
+  nebula:      { shape: 'circle',  glyph: 'auroraSym',    rot: 0 },
+  multiverse:  { shape: 'star',    glyph: 'macrocosmSym', rot: 0 },
+  // Хаос — ветка
+  maelchaos:   { shape: 'triangle',glyph: 'cyclone',      rot: 0 },
+  anarchy:     { shape: 'star',    glyph: 'tricksterSym', rot: 0 },
+  primordialStorm:{ shape: 'hexagon',glyph: 'hurricanSym',rot: 0 },
+  // Энтропия — ветка
+  decay:       { shape: 'triangle',glyph: 'plagueSym',    rot: 0 },
+  ruin:        { shape: 'diamond', glyph: 'ember',        rot: 0 },
+  heatDeath:   { shape: 'circle',  glyph: 'blackHoleSym', rot: 0 },
 };
 
 export const TIER = (() => {

@@ -1,4 +1,4 @@
-import { ELEMENTS, STARTER_IDS, SAVE_KEY } from './data.js';
+import { ELEMENTS, STARTER_IDS, SAVE_KEY, UNLOCKABLE_STARTERS } from './data.js';
 
 export const state = {
   inventory: {},
@@ -48,6 +48,10 @@ export function loadGame() {
     const data = JSON.parse(raw);
     if (data.v !== 1) return false;
     (data.discovered || []).forEach(id => state.discovered.add(id));
+    // Восстановить стартеры за вратами, если врата открыты
+    UNLOCKABLE_STARTERS.forEach(s => {
+      if (state.discovered.has(s.unlockedBy)) state.discovered.add(s.id);
+    });
     (data.foundRecipes || []).forEach(r => state.foundRecipes.add(r));
     Object.entries(data.inventory || {}).forEach(([id, qty]) => {
       if (!ELEMENTS[id]?.starter) state.inventory[id] = qty;

@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey } from './data.js';
+import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from './data.js';
 import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
@@ -589,6 +589,14 @@ function finishMix() {
     state.discovered.add(outputId);
     state.inventory[outputId] = 3;
     log(`✦ Открыт новый элемент: ${output.name}!`, 'discovery');
+    // Открыть стартеры за вратами
+    UNLOCKABLE_STARTERS.forEach(s => {
+      if (outputId === s.unlockedBy && !state.discovered.has(s.id)) {
+        state.discovered.add(s.id);
+        state.inventory[s.id] = 9;
+        log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
+      }
+    });
   } else {
     state.inventory[outputId] = (state.inventory[outputId] || 0) + 3;
     log(`✓ Создан ${output.name}`, 'success');
@@ -626,6 +634,13 @@ function finishExplosion() {
     state.discovered.add(picked);
     state.inventory[picked] = 2;
     log(`✨ Из хаоса родилось: ${ELEMENTS[picked].name}!`, 'discovery');
+    UNLOCKABLE_STARTERS.forEach(s => {
+      if (picked === s.unlockedBy && !state.discovered.has(s.id)) {
+        state.discovered.add(s.id);
+        state.inventory[s.id] = 9;
+        log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
+      }
+    });
     state.stats.discoveryFromExplosion++;
     playDiscover();
     startDiscoveryAnimation(picked);
