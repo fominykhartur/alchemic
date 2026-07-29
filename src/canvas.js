@@ -239,6 +239,18 @@ function drawCauldronElements() {
     ctx.arc(x, y, glowR, 0, Math.PI * 2);
     ctx.fill();
 
+    // Enhanced outer glow for legendary elements
+    if (design?.glow) {
+      const legendR = 26;
+      const legendGrad = ctx.createRadialGradient(x, y, 0, x, y, legendR);
+      legendGrad.addColorStop(0, el.glow || 'rgba(255,215,0,0.15)');
+      legendGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = legendGrad;
+      ctx.beginPath();
+      ctx.arc(x, y, legendR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     if (design?.shape) {
       const lighter = lightenColor(el.color, 40);
       const shapeGrad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, 0, x, y, r);

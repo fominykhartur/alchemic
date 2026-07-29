@@ -217,13 +217,13 @@ export const ELEMENTS = {
   chaos:     { id: 'chaos',     name: 'Хаос',         color: '#8A1A5A', glow: 'rgba(138,26,90,0.5)',   infinite: true, gate: 'apocalypse',      desc: 'То, что было до всякого порядка' },
   entropy:   { id: 'entropy',   name: 'Энтропия',     color: '#4A4A3A', glow: 'rgba(74,74,58,0.5)',    infinite: true, gate: 'apocalypse',      desc: 'Медленное возвращение всего в ничто' },
   // Дух — ветка
-  possession:{ id: 'possession',name: 'Одержимость',    color: '#9A4ABA', glow: 'rgba(154,74,186,0.4)', desc: 'Чужой дух в чужом теле' },
-  spellbound:{ id: 'spellbound',name: 'Очарование',     color: '#C86AF0', glow: 'rgba(200,106,240,0.4)',desc: 'Воля, переплетённая с волшебством' },
-  exorcism:  { id: 'exorcism',  name: 'Экзорцизм',      color: '#F0E68C', glow: 'rgba(240,230,140,0.4)',desc: 'Изгнание, возвращающее порядок' },
+  possession:{ id: 'possession',name: 'Одержимость',    color: '#8A5AA8', glow: 'rgba(138,90,168,0.4)',  desc: 'Дух, занявший чужое тело' },
+  spellbound:{ id: 'spellbound',name: 'Заворожение',    color: '#A85AC0', glow: 'rgba(168,90,192,0.4)',  desc: 'Воля, скованная чужим словом' },
+  exorcism:  { id: 'exorcism',  name: 'Экзорцизм',      color: '#FFE8A0', glow: 'rgba(255,232,160,0.5)', desc: 'Изгнание духа обратно за грань' },
   // Материя — ветка
-  mass:      { id: 'mass',      name: 'Масса',          color: '#6A5A4A', glow: 'rgba(106,90,74,0.4)',  desc: 'Материя, осознавшая свою тяжесть' },
-  density:   { id: 'density',   name: 'Плотность',      color: '#5A4A3A', glow: 'rgba(90,74,58,0.4)',   desc: 'Масса, стремящаяся к точке' },
-  compression:{id: 'compression',name: 'Компрессия',    color: '#3A3A2A', glow: 'rgba(58,58,42,0.4)',   desc: 'Давление, рождающее структуру' },
+  mass:      { id: 'mass',      name: 'Масса',          color: '#7A6A5A', glow: 'rgba(122,106,90,0.4)',   desc: 'Вес, который нельзя отменить' },
+  density:   { id: 'density',   name: 'Плотность',      color: '#B8A030', glow: 'rgba(184,160,48,0.4)',   desc: 'Материя, сжатая до предела возможного' },
+  compression:{id: 'compression',name: 'Сжатие',        color: '#D0D8E8', glow: 'rgba(208,216,232,0.5)',   desc: 'Предел, за которым материя меняет закон' },
   // Время — ветка
   chronosphere:{id: 'chronosphere',name: 'Хроносфера', color: '#C8A85A', glow: 'rgba(200,168,90,0.4)',  desc: 'Пузырь, где время течёт иначе' },
   eternalLoop:{id: 'eternalLoop',name: 'Вечная Петля', color: '#8A6A2A', glow: 'rgba(138,106,42,0.4)',  desc: 'Момент, запертый в кольце' },
@@ -240,6 +240,31 @@ export const ELEMENTS = {
   decay:     { id: 'decay',     name: 'Распад',        color: '#6A5A3A', glow: 'rgba(106,90,58,0.4)',   desc: 'Тихий демонтаж всего сущего' },
   ruin:      { id: 'ruin',      name: 'Руины',         color: '#4A3A2A', glow: 'rgba(74,58,42,0.4)',   desc: 'То, что осталось после распада' },
   heatDeath: { id: 'heatDeath', name: 'Тепловая Смерть',color: '#2A2A2A', glow: 'rgba(42,42,42,0.5)',   desc: 'Последнее равновесие — покой без энергии' },
+  // Ветка Духа
+  breath:        { id: 'breath',        name: 'Дыхание',             color: '#E0E8FF', glow: 'rgba(224,232,255,0.4)', desc: 'Первое движение духа в мире' },
+  astralForm:    { id: 'astralForm',    name: 'Астральная Форма',    color: '#C0A8FF', glow: 'rgba(192,168,255,0.5)', desc: 'Дух, обретший подобие тела' },
+  soulJar:       { id: 'soulJar',       name: 'Сосуд Души',          color: '#7A9AC8', glow: 'rgba(122,154,200,0.4)', desc: 'Плен для изгнанного духа' },
+  spiritGuide:   { id: 'spiritGuide',   name: 'Дух-Проводник',       color: '#B8E0FF', glow: 'rgba(184,224,255,0.5)', desc: 'Тот, кто ведёт между мирами' },
+  seance:        { id: 'seance',        name: 'Спиритический Сеанс', color: '#6A4A8A', glow: 'rgba(106,74,138,0.5)',  desc: 'Собрание живых ради разговора с мёртвыми' },
+  possessedArmor:{ id: 'possessedArmor',name: 'Одержимая Броня',     color: '#4A4A6A', glow: 'rgba(74,74,106,0.4)',  desc: 'Металл, помнящий чужую волю' },
+  wraithLord:    { id: 'wraithLord',    name: 'Владыка Мороков',     color: '#2A2A4A', glow: 'rgba(42,42,74,0.5)',   desc: 'Дух, что перестал желать возвращения' },
+  ancestralChorus:{id: 'ancestralChorus',name: 'Хор Предков',       color: '#D0C8FF', glow: 'rgba(208,200,255,0.5)', desc: 'Множество голосов, ведущих как один' },
+  spiritRealm:   { id: 'spiritRealm',   name: 'Мир Духов',           color: '#5A3A7A', glow: 'rgba(90,58,122,0.5)',  desc: 'Плоскость, где нет плоти' },
+  transcendence: { id: 'transcendence', name: 'Трансценденция',      color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'Дух, вышедший за пределы формы вовсе' },
+  // Ветка Материи
+  substance:     { id: 'substance',     name: 'Субстанция',          color: '#9A8A6A', glow: 'rgba(154,138,106,0.4)', desc: 'Материя, обретшая форму' },
+  bedrock:       { id: 'bedrock',       name: 'Коренная Порода',     color: '#5A4A3A', glow: 'rgba(90,74,58,0.4)',   desc: 'Материя, из которой всё остальное' },
+  monolith:      { id: 'monolith',      name: 'Монолит',             color: '#3A3A3A', glow: 'rgba(58,58,58,0.4)',   desc: 'Единая масса, не помнящая швов' },
+  golemCore:     { id: 'golemCore',     name: 'Ядро Голема',         color: '#8A7050', glow: 'rgba(138,112,80,0.4)', desc: 'Сердце, вытесанное из камня' },
+  ironWill:      { id: 'ironWill',      name: 'Железная Воля',       color: '#6A6A7A', glow: 'rgba(106,106,122,0.4)',desc: 'Материя, отказавшаяся ломаться' },
+  forgeHeart:    { id: 'forgeHeart',    name: 'Сердце Кузни',        color: '#FF5A2A', glow: 'rgba(255,90,42,0.5)',   desc: 'Огонь, вплавленный в металл навсегда' },
+  worldAnvil:    { id: 'worldAnvil',    name: 'Наковальня Мира',     color: '#4A3A2A', glow: 'rgba(74,58,42,0.5)',   desc: 'То, на чём куётся сама реальность' },
+  absoluteMass:  { id: 'absoluteMass',  name: 'Абсолютная Масса',    color: '#1A1A1A', glow: 'rgba(26,26,26,0.6)',   desc: 'Материя на грани коллапса в себя' },
+  titan:         { id: 'titan',         name: 'Титан',               color: '#8A6A3A', glow: 'rgba(138,106,58,0.5)', desc: 'Материя, вставшая и обретшая волю' },
+  primeMatter:   { id: 'primeMatter',   name: 'Прима Материя',       color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'То, из чего состоит всё до всякой формы' },
+  // Слияние
+  animatedFlesh: { id: 'animatedFlesh', name: 'Одушевлённая Плоть',  color: '#C89A8A', glow: 'rgba(200,154,138,0.4)', desc: 'Дух, впервые нашедший себе тело' },
+  greatBinding:  { id: 'greatBinding',  name: 'Великое Связывание',  color: '#FFD700', glow: 'rgba(255,215,0,0.7)',   desc: 'Дух и материя, более не различимые' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -316,6 +341,11 @@ export const ELEMENT_CATS = {
   vacuum:'cosmos', nebula:'cosmos', multiverse:'cosmos',
   maelchaos:'cosmos', anarchy:'magic', primordialStorm:'nature',
   decay:'nature', ruin:'nature', heatDeath:'cosmos',
+  breath:'magic', astralForm:'magic', soulJar:'artifact', spiritGuide:'magic', seance:'magic',
+  possessedArmor:'artifact', wraithLord:'magic', ancestralChorus:'magic', spiritRealm:'cosmos', transcendence:'magic',
+  substance:'nature', bedrock:'nature', monolith:'metal', golemCore:'artifact', ironWill:'metal',
+  forgeHeart:'metal', worldAnvil:'artifact', absoluteMass:'metal', titan:'magic', primeMatter:'cosmos',
+  animatedFlesh:'magic', greatBinding:'legendary',
 };
 
 export const UNLOCKABLE_STARTERS = [
@@ -665,11 +695,34 @@ export const RECIPES = [
   // Дух
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'ghost', a: 1 }],      output: 'possession' },
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'wand', a: 1 }],       output: 'spellbound' },
-  { inputs: [{ id: 'possession', a: 1 }, { id: 'spellbound', a: 1 }], output: 'exorcism' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'air', a: 1 }],        output: 'breath' },
+  { inputs: [{ id: 'spirit', a: 2 }], output: 'astralForm' },
+  { inputs: [{ id: 'possession', a: 1 }, { id: 'spellbound', a: 1 }, { id: 'light', a: 1 }], output: 'exorcism' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'amulet', a: 1 }],   output: 'soulJar' },
+  { inputs: [{ id: 'astralForm', a: 1 }, { id: 'breath', a: 1 }, { id: 'fairy', a: 1 }], output: 'spiritGuide' },
+  { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'mirror', a: 1 }, { id: 'scroll', a: 1 }], output: 'seance' },
+  { inputs: [{ id: 'possession', a: 1 }, { id: 'livingShield', a: 1 }, { id: 'metal', a: 1 }], output: 'possessedArmor' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'phantom', a: 1 }, { id: 'curse', a: 1 }], output: 'wraithLord' },
+  { inputs: [{ id: 'spiritGuide', a: 3 }], output: 'ancestralChorus' },
+  { inputs: [{ id: 'seance', a: 1 }, { id: 'wraithLord', a: 1 }], output: 'spiritRealm' },
+  { inputs: [{ id: 'spiritRealm', a: 1 }, { id: 'ancestralChorus', a: 1 }, { id: 'azoth', a: 1 }, { id: 'soulJar', a: 1 }], output: 'transcendence' },
   // Материя
   { inputs: [{ id: 'matter', a: 1 }, { id: 'stone', a: 1 }],      output: 'mass' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'earth', a: 1 }],      output: 'substance' },
   { inputs: [{ id: 'mass', a: 1 }, { id: 'gold', a: 1 }],         output: 'density' },
-  { inputs: [{ id: 'density', a: 1 }, { id: 'crystal', a: 1 }],   output: 'compression' },
+  { inputs: [{ id: 'matter', a: 2 }], output: 'bedrock' },
+  { inputs: [{ id: 'density', a: 1 }, { id: 'crystal', a: 1 }, { id: 'substance', a: 1 }], output: 'compression' },
+  { inputs: [{ id: 'bedrock', a: 1 }, { id: 'compression', a: 1 }], output: 'monolith' },
+  { inputs: [{ id: 'monolith', a: 1 }, { id: 'golem', a: 1 }, { id: 'rune', a: 1 }], output: 'golemCore' },
+  { inputs: [{ id: 'golemCore', a: 1 }, { id: 'iron', a: 1 }, { id: 'steel', a: 1 }], output: 'ironWill' },
+  { inputs: [{ id: 'ironWill', a: 1 }, { id: 'engine', a: 1 }, { id: 'ignition', a: 1 }], output: 'forgeHeart' },
+  { inputs: [{ id: 'monolith', a: 2 }, { id: 'worldTree', a: 1 }], output: 'worldAnvil' },
+  { inputs: [{ id: 'compression', a: 3 }], output: 'absoluteMass' },
+  { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'worldAnvil', a: 1 }], output: 'titan' },
+  { inputs: [{ id: 'titan', a: 1 }, { id: 'absoluteMass', a: 1 }, { id: 'matter', a: 2 }], output: 'primeMatter' },
+  // Слияние
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'matter', a: 1 }], output: 'animatedFlesh' },
+  { inputs: [{ id: 'transcendence', a: 1 }, { id: 'primeMatter', a: 1 }, { id: 'animatedFlesh', a: 1 }, { id: 'philosophersStone', a: 1 }], output: 'greatBinding' },
   // Время
   { inputs: [{ id: 'time', a: 1 }, { id: 'clockwork', a: 1 }],    output: 'chronosphere' },
   { inputs: [{ id: 'chronosphere', a: 1 }, { id: 'moon', a: 1 }], output: 'eternalLoop' },
@@ -742,6 +795,12 @@ export const ACHIEVEMENTS = [
   { id: 'gateStone', name: '✨ Второе Начало',    desc: 'Открыть Дух и Материю через Философский Камень',                      check: s => s.discovered.has('spirit') && s.discovered.has('matter') },
   { id: 'gateAnima', name: '🕰 Ткань Мира',       desc: 'Открыть Время и Пространство',                             check: s => s.discovered.has('time') && s.discovered.has('space') },
   { id: 'gateApoc',  name: '🌀 Изнанка Порядка',   desc: 'Открыть Хаос и Энтропию',                                  check: s => s.discovered.has('chaos') && s.discovered.has('entropy') },
+  { id: 'exorcism',      name: '✋ Экзорцизм',           desc: 'Изгнать дух обратно за грань',        check: s => s.discovered.has('exorcism') },
+  { id: 'wraithLord',    name: '👑 Владыка Мороков',     desc: 'Создать духа, не желающего возврата',  check: s => s.discovered.has('wraithLord') },
+  { id: 'transcendence', name: '🕊 Трансценденция',      desc: 'Вывести дух за пределы формы',         check: s => s.discovered.has('transcendence') },
+  { id: 'titan',         name: '🗿 Титан',                desc: 'Пробудить волю в материи',             check: s => s.discovered.has('titan') },
+  { id: 'primeMatter',   name: '⬜ Прима Материя',        desc: 'Достичь материи до всякой формы',      check: s => s.discovered.has('primeMatter') },
+  { id: 'greatBinding',  name: '🌟 Великое Связывание',  desc: 'Соединить дух и материю воедино',      check: s => s.discovered.has('greatBinding') },
 ];
 
 export function recipeKey(recipe) {

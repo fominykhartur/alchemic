@@ -226,6 +226,10 @@ export const GLYPH_PATHS = {
   spaceSym:     { d: 'M10,3 a7,7 0 1,1 0,14 a7,7 0 1,1 0,-14 M6,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M14,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,6 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 M7,12 a0.7,0.7 0 1,0 1.4,0', useShapeFill: true, round: true },
   chaosSym:     { d: 'M10,2 L13,8 L19,5 L14,11 L19,16 L12,14 L10,19 L8,14 L1,16 L6,11 L1,5 L7,8 Z', useShapeFill: true, round: true },
   entropySym:   { d: 'M10,3 C15,3 17,8 14,11 C11,14 6,12 7,9 C8,6 12,7 12,9 L12,16', useShapeFill: true, round: true },
+  // Ветка Духа и Материи
+  transcendenceSym:{ d: 'M10,1 L16,8 L13,8 L13,17 L7,17 L7,8 L4,8 Z', useShapeFill: true, round: true },
+  titanSym:        { d: 'M2,18 L5,10 L8,15 L12,3 L16,15 L18,18 Z M8,15 L12,3 L14,12 M5,10 L5,14', useShapeFill: true, round: true },
+  greatBindingSym: { d: 'M7,3 A6,6 0 1,1 7,15 A6,6 0 1,1 7,3 M13,5 A6,6 0 1,1 13,17 A6,6 0 1,1 13,5 M10,9 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -312,7 +316,7 @@ export const ICON_DESIGNS = {
   ghost:    { shape: 'star',     glyph: 'ghostsym',   rot: 0 },
   golem:    { shape: 'star',     glyph: 'golemsym',   rot: 0 },
   phoenix:  { shape: 'star',     glyph: 'phoenixGlyph',   rot: 0 },
-  chimera:  { shape: 'star',     glyph: 'chimerasym', rot: 0 },
+  chimera:  { shape: 'star',     glyph: 'chimerasym', rot: 0, glow: 0.18 },
   abyss:    { shape: 'star',     glyph: 'abysssym',   rot: 0 },
   rift:     { shape: 'star',     glyph: 'riftsym',    rot: 0 },
   mirage:   { shape: 'star',     glyph: 'miragesym',  rot: 0 },
@@ -377,9 +381,9 @@ export const ICON_DESIGNS = {
   homunculus:   { shape: 'star',    glyph: 'homunculusSym',  rot: 0 },
   adept:        { shape: 'star',    glyph: 'adeptSym',       rot: 0 },
   // Эликсиры
-  aurumPotabile:{ shape: 'diamond', glyph: 'aurumPotabileSym', rot: 0 },
+  aurumPotabile:{ shape: 'diamond', glyph: 'aurumPotabileSym', rot: 0, glow: 0.2 },
   elixirVitae:  { shape: 'diamond', glyph: 'elixirVitaeSym', rot: 0 },
-  panacea:      { shape: 'star',    glyph: 'panaceaSym',     rot: 0 },
+  panacea:      { shape: 'star',    glyph: 'panaceaSym',     rot: 0, glow: 0.2 },
   ambrosia:     { shape: 'circle',  glyph: 'ambrosiaSym',    rot: 0 },
   // Макрокосм
   macrocosm:    { shape: 'circle',  glyph: 'macrocosmSym',   rot: 0 },
@@ -453,7 +457,7 @@ export const ICON_DESIGNS = {
   virulentSwarm:   { shape: 'triangle',glyph: 'parasiteSym',     rot: 0 },
   oneirograph:     { shape: 'square',  glyph: 'oneirographSym',   rot: 0 },
   deathlessWarden: { shape: 'square',  glyph: 'tee',             rot: 0 },
-  apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0 },
+  apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0, glow: 0.22 },
   // Врата — Дух и Материя
   spirit:      { shape: 'circle',  glyph: 'spiritSym',    rot: 0 },
   matter:      { shape: 'square',  glyph: 'matterSym',    rot: 0 },
@@ -487,6 +491,31 @@ export const ICON_DESIGNS = {
   decay:       { shape: 'triangle',glyph: 'plagueSym',    rot: 0 },
   ruin:        { shape: 'diamond', glyph: 'ember',        rot: 0 },
   heatDeath:   { shape: 'circle',  glyph: 'blackHoleSym', rot: 0 },
+  // Ветка Духа
+  breath:        { shape: 'circle',  glyph: 'airsym',           rot: 0 },
+  astralForm:    { shape: 'star',    glyph: 'ghostsym',         rot: 0 },
+  soulJar:       { shape: 'hexagon', glyph: 'vesselSym',        rot: 0 },
+  spiritGuide:   { shape: 'star',    glyph: 'fairysym',         rot: 0 },
+  seance:        { shape: 'hexagon', glyph: 'scrollsym',        rot: 0 },
+  possessedArmor:{ shape: 'square',  glyph: 'tee',              rot: 0 },
+  wraithLord:    { shape: 'star',    glyph: 'skull',            rot: 0 },
+  ancestralChorus:{shape: 'star',    glyph: 'ghostsym',         rot: 0 },
+  spiritRealm:   { shape: 'circle',  glyph: 'ethersym',         rot: 0 },
+  transcendence: { shape: 'star',    glyph: 'transcendenceSym', rot: 0 },
+  // Ветка Материи
+  substance:     { shape: 'diamond', glyph: 'droplet',          rot: 0 },
+  bedrock:       { shape: 'diamond', glyph: 'mountains',        rot: 0 },
+  monolith:      { shape: 'square',  glyph: 'mountains',        rot: 0 },
+  golemCore:     { shape: 'hexagon', glyph: 'golemsym',         rot: 0 },
+  ironWill:      { shape: 'square',  glyph: 'ingot',            rot: 0 },
+  forgeHeart:    { shape: 'triangle',glyph: 'flame',            rot: 0 },
+  worldAnvil:    { shape: 'hexagon', glyph: 'engineSym',        rot: 0 },
+  absoluteMass:  { shape: 'circle',  glyph: 'blackHoleSym',     rot: 0 },
+  titan:         { shape: 'star',    glyph: 'titanSym',         rot: 0 },
+  primeMatter:   { shape: 'circle',  glyph: 'transcendenceSym', rot: 0 },
+  // Слияние
+  animatedFlesh: { shape: 'circle',  glyph: 'heart',            rot: 0 },
+  greatBinding:  { shape: 'star',    glyph: 'greatBindingSym',  rot: 0 },
 };
 
 export const TIER = (() => {
