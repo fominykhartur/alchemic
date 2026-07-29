@@ -225,12 +225,12 @@ export const ELEMENTS = {
   density:   { id: 'density',   name: 'Плотность',      color: '#B8A030', glow: 'rgba(184,160,48,0.4)',   desc: 'Материя, сжатая до предела возможного' },
   compression:{id: 'compression',name: 'Сжатие',        color: '#D0D8E8', glow: 'rgba(208,216,232,0.5)',   desc: 'Предел, за которым материя меняет закон' },
   // Время — ветка
-  chronosphere:{id: 'chronosphere',name: 'Хроносфера', color: '#C8A85A', glow: 'rgba(200,168,90,0.4)',  desc: 'Пузырь, где время течёт иначе' },
-  eternalLoop:{id: 'eternalLoop',name: 'Вечная Петля', color: '#8A6A2A', glow: 'rgba(138,106,42,0.4)',  desc: 'Момент, запертый в кольце' },
+  chronosphere:{id: 'chronosphere',name: 'Хроносфера', color: '#B8965A', glow: 'rgba(184,150,90,0.4)',  desc: 'Механизм, пленивший течение' },
+  eternalLoop:{id: 'eternalLoop',name: 'Вечный Цикл', color: '#8A6A3A', glow: 'rgba(138,106,58,0.4)',  desc: 'Момент, повторяющий сам себя' },
   temporalRift:{id: 'temporalRift',name: 'Временной Разлом',color: '#4A2A0A', glow: 'rgba(74,42,10,0.4)', desc: 'Трещина, сквозь которую видно всё сразу' },
   // Пространство — ветка
-  vacuum:    { id: 'vacuum',    name: 'Вакуум',        color: '#1A0A2A', glow: 'rgba(26,10,42,0.4)',   desc: 'Пространство, очищенное от всего' },
-  nebula:    { id: 'nebula',    name: 'Туманность',    color: '#7A4A9A', glow: 'rgba(122,74,154,0.4)',  desc: 'Звёздная колыбель из газа и пыли' },
+  vacuum:    { id: 'vacuum',    name: 'Вакуум',        color: '#1A1A2A', glow: 'rgba(26,26,42,0.4)',   desc: 'Пространство без содержимого' },
+  nebula:    { id: 'nebula',    name: 'Туманность',    color: '#8A5AC0', glow: 'rgba(138,90,192,0.4)',desc: 'Пыль, из которой рождаются звёзды' },
   multiverse:{ id: 'multiverse',name: 'Мультивселенная',color: '#2A0A4A', glow: 'rgba(42,10,74,0.5)',   desc: 'Бесконечность, помноженная на себя' },
   // Хаос — ветка
   maelchaos: { id: 'maelchaos', name: 'Мальхаос',       color: '#8A2A4A', glow: 'rgba(138,42,74,0.4)',  desc: 'Воронка из неупорядоченной энергии' },
@@ -265,6 +265,24 @@ export const ELEMENTS = {
   // Слияние
   animatedFlesh: { id: 'animatedFlesh', name: 'Одушевлённая Плоть',  color: '#C89A8A', glow: 'rgba(200,154,138,0.4)', desc: 'Дух, впервые нашедший себе тело' },
   greatBinding:  { id: 'greatBinding',  name: 'Великое Связывание',  color: '#FFD700', glow: 'rgba(255,215,0,0.7)',   desc: 'Дух и материя, более не различимые' },
+  // Ветка Времени
+  instant:       { id: 'instant',       name: 'Мгновение',          color: '#E8D8A0', glow: 'rgba(232,216,160,0.4)', desc: 'Время, застигнутое врасплох' },
+  eternity:      { id: 'eternity',      name: 'Вечность',           color: '#FFF0C0', glow: 'rgba(255,240,192,0.5)', desc: 'Время, переставшее течь' },
+  timeline:      { id: 'timeline',      name: 'Линия Времени',      color: '#C0A860', glow: 'rgba(192,168,96,0.4)', desc: 'Путь от начала к концу' },
+  reincarnation: { id: 'reincarnation', name: 'Реинкарнация',       color: '#FF8A5A', glow: 'rgba(255,138,90,0.5)', desc: 'Смерть, что не считается концом' },
+  chronoWeaver:  { id: 'chronoWeaver',  name: 'Ткач Времён',        color: '#7A5AA8', glow: 'rgba(122,90,168,0.5)', desc: 'Тот, кто плетёт нити причины и следствия' },
+  temporalSigil: { id: 'temporalSigil', name: 'Печать Времени',     color: '#D0A830', glow: 'rgba(208,168,48,0.5)', desc: 'Знак, останавливающий часы' },
+  masterOfTime:  { id: 'masterOfTime',  name: 'Владыка Времени',    color: '#FFD700', glow: 'rgba(255,215,0,0.6)',  desc: 'Тот, для кого время — инструмент' },
+  // Ветка Пространства
+  horizon:       { id: 'horizon',       name: 'Горизонт',           color: '#A0C0E0', glow: 'rgba(160,192,224,0.3)',desc: 'Грань видимого и невидимого' },
+  dimension:     { id: 'dimension',     name: 'Измерение',          color: '#4A2A6A', glow: 'rgba(74,42,106,0.5)', desc: 'Пространство, свёрнутое в слой' },
+  voidExpanse:   { id: 'voidExpanse',   name: 'Простор Пустоты',   color: '#2A1A4A', glow: 'rgba(42,26,74,0.5)',  desc: 'Пространство до всякой формы' },
+  parallelWorld: { id: 'parallelWorld', name: 'Параллельный Мир',  color: '#5AC0D0', glow: 'rgba(90,192,208,0.4)',desc: 'Отражение, ставшее реальным' },
+  infiniteRealms:{ id: 'infiniteRealms',name: 'Бескрайние Земли',   color: '#D05AA0', glow: 'rgba(208,90,160,0.5)',desc: 'Пространство без края и предела' },
+  spatialAnchor: { id: 'spatialAnchor', name: 'Пространственный Якорь', color: '#B8862F', glow: 'rgba(184,134,47,0.4)', desc: 'Точка, держащая мир на месте' },
+  masterOfSpace: { id: 'masterOfSpace', name: 'Владыка Пространства',   color: '#FFD700', glow: 'rgba(255,215,0,0.6)', desc: 'Тот, для кого расстояние — иллюзия' },
+  // Финальное слияние
+  spacetimeContinuum:{ id: 'spacetimeContinuum', name: 'Континуум', color: '#FFFFFF', glow: 'rgba(255,255,255,0.8)', desc: 'Время и пространство, ставшие одним' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -346,6 +364,11 @@ export const ELEMENT_CATS = {
   substance:'nature', bedrock:'nature', monolith:'metal', golemCore:'artifact', ironWill:'metal',
   forgeHeart:'metal', worldAnvil:'artifact', absoluteMass:'metal', titan:'magic', primeMatter:'cosmos',
   animatedFlesh:'magic', greatBinding:'legendary',
+  instant:'cosmos', eternity:'cosmos', timeline:'cosmos', reincarnation:'magic',
+  chronoWeaver:'magic', temporalSigil:'artifact', masterOfTime:'legendary',
+  horizon:'cosmos', dimension:'cosmos', voidExpanse:'cosmos', parallelWorld:'magic',
+  infiniteRealms:'cosmos', spatialAnchor:'artifact', masterOfSpace:'legendary',
+  spacetimeContinuum:'legendary',
 };
 
 export const UNLOCKABLE_STARTERS = [
@@ -724,13 +747,29 @@ export const RECIPES = [
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'matter', a: 1 }], output: 'animatedFlesh' },
   { inputs: [{ id: 'transcendence', a: 1 }, { id: 'primeMatter', a: 1 }, { id: 'animatedFlesh', a: 1 }, { id: 'philosophersStone', a: 1 }], output: 'greatBinding' },
   // Время
-  { inputs: [{ id: 'time', a: 1 }, { id: 'clockwork', a: 1 }],    output: 'chronosphere' },
-  { inputs: [{ id: 'chronosphere', a: 1 }, { id: 'moon', a: 1 }], output: 'eternalLoop' },
+  { inputs: [{ id: 'time', a: 1 }, { id: 'air', a: 1 }],           output: 'instant' },
+  { inputs: [{ id: 'time', a: 1 }, { id: 'clockwork', a: 1 }],     output: 'chronosphere' },
+  { inputs: [{ id: 'time', a: 2 }], output: 'eternity' },
+  { inputs: [{ id: 'chronosphere', a: 1 }, { id: 'moon', a: 1 }],  output: 'eternalLoop' },
   { inputs: [{ id: 'eternalLoop', a: 1 }, { id: 'paradox', a: 1 }], output: 'temporalRift' },
+  { inputs: [{ id: 'instant', a: 1 }, { id: 'eternity', a: 1 }, { id: 'eternalLoop', a: 1 }], output: 'timeline' },
+  { inputs: [{ id: 'timeline', a: 1 }, { id: 'phoenix', a: 1 }],   output: 'reincarnation' },
+  { inputs: [{ id: 'temporalRift', a: 1 }, { id: 'reincarnation', a: 1 }], output: 'chronoWeaver' },
+  { inputs: [{ id: 'chronoWeaver', a: 1 }, { id: 'rune', a: 2 }],  output: 'temporalSigil' },
+  { inputs: [{ id: 'timeline', a: 1 }, { id: 'temporalSigil', a: 1 }, { id: 'chronoWeaver', a: 1 }], output: 'masterOfTime' },
   // Пространство
-  { inputs: [{ id: 'space', a: 1 }, { id: 'void', a: 1 }],        output: 'vacuum' },
-  { inputs: [{ id: 'vacuum', a: 1 }, { id: 'star', a: 1 }],       output: 'nebula' },
-  { inputs: [{ id: 'nebula', a: 1 }, { id: 'galaxy', a: 1 }],     output: 'multiverse' },
+  { inputs: [{ id: 'space', a: 1 }, { id: 'void', a: 1 }],          output: 'vacuum' },
+  { inputs: [{ id: 'space', a: 1 }, { id: 'air', a: 1 }],           output: 'horizon' },
+  { inputs: [{ id: 'space', a: 2 }], output: 'dimension' },
+  { inputs: [{ id: 'vacuum', a: 1 }, { id: 'star', a: 1 }],         output: 'nebula' },
+  { inputs: [{ id: 'nebula', a: 1 }, { id: 'galaxy', a: 1 }],       output: 'multiverse' },
+  { inputs: [{ id: 'horizon', a: 1 }, { id: 'dimension', a: 1 }, { id: 'vacuum', a: 1 }], output: 'voidExpanse' },
+  { inputs: [{ id: 'voidExpanse', a: 1 }, { id: 'mirror', a: 1 }],  output: 'parallelWorld' },
+  { inputs: [{ id: 'multiverse', a: 1 }, { id: 'parallelWorld', a: 1 }], output: 'infiniteRealms' },
+  { inputs: [{ id: 'infiniteRealms', a: 1 }, { id: 'amulet', a: 2 }], output: 'spatialAnchor' },
+  { inputs: [{ id: 'voidExpanse', a: 1 }, { id: 'spatialAnchor', a: 1 }, { id: 'infiniteRealms', a: 1 }], output: 'masterOfSpace' },
+  // Финальное слияние
+  { inputs: [{ id: 'masterOfTime', a: 1 }, { id: 'masterOfSpace', a: 1 }, { id: 'animaMundi', a: 1 }], output: 'spacetimeContinuum' },
   // Хаос
   { inputs: [{ id: 'chaos', a: 1 }, { id: 'storm', a: 1 }],       output: 'maelchaos' },
   { inputs: [{ id: 'chaos', a: 1 }, { id: 'curse', a: 1 }],       output: 'anarchy' },
@@ -801,6 +840,9 @@ export const ACHIEVEMENTS = [
   { id: 'titan',         name: '🗿 Титан',                desc: 'Пробудить волю в материи',             check: s => s.discovered.has('titan') },
   { id: 'primeMatter',   name: '⬜ Прима Материя',        desc: 'Достичь материи до всякой формы',      check: s => s.discovered.has('primeMatter') },
   { id: 'greatBinding',  name: '🌟 Великое Связывание',  desc: 'Соединить дух и материю воедино',      check: s => s.discovered.has('greatBinding') },
+  { id: 'masterOfTime',  name: '⏳ Владыка Времени',    desc: 'Подчинить себе течение времени',       check: s => s.discovered.has('masterOfTime') },
+  { id: 'masterOfSpace', name: '🌌 Владыка Пространства', desc: 'Подчинить себе бескрайние земли',    check: s => s.discovered.has('masterOfSpace') },
+  { id: 'continuum',     name: '♾ Континуум',          desc: 'Слить время и пространство воедино',   check: s => s.discovered.has('spacetimeContinuum') },
 ];
 
 export function recipeKey(recipe) {

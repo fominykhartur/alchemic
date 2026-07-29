@@ -230,6 +230,7 @@ export const GLYPH_PATHS = {
   transcendenceSym:{ d: 'M10,1 L16,8 L13,8 L13,17 L7,17 L7,8 L4,8 Z', useShapeFill: true, round: true },
   titanSym:        { d: 'M2,18 L5,10 L8,15 L12,3 L16,15 L18,18 Z M8,15 L12,3 L14,12 M5,10 L5,14', useShapeFill: true, round: true },
   greatBindingSym: { d: 'M7,3 A6,6 0 1,1 7,15 A6,6 0 1,1 7,3 M13,5 A6,6 0 1,1 13,17 A6,6 0 1,1 13,5 M10,9 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0', useShapeFill: true, round: true },
+  anchorSym:       { d: 'M7,11 L13,11 L13,15 L7,15 Z M10,4 L10,11 M8,4 L12,4 M5,14 L7,14 L7,17 L5,17 Z M13,14 L15,14 L15,17 L13,17 Z', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -516,6 +517,24 @@ export const ICON_DESIGNS = {
   // Слияние
   animatedFlesh: { shape: 'circle',  glyph: 'heart',            rot: 0 },
   greatBinding:  { shape: 'star',    glyph: 'greatBindingSym',  rot: 0 },
+  // Ветка Времени
+  instant:       { shape: 'circle',  glyph: 'timepieceSym',      rot: 0 },
+  eternity:      { shape: 'circle',  glyph: 'paradoxSym',        rot: 0 },
+  timeline:      { shape: 'diamond', glyph: 'chronomancerSym',   rot: 0 },
+  reincarnation: { shape: 'star',    glyph: 'phoenixGlyph',      rot: 0 },
+  chronoWeaver:  { shape: 'hexagon', glyph: 'timeSym',           rot: 0 },
+  temporalSigil: { shape: 'star',    glyph: 'runesym',           rot: 0 },
+  masterOfTime:  { shape: 'star',    glyph: 'timeSym',           rot: 0, glow: 0.25 },
+  // Ветка Пространства
+  horizon:       { shape: 'diamond', glyph: 'breezsym',          rot: 0 },
+  dimension:     { shape: 'hexagon', glyph: 'voidsym',           rot: 0 },
+  voidExpanse:   { shape: 'circle',  glyph: 'voidRiftSym',       rot: 0 },
+  parallelWorld: { shape: 'circle',  glyph: 'mirrorpn',          rot: 0 },
+  infiniteRealms:{ shape: 'star',    glyph: 'macrocosmSym',      rot: 0 },
+  spatialAnchor: { shape: 'hexagon', glyph: 'anchorSym',         rot: 0 },
+  masterOfSpace: { shape: 'star',    glyph: 'voidRiftSym',       rot: 0, glow: 0.25 },
+  // Финальное слияние
+  spacetimeContinuum:{ shape: 'star', glyph: 'voidsym',          rot: 0, glow: 0.3 },
 };
 
 export const TIER = (() => {
