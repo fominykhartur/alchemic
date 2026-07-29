@@ -234,12 +234,12 @@ export const ELEMENTS = {
   multiverse:{ id: 'multiverse',name: 'Мультивселенная',color: '#2A0A4A', glow: 'rgba(42,10,74,0.5)',   desc: 'Бесконечность, помноженная на себя' },
   // Хаос — ветка
   maelchaos: { id: 'maelchaos', name: 'Мальхаос',       color: '#8A2A4A', glow: 'rgba(138,42,74,0.4)',  desc: 'Воронка из неупорядоченной энергии' },
-  anarchy:   { id: 'anarchy',   name: 'Анархия',        color: '#6A1A3A', glow: 'rgba(106,26,58,0.4)',  desc: 'Порядок, утративший власть' },
+  anarchy:   { id: 'anarchy',   name: 'Анархия',       color: '#5A0A8A', glow: 'rgba(90,10,138,0.5)',  desc: 'Мир, отменивший свои же правила' },
   primordialStorm:{id: 'primordialStorm',name: 'Первозданная Буря',color: '#4A0A2A', glow: 'rgba(74,10,42,0.5)', desc: 'Шторм, бывший до всякого творения' },
   // Энтропия — ветка
-  decay:     { id: 'decay',     name: 'Распад',        color: '#6A5A3A', glow: 'rgba(106,90,58,0.4)',   desc: 'Тихий демонтаж всего сущего' },
-  ruin:      { id: 'ruin',      name: 'Руины',         color: '#4A3A2A', glow: 'rgba(74,58,42,0.4)',   desc: 'То, что осталось после распада' },
-  heatDeath: { id: 'heatDeath', name: 'Тепловая Смерть',color: '#2A2A2A', glow: 'rgba(42,42,42,0.5)',   desc: 'Последнее равновесие — покой без энергии' },
+  decay:     { id: 'decay',     name: 'Распад',        color: '#5A6B3A', glow: 'rgba(90,107,58,0.4)',  desc: 'Первый шаг распада' },
+  ruin:      { id: 'ruin',      name: 'Руина',         color: '#6A5A4A', glow: 'rgba(106,90,74,0.4)',   desc: 'То, что осталось после тлена' },
+  heatDeath: { id: 'heatDeath', name: 'Тепловая Смерть',color: '#1A1A1A', glow: 'rgba(26,26,26,0.6)',   desc: 'Точка, где угасает всякое движение' },
   // Ветка Духа
   breath:        { id: 'breath',        name: 'Дыхание',             color: '#E0E8FF', glow: 'rgba(224,232,255,0.4)', desc: 'Первое движение духа в мире' },
   astralForm:    { id: 'astralForm',    name: 'Астральная Форма',    color: '#C0A8FF', glow: 'rgba(192,168,255,0.5)', desc: 'Дух, обретший подобие тела' },
@@ -283,6 +283,21 @@ export const ELEMENTS = {
   masterOfSpace: { id: 'masterOfSpace', name: 'Владыка Пространства',   color: '#FFD700', glow: 'rgba(255,215,0,0.6)', desc: 'Тот, для кого расстояние — иллюзия' },
   // Финальное слияние
   spacetimeContinuum:{ id: 'spacetimeContinuum', name: 'Континуум', color: '#FFFFFF', glow: 'rgba(255,255,255,0.8)', desc: 'Время и пространство, ставшие одним' },
+  // Ветка Хаоса
+  spark:       { id: 'spark',       name: 'Искра Хаоса',        color: '#E8309A', glow: 'rgba(232,48,154,0.4)', desc: 'Первое нарушение порядка' },
+  discord:     { id: 'discord',     name: 'Раздор',             color: '#B01A5A', glow: 'rgba(176,26,90,0.4)',  desc: 'Согласие, обращённое в спор' },
+  chaosStorm:  { id: 'chaosStorm',  name: 'Буря Хаоса',         color: '#8A0AC0', glow: 'rgba(138,10,192,0.5)', desc: 'Стихия без закона и цели' },
+  chaosBeast:  { id: 'chaosBeast',  name: 'Тварь Хаоса',        color: '#C020A0', glow: 'rgba(192,32,160,0.5)', desc: 'Существо без формы, что не должно было родиться' },
+  voidSpawn:   { id: 'voidSpawn',   name: 'Порождение Пустоты', color: '#3A0A5A', glow: 'rgba(58,10,90,0.5)',   desc: 'То, что бездна создала по своему подобию' },
+  chaosLord:   { id: 'chaosLord',   name: 'Владыка Хаоса',      color: '#FF00C8', glow: 'rgba(255,0,200,0.6)',  desc: 'Тот, для кого беспорядок и есть закон' },
+  // Ветка Энтропии
+  erosion:     { id: 'erosion',     name: 'Эрозия',             color: '#8A7A5A', glow: 'rgba(138,122,90,0.4)', desc: 'Медленное стирание формы' },
+  entropyField:{ id: 'entropyField',name: 'Поле Энтропии',      color: '#3A3A2A', glow: 'rgba(58,58,42,0.5)',   desc: 'Пространство, где всё стремится к покою' },
+  extinction:  { id: 'extinction',  name: 'Вымирание',          color: '#3A2A2A', glow: 'rgba(58,42,42,0.5)',   desc: 'Конец всякого вида' },
+  voidCollapse:{ id: 'voidCollapse',name: 'Коллапс Пустоты',    color: '#0A0A1A', glow: 'rgba(10,10,26,0.6)',   desc: 'Пустота, схлопнувшаяся в саму себя' },
+  entropyLord: { id: 'entropyLord', name: 'Владыка Энтропии',   color: '#4A4A4A', glow: 'rgba(74,74,74,0.6)',   desc: 'Тот, для кого конец — единственный закон' },
+  // Финальное слияние
+  oblivion:    { id: 'oblivion',    name: 'Забвение',           color: '#000000', glow: 'rgba(0,0,0,0.8)',      desc: 'То, что остаётся, когда не остаётся ничего' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -369,6 +384,9 @@ export const ELEMENT_CATS = {
   horizon:'cosmos', dimension:'cosmos', voidExpanse:'cosmos', parallelWorld:'magic',
   infiniteRealms:'cosmos', spatialAnchor:'artifact', masterOfSpace:'legendary',
   spacetimeContinuum:'legendary',
+  spark:'magic', discord:'magic', chaosStorm:'nature', chaosBeast:'magic', voidSpawn:'magic', chaosLord:'legendary',
+  erosion:'nature', entropyField:'cosmos', extinction:'magic', voidCollapse:'cosmos', entropyLord:'legendary',
+  oblivion:'legendary',
 };
 
 export const UNLOCKABLE_STARTERS = [
@@ -771,13 +789,26 @@ export const RECIPES = [
   // Финальное слияние
   { inputs: [{ id: 'masterOfTime', a: 1 }, { id: 'masterOfSpace', a: 1 }, { id: 'animaMundi', a: 1 }], output: 'spacetimeContinuum' },
   // Хаос
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'lightning', a: 1 }],   output: 'spark' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'curse', a: 1 }],       output: 'discord' },
+  { inputs: [{ id: 'chaos', a: 2 }], output: 'chaosStorm' },
   { inputs: [{ id: 'chaos', a: 1 }, { id: 'storm', a: 1 }],       output: 'maelchaos' },
-  { inputs: [{ id: 'chaos', a: 1 }, { id: 'curse', a: 1 }],       output: 'anarchy' },
+  { inputs: [{ id: 'discord', a: 1 }, { id: 'rift', a: 1 }, { id: 'spark', a: 1 }], output: 'anarchy' },
   { inputs: [{ id: 'maelchaos', a: 1 }, { id: 'anarchy', a: 1 }], output: 'primordialStorm' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'chimera', a: 1 }],     output: 'chaosBeast' },
+  { inputs: [{ id: 'anarchy', a: 1 }, { id: 'abyss', a: 1 }],     output: 'voidSpawn' },
+  { inputs: [{ id: 'chaosBeast', a: 1 }, { id: 'voidSpawn', a: 1 }, { id: 'chaosStorm', a: 2 }], output: 'chaosLord' },
   // Энтропия
   { inputs: [{ id: 'entropy', a: 1 }, { id: 'rust', a: 1 }],      output: 'decay' },
+  { inputs: [{ id: 'entropy', a: 1 }, { id: 'water', a: 1 }],     output: 'erosion' },
+  { inputs: [{ id: 'entropy', a: 2 }], output: 'entropyField' },
   { inputs: [{ id: 'decay', a: 1 }, { id: 'dust', a: 1 }],        output: 'ruin' },
-  { inputs: [{ id: 'ruin', a: 1 }, { id: 'ash', a: 1 }],          output: 'heatDeath' },
+  { inputs: [{ id: 'ruin', a: 1 }, { id: 'death', a: 1 }, { id: 'erosion', a: 1 }], output: 'extinction' },
+  { inputs: [{ id: 'entropyField', a: 1 }, { id: 'extinction', a: 1 }], output: 'heatDeath' },
+  { inputs: [{ id: 'heatDeath', a: 1 }, { id: 'abyss', a: 1 }],   output: 'voidCollapse' },
+  { inputs: [{ id: 'extinction', a: 1 }, { id: 'voidCollapse', a: 1 }, { id: 'entropyField', a: 1 }], output: 'entropyLord' },
+  // Финальное слияние
+  { inputs: [{ id: 'chaosLord', a: 1 }, { id: 'entropyLord', a: 1 }, { id: 'apocalypse', a: 1 }], output: 'oblivion' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -843,6 +874,9 @@ export const ACHIEVEMENTS = [
   { id: 'masterOfTime',  name: '⏳ Владыка Времени',    desc: 'Подчинить себе течение времени',       check: s => s.discovered.has('masterOfTime') },
   { id: 'masterOfSpace', name: '🌌 Владыка Пространства', desc: 'Подчинить себе бескрайние земли',    check: s => s.discovered.has('masterOfSpace') },
   { id: 'continuum',     name: '♾ Континуум',          desc: 'Слить время и пространство воедино',   check: s => s.discovered.has('spacetimeContinuum') },
+  { id: 'chaosLord',   name: '🌀 Владыка Хаоса',      desc: 'Подчинить себе беспорядок',           check: s => s.discovered.has('chaosLord') },
+  { id: 'entropyLord', name: '⏳ Владыка Энтропии',   desc: 'Подчинить себе распад',               check: s => s.discovered.has('entropyLord') },
+  { id: 'oblivion',    name: '⚫ Забвение',            desc: 'Достичь того, что после конца',       check: s => s.discovered.has('oblivion') },
 ];
 
 export function recipeKey(recipe) {

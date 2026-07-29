@@ -535,6 +535,21 @@ export const ICON_DESIGNS = {
   masterOfSpace: { shape: 'star',    glyph: 'voidRiftSym',       rot: 0, glow: 0.25 },
   // Финальное слияние
   spacetimeContinuum:{ shape: 'star', glyph: 'voidsym',          rot: 0, glow: 0.3 },
+  // Ветка Хаоса
+  spark:       { shape: 'triangle',glyph: 'lightningsym',       rot: 0 },
+  discord:     { shape: 'triangle',glyph: 'tricksterSym',       rot: 0 },
+  chaosStorm:  { shape: 'hexagon', glyph: 'hurricanSym',        rot: 0 },
+  chaosBeast:  { shape: 'star',    glyph: 'chimerasym',         rot: 0 },
+  voidSpawn:   { shape: 'star',    glyph: 'voidRiftSym',        rot: 0 },
+  chaosLord:   { shape: 'star',    glyph: 'chaosSym',           rot: 0, glow: 0.25 },
+  // Ветка Энтропии
+  erosion:     { shape: 'diamond', glyph: 'waves',              rot: 0 },
+  entropyField:{ shape: 'circle',  glyph: 'entropySym',         rot: 0 },
+  extinction:  { shape: 'star',    glyph: 'skull',              rot: 0 },
+  voidCollapse:{ shape: 'circle',  glyph: 'blackHoleSym',       rot: 0 },
+  entropyLord: { shape: 'star',    glyph: 'entropySym',         rot: 0, glow: 0.25 },
+  // Финальное слияние
+  oblivion:    { shape: 'circle',  glyph: 'blackHoleSym',       rot: 0, glow: 0.3 },
 };
 
 export const TIER = (() => {
