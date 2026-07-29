@@ -159,6 +159,54 @@ export const ELEMENTS = {
   spore:       { id: 'spore',       name: 'Спора',         color: '#9ACD5A', glow: 'rgba(154,205,90,0.4)',  desc: 'Семя грядущего заражения' },
   plague:      { id: 'plague',      name: 'Мор',           color: '#5A6B3A', glow: 'rgba(90,107,58,0.5)',   desc: 'Болезнь, пожирающая земли' },
   parasite:    { id: 'parasite',    name: 'Паразит',       color: '#7A4A5A', glow: 'rgba(122,74,90,0.4)',   desc: 'Жизнь за счёт чужой жизни' },
+  // Катализ
+  ignition:      { id: 'ignition',      name: 'Воспламенение', color: '#FF6B1A', glow: 'rgba(255,107,26,0.5)', desc: 'Момент, когда реакция срывается с цепи' },
+  engine:        { id: 'engine',        name: 'Двигатель',     color: '#8A8A8A', glow: 'rgba(138,138,138,0.4)',desc: 'Механизм, обращающий огонь в движение' },
+  // Янтарь
+  amberRelic:    { id: 'amberRelic',    name: 'Янтарная Реликвия', color: '#D89030', glow: 'rgba(216,144,48,0.4)', desc: 'Мгновение, застывшее на тысячи лет' },
+  revenant:      { id: 'revenant',      name: 'Ревенант',      color: '#6A5A3A', glow: 'rgba(106,90,58,0.4)',  desc: 'Вернувшийся из глубин времени' },
+  // Спектр
+  spectrum:      { id: 'spectrum',      name: 'Спектр',        color: '#FF4AE8', glow: 'rgba(255,74,232,0.4)', desc: 'Свет, распавшийся на обещания' },
+  aurora:        { id: 'aurora',        name: 'Аврора',        color: '#4AFFC8', glow: 'rgba(74,255,200,0.5)', desc: 'Небо, охваченное сиянием' },
+  auroraCrown:   { id: 'auroraCrown',   name: 'Венец Авроры',  color: '#B8FFE0', glow: 'rgba(184,255,224,0.6)',desc: 'Регалия, сотканная из полярного света' },
+  // Страж
+  livingShield:  { id: 'livingShield',  name: 'Живой Щит',     color: '#4A8A3A', glow: 'rgba(74,138,58,0.4)',  desc: 'Броня, что растёт и заживает' },
+  guardian:      { id: 'guardian',      name: 'Хранитель',     color: '#3A6A2A', glow: 'rgba(58,106,42,0.4)',  desc: 'Страж, вросший корнями в свой пост' },
+  sentinel:      { id: 'sentinel',      name: 'Часовой Леса',  color: '#2A5A3A', glow: 'rgba(42,90,58,0.5)',   desc: 'Дух, охраняющий границы рощи' },
+  // Эхо
+  canyon:        { id: 'canyon',        name: 'Каньон',        color: '#B8703A', glow: 'rgba(184,112,58,0.4)', desc: 'Место, где голос не умирает' },
+  whisperingWinds:{ id: 'whisperingWinds', name: 'Шепчущие Ветра', color: '#A0C8D8', glow: 'rgba(160,200,216,0.4)', desc: 'Голоса, унесённые и не забытые' },
+  banshee:       { id: 'banshee',       name: 'Банши',         color: '#D0D8F0', glow: 'rgba(208,216,240,0.5)',desc: 'Крик, предвещающий конец' },
+  // Технологии
+  plasmaBlade: { id: 'plasmaBlade', name: 'Плазменный Клинок', color: '#FF3FE0', glow: 'rgba(255,63,224,0.5)', desc: 'Оружие из чистой энергии' },
+  resonator:   { id: 'resonator',   name: 'Резонатор',        color: '#5FE8FF', glow: 'rgba(95,232,255,0.4)', desc: 'Усилитель энергетических потоков' },
+  overcharge:  { id: 'overcharge',  name: 'Перезаряд',        color: '#FFE800', glow: 'rgba(255,232,0,0.6)',  desc: 'Энергия на грани взрыва' },
+  // Катаклизмы
+  maelstrom:   { id: 'maelstrom',   name: 'Мальстрём',        color: '#0A6E8C', glow: 'rgba(10,110,140,0.5)', desc: 'Водоворот, поглощающий всё' },
+  tempest:     { id: 'tempest',     name: 'Тремпест',         color: '#3A5A8C', glow: 'rgba(58,90,140,0.5)',  desc: 'Буря вселенского масштаба' },
+  cataclysm:   { id: 'cataclysm',   name: 'Катаклизм',        color: '#7A2A2A', glow: 'rgba(122,42,42,0.5)',  desc: 'Конец одного мира, начало другого' },
+  // Сон/заморозка
+  stasis:      { id: 'stasis',      name: 'Стазис',           color: '#A8E0F0', glow: 'rgba(168,224,240,0.4)',desc: 'Мгновение, застывшее навечно' },
+  dreamRealm:  { id: 'dreamRealm',  name: 'Царство Снов',     color: '#8C7AB8', glow: 'rgba(140,122,184,0.4)',desc: 'Мир по ту сторону сна' },
+  somnium:     { id: 'somnium',     name: 'Сомниум',          color: '#4A3A6A', glow: 'rgba(74,58,106,0.5)',  desc: 'Сновидение, ставшее явью' },
+  // Древний лес
+  ancientGrove:{ id: 'ancientGrove',name: 'Древняя Роща',     color: '#2A5A2A', glow: 'rgba(42,90,42,0.4)',   desc: 'Место, где время замедляется' },
+  treant:      { id: 'treant',      name: 'Древень',          color: '#4A6A3A', glow: 'rgba(74,106,58,0.4)',  desc: 'Дерево, обретшее волю' },
+  worldTree:   { id: 'worldTree',   name: 'Мировое Древо',    color: '#3A8A4A', glow: 'rgba(58,138,74,0.5)',  desc: 'Корни и крона, держащие мир' },
+  // Некромантия
+  grimoire:    { id: 'grimoire',    name: 'Гримуар',          color: '#3A2A1A', glow: 'rgba(58,42,26,0.4)',   desc: 'Книга запретного знания' },
+  necronomicon:{ id: 'necronomicon',name: 'Некрономикон',     color: '#1A0A1A', glow: 'rgba(26,10,26,0.6)',   desc: 'Книга мёртвых имён' },
+  lich:        { id: 'lich',        name: 'Лич',              color: '#3AFF9E', glow: 'rgba(58,255,158,0.5)', desc: 'Бессмертный через проклятие' },
+  // Кросс-комбо
+  abyssalSovereign:{ id: 'abyssalSovereign', name: 'Владыка Бездны',   color: '#0A2A4A', glow: 'rgba(10,42,74,0.6)',   desc: 'Левиафан, вросший в собственный водоворот' },
+  eternalBlight:   { id: 'eternalBlight',    name: 'Вечная Порча',     color: '#3A4A2A', glow: 'rgba(58,74,42,0.5)',   desc: 'Мировое Древо, корни которого уже не помнят жизни' },
+  choirOfSorrow:   { id: 'choirOfSorrow',    name: 'Хор Скорби',       color: '#C0C8E8', glow: 'rgba(192,200,232,0.5)',desc: 'Крик Банши, записанный в книге мёртвых имён' },
+  cosmicMonarch:   { id: 'cosmicMonarch',    name: 'Космический Монарх', color: '#FFFFFF', glow: 'rgba(255,255,255,0.7)', desc: 'Точка бесконечности, коронованная светом' },
+  fatebreaker:     { id: 'fatebreaker',      name: 'Разрушитель Судьбы', color: '#5A1A5A', glow: 'rgba(90,26,90,0.5)',   desc: 'Возмездие, освобождённое от хода времени' },
+  virulentSwarm:   { id: 'virulentSwarm',    name: 'Вирулентный Рой',    color: '#8AAA2A', glow: 'rgba(138,170,42,0.5)', desc: 'Паразит, ускоренный сверх меры' },
+  oneirograph:     { id: 'oneirograph',      name: 'Онейрограф',         color: '#6A4A9A', glow: 'rgba(106,74,154,0.5)', desc: 'Машина, что печатает чужие сны' },
+  deathlessWarden: { id: 'deathlessWarden',  name: 'Бессмертный Страж',  color: '#2A4A3A', glow: 'rgba(42,74,58,0.5)',   desc: 'Часовой леса, вернувшийся из-за грани смерти' },
+  apocalypse:      { id: 'apocalypse',       name: 'Апокалипсис',        color: '#8A0A0A', glow: 'rgba(138,10,10,0.7)', desc: 'Конец, к которому вело всё вне Делания' },
 };
 
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
@@ -217,6 +265,18 @@ export const ELEMENT_CATS = {
   illusion:'magic', trickster:'magic', nemesis:'magic',
   timepiece:'artifact', chronomancer:'magic', paradox:'magic',
   spore:'nature', plague:'nature', parasite:'nature',
+  ignition:'alchemy', engine:'metal',
+  amberRelic:'artifact', revenant:'magic',
+  spectrum:'magic', aurora:'cosmos', auroraCrown:'artifact',
+  livingShield:'nature', guardian:'nature', sentinel:'magic',
+  canyon:'nature', whisperingWinds:'nature', banshee:'magic',
+  plasmaBlade:'metal', resonator:'artifact', overcharge:'magic',
+  maelstrom:'nature', tempest:'nature', cataclysm:'magic',
+  stasis:'magic', dreamRealm:'magic', somnium:'cosmos',
+  ancientGrove:'nature', treant:'nature', worldTree:'nature',
+  grimoire:'artifact', necronomicon:'artifact', lich:'magic',
+  abyssalSovereign:'magic', eternalBlight:'nature', choirOfSorrow:'magic', cosmicMonarch:'cosmos',
+  fatebreaker:'magic', virulentSwarm:'nature', oneirograph:'artifact', deathlessWarden:'magic', apocalypse:'legendary',
 };
 
 export const RECIPES = [
@@ -506,6 +566,54 @@ export const RECIPES = [
   { inputs: [{ id: 'mushroom', a: 1 }, { id: 'poison', a: 1 }], output: 'spore' },
   { inputs: [{ id: 'spore', a: 1 }, { id: 'swamp', a: 1 }], output: 'plague' },
   { inputs: [{ id: 'plague', a: 1 }, { id: 'life', a: 1 }], output: 'parasite' },
+  // Катализ
+  { inputs: [{ id: 'catalyst', a: 1 }, { id: 'lightning', a: 1 }], output: 'ignition' },
+  { inputs: [{ id: 'ignition', a: 1 }, { id: 'metal', a: 1 }], output: 'engine' },
+  // Янтарь
+  { inputs: [{ id: 'amber', a: 1 }, { id: 'fossil', a: 1 }], output: 'amberRelic' },
+  { inputs: [{ id: 'amberRelic', a: 1 }, { id: 'life', a: 1 }], output: 'revenant' },
+  // Спектр
+  { inputs: [{ id: 'prism', a: 1 }, { id: 'mirage', a: 1 }], output: 'spectrum' },
+  { inputs: [{ id: 'spectrum', a: 1 }, { id: 'storm', a: 1 }], output: 'aurora' },
+  { inputs: [{ id: 'aurora', a: 1 }, { id: 'ice', a: 1 }], output: 'auroraCrown' },
+  // Страж
+  { inputs: [{ id: 'shield', a: 1 }, { id: 'vine', a: 1 }], output: 'livingShield' },
+  { inputs: [{ id: 'livingShield', a: 1 }, { id: 'root', a: 1 }], output: 'guardian' },
+  { inputs: [{ id: 'guardian', a: 1 }, { id: 'forest', a: 1 }], output: 'sentinel' },
+  // Эхо
+  { inputs: [{ id: 'echo', a: 1 }, { id: 'mountain', a: 1 }], output: 'canyon' },
+  { inputs: [{ id: 'canyon', a: 1 }, { id: 'gale', a: 1 }], output: 'whisperingWinds' },
+  { inputs: [{ id: 'whisperingWinds', a: 1 }, { id: 'ghost', a: 1 }], output: 'banshee' },
+  // Технологии
+  { inputs: [{ id: 'obsidian', a: 1 }, { id: 'plasma', a: 1 }], output: 'plasmaBlade' },
+  { inputs: [{ id: 'plasmaBlade', a: 1 }, { id: 'crystal', a: 1 }], output: 'resonator' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'lightning', a: 1 }], output: 'overcharge' },
+  // Катаклизмы
+  { inputs: [{ id: 'geyser', a: 1 }, { id: 'hurricane', a: 1 }], output: 'maelstrom' },
+  { inputs: [{ id: 'maelstrom', a: 1 }, { id: 'storm', a: 1 }], output: 'tempest' },
+  { inputs: [{ id: 'tempest', a: 1 }, { id: 'earth', a: 1 }], output: 'cataclysm' },
+  // Сон/заморозка
+  { inputs: [{ id: 'frost', a: 1 }, { id: 'bubble', a: 1 }], output: 'stasis' },
+  { inputs: [{ id: 'stasis', a: 1 }, { id: 'ghost', a: 1 }], output: 'dreamRealm' },
+  { inputs: [{ id: 'dreamRealm', a: 1 }, { id: 'moon', a: 1 }], output: 'somnium' },
+  // Древний лес
+  { inputs: [{ id: 'forest', a: 1 }, { id: 'moss', a: 1 }], output: 'ancientGrove' },
+  { inputs: [{ id: 'ancientGrove', a: 1 }, { id: 'life', a: 1 }], output: 'treant' },
+  { inputs: [{ id: 'treant', a: 1 }, { id: 'essence', a: 1 }], output: 'worldTree' },
+  // Некромантия
+  { inputs: [{ id: 'scroll', a: 1 }, { id: 'phantom', a: 1 }], output: 'grimoire' },
+  { inputs: [{ id: 'grimoire', a: 1 }, { id: 'curse', a: 1 }], output: 'necronomicon' },
+  { inputs: [{ id: 'necronomicon', a: 1 }, { id: 'death', a: 1 }], output: 'lich' },
+  // Кросс-комбо
+  { inputs: [{ id: 'leviathan', a: 1 }, { id: 'maelstrom', a: 1 }], output: 'abyssalSovereign' },
+  { inputs: [{ id: 'lich', a: 1 }, { id: 'worldTree', a: 1 }], output: 'eternalBlight' },
+  { inputs: [{ id: 'banshee', a: 1 }, { id: 'necronomicon', a: 1 }], output: 'choirOfSorrow' },
+  { inputs: [{ id: 'singularity', a: 1 }, { id: 'auroraCrown', a: 1 }], output: 'cosmicMonarch' },
+  { inputs: [{ id: 'nemesis', a: 1 }, { id: 'paradox', a: 1 }], output: 'fatebreaker' },
+  { inputs: [{ id: 'parasite', a: 1 }, { id: 'overcharge', a: 1 }], output: 'virulentSwarm' },
+  { inputs: [{ id: 'somnium', a: 1 }, { id: 'engine', a: 1 }], output: 'oneirograph' },
+  { inputs: [{ id: 'sentinel', a: 1 }, { id: 'revenant', a: 1 }], output: 'deathlessWarden' },
+  { inputs: [{ id: 'cataclysm', a: 1 }, { id: 'abyssalSovereign', a: 1 }], output: 'apocalypse' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -544,6 +652,21 @@ export const ACHIEVEMENTS = [
   { id: 'parasite',    name: '🦠 Паразит',               desc: 'Вырастить жизнь на чужой жизни',                     check: s => s.discovered.has('parasite') },
   { id: 'macrocosm',   name: '🌌 Макрокосм',            desc: 'Постичь вселенную как тело',                        check: s => s.discovered.has('macrocosm') },
   { id: 'animaMundi',  name: '🌍 Мировая Душа',         desc: 'Достичь истинного завершения Делания',               check: s => s.discovered.has('animaMundi') },
+  { id: 'engine',      name: '⚙️ Двигатель',            desc: 'Обратить огонь в движение',                            check: s => s.discovered.has('engine') },
+  { id: 'revenant',    name: '👤 Ревенант',              desc: 'Пробудить вернувшегося из времени',                    check: s => s.discovered.has('revenant') },
+  { id: 'auroraCrown', name: '👑 Венец Авроры',          desc: 'Соткать регалию из полярного света',                   check: s => s.discovered.has('auroraCrown') },
+  { id: 'sentinel',    name: '🌲 Часовой Леса',          desc: 'Взрастить духа-хранителя рощи',                        check: s => s.discovered.has('sentinel') },
+  { id: 'banshee',     name: '👻 Банши',                 desc: 'Услышать крик, предвещающий конец',                    check: s => s.discovered.has('banshee') },
+  { id: 'overcharge',  name: '⚡ Перезаряд',              desc: 'Довести энергию до предела',                            check: s => s.discovered.has('overcharge') },
+  { id: 'cataclysm',   name: '🌪 Катаклизм',             desc: 'Устроить конец одного мира',                            check: s => s.discovered.has('cataclysm') },
+  { id: 'somnium',     name: '💤 Сомниум',               desc: 'Проникнуть в царство снов',                             check: s => s.discovered.has('somnium') },
+  { id: 'worldTree',   name: '🌳 Мировое Древо',         desc: 'Вырастить древо, держащее мир',                          check: s => s.discovered.has('worldTree') },
+  { id: 'lich',        name: '💀 Лич',                   desc: 'Обрести бессмертие через проклятие',                    check: s => s.discovered.has('lich') },
+  { id: 'abyssalSovereign',name: '🌊 Владыка Бездны',   desc: 'Слить Левиафана с его же водоворотом',                 check: s => s.discovered.has('abyssalSovereign') },
+  { id: 'eternalBlight',   name: '🥀 Вечная Порча',     desc: 'Заразить Мировое Древо бессмертием Лича',              check: s => s.discovered.has('eternalBlight') },
+  { id: 'choirOfSorrow',   name: '📖 Хор Скорби',       desc: 'Вписать крик Банши в книгу мёртвых',                  check: s => s.discovered.has('choirOfSorrow') },
+  { id: 'cosmicMonarch',   name: '👑 Космический Монарх', desc: 'Короновать точку бесконечности',                      check: s => s.discovered.has('cosmicMonarch') },
+  { id: 'apocalypse',      name: '☄️ Апокалипсис',       desc: 'Достичь конца, не пройдя Делания',                      check: s => s.discovered.has('apocalypse') },
 ];
 
 export function recipeKey(recipe) {

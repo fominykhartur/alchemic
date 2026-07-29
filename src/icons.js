@@ -211,6 +211,14 @@ export const GLYPH_PATHS = {
   sporeSym:      { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M8,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M7,13 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M13,8 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0', useShapeFill: true, round: true },
   plagueSym:     { d: 'M10,4 L12,9 L17,9 L13,12 L14,17 L10,14 L6,17 L7,12 L3,9 L8,9 Z', useShapeFill: true, round: true },
   parasiteSym:   { d: 'M4,8 C4,2 16,2 16,8 C16,14 10,16 10,16 C10,16 4,14 4,8 Z M8,7 a0.8,0.8 0 1,0 1.6,0 M13,5 L15,3', useShapeFill: true, round: true },
+  // Катализ
+  ignitionSym:   { d: 'M10,3 L12,7 L16,5 L13,9 L18,10 L13,11 L16,15 L12,13 L10,17 L8,13 L4,15 L7,11 L2,10 L7,9 L4,5 L8,7 Z', useShapeFill: true, round: true },
+  engineSym:     { d: 'M5,5 L15,5 L15,15 L5,15 Z M8,5 L8,15 M12,5 L12,15 M9,8 L11,8 M9,12 L11,12', useShapeFill: true, round: true },
+  auroraSym:     { d: 'M2,8 Q6,4 10,8 T18,8 M2,12 Q6,8 10,12 T18,12 M2,16 Q6,12 10,16 T18,16', useShapeFill: true, round: true },
+  // Кросс-комбо
+  sovereignSym:  { d: 'M4,12 L6,3 L10,7 L14,3 L16,12 L16,15 L14,17 L10,14 L6,17 L4,15 Z', useShapeFill: true, round: true },
+  oneirographSym:{ d: 'M10,3 a7,7 0 1,1 0,14 a7,7 0 1,1 0,-14 M7,2 L7,0 M13,2 L13,0 M7,18 L7,20 M13,18 L13,20 M2,7 L0,7 M2,13 L0,13 M18,7 L20,7 M18,13 L20,13 M10,8 a1.5,1.5 0 1,0 0,3 a1.5,1.5 0 1,0 0,-3', useShapeFill: true, round: true },
+  apocalypseSym: { d: 'M8,3 L12,3 L12,8 L17,8 L17,12 L12,12 L12,17 L8,17 L8,12 L3,12 L3,8 L8,8 Z M10,0 L10,3 M10,17 L10,20 M0,10 L3,10 M17,10 L20,10 M5,3 L7,5 M15,3 L13,5 M5,17 L7,15 M15,17 L13,15 M3,5 L5,7 M17,5 L15,7 M3,15 L5,13 M17,15 L15,13', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -391,6 +399,54 @@ export const ICON_DESIGNS = {
   spore:        { shape: 'circle',  glyph: 'sporeSym',       rot: 0 },
   plague:       { shape: 'diamond', glyph: 'plagueSym',      rot: 0 },
   parasite:     { shape: 'diamond', glyph: 'parasiteSym',    rot: 0 },
+  // Катализ
+  ignition:     { shape: 'diamond', glyph: 'ignitionSym',    rot: 0 },
+  engine:       { shape: 'square',  glyph: 'engineSym',      rot: 0 },
+  // Янтарь
+  amberRelic:   { shape: 'hexagon', glyph: 'ambersym',       rot: 0 },
+  revenant:     { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
+  // Спектр
+  spectrum:     { shape: 'star',    glyph: 'prismshp',       rot: 0 },
+  aurora:       { shape: 'circle',  glyph: 'auroraSym',      rot: 0 },
+  auroraCrown:  { shape: 'hexagon', glyph: 'crownsym',       rot: 0 },
+  // Страж
+  livingShield: { shape: 'diamond', glyph: 'tee',            rot: 0 },
+  guardian:     { shape: 'diamond', glyph: 'taproot',        rot: 0 },
+  sentinel:     { shape: 'star',    glyph: 'trees',          rot: 0 },
+  // Эхо
+  canyon:       { shape: 'diamond', glyph: 'peak',           rot: 0 },
+  whisperingWinds:{ shape: 'diamond', glyph: 'gust',         rot: 0 },
+  banshee:      { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
+  // Технологии
+  plasmaBlade:  { shape: 'square',  glyph: 'sword',          rot: 0 },
+  resonator:    { shape: 'hexagon', glyph: 'prismshp',       rot: 0 },
+  overcharge:   { shape: 'star',    glyph: 'lightningsym',   rot: 0 },
+  // Катаклизмы
+  maelstrom:    { shape: 'diamond', glyph: 'hurricanSym',    rot: 0 },
+  tempest:      { shape: 'diamond', glyph: 'hurricanSym',    rot: 0 },
+  cataclysm:    { shape: 'star',    glyph: 'volcano',        rot: 0 },
+  // Сон
+  stasis:       { shape: 'diamond', glyph: 'iceCube',        rot: 0 },
+  dreamRealm:   { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
+  somnium:      { shape: 'circle',  glyph: 'voidsym',        rot: 0 },
+  // Древний лес
+  ancientGrove: { shape: 'diamond', glyph: 'trees',          rot: 0 },
+  treant:       { shape: 'diamond', glyph: 'log',            rot: 0 },
+  worldTree:    { shape: 'diamond', glyph: 'taproot',        rot: 0 },
+  // Некромантия
+  grimoire:     { shape: 'hexagon', glyph: 'scrollsym',      rot: 0 },
+  necronomicon: { shape: 'hexagon', glyph: 'runesym',        rot: 0 },
+  lich:         { shape: 'star',    glyph: 'skull',          rot: 0 },
+  // Кросс-комбо
+  abyssalSovereign:{ shape: 'star',   glyph: 'sovereignSym',    rot: 0 },
+  eternalBlight:   { shape: 'diamond', glyph: 'plagueSym',       rot: 0 },
+  choirOfSorrow:   { shape: 'diamond', glyph: 'ghostsym',        rot: 0 },
+  cosmicMonarch:   { shape: 'star',    glyph: 'singularitySym',  rot: 0 },
+  fatebreaker:     { shape: 'diamond', glyph: 'nemesisSym',      rot: 0 },
+  virulentSwarm:   { shape: 'triangle',glyph: 'parasiteSym',     rot: 0 },
+  oneirograph:     { shape: 'square',  glyph: 'oneirographSym',   rot: 0 },
+  deathlessWarden: { shape: 'square',  glyph: 'tee',             rot: 0 },
+  apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0 },
 };
 
 export const TIER = (() => {
