@@ -550,6 +550,14 @@ export const ICON_DESIGNS = {
   entropyLord: { shape: 'star',    glyph: 'entropySym',         rot: 0, glow: 0.25 },
   // Финальное слияние
   oblivion:    { shape: 'circle',  glyph: 'blackHoleSym',       rot: 0, glow: 0.3 },
+  // Мосты
+  willOWisp:  { shape: 'circle', glyph: 'tricksterSym', rot: 0 },
+  lighthouse: { shape: 'square', glyph: 'lightsym',     rot: 0 },
+  veil:       { shape: 'diamond',glyph: 'miragesym',    rot: 0 },
+  shroud:     { shape: 'diamond',glyph: 'phantomsym',   rot: 0 },
+  sprout:     { shape: 'square', glyph: 'seed',         rot: 0 },
+  sapling:    { shape: 'square', glyph: 'trunk',        rot: 0 },
+  deathKnight:{ shape: 'star',   glyph: 'skull',        rot: 0 },
 };
 
 export const TIER = (() => {
