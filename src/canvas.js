@@ -91,7 +91,7 @@ function drawCircle() {
     const x = CX + Math.cos(angle) * r;
     const y = CY + Math.sin(angle) * r;
     ctx.fillStyle = `rgba(255,215,0,${0.1 + 0.05 * Math.sin(t * 0.03 + i)})`;
-    ctx.font = '10px serif';
+    ctx.font = '10px "Noto Sans Runic", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(runes[i % runes.length], x, y);
@@ -137,7 +137,7 @@ function drawDropHint() {
   const t = time * 0.001;
   const alpha = 0.3 + 0.15 * Math.sin(t);
   ctx.fillStyle = `rgba(255,215,0,${alpha})`;
-  ctx.font = '14px Georgia, serif';
+  ctx.font = '16px Alegreya, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('Перетащите элементы сюда', CX, CY);
@@ -567,7 +567,7 @@ function drawDiscoverAnim() {
     const textAlpha = Math.min(1, (d.progress - 0.3) / 0.3);
     ctx.globalAlpha = textAlpha;
     ctx.fillStyle = d.color;
-    ctx.font = 'bold 22px Georgia, serif';
+    ctx.font = 'bold 24px Alegreya, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = d.color;
