@@ -612,3 +612,29 @@ export function closeCraftRoadmap(e) {
   if (e && e.target !== e.currentTarget) return;
   document.getElementById('roadmap-modal').style.display = 'none';
 }
+
+// ─── Mobile tab switching ───
+export function switchTab(tab) {
+  document.querySelectorAll('#tab-bar .tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  document.querySelectorAll('#inventory-panel, #recipes-panel, #log-panel').forEach(p => {
+    p.classList.remove('mobile-visible');
+  });
+  if (tab === 'cauldron') return;
+  const map = { inventory: 'inventory-panel', recipes: 'recipes-panel', log: 'log-panel' };
+  const panel = document.getElementById(map[tab]);
+  if (panel) panel.classList.add('mobile-visible');
+}
+
+// Close mobile panel on backdrop click
+document.addEventListener('click', (e) => {
+  const open = document.querySelector('.mobile-visible');
+  if (!open) return;
+  if (!open.contains(e.target) && !e.target.closest('#tab-bar')) {
+    open.classList.remove('mobile-visible');
+    document.querySelectorAll('#tab-bar .tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === 'cauldron');
+    });
+  }
+});

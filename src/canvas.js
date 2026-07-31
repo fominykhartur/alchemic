@@ -13,7 +13,8 @@ export function resizeCanvas() {
   const controls = document.getElementById('cauldron-controls');
   const availW = panel.clientWidth - 10;
   const availH = panel.clientHeight - controls.offsetHeight - 14;
-  const size = Math.min(availW, availH, 600);
+  const isMobile = window.innerWidth < 768;
+  const size = Math.min(availW, availH, isMobile ? Infinity : 600);
   canvas.width = size;
   canvas.height = size;
   canvas.style.width = size + 'px';
@@ -57,13 +58,13 @@ function drawScene() {
 
 function drawCircle() {
   const t = time * 0.001;
-  const grad = ctx.createRadialGradient(CX, CY, RADIUS * 0.5, CX, CY, RADIUS * 1.3);
+  const grad = ctx.createRadialGradient(CX, CY, RADIUS * 0.5, CX, CY, RADIUS * 0.95);
   grad.addColorStop(0, 'transparent');
   grad.addColorStop(0.7, 'rgba(45,3,53,0.1)');
   grad.addColorStop(1, 'rgba(255,215,0,0.03)');
   ctx.fillStyle = grad;
   ctx.beginPath();
-  ctx.arc(CX, CY, RADIUS * 1.3, 0, Math.PI * 2);
+  ctx.arc(CX, CY, RADIUS * 0.95, 0, Math.PI * 2);
   ctx.fill();
   ctx.strokeStyle = 'rgba(255,215,0,0.15)';
   ctx.lineWidth = 2;

@@ -148,13 +148,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
+  background: transparent;
+  border: none;
+  padding: 8px;
 }
 #game-canvas {
   border-radius: 8px;
   cursor: crosshair;
-  flex: 1;
-  width: 100%;
+  flex: 0 0 auto;
   min-height: 0;
 }
 #cauldron-controls {
@@ -611,4 +614,112 @@ body {
   height: 4px;
   border-radius: 50%;
   display: inline-block;
+}
+
+/* ─── Tab Bar (mobile) ─── */
+#tab-bar {
+  display: none;
+  grid-area: tab-bar;
+}
+#tab-bar .tab-btn {
+  flex: 1;
+  background: #111128;
+  border: none;
+  border-top: 1px solid #2a2a4e;
+  color: #666;
+  font-size: 18px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Georgia', serif;
+}
+#tab-bar .tab-btn.active {
+  color: #ffd700;
+  border-top-color: #ffd700;
+  background: #1a1a2e;
+}
+#tab-bar .tab-btn:hover {
+  color: #ffd70088;
+}
+
+/* ─── Mobile layout ─── */
+@media (max-width: 767px) {
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "center"
+      "tab-bar";
+    gap: 0;
+  }
+  .header {
+    padding: 4px 8px;
+    justify-content: space-between;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .header h1 {
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+  .header .stats {
+    font-size: 10px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  #inventory-panel,
+  #recipes-panel,
+  #log-panel {
+    display: none;
+  }
+  #inventory-panel.mobile-visible,
+  #recipes-panel.mobile-visible,
+  #log-panel.mobile-visible {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 55vh;
+    z-index: 50;
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+    box-shadow: 0 -8px 30px rgba(0,0,0,0.6);
+    margin: 0;
+    overflow: hidden;
+  }
+  #tab-bar {
+    display: flex;
+    position: relative;
+    z-index: 60;
+  }
+  #center-panel {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    padding: 8px;
+  }
+  #cauldron-controls {
+    padding: 4px;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #cauldron-controls button {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+  #cauldron-indicator {
+    font-size: 10px;
+    min-width: 0;
+  }
+  #game-canvas {
+    border-radius: 4px;
+  }
+  #qty-popup {
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
+  }
 }
