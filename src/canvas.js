@@ -2,7 +2,8 @@ import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from '
 import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
-import { log, updateUI, checkAchievements } from './ui.js';
+import { log, updateUI, checkAchievements, showWhisperToast } from './ui.js';
+import { maybeAddWhisper, resolveWhispers, addLore } from './notebook.js';
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
@@ -620,6 +621,10 @@ function finishMix() {
   state.stats.elementCreatedCount[outputId] = (state.stats.elementCreatedCount[outputId] || 0) + 3;
   checkAchievements();
 
+  if (isNew) addLore(outputId);
+  if (resolveWhispers(outputId) > 0) showWhisperToast();
+  maybeAddWhisper();
+
   if (isNew) {
     startDiscoveryAnimation(outputId);
     playDiscover();
@@ -634,6 +639,8 @@ function finishMix() {
 function finishExplosion() {
   const totalUnits = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
   const types = Object.keys(state.cauldron).length;
+  const explodedTypes = Object.keys(state.cauldron).sort();
+  if (explodedTypes.length > 1) state.triedPairs.add(explodedTypes.join('+'));
   state.cauldron = {};
   state.cauldronEntryTime = {};
 

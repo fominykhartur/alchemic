@@ -1,6 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
+import { notebook, saveNotebook } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -354,6 +355,102 @@ function updateCauldronIndicator() {
   } else {
     const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${buildIconSVG(id, 14)} ${ELEMENTS[id].name} <b>×${qty}</b></span>`);
     indicator.innerHTML = parts.join(' ');
+    const types = Object.keys(state.cauldron).sort();
+    if (types.length > 1 && state.triedPairs.has(types.join('+'))) {
+      const warn = document.createElement('span');
+      warn.className = 'tried-warning';
+      warn.textContent = '⚠ Эту комбинацию уже пробовали — возможен взрыв';
+      indicator.appendChild(warn);
+    }
+  }
+}
+
+// ─── Whisper toast ───
+let whisperToastTimer = null;
+
+export function showWhisperToast() {
+  const toast = document.getElementById('whisper-toast');
+  if (!toast) return;
+  toast.classList.add('show');
+  clearTimeout(whisperToastTimer);
+  whisperToastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// ─── Grimoire (notebook) ───
+export function updateNotebookBadge() {
+  const badge = document.getElementById('notebook-badge');
+  if (!badge) return;
+  badge.style.display = notebook.hasUnseen ? '' : 'none';
+}
+
+export function openGrimoire() {
+  renderNotebook();
+  notebook.hasUnseen = false;
+  saveNotebook();
+  updateNotebookBadge();
+  document.getElementById('grimoire-modal').style.display = '';
+}
+
+export function closeGrimoire(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('grimoire-modal').style.display = 'none';
+}
+
+function renderNotebook() {
+  const content = document.getElementById('notebook-content');
+  content.innerHTML = '';
+  const whispers = notebook.entries.filter(e => e.type === 'whisper');
+  const unresolved = whispers.filter(e => !e.resolved);
+  const resolved = whispers.filter(e => e.resolved);
+  const lore = notebook.entries.filter(e => e.type === 'lore').sort((a, b) => a.unlockedAt - b.unlockedAt);
+
+  if (unresolved.length > 0) {
+    const title = document.createElement('div');
+    title.className = 'nb-section-title';
+    title.textContent = '❓ Неразгаданные шёпоты';
+    content.appendChild(title);
+    unresolved.forEach(e => {
+      const row = document.createElement('div');
+      row.className = 'nb-entry nb-whisper unresolved';
+      row.innerHTML = `<span class="nb-icon">${e.source === 'oracle' ? '🔮' : '❓'}</span><span class="nb-text">${e.text}</span>`;
+      content.appendChild(row);
+    });
+  }
+
+  if (resolved.length > 0) {
+    const title = document.createElement('div');
+    title.className = 'nb-section-title';
+    title.textContent = '✓ Разгаданные';
+    content.appendChild(title);
+    resolved.forEach(e => {
+      const el = ELEMENTS[e.pointsTo];
+      const row = document.createElement('div');
+      row.className = 'nb-entry nb-whisper resolved';
+      row.innerHTML = `<span class="nb-icon">${e.source === 'oracle' ? '🔮' : '✓'}</span><span class="nb-text">${e.text}</span>${el ? `<span class="nb-target">→ ${buildIconSVG(el.id, 14)} ${el.name}</span>` : ''}`;
+      content.appendChild(row);
+    });
+  }
+
+  if (lore.length > 0) {
+    const title = document.createElement('div');
+    title.className = 'nb-section-title';
+    title.textContent = '📖 Записи о стихиях';
+    content.appendChild(title);
+    lore.forEach(e => {
+      const el = ELEMENTS[e.elementId];
+      if (!el) return;
+      const row = document.createElement('div');
+      row.className = 'nb-entry nb-lore';
+      row.innerHTML = `<span class="nb-icon">${buildIconSVG(el.id, 18)}</span><span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${e.text}</span></span>`;
+      content.appendChild(row);
+    });
+  }
+
+  if (unresolved.length === 0 && resolved.length === 0 && lore.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'nb-empty';
+    empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки и записи.';
+    content.appendChild(empty);
   }
 }
 

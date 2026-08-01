@@ -54,6 +54,22 @@ body {
 }
 .header .stats span { color: #ffd700; font-weight: bold; }
 
+#notebook-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b8965a;
+  box-shadow: 0 0 6px rgba(184,150,90,0.9);
+  animation: notebook-badge-pulse 1.6s ease-in-out infinite;
+}
+@keyframes notebook-badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
 .panel {
   background: #111128;
   border: 1px solid #2a2a4e;
@@ -214,6 +230,15 @@ body {
   align-items: center;
   gap: 2px;
   margin: 0 2px;
+}
+.tried-warning {
+  display: block;
+  width: 100%;
+  margin-top: 3px;
+  font-size: 11px;
+  color: #ff8c69;
+  text-align: center;
+  font-style: italic;
 }
 
 
@@ -385,6 +410,56 @@ body {
 #ach-toast.show { opacity: 1; transform: translateX(0); pointer-events: auto; }
 #ach-toast .ach-toast-title { color: #ffd700; font-weight: bold; margin-bottom: 2px; }
 #ach-toast .ach-toast-desc { color: #ccc; }
+
+/* Whisper toast */
+#whisper-toast {
+  position: fixed; top: 60px; left: 16px; z-index: 1100;
+  background: linear-gradient(135deg, #1a1a2e, #2a1a3e);
+  border: 1px solid #b8965a66; border-radius: 8px;
+  padding: 10px 14px; max-width: 300px;
+  box-shadow: 0 0 20px rgba(184,150,90,0.25);
+  font-size: 12px; transition: opacity 0.3s, transform 0.3s;
+  opacity: 0; transform: translateX(-40px); pointer-events: none;
+}
+#whisper-toast.show { opacity: 1; transform: translateX(0); pointer-events: auto; }
+#whisper-toast .whisper-toast-title { color: #ffd700; font-weight: bold; margin-bottom: 2px; }
+#whisper-toast .whisper-toast-desc { color: #c0c0d0; }
+
+/* ─── Grimoire (notebook) ─── */
+.nb-section-title {
+  font-size: 12px;
+  color: #ffd700aa;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 10px 0 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #2a2a4e44;
+}
+.nb-section-title:first-child { margin-top: 0; }
+.nb-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  background: #1a1a2e44;
+  border: 1px solid #2a2a4e44;
+  font-size: 13px;
+}
+.nb-entry .nb-icon { flex-shrink: 0; font-size: 14px; line-height: 1.4; }
+.nb-entry .nb-text { flex: 1; color: #c0c0d0; font-style: italic; line-height: 1.4; }
+.nb-entry .nb-target { flex-shrink: 0; color: #ffd70088; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+.nb-whisper.unresolved { border-color: #b8965a44; }
+.nb-whisper.unresolved .nb-text { color: #9a9ab5; }
+.nb-whisper.resolved { opacity: 0.75; }
+.nb-whisper.resolved .nb-text { text-decoration: line-through; color: #777; }
+.nb-whisper.oracle { border-color: #8a6fb5; background: #1a162a; }
+.nb-lore { align-items: center; }
+.nb-lore-body { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.nb-lore-name { color: #ddd; font-weight: bold; font-size: 13px; }
+.nb-lore-desc { color: #9a9ab5; font-size: 12px; font-style: italic; }
+.nb-empty { color: #777; font-size: 13px; text-align: center; padding: 24px 8px; font-style: italic; }
 
 /* Recipe Tree */
 .tree-node {

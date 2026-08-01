@@ -11,6 +11,7 @@ export const state = {
   animating: false,
   pendingAction: null,
   achievements: new Set(),
+  triedPairs: new Set(),
   stats: {
     mixCount: 0,
     explosionCount: 0,
@@ -34,8 +35,9 @@ export function saveGame() {
     if (!ELEMENTS[id]?.starter) inventory[id] = qty;
   });
   const achievements = [...state.achievements];
+  const triedPairs = [...state.triedPairs];
   const stats = { ...state.stats, elementCreatedCount: { ...state.stats.elementCreatedCount } };
-  const data = { v: 1, discovered, foundRecipes, inventory, achievements, stats };
+  const data = { v: 1, discovered, foundRecipes, inventory, achievements, triedPairs, stats };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {}
@@ -57,6 +59,7 @@ export function loadGame() {
       if (!ELEMENTS[id]?.starter) state.inventory[id] = qty;
     });
     (data.achievements || []).forEach(id => state.achievements.add(id));
+    (data.triedPairs || []).forEach(p => state.triedPairs.add(p));
     if (data.stats) {
       Object.assign(state.stats, data.stats);
       if (!data.stats.elementCreatedCount) state.stats.elementCreatedCount = {};

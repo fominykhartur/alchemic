@@ -2,7 +2,7 @@ import { ELEMENTS } from './data.js';
 import { state } from './state.js';
 import { playDrop } from './audio.js';
 import { performMix, canvas, CX, CY, RADIUS } from './canvas.js';
-import { log, updateUI, hideElementInfo, closeAchievements, closeTree } from './ui.js';
+import { log, updateUI, hideElementInfo, closeAchievements, closeTree, closeGrimoire } from './ui.js';
 
 export function setupEventListeners() {
   // Canvas drop zone
@@ -135,6 +135,7 @@ export function setupEventListeners() {
       hideElementInfo();
       closeAchievements();
       closeTree();
+      closeGrimoire();
     }
   });
 
