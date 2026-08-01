@@ -13,26 +13,35 @@ export const notebook = {
 
 // ─── Persistence ───
 
+export function exportNotebookData() {
+  return {
+    v: 1,
+    entries: notebook.entries,
+    knownRecipes: notebook.knownRecipes,
+    hasUnseen: notebook.hasUnseen,
+  };
+}
+
+export function importNotebookData(data) {
+  if (!data || data.v !== 1) return false;
+  notebook.entries = Array.isArray(data.entries) ? data.entries : [];
+  notebook.knownRecipes = Array.isArray(data.knownRecipes) ? data.knownRecipes : [];
+  notebook.hasUnseen = !!data.hasUnseen;
+  return true;
+}
+
 export function saveNotebook() {
   try {
-    localStorage.setItem(NOTEBOOK_KEY, JSON.stringify({
-      v: 1,
-      entries: notebook.entries,
-      knownRecipes: notebook.knownRecipes,
-      hasUnseen: notebook.hasUnseen,
-    }));
+    localStorage.setItem(NOTEBOOK_KEY, JSON.stringify(exportNotebookData()));
   } catch {}
+  window.dispatchEvent(new CustomEvent('alchemy:saved'));
 }
 
 export function loadNotebook() {
   try {
     const raw = localStorage.getItem(NOTEBOOK_KEY);
     if (!raw) return false;
-    const data = JSON.parse(raw);
-    notebook.entries = Array.isArray(data.entries) ? data.entries : [];
-    notebook.knownRecipes = Array.isArray(data.knownRecipes) ? data.knownRecipes : [];
-    notebook.hasUnseen = !!data.hasUnseen;
-    return true;
+    return importNotebookData(JSON.parse(raw));
   } catch {
     return false;
   }

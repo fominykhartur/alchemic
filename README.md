@@ -19,6 +19,7 @@
 - Древо рецептов (кто из кого получается)
 - Детальная статистика (время, смешивания, взрывы, создано элементов)
 - Автосохранение в localStorage
+- Облачная синхронизация прогресса через Supabase (код в шапке — введи его на другом устройстве)
 - Звуковые эффекты через Web Audio API
 - Адаптивный дизайн (десктоп + мобильные)
 
@@ -39,6 +40,7 @@
 - **SVG + Canvas** — система иконок для элементов
 - **CSS** — вся стилизация, сетки, модальные окна
 - **localStorage** — сохранение прогресса
+- **Supabase** — облачные сохранения (REST через `fetch`, без SDK)
 - **Web Audio API** — генерация звуков (без аудиофайлов)
 
 ## Структура проекта
@@ -48,6 +50,8 @@ alchemic/
 ├── index.html           — разметка страницы
 ├── style.css            — стили (тёмная тема, сетка, модалки)
 ├── server.ps1           — скрипт локального сервера
+├── .github/workflows/
+│   └── deploy.yml       — деплой на GitHub Pages + генерация src/config.js из секретов
 ├── src/
 │   ├── main.js          — точка входа, инициализация
 │   ├── canvas.js        — Canvas 2D рендер котла и анимаций
@@ -56,9 +60,46 @@ alchemic/
 │   ├── ui.js            — DOM-интерфейс (инвентарь, книга, логи)
 │   ├── icons.js         — генерация иконок (SVG для DOM, Canvas для рендера)
 │   ├── events.js        — обработчики (drag/drop, клики, клавиши)
-│   └── audio.js         — звуковые эффекты
+│   ├── audio.js         — звуковые эффекты
+│   ├── notebook.js      — гримуар, шёпоты, жертвоприношения
+│   ├── sync.js          — облачная синхронизация (push/pull/merge)
+│   ├── supabase.js      — REST-клиент Supabase (fetch)
+│   └── config.js        — SUPABASE_URL и SUPABASE_ANON_KEY (плейсхолдеры)
 └── .gitignore
 ```
+
+## Облачная синхронизация (Supabase)
+
+Прогресс сохраняется локально (localStorage) и, при наличии конфига, автоматически синхронизируется в Supabase. Код синхронизации — в шапке игры: введи тот же код на другом устройстве, чтобы перенести туда прогресс. При конфликте данные **объединяются** (множества — по объединению, счётчики — по максимуму, ничего не теряется).
+
+### 1. Создать таблицу в Supabase
+
+В SQL-редакторе проекта (SQL Editor → New query):
+
+```sql
+create table saves (
+  code text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+
+alter table saves enable row level security;
+
+create policy "anon all" on saves for all to anon using (true) with check (true);
+```
+
+### 2. Добавить секреты в GitHub
+
+Repo → **Settings → Secrets and variables → Actions** → новые секреты:
+- `SUPABASE_URL` — например `https://banxtvjgjksshqvpetvh.supabase.co`
+- `SUPABASE_ANON_KEY` — публичный anon key (Settings → API → anon public / `sb_publishable_...`). **Не** используй `service_role`.
+
+### 3. Деплой
+
+- Repo → **Settings → Pages → Source: GitHub Actions**
+- Workflow `.github/workflows/deploy.yml` генерирует `src/config.js` из секретов и публикует на Pages при каждом `git push` в `master`.
+
+> Локально без конфига (`src/config.js` пуст) облако отключено — игра работает как раньше, только localStorage. Управление облаком: поле «Применить», «⧉» копирует код, «🗑» удаляет облачное сохранение.
 
 ## Установка и запуск
 

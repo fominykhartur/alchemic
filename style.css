@@ -54,6 +54,56 @@ body {
 }
 .header .stats span { color: #ffd700; font-weight: bold; }
 
+/* Cloud sync bar */
+.sync-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.sync-status {
+  font-size: 12px;
+  color: #9a9ab5;
+  white-space: nowrap;
+}
+.sync-status.online { color: #7dff7d; }
+.sync-status.syncing { color: #ffd700; }
+.sync-status.offline { color: #ff6b6b; }
+.sync-status.disabled { color: #666666; }
+.sync-key-input {
+  width: 130px;
+  background: #111128;
+  border: 1px solid #2a2a4e;
+  border-radius: 4px;
+  color: #d0d0e0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  padding: 4px 6px;
+  text-transform: uppercase;
+  outline: none;
+  user-select: text;
+}
+.sync-key-input:focus { border-color: #ffd70088; }
+.sync-btn {
+  background: #111128;
+  color: #d0d0e0;
+  border: 1px solid #2a2a4e;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sync-btn:hover {
+  border-color: #ffd70088;
+  color: #ffd700;
+}
+.sync-btn.danger:hover {
+  border-color: #ff4444;
+  color: #ff6b6b;
+}
+
 #notebook-badge {
   position: absolute;
   top: -4px;
@@ -815,6 +865,14 @@ body {
     font-size: 10px;
     gap: 6px;
     flex-wrap: wrap;
+  }
+  .sync-bar {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .sync-key-input {
+    width: 90px;
+    font-size: 11px;
   }
   #inventory-panel,
   #recipes-panel,
