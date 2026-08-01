@@ -1,7 +1,9 @@
 import { ELEMENTS, RECIPES, recipeKey, ELEMENT_DEPTHS, ELEMENT_CATS } from './data.js';
+import { TIER } from './icons.js';
 import { state } from './state.js';
 
 const NOTEBOOK_KEY = 'alchemic_notebook_v1';
+const MAX_ENTRIES = 200;
 
 export const notebook = {
   entries: [],
@@ -132,10 +134,10 @@ function buildWhisperText(recipe, level = 'ambient') {
 
   const notable = pickNotableIngredient(recipe);
   const name = (ELEMENTS[notable.id]?.name || notable.id).toLowerCase();
+  const others = distinct.filter(id => id !== notable.id);
 
-  if (recipe.inputs.length === 2) {
-    const other = recipe.inputs.find(i => i.id !== notable.id);
-    const cat = getCategoryHint(other.id);
+  if (distinct.length === 2) {
+    const cat = getCategoryHint(others[0]);
     const set = level === 'prophecy' ? PROPHECY_PAIR_TEMPLATES
       : level === 'oracle' ? ORACLE_PAIR_TEMPLATES
       : PAIR_TEMPLATES;
@@ -143,19 +145,16 @@ function buildWhisperText(recipe, level = 'ambient') {
     return t(name, cat);
   }
 
-  if (recipe.inputs.length === 3) {
-    const others = recipe.inputs.filter(i => i.id !== notable.id);
-    const cat1 = getCategoryHint(others[0].id);
-    const cat2 = getCategoryHint(others[1]?.id);
+  if (distinct.length === 3) {
     const set = level === 'prophecy' ? PROPHECY_TRIPLE_TEMPLATES
       : level === 'oracle' ? ORACLE_TRIPLE_TEMPLATES
       : TRIPLE_TEMPLATES;
     const t = set[Math.floor(Math.random() * set.length)];
-    return t(name, cat1, cat2);
+    if (level === 'ambient') return t(name, getCategoryHint(others[0]));
+    return t(name, getCategoryHint(others[0]), getCategoryHint(others[1]));
   }
 
-  const other = recipe.inputs.find(i => i.id !== notable.id);
-  const cat = getCategoryHint(other.id);
+  const cat = getCategoryHint(others[0]);
   const set = level === 'prophecy' ? PROPHECY_GRAND_TEMPLATES
     : level === 'oracle' ? ORACLE_GRAND_TEMPLATES
     : GRAND_TEMPLATES;
@@ -200,6 +199,19 @@ export function onOracleUnlocked(level) {
   });
 }
 
+function pruneEntries() {
+  if (notebook.entries.length <= MAX_ENTRIES) return;
+  let overflow = notebook.entries.length - MAX_ENTRIES;
+  notebook.entries = notebook.entries.filter(e => {
+    if (overflow <= 0) return true;
+    if (e.type === 'lore' || (e.type === 'whisper' && e.resolved)) {
+      overflow--;
+      return false;
+    }
+    return true;
+  });
+}
+
 function addWhisper({ text, pointsTo, source }) {
   notebook.entries.push({
     id: `w_${Date.now()}`,
@@ -210,6 +222,7 @@ function addWhisper({ text, pointsTo, source }) {
     resolved: false,
     createdAt: Date.now(),
   });
+  pruneEntries();
   notebook.hasUnseen = true;
   saveNotebook();
 }
@@ -243,7 +256,45 @@ export function addLore(elementId) {
     text: el.desc || '',
     unlockedAt: Date.now(),
   });
+  pruneEntries();
   saveNotebook();
+}
+
+// ─── Sacrifice economy ───
+
+export function getRevealCost(recipe) {
+  const outputDepth = ELEMENT_DEPTHS[recipe.output] ?? 0;
+  const distinct = new Set(recipe.inputs.map(i => i.id)).size;
+  const totalAmount = recipe.inputs.reduce((sum, i) => sum + i.a, 0);
+  return Math.ceil(outputDepth * 1.5 + distinct * 2 + totalAmount * 0.5);
+}
+
+export function getRevealCostForOutput(outputId) {
+  let total = 0;
+  RECIPES.forEach(r => {
+    if (r.output === outputId && !notebook.knownRecipes.includes(recipeKey(r))) total += getRevealCost(r);
+  });
+  return total;
+}
+
+export function getSacrificeValue(elementId) {
+  return 1 + (ELEMENT_DEPTHS[elementId] ?? 0);
+}
+
+export function canSacrifice(elementId) {
+  const el = ELEMENTS[elementId];
+  if (!el) return false;
+  if (el.starter) return false;
+  if (el.infinite) return false;
+  if (TIER[elementId] === 'legendary') return false;
+  return true;
+}
+
+export function getRequiredAmount(outputId, sacrificeId) {
+  if (!canSacrifice(sacrificeId)) return null;
+  const cost = getRevealCostForOutput(outputId);
+  if (cost <= 0) return 0;
+  return Math.ceil(cost / getSacrificeValue(sacrificeId));
 }
 
 // ─── Recipe reveal (sacrifice) ───

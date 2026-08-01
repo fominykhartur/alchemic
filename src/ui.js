@@ -1,7 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook, revealRecipesForOutput } from './notebook.js';
+import { notebook, saveNotebook, revealRecipesForOutput, canSacrifice, getRequiredAmount, getRevealCostForOutput } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -479,9 +479,36 @@ function getSacrificeDonors() {
     const el = ELEMENTS[id];
     if (!el) return false;
     if (!state.discovered.has(id)) return false;
-    if (el.starter || el.infinite) return true;
-    return (state.inventory[id] || 0) >= 2;
+    if (!canSacrifice(id)) return false;
+    return (state.inventory[id] || 0) >= 1;
   });
+}
+
+function buildSacrificeDonors(donorSelect, targetId) {
+  donorSelect.innerHTML = '';
+  const donors = getSacrificeDonors();
+  donors.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
+  const cost = targetId ? getRevealCostForOutput(targetId) : 0;
+  donors.forEach(id => {
+    const el = ELEMENTS[id];
+    const qty = state.inventory[id] || 0;
+    const required = targetId ? getRequiredAmount(targetId, id) : 0;
+    const opt = document.createElement('option');
+    opt.value = id;
+    const enough = !targetId || required <= qty;
+    opt.textContent = enough
+      ? `${el.name} ×${qty}`
+      : `${el.name} ×${qty} (нужно ${required})`;
+    opt.disabled = !enough;
+    donorSelect.appendChild(opt);
+  });
+  if (donors.length === 0) {
+    const opt = document.createElement('option');
+    opt.textContent = '— нет доноров —';
+    opt.disabled = true;
+    donorSelect.appendChild(opt);
+  }
+  return cost;
 }
 
 function renderSacrificeSection(content) {
@@ -534,23 +561,26 @@ function renderSacrificeSection(content) {
   donorLabel.textContent = 'Жертва:';
   const donorSelect = document.createElement('select');
   donorSelect.id = 'sacrifice-donor';
-  donors.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
-  donors.forEach(id => {
-    const el = ELEMENTS[id];
-    const opt = document.createElement('option');
-    opt.value = id;
-    const qty = el.starter || el.infinite ? '∞' : state.inventory[id];
-    opt.textContent = `${el.name} ×${qty}`;
-    donorSelect.appendChild(opt);
-  });
   donorRow.appendChild(donorLabel);
   donorRow.appendChild(donorSelect);
   box.appendChild(donorRow);
 
+  const costNote = document.createElement('div');
+  costNote.className = 'sacrifice-cost';
+  costNote.textContent = 'Стоимость: —';
+  box.appendChild(costNote);
+
   const btn = document.createElement('button');
   btn.className = 'sacrifice-btn';
   btn.textContent = 'Пожертвовать и узнать';
-  btn.addEventListener('click', () => performSacrifice(targetSelect.value, donorSelect.value));
+  btn.addEventListener('click', () => {
+    const target = targetSelect.value;
+    const donor = donorSelect.value;
+    if (!target || !donor) return;
+    const required = getRequiredAmount(target, donor);
+    if (required > (state.inventory[donor] || 0)) return;
+    performSacrifice(target, donor, required);
+  });
   box.appendChild(btn);
 
   const note = document.createElement('div');
@@ -558,16 +588,23 @@ function renderSacrificeSection(content) {
   note.textContent = 'Рецепт появится в Книге рецептов, но засчитается только после реального крафта.';
   box.appendChild(note);
 
+  const refreshDonors = () => {
+    const cost = buildSacrificeDonors(donorSelect, targetSelect.value);
+    costNote.textContent = `Стоимость: ${cost > 0 ? cost + ' очков силы' : '—'}`;
+  };
+  targetSelect.addEventListener('change', refreshDonors);
+  refreshDonors();
+
   content.appendChild(box);
 }
 
-function performSacrifice(targetId, donorId) {
+function performSacrifice(targetId, donorId, amount) {
   const donor = ELEMENTS[donorId];
   if (!donor) return;
   if (!donor.starter && !donor.infinite) {
     const qty = state.inventory[donorId] || 0;
-    if (qty < 1) return;
-    state.inventory[donorId] = qty - 1;
+    if (qty < amount) return;
+    state.inventory[donorId] = qty - amount;
   }
   const revealed = revealRecipesForOutput(targetId);
   const target = ELEMENTS[targetId];
