@@ -62,12 +62,47 @@ const GRAND_TEMPLATES = [
   () => `...чувствую: ответ не в новом ингредиенте, а в том, что я уже держал в руках раньше`,
 ];
 
+const ORACLE_PAIR_TEMPLATES = [
+  (a, cat) => `...${a} тянется к чему-то из мира ${cat}`,
+  (a, cat) => `...союз с ${a} следует искать среди ${cat}`,
+];
+
+const ORACLE_TRIPLE_TEMPLATES = [
+  (a, cat1, cat2) => `...${a} сплетается с нитью из ${cat1} и ещё одной из ${cat2}`,
+];
+
+const ORACLE_GRAND_TEMPLATES = [
+  (cat) => `...одна из нитей грядущего тянется из мира ${cat}`,
+];
+
+const PROPHECY_PAIR_TEMPLATES = [
+  (a, cat) => `...почти вижу: ${a} сойдётся с чем-то из ${cat}`,
+  (a, cat) => `...Хрономант молвит: ${a} ждёт своего из мира ${cat}`,
+];
+
+const PROPHECY_TRIPLE_TEMPLATES = [
+  (a, cat1, cat2) => `...нить ясна: ${a}, затем ${cat1}, и наконец ${cat2}`,
+];
+
+const PROPHECY_GRAND_TEMPLATES = [
+  (a, cat) => `...${a} — лишь часть; другая лежит в мире ${cat}`,
+];
+
 const CATEGORY_HINTS = {
   nature: 'природы', metal: 'металла', artifact: 'рукотворного',
   magic: 'магии', entities: 'иных существ', spirit: 'духа',
   chronomancy: 'времени', illusion: 'иллюзий', cosmos: 'космоса',
   alchemy: 'алхимии', state: 'стихийных состояний', legendary: 'легенд',
 };
+
+const ORACLE_ELEMENT = 'mirror';
+const PROPHECY_ELEMENT = 'chronomancer';
+
+export function getOracleLevel() {
+  if (state.discovered.has(PROPHECY_ELEMENT)) return 'prophecy';
+  if (state.discovered.has(ORACLE_ELEMENT)) return 'oracle';
+  return 'ambient';
+}
 
 export function getReachableRecipes() {
   return RECIPES.filter(r =>
@@ -82,7 +117,11 @@ function pickNotableIngredient(recipe) {
   )[0];
 }
 
-function buildWhisperText(recipe) {
+function getCategoryHint(id) {
+  return CATEGORY_HINTS[ELEMENT_CATS[id]] || 'чего-то ещё';
+}
+
+function buildWhisperText(recipe, level = 'ambient') {
   const distinct = [...new Set(recipe.inputs.map(i => i.id))];
 
   if (distinct.length === 1) {
@@ -95,38 +134,69 @@ function buildWhisperText(recipe) {
   const name = (ELEMENTS[notable.id]?.name || notable.id).toLowerCase();
 
   if (recipe.inputs.length === 2) {
-    const t = PAIR_TEMPLATES[Math.floor(Math.random() * PAIR_TEMPLATES.length)];
-    return t(name);
+    const other = recipe.inputs.find(i => i.id !== notable.id);
+    const cat = getCategoryHint(other.id);
+    const set = level === 'prophecy' ? PROPHECY_PAIR_TEMPLATES
+      : level === 'oracle' ? ORACLE_PAIR_TEMPLATES
+      : PAIR_TEMPLATES;
+    const t = set[Math.floor(Math.random() * set.length)];
+    return t(name, cat);
   }
 
   if (recipe.inputs.length === 3) {
     const others = recipe.inputs.filter(i => i.id !== notable.id);
-    const hintCat = ELEMENT_CATS[others[0].id];
-    const catLabel = CATEGORY_HINTS[hintCat] || 'чего-то ещё';
-    const t = TRIPLE_TEMPLATES[Math.floor(Math.random() * TRIPLE_TEMPLATES.length)];
-    return t(name, catLabel);
+    const cat1 = getCategoryHint(others[0].id);
+    const cat2 = getCategoryHint(others[1]?.id);
+    const set = level === 'prophecy' ? PROPHECY_TRIPLE_TEMPLATES
+      : level === 'oracle' ? ORACLE_TRIPLE_TEMPLATES
+      : TRIPLE_TEMPLATES;
+    const t = set[Math.floor(Math.random() * set.length)];
+    return t(name, cat1, cat2);
   }
 
-  const t = GRAND_TEMPLATES[Math.floor(Math.random() * GRAND_TEMPLATES.length)];
-  return t();
+  const other = recipe.inputs.find(i => i.id !== notable.id);
+  const cat = getCategoryHint(other.id);
+  const set = level === 'prophecy' ? PROPHECY_GRAND_TEMPLATES
+    : level === 'oracle' ? ORACLE_GRAND_TEMPLATES
+    : GRAND_TEMPLATES;
+  const t = set[Math.floor(Math.random() * set.length)];
+  return t(name, cat);
 }
 
-export function maybeAddWhisper() {
-  if (state.stats.mixCount % 7 !== 0) return;
+function pickWhisperTarget() {
   const reachable = getReachableRecipes();
-  if (reachable.length === 0) return;
+  if (reachable.length === 0) return null;
   const alreadyHinted = new Set(
     notebook.entries
       .filter(e => e.type === 'whisper' && !e.resolved)
       .map(e => e.pointsTo)
   );
   const candidates = reachable.filter(r => !alreadyHinted.has(r.output));
-  if (candidates.length === 0) return;
-  const pick = candidates[Math.floor(Math.random() * candidates.length)];
+  if (candidates.length === 0) return null;
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+export function maybeAddWhisper() {
+  const level = getOracleLevel();
+  const every = level === 'prophecy' ? 3 : level === 'oracle' ? 5 : 7;
+  if (state.stats.mixCount % every !== 0) return;
+  const target = pickWhisperTarget();
+  if (!target) return;
   addWhisper({
-    text: buildWhisperText(pick),
-    pointsTo: pick.output,
-    source: 'ambient',
+    text: buildWhisperText(target, level),
+    pointsTo: target.output,
+    source: level,
+  });
+}
+
+export function onOracleUnlocked(level) {
+  if (notebook.entries.some(e => e.type === 'whisper' && !e.resolved)) return;
+  const target = pickWhisperTarget();
+  if (!target) return;
+  addWhisper({
+    text: buildWhisperText(target, level),
+    pointsTo: target.output,
+    source: level,
   });
 }
 

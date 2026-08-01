@@ -3,7 +3,7 @@ import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } fr
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
 import { log, updateUI, checkAchievements, showWhisperToast } from './ui.js';
-import { maybeAddWhisper, resolveWhispers, addLore } from './notebook.js';
+import { maybeAddWhisper, resolveWhispers, addLore, onOracleUnlocked } from './notebook.js';
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
@@ -621,7 +621,16 @@ function finishMix() {
   state.stats.elementCreatedCount[outputId] = (state.stats.elementCreatedCount[outputId] || 0) + 3;
   checkAchievements();
 
-  if (isNew) addLore(outputId);
+  if (isNew) {
+    addLore(outputId);
+    if (outputId === 'mirror') {
+      onOracleUnlocked('oracle');
+      log('🔮 Зеркало отражает грань грядущего — Гримуар шепчет', 'discovery');
+    } else if (outputId === 'chronomancer') {
+      onOracleUnlocked('prophecy');
+      log('✨ Хрономант прозревает нити времени — предвидение обострилось', 'discovery');
+    }
+  }
   if (resolveWhispers(outputId) > 0) showWhisperToast();
   maybeAddWhisper();
 

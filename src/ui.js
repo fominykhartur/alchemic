@@ -396,11 +396,12 @@ export function closeGrimoire(e) {
   document.getElementById('grimoire-modal').style.display = 'none';
 }
 
+const SOURCE_ICONS = { ambient: '❓', oracle: '🔮', prophecy: '✨' };
+
 function renderNotebook() {
   const content = document.getElementById('notebook-content');
   content.innerHTML = '';
-  const whispers = notebook.entries.filter(e => e.type === 'whisper');
-  const unresolved = whispers.filter(e => !e.resolved);
+  const whispers = notebook.entries.filter(e => e.type === 'whisper');  const unresolved = whispers.filter(e => !e.resolved);
   const resolved = whispers.filter(e => e.resolved);
   const lore = notebook.entries.filter(e => e.type === 'lore').sort((a, b) => a.unlockedAt - b.unlockedAt);
 
@@ -411,8 +412,8 @@ function renderNotebook() {
     content.appendChild(title);
     unresolved.forEach(e => {
       const row = document.createElement('div');
-      row.className = 'nb-entry nb-whisper unresolved';
-      row.innerHTML = `<span class="nb-icon">${e.source === 'oracle' ? '🔮' : '❓'}</span><span class="nb-text">${e.text}</span>`;
+      row.className = `nb-entry nb-whisper unresolved ${e.source}`;
+      row.innerHTML = `<span class="nb-icon">${SOURCE_ICONS[e.source] || '❓'}</span><span class="nb-text">${e.text}</span>`;
       content.appendChild(row);
     });
   }
@@ -425,8 +426,8 @@ function renderNotebook() {
     resolved.forEach(e => {
       const el = ELEMENTS[e.pointsTo];
       const row = document.createElement('div');
-      row.className = 'nb-entry nb-whisper resolved';
-      row.innerHTML = `<span class="nb-icon">${e.source === 'oracle' ? '🔮' : '✓'}</span><span class="nb-text">${e.text}</span>${el ? `<span class="nb-target">→ ${buildIconSVG(el.id, 14)} ${el.name}</span>` : ''}`;
+      row.className = `nb-entry nb-whisper resolved ${e.source}`;
+      row.innerHTML = `<span class="nb-icon">✓</span><span class="nb-text">${e.text}</span>${el ? `<span class="nb-target">→ ${buildIconSVG(el.id, 14)} ${el.name}</span>` : ''}`;
       content.appendChild(row);
     });
   }
