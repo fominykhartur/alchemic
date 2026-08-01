@@ -463,6 +463,57 @@ body {
 .nb-lore-desc { color: #9a9ab5; font-size: 12px; font-style: italic; }
 .nb-empty { color: #777; font-size: 13px; text-align: center; padding: 24px 8px; font-style: italic; }
 
+/* ─── Sacrifice ritual ─── */
+.recipe-entry.known {
+  opacity: 1;
+  border-color: #b8965a44;
+  background: #141220;
+}
+.recipe-entry.known .recipe-formula { color: #c8b890; }
+.recipe-reveal-mark { margin-right: 3px; font-size: 11px; }
+.sacrifice-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #b8965a44;
+  border-radius: 6px;
+  background: #141220;
+}
+.sacrifice-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.sacrifice-row label { color: #9a9ab5; flex-shrink: 0; min-width: 48px; }
+.sacrifice-row select {
+  flex: 1;
+  background: #0d0d20;
+  color: #d8d8e8;
+  border: 1px solid #2a2a4e;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.sacrifice-btn {
+  background: linear-gradient(135deg, #4a1a1a, #2a1a1a);
+  color: #ffd0d0;
+  border: 1px solid #ff444488;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sacrifice-btn:hover {
+  border-color: #ff4444;
+  box-shadow: 0 0 10px rgba(255,68,68,0.3);
+}
+.sacrifice-hint { font-size: 11px; color: #888; font-style: italic; }
+
 /* Recipe Tree */
 .tree-node {
   margin: 1px 0; padding: 2px 0;

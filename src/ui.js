@@ -1,7 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook } from './notebook.js';
+import { notebook, saveNotebook, revealRecipesForOutput } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -300,7 +300,8 @@ export function hideElementInfo() {
 export function renderRecipes() {
   const list = document.getElementById('recipes-list');
   list.innerHTML = '';
-  const foundAny = RECIPES.some(r => state.foundRecipes.has(recipeKey(r)));
+  const knownKeys = new Set(notebook.knownRecipes);
+  const foundAny = RECIPES.some(r => state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r)));
   if (!foundAny) {
     const empty = document.createElement('div');
     empty.style.cssText = 'color:#555;text-align:center;padding:20px;font-size:13px;';
@@ -309,12 +310,15 @@ export function renderRecipes() {
     return;
   }
   RECIPES.forEach(r => {
-    if (!state.foundRecipes.has(recipeKey(r))) return;
+    const key = recipeKey(r);
+    const isFound = state.foundRecipes.has(key);
+    const isKnown = !isFound && knownKeys.has(key);
+    if (!isFound && !isKnown) return;
     const output = ELEMENTS[r.output];
     const entry = document.createElement('div');
-    entry.className = 'recipe-entry found';
+    entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
     const formula = r.inputs.map(i => `<span style="color:${ELEMENTS[i.id]?.color || '#888'}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
-    entry.innerHTML = `<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
+    entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
     list.appendChild(entry);
   });
 }
@@ -447,12 +451,131 @@ function renderNotebook() {
     });
   }
 
+  renderSacrificeSection(content);
+
   if (unresolved.length === 0 && resolved.length === 0 && lore.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'nb-empty';
     empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки и записи.';
     content.appendChild(empty);
   }
+}
+
+// ─── Sacrifice ritual ───
+function getSacrificeTargets() {
+  const knownKeys = new Set(notebook.knownRecipes);
+  return ELEMENT_IDS.filter(id => {
+    const el = ELEMENTS[id];
+    if (!el || el.starter || el.infinite) return false;
+    if (!state.discovered.has(id)) return false;
+    const recipesFor = RECIPES.filter(r => r.output === id);
+    if (recipesFor.length === 0) return false;
+    return !recipesFor.some(r => state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r)));
+  });
+}
+
+function getSacrificeDonors() {
+  return ELEMENT_IDS.filter(id => {
+    const el = ELEMENTS[id];
+    if (!el) return false;
+    if (!state.discovered.has(id)) return false;
+    if (el.starter || el.infinite) return true;
+    return (state.inventory[id] || 0) >= 2;
+  });
+}
+
+function renderSacrificeSection(content) {
+  const title = document.createElement('div');
+  title.className = 'nb-section-title';
+  title.textContent = '🔥 Жертвенный ритуал';
+  content.appendChild(title);
+
+  const targets = getSacrificeTargets();
+  const donors = getSacrificeDonors();
+
+  if (targets.length === 0) {
+    const hint = document.createElement('div');
+    hint.className = 'sacrifice-hint';
+    hint.textContent = 'Нет целей: все известные вам элементы уже раскрыты в книге рецептов.';
+    content.appendChild(hint);
+    return;
+  }
+  if (donors.length === 0) {
+    const hint = document.createElement('div');
+    hint.className = 'sacrifice-hint';
+    hint.textContent = 'Нечего принести в жертву — нужно не менее двух единиц какого-либо элемента.';
+    content.appendChild(hint);
+    return;
+  }
+
+  const box = document.createElement('div');
+  box.className = 'sacrifice-box';
+
+  const targetRow = document.createElement('div');
+  targetRow.className = 'sacrifice-row';
+  const targetLabel = document.createElement('label');
+  targetLabel.textContent = 'Цель:';
+  const targetSelect = document.createElement('select');
+  targetSelect.id = 'sacrifice-target';
+  targets.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
+  targets.forEach(id => {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = ELEMENTS[id].name;
+    targetSelect.appendChild(opt);
+  });
+  targetRow.appendChild(targetLabel);
+  targetRow.appendChild(targetSelect);
+  box.appendChild(targetRow);
+
+  const donorRow = document.createElement('div');
+  donorRow.className = 'sacrifice-row';
+  const donorLabel = document.createElement('label');
+  donorLabel.textContent = 'Жертва:';
+  const donorSelect = document.createElement('select');
+  donorSelect.id = 'sacrifice-donor';
+  donors.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
+  donors.forEach(id => {
+    const el = ELEMENTS[id];
+    const opt = document.createElement('option');
+    opt.value = id;
+    const qty = el.starter || el.infinite ? '∞' : state.inventory[id];
+    opt.textContent = `${el.name} ×${qty}`;
+    donorSelect.appendChild(opt);
+  });
+  donorRow.appendChild(donorLabel);
+  donorRow.appendChild(donorSelect);
+  box.appendChild(donorRow);
+
+  const btn = document.createElement('button');
+  btn.className = 'sacrifice-btn';
+  btn.textContent = 'Пожертвовать и узнать';
+  btn.addEventListener('click', () => performSacrifice(targetSelect.value, donorSelect.value));
+  box.appendChild(btn);
+
+  const note = document.createElement('div');
+  note.className = 'sacrifice-hint';
+  note.textContent = 'Рецепт появится в Книге рецептов, но засчитается только после реального крафта.';
+  box.appendChild(note);
+
+  content.appendChild(box);
+}
+
+function performSacrifice(targetId, donorId) {
+  const donor = ELEMENTS[donorId];
+  if (!donor) return;
+  if (!donor.starter && !donor.infinite) {
+    const qty = state.inventory[donorId] || 0;
+    if (qty < 1) return;
+    state.inventory[donorId] = qty - 1;
+  }
+  const revealed = revealRecipesForOutput(targetId);
+  const target = ELEMENTS[targetId];
+  if (revealed > 0) {
+    log(`🔥 Жертва принесена: рецепт «${target?.name || targetId}» раскрыт в книге`, 'info');
+  }
+  updateUI();
+  renderNotebook();
 }
 
 // ─── Achievements ───

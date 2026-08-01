@@ -246,8 +246,25 @@ export function addLore(elementId) {
   saveNotebook();
 }
 
-// ─── Recipe reveal (sacrifice, Phase C) ───
+// ─── Recipe reveal (sacrifice) ───
 
 export function isRecipeKnown(recipe) {
   return notebook.knownRecipes.includes(recipeKey(recipe));
+}
+
+export function revealRecipesForOutput(outputId) {
+  let revealed = 0;
+  RECIPES.forEach(r => {
+    if (r.output !== outputId) return;
+    const key = recipeKey(r);
+    if (!notebook.knownRecipes.includes(key)) {
+      notebook.knownRecipes.push(key);
+      revealed++;
+    }
+  });
+  if (revealed > 0) {
+    notebook.hasUnseen = true;
+    saveNotebook();
+  }
+  return revealed;
 }
