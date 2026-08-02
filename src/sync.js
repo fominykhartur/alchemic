@@ -3,12 +3,14 @@ import { exportGameData, importGameData, saveGame } from './state.js';
 import { exportNotebookData, importNotebookData, saveNotebook } from './notebook.js';
 
 const SYNC_KEY_STORE = 'alchemic_sync_key';
+const SYNC_TOKEN_STORE = 'alchemic_sync_token';
 const SYNC_META_KEY = 'alchemic_sync_meta';
 const PUSH_DEBOUNCE_MS = 1500;
 const PULL_INTERVAL_MS = 30000;
 const KEY_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 let syncKey = null;
+let syncToken = null;
 let lastLocalChange = 0;
 let initialized = false;
 let pushTimer = null;
@@ -28,6 +30,24 @@ function loadSyncKey() {
   const key = generateSyncKey();
   try { localStorage.setItem(SYNC_KEY_STORE, key); } catch {}
   return key;
+}
+
+// ─── Access token ───
+
+function generateToken() {
+  const arr = new Uint8Array(16);
+  if (crypto?.getRandomValues) crypto.getRandomValues(arr);
+  else for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
+  return [...arr].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function loadSyncToken() {
+  const stored = localStorage.getItem(SYNC_TOKEN_STORE);
+  return stored || null;
+}
+
+function saveToken() {
+  try { localStorage.setItem(SYNC_TOKEN_STORE, syncToken); } catch {}
 }
 
 function loadMeta() {
@@ -53,6 +73,7 @@ function setStatus(status) {
     syncing: '⟳ синхронизация…',
     online: '☁ синхронизировано',
     offline: '⚠ офлайн',
+    denied: '⚠ неверный ключ',
   };
   el.textContent = labels[status] || '☁';
   el.className = 'sync-status ' + status;
@@ -80,15 +101,21 @@ function schedulePush() {
 
 async function flushPush() {
   pushTimer = null;
-  if (!dirty || !isConfigured()) return;
+  if (!isConfigured()) return null;
   dirty = false;
   setStatus('syncing');
   try {
-    await upsertSave(syncKey, buildDoc(lastLocalChange), new Date(lastLocalChange).toISOString());
-    setStatus('online');
+    if (!syncToken) {
+      syncToken = generateToken();
+      saveToken();
+    }
+    const status = await upsertSave(syncKey, syncToken, buildDoc(lastLocalChange));
+    setStatus(status === 'denied' ? 'denied' : 'online');
+    return status;
   } catch {
     setStatus('offline');
     dirty = true;
+    return null;
   }
 }
 
@@ -179,14 +206,25 @@ async function pullFromCloud() {
   if (!isConfigured()) return;
   setStatus('syncing');
   try {
-    const row = await getSave(syncKey);
-    if (!row || !row.data) {
-      if (lastLocalChange > 0) await flushPush();
-      else setStatus('online');
+    if (!syncToken) {
+      // Первый запуск на устройстве: становимся владельцем, создаём строку с токеном
+      syncToken = generateToken();
+      saveToken();
+      lastLocalChange = Math.max(lastLocalChange, Date.now());
+      saveMeta();
+      await flushPush();
+      setStatus('online');
       return;
     }
 
-    const cloud = row.data;
+    const cloud = await getSave(syncKey, syncToken);
+    if (!cloud) {
+      // Строки нет или токен не совпал — пробуем создать/обновить, получим статус
+      const status = await flushPush();
+      setStatus(status === 'denied' ? 'denied' : 'online');
+      return;
+    }
+
     const local = buildDoc(lastLocalChange);
     const merged = merge(local, cloud);
 
@@ -196,11 +234,8 @@ async function pullFromCloud() {
 
     if (changed) applyDoc(merged);
 
-    if ((merged.updatedAt || 0) >= (cloud.updatedAt || 0)) {
-      dirty = true;
-      await flushPush();
-    }
-    setStatus('online');
+    const status = await flushPush();
+    setStatus(status === 'denied' ? 'denied' : 'online');
   } catch {
     setStatus('offline');
   }
@@ -210,10 +245,13 @@ async function pullFromCloud() {
 
 export function initSync() {
   syncKey = loadSyncKey();
+  syncToken = loadSyncToken();
   loadMeta();
 
   const keyInput = document.getElementById('sync-key-input');
+  const tokenInput = document.getElementById('sync-token-input');
   if (keyInput) keyInput.value = syncKey;
+  if (tokenInput && syncToken) tokenInput.value = syncToken;
 
   if (!isConfigured()) {
     setStatus('disabled');
@@ -227,37 +265,57 @@ export function initSync() {
     schedulePush();
   });
 
-  if (keyInput) {
-    const applyBtn = document.getElementById('sync-key-apply');
-    if (applyBtn) {
-      applyBtn.addEventListener('click', () => {
-        const val = keyInput.value.trim().toUpperCase();
-        if (!val) return;
-        syncKey = val;
-        try { localStorage.setItem(SYNC_KEY_STORE, syncKey); } catch {}
-        pullFromCloud();
-      });
-    }
+  const applyBtn = document.getElementById('sync-key-apply');
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      const code = (keyInput?.value || '').trim().toUpperCase();
+      const token = (tokenInput?.value || '').trim();
+      if (!code) return;
+      syncKey = code;
+      try { localStorage.setItem(SYNC_KEY_STORE, syncKey); } catch {}
+      if (token) {
+        syncToken = token;
+        saveToken();
+      }
+      pullFromCloud();
+    });
   }
 
   const copyBtn = document.getElementById('sync-copy');
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
-      if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(syncKey).catch(() => {});
-      } else {
-        keyInput?.select();
+      if (!syncToken) {
+        tokenInput?.focus();
+        return;
       }
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(syncToken).catch(() => {});
+      } else {
+        tokenInput?.select();
+      }
+    });
+  }
+
+  const revealBtn = document.getElementById('sync-reveal');
+  if (revealBtn && tokenInput) {
+    revealBtn.addEventListener('click', () => {
+      const reveal = tokenInput.type === 'password';
+      tokenInput.type = reveal ? 'text' : 'password';
+      tokenInput.focus();
     });
   }
 
   const deleteBtn = document.getElementById('sync-delete');
   if (deleteBtn) {
     deleteBtn.addEventListener('click', async () => {
+      if (!syncToken) {
+        setStatus('denied');
+        return;
+      }
       if (!confirm('Удалить облачное сохранение? Локальный прогресс не пострадает.')) return;
       try {
-        await deleteSave(syncKey);
-        setStatus('online');
+        const ok = await deleteSave(syncKey, syncToken);
+        setStatus(ok ? 'online' : 'denied');
       } catch {
         setStatus('offline');
       }

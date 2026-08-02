@@ -25,9 +25,11 @@
 
     <div class="sync-bar">
       <span id="sync-status" class="sync-status">☁</span>
-      <input id="sync-key-input" class="sync-key-input" maxlength="24" autocomplete="off" spellcheck="false" placeholder="код синхронизации" title="Код облачного сохранения. Введите тот же код на другом устройстве, чтобы перенести прогресс">
-      <button id="sync-key-apply" class="sync-btn" title="Применить код и синхронизировать">Применить</button>
-      <button id="sync-copy" class="sync-btn" title="Скопировать код">⧉</button>
+      <input id="sync-key-input" class="sync-key-input" maxlength="24" autocomplete="off" spellcheck="false" placeholder="код" title="Код синхронизации — «адрес» сохранения. Можно спокойно показывать">
+      <input id="sync-token-input" class="sync-key-input sync-token-input" type="password" maxlength="64" autocomplete="off" spellcheck="false" placeholder="ключ доступа" title="Секретный ключ доступа. Скопируйте его с исходного устройства кнопкой ⧉">
+      <button id="sync-key-apply" class="sync-btn" title="Применить код + ключ и синхронизировать">Применить</button>
+      <button id="sync-copy" class="sync-btn" title="Скопировать ключ доступа">⧉</button>
+      <button id="sync-reveal" class="sync-btn" title="Показать/скрыть ключ">👁</button>
       <button id="sync-delete" class="sync-btn danger" title="Удалить облачное сохранение">🗑</button>
     </div>
   </div>

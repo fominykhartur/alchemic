@@ -8,26 +8,32 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-export async function getSave(code) {
-  const url = `${SUPABASE_URL}/rest/v1/saves?select=code,data&code=eq.${encodeURIComponent(code)}`;
-  const res = await fetch(url, { headers: HEADERS });
-  if (!res.ok) throw new Error(`GET save failed: ${res.status}`);
-  const rows = await res.json();
-  return rows[0] || null;
-}
-
-export async function upsertSave(code, data, updatedAt) {
-  const url = `${SUPABASE_URL}/rest/v1/saves?on_conflict=code`;
-  const res = await fetch(url, {
+export async function getSave(code, token) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_save`, {
     method: 'POST',
-    headers: { ...HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify({ code, data, updated_at: updatedAt }),
+    headers: HEADERS,
+    body: JSON.stringify({ p_code: code, p_token: token }),
   });
-  if (!res.ok) throw new Error(`UPSERT save failed: ${res.status}`);
+  if (!res.ok) throw new Error(`get_save failed: ${res.status}`);
+  return await res.json();
 }
 
-export async function deleteSave(code) {
-  const url = `${SUPABASE_URL}/rest/v1/saves?code=eq.${encodeURIComponent(code)}`;
-  const res = await fetch(url, { method: 'DELETE', headers: HEADERS });
-  if (!res.ok) throw new Error(`DELETE save failed: ${res.status}`);
+export async function upsertSave(code, token, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/upsert_save`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ p_code: code, p_token: token, p_data: data }),
+  });
+  if (!res.ok) throw new Error(`upsert_save failed: ${res.status}`);
+  return await res.json();
+}
+
+export async function deleteSave(code, token) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/delete_save`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ p_code: code, p_token: token }),
+  });
+  if (!res.ok) throw new Error(`delete_save failed: ${res.status}`);
+  return await res.json();
 }

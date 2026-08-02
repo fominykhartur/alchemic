@@ -70,23 +70,68 @@ alchemic/
 
 ## Облачная синхронизация (Supabase)
 
-Прогресс сохраняется локально (localStorage) и, при наличии конфига, автоматически синхронизируется в Supabase. Код синхронизации — в шапке игры: введи тот же код на другом устройстве, чтобы перенести туда прогресс. При конфликте данные **объединяются** (множества — по объединению, счётчики — по максимуму, ничего не теряется).
+Прогресс сохраняется локально (localStorage) и, при наличии конфига, автоматически синхронизируется в Supabase. Доступ к сохранению защищён двумя значениями:
 
-### 1. Создать таблицу в Supabase
+- **Код синхронизации** — «адрес» сохранения (короткий, показывается в шапке)
+- **Ключ доступа** — секрет (генерируется в браузере, скрыт за маской; показывается/копируется по кнопкам 👁 / ⧉)
+
+Чтобы перенести прогресс на другое устройство, вставь туда **оба** значения и нажми «Применить». Без ключа доступа чужое сохранение нельзя ни прочитать, ни перезаписать (проверка токена выполняется Postgres-функциями на сервере). При конфликте данные **объединяются** (множества — по объединению, счётчики — по максимуму, ничего не теряется).
+
+### 1. Создать таблицу и функции в Supabase
 
 В SQL-редакторе проекта (SQL Editor → New query):
 
 ```sql
-create table saves (
+-- старые облачные сохранения сбросить (строк без токена не должно остаться)
+delete from saves;
+
+create table if not exists saves (
   code text primary key,
+  token text,
   data jsonb not null,
   updated_at timestamptz default now()
 );
 
 alter table saves enable row level security;
 
-create policy "anon all" on saves for all to anon using (true) with check (true);
+revoke all on saves from anon;
+
+create or replace function get_save(p_code text, p_token text)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare v jsonb;
+begin
+  select data into v from saves where code = p_code and token = p_token;
+  return v;
+end $$;
+
+create or replace function upsert_save(p_code text, p_token text, p_data jsonb)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_status text;
+begin
+  if exists (select 1 from saves where code = p_code) then
+    update saves set data = p_data, updated_at = now()
+      where code = p_code and token = p_token;
+    if found then v_status := 'updated'; else v_status := 'denied'; end if;
+  else
+    insert into saves(code, token, data, updated_at) values (p_code, p_token, p_data, now());
+    v_status := 'created';
+  end if;
+  return v_status;
+end $$;
+
+create or replace function delete_save(p_code text, p_token text)
+returns boolean language plpgsql security definer set search_path = public as $$
+begin
+  delete from saves where code = p_code and token = p_token;
+  return found;
+end $$;
+
+grant execute on function get_save(text, text) to anon;
+grant execute on function upsert_save(text, text, jsonb) to anon;
+grant execute on function delete_save(text, text) to anon;
 ```
+
+> Прямой доступ анонимов к таблице закрыт — только через функции, проверяющие токен. `delete from saves` обязателен: старые строки без токена не смог бы «забрать» даже владелец.
 
 ### 2. Добавить секреты в GitHub
 
@@ -99,7 +144,7 @@ Repo → **Settings → Secrets and variables → Actions** → новые се�
 - Repo → **Settings → Pages → Source: GitHub Actions**
 - Workflow `.github/workflows/deploy.yml` генерирует `src/config.js` из секретов и публикует на Pages при каждом `git push` в `master`.
 
-> Локально без конфига (`src/config.js` пуст) облако отключено — игра работает как раньше, только localStorage. Управление облаком: поле «Применить», «⧉» копирует код, «🗑» удаляет облачное сохранение.
+> Локально без конфига (`src/config.js` пуст) облако отключено — игра работает как раньше, только localStorage. Управление облаком в шапке: «Применить» — сохранить код+ключ и синхронизировать, «⧉» — скопировать ключ доступа, «👁» — показать/скрыть ключ, «🗑» — удалить облачное сохранение.
 
 ## Установка и запуск
 
