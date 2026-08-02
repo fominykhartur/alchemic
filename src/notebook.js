@@ -25,7 +25,7 @@ export function exportNotebookData() {
 export function importNotebookData(data) {
   if (!data || data.v !== 1) return false;
   notebook.entries = (Array.isArray(data.entries) ? data.entries : [])
-    .filter(e => !(e.type === 'whisper' && e.resolved))
+    .filter(e => e.type === 'whisper' && !e.resolved)
     .map(e => {
       const clean = { ...e };
       delete clean.text;
@@ -230,7 +230,7 @@ function pruneEntries() {
   let overflow = notebook.entries.length - MAX_ENTRIES;
   notebook.entries = notebook.entries.filter(e => {
     if (overflow <= 0) return true;
-    if (e.type === 'lore' || (e.type === 'whisper' && e.resolved)) {
+    if (e.type === 'whisper' && e.resolved) {
       overflow--;
       return false;
     }
@@ -260,22 +260,6 @@ export function resolveWhispers(outputId) {
   const resolvedCount = before - notebook.entries.length;
   if (resolvedCount > 0) saveNotebook();
   return resolvedCount;
-}
-
-// ─── Lore ───
-
-export function addLore(elementId) {
-  if (notebook.entries.some(e => e.type === 'lore' && e.elementId === elementId)) return;
-  const el = ELEMENTS[elementId];
-  if (!el) return;
-  notebook.entries.push({
-    id: `l_${elementId}`,
-    type: 'lore',
-    elementId,
-    unlockedAt: Date.now(),
-  });
-  pruneEntries();
-  saveNotebook();
 }
 
 // ─── Sacrifice economy ───

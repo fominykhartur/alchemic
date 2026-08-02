@@ -405,8 +405,7 @@ const SOURCE_ICONS = { ambient: '❓', oracle: '🔮', prophecy: '✨' };
 function renderNotebook() {
   const content = document.getElementById('notebook-content');
   content.innerHTML = '';
-  const whispers = notebook.entries.filter(e => e.type === 'whisper');  const unresolved = whispers.filter(e => !e.resolved);
-  const lore = notebook.entries.filter(e => e.type === 'lore').sort((a, b) => a.unlockedAt - b.unlockedAt);
+  const unresolved = notebook.entries.filter(e => e.type === 'whisper' && !e.resolved);
 
   if (unresolved.length > 0) {
     const title = document.createElement('div');
@@ -421,27 +420,12 @@ function renderNotebook() {
     });
   }
 
-  if (lore.length > 0) {
-    const title = document.createElement('div');
-    title.className = 'nb-section-title';
-    title.textContent = '📖 Записи о стихиях';
-    content.appendChild(title);
-    lore.forEach(e => {
-      const el = ELEMENTS[e.elementId];
-      if (!el) return;
-      const row = document.createElement('div');
-      row.className = 'nb-entry nb-lore';
-      row.innerHTML = `<span class="nb-icon">${buildIconSVG(el.id, 18)}</span><span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${el.desc || ''}</span></span>`;
-      content.appendChild(row);
-    });
-  }
-
   renderSacrificeSection(content);
 
-  if (unresolved.length === 0 && lore.length === 0) {
+  if (unresolved.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'nb-empty';
-    empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки и записи.';
+    empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки.';
     content.appendChild(empty);
   }
 }

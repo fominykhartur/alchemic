@@ -510,10 +510,6 @@ body {
 .nb-whisper.oracle { border-color: #8a6fb5; background: #1a162a; }
 .nb-whisper.prophecy { border-color: #ffd70066; background: #1a1a26; box-shadow: inset 0 0 12px rgba(255,215,0,0.08); }
 .nb-whisper.prophecy .nb-text { color: #d8c890; }
-.nb-lore { align-items: center; }
-.nb-lore-body { display: flex; flex-direction: column; gap: 1px; flex: 1; }
-.nb-lore-name { color: #ddd; font-weight: bold; font-size: 13px; }
-.nb-lore-desc { color: #9a9ab5; font-size: 12px; font-style: italic; }
 .nb-empty { color: #777; font-size: 13px; text-align: center; padding: 24px 8px; font-style: italic; }
 
 /* ─── Sacrifice ritual ─── */

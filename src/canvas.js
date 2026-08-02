@@ -3,7 +3,7 @@ import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } fr
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
 import { log, updateUI, checkAchievements, showWhisperToast } from './ui.js';
-import { maybeAddWhisper, resolveWhispers, addLore, onOracleUnlocked } from './notebook.js';
+import { maybeAddWhisper, resolveWhispers, onOracleUnlocked } from './notebook.js';
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
@@ -622,7 +622,6 @@ function finishMix() {
   checkAchievements();
 
   if (isNew) {
-    addLore(outputId);
     if (outputId === 'mirror') {
       onOracleUnlocked('oracle');
       log('🔮 Зеркало отражает грань грядущего — Гримуар шепчет', 'discovery');
