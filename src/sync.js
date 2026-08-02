@@ -1,11 +1,12 @@
 import { isConfigured, getSave, upsertSave, deleteSave } from './supabase.js';
-import { exportGameData, importGameData, saveGame } from './state.js';
+import { exportGameData, importGameData, saveGame, MAX_TRIED_PAIRS } from './state.js';
 import { exportNotebookData, importNotebookData, saveNotebook } from './notebook.js';
 
 const SYNC_KEY_STORE = 'alchemic_sync_key';
 const SYNC_TOKEN_STORE = 'alchemic_sync_token';
 const SYNC_META_KEY = 'alchemic_sync_meta';
-const PUSH_DEBOUNCE_MS = 1500;
+const PUSH_DEBOUNCE_MS = 2500;
+const MIN_PUSH_INTERVAL_MS = 3000;
 const PULL_INTERVAL_MS = 30000;
 const KEY_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -15,6 +16,7 @@ let lastLocalChange = 0;
 let initialized = false;
 let pushTimer = null;
 let dirty = false;
+let lastPushAt = 0;
 
 // ─── Sync key ───
 
@@ -99,17 +101,31 @@ function schedulePush() {
   pushTimer = setTimeout(flushPush, PUSH_DEBOUNCE_MS);
 }
 
-async function flushPush() {
+function cancelPush() {
+  if (pushTimer) {
+    clearTimeout(pushTimer);
+    pushTimer = null;
+  }
+}
+
+async function flushPush(force = false) {
   pushTimer = null;
   if (!isConfigured()) return null;
-  dirty = false;
   setStatus('syncing');
+  const now = Date.now();
+  if (!force && lastPushAt && now - lastPushAt < MIN_PUSH_INTERVAL_MS) {
+    dirty = true;
+    pushTimer = setTimeout(flushPush, MIN_PUSH_INTERVAL_MS - (now - lastPushAt));
+    return null;
+  }
+  dirty = false;
   try {
     if (!syncToken) {
       syncToken = generateToken();
       saveToken();
     }
-    const status = await upsertSave(syncKey, syncToken, buildDoc(lastLocalChange));
+    const status = await upsertSave(syncKey, syncToken, await compressDoc(buildDoc(lastLocalChange)));
+    lastPushAt = Date.now();
     setStatus(status === 'denied' ? 'denied' : 'online');
     return status;
   } catch {
@@ -173,7 +189,7 @@ function merge(local, cloud) {
       foundRecipes: unionArrays(ls.foundRecipes || [], cs.foundRecipes || []),
       inventory,
       achievements: unionArrays(ls.achievements || [], cs.achievements || []),
-      triedPairs: unionArrays(ls.triedPairs || [], cs.triedPairs || []),
+      triedPairs: unionArrays(ls.triedPairs || [], cs.triedPairs || []).slice(-MAX_TRIED_PAIRS),
       stats,
     },
     notebook: {
@@ -200,6 +216,45 @@ function applyDoc(doc) {
   window.dispatchEvent(new CustomEvent('alchemy:cloud-applied'));
 }
 
+// ─── Gzip ───
+
+function gzipSupported() {
+  return typeof CompressionStream !== 'undefined' && typeof DecompressionStream !== 'undefined';
+}
+
+async function gzipEncode(text) {
+  const stream = new Blob([text]).stream().pipeThrough(new CompressionStream('gzip'));
+  const bytes = new Uint8Array(await new Response(stream).arrayBuffer());
+  let bin = '';
+  const CHUNK = 0x8000;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(bin);
+}
+
+async function gzipDecode(b64) {
+  const bin = atob(b64);
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Response(stream).text();
+}
+
+async function compressDoc(doc) {
+  if (!gzipSupported()) return doc;
+  return { c: 1, b64: await gzipEncode(JSON.stringify(doc)) };
+}
+
+async function decompressDoc(cloud) {
+  if (!cloud || cloud.c !== 1 || typeof cloud.b64 !== 'string') return cloud;
+  if (!gzipSupported()) return null;
+  try {
+    return JSON.parse(await gzipDecode(cloud.b64));
+  } catch {
+    return null;
+  }
+}
+
 // ─── Pull ───
 
 async function pullFromCloud() {
@@ -212,15 +267,17 @@ async function pullFromCloud() {
       saveToken();
       lastLocalChange = Math.max(lastLocalChange, Date.now());
       saveMeta();
-      await flushPush();
+      cancelPush();
+      await flushPush(true);
       setStatus('online');
       return;
     }
 
-    const cloud = await getSave(syncKey, syncToken);
+    const cloud = await decompressDoc(await getSave(syncKey, syncToken));
     if (!cloud) {
       // Строки нет или токен не совпал — пробуем создать/обновить, получим статус
-      const status = await flushPush();
+      cancelPush();
+      const status = await flushPush(true);
       setStatus(status === 'denied' ? 'denied' : 'online');
       return;
     }
@@ -234,7 +291,8 @@ async function pullFromCloud() {
 
     if (changed) applyDoc(merged);
 
-    const status = await flushPush();
+    cancelPush();
+    const status = await flushPush(true);
     setStatus(status === 'denied' ? 'denied' : 'online');
   } catch {
     setStatus('offline');

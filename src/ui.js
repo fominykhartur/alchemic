@@ -1,7 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook, revealRecipesForOutput, canSacrifice, getRequiredAmount, getRevealCostForOutput } from './notebook.js';
+import { notebook, saveNotebook, renderWhisperText, revealRecipesForOutput, canSacrifice, getRequiredAmount, getRevealCostForOutput } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -406,7 +406,6 @@ function renderNotebook() {
   const content = document.getElementById('notebook-content');
   content.innerHTML = '';
   const whispers = notebook.entries.filter(e => e.type === 'whisper');  const unresolved = whispers.filter(e => !e.resolved);
-  const resolved = whispers.filter(e => e.resolved);
   const lore = notebook.entries.filter(e => e.type === 'lore').sort((a, b) => a.unlockedAt - b.unlockedAt);
 
   if (unresolved.length > 0) {
@@ -417,21 +416,7 @@ function renderNotebook() {
     unresolved.forEach(e => {
       const row = document.createElement('div');
       row.className = `nb-entry nb-whisper unresolved ${e.source}`;
-      row.innerHTML = `<span class="nb-icon">${SOURCE_ICONS[e.source] || '❓'}</span><span class="nb-text">${e.text}</span>`;
-      content.appendChild(row);
-    });
-  }
-
-  if (resolved.length > 0) {
-    const title = document.createElement('div');
-    title.className = 'nb-section-title';
-    title.textContent = '✓ Разгаданные';
-    content.appendChild(title);
-    resolved.forEach(e => {
-      const el = ELEMENTS[e.pointsTo];
-      const row = document.createElement('div');
-      row.className = `nb-entry nb-whisper resolved ${e.source}`;
-      row.innerHTML = `<span class="nb-icon">✓</span><span class="nb-text">${e.text}</span>${el ? `<span class="nb-target">→ ${buildIconSVG(el.id, 14)} ${el.name}</span>` : ''}`;
+      row.innerHTML = `<span class="nb-icon">${SOURCE_ICONS[e.source] || '❓'}</span><span class="nb-text">${renderWhisperText(e)}</span>`;
       content.appendChild(row);
     });
   }
@@ -446,14 +431,14 @@ function renderNotebook() {
       if (!el) return;
       const row = document.createElement('div');
       row.className = 'nb-entry nb-lore';
-      row.innerHTML = `<span class="nb-icon">${buildIconSVG(el.id, 18)}</span><span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${e.text}</span></span>`;
+      row.innerHTML = `<span class="nb-icon">${buildIconSVG(el.id, 18)}</span><span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${el.desc || ''}</span></span>`;
       content.appendChild(row);
     });
   }
 
   renderSacrificeSection(content);
 
-  if (unresolved.length === 0 && resolved.length === 0 && lore.length === 0) {
+  if (unresolved.length === 0 && lore.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'nb-empty';
     empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки и записи.';

@@ -24,7 +24,14 @@ export function exportNotebookData() {
 
 export function importNotebookData(data) {
   if (!data || data.v !== 1) return false;
-  notebook.entries = Array.isArray(data.entries) ? data.entries : [];
+  notebook.entries = (Array.isArray(data.entries) ? data.entries : [])
+    .filter(e => !(e.type === 'whisper' && e.resolved))
+    .map(e => {
+      const clean = { ...e };
+      delete clean.text;
+      delete clean.resolvedAt;
+      return clean;
+    });
   notebook.knownRecipes = Array.isArray(data.knownRecipes) ? data.knownRecipes : [];
   notebook.hasUnseen = !!data.hasUnseen;
   return true;
@@ -132,12 +139,18 @@ function getCategoryHint(id) {
   return CATEGORY_HINTS[ELEMENT_CATS[id]] || 'чего-то ещё';
 }
 
-function buildWhisperText(recipe, level = 'ambient') {
+function hashString(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function buildWhisperText(recipe, level = 'ambient', seed = 0) {
   const distinct = [...new Set(recipe.inputs.map(i => i.id))];
 
   if (distinct.length === 1) {
     const name = (ELEMENTS[distinct[0]]?.name || distinct[0]).toLowerCase();
-    const t = DUPLICATE_TEMPLATES[Math.floor(Math.random() * DUPLICATE_TEMPLATES.length)];
+    const t = DUPLICATE_TEMPLATES[seed % DUPLICATE_TEMPLATES.length];
     return t(name);
   }
 
@@ -150,7 +163,7 @@ function buildWhisperText(recipe, level = 'ambient') {
     const set = level === 'prophecy' ? PROPHECY_PAIR_TEMPLATES
       : level === 'oracle' ? ORACLE_PAIR_TEMPLATES
       : PAIR_TEMPLATES;
-    const t = set[Math.floor(Math.random() * set.length)];
+    const t = set[seed % set.length];
     return t(name, cat);
   }
 
@@ -158,7 +171,7 @@ function buildWhisperText(recipe, level = 'ambient') {
     const set = level === 'prophecy' ? PROPHECY_TRIPLE_TEMPLATES
       : level === 'oracle' ? ORACLE_TRIPLE_TEMPLATES
       : TRIPLE_TEMPLATES;
-    const t = set[Math.floor(Math.random() * set.length)];
+    const t = set[seed % set.length];
     if (level === 'ambient') return t(name, getCategoryHint(others[0]));
     return t(name, getCategoryHint(others[0]), getCategoryHint(others[1]));
   }
@@ -167,8 +180,14 @@ function buildWhisperText(recipe, level = 'ambient') {
   const set = level === 'prophecy' ? PROPHECY_GRAND_TEMPLATES
     : level === 'oracle' ? ORACLE_GRAND_TEMPLATES
     : GRAND_TEMPLATES;
-  const t = set[Math.floor(Math.random() * set.length)];
+  const t = set[seed % set.length];
   return t(name, cat);
+}
+
+export function renderWhisperText(entry) {
+  const recipe = RECIPES.find(r => r.output === entry.pointsTo);
+  if (!recipe) return '...что-то тянется к неведомому';
+  return buildWhisperText(recipe, entry.source || 'ambient', hashString(entry.id || ''));
 }
 
 function pickWhisperTarget() {
@@ -191,7 +210,6 @@ export function maybeAddWhisper() {
   const target = pickWhisperTarget();
   if (!target) return;
   addWhisper({
-    text: buildWhisperText(target, level),
     pointsTo: target.output,
     source: level,
   });
@@ -202,7 +220,6 @@ export function onOracleUnlocked(level) {
   const target = pickWhisperTarget();
   if (!target) return;
   addWhisper({
-    text: buildWhisperText(target, level),
     pointsTo: target.output,
     source: level,
   });
@@ -221,11 +238,10 @@ function pruneEntries() {
   });
 }
 
-function addWhisper({ text, pointsTo, source }) {
+function addWhisper({ pointsTo, source }) {
   notebook.entries.push({
     id: `w_${Date.now()}`,
     type: 'whisper',
-    text,
     pointsTo,
     source,
     resolved: false,
@@ -237,18 +253,12 @@ function addWhisper({ text, pointsTo, source }) {
 }
 
 export function resolveWhispers(outputId) {
-  let resolvedCount = 0;
-  notebook.entries.forEach(e => {
-    if (e.type === 'whisper' && !e.resolved && e.pointsTo === outputId) {
-      e.resolved = true;
-      e.resolvedAt = Date.now();
-      resolvedCount++;
-    }
-  });
-  if (resolvedCount > 0) {
-    notebook.hasUnseen = true;
-    saveNotebook();
-  }
+  const before = notebook.entries.length;
+  notebook.entries = notebook.entries.filter(e =>
+    !(e.type === 'whisper' && !e.resolved && e.pointsTo === outputId)
+  );
+  const resolvedCount = before - notebook.entries.length;
+  if (resolvedCount > 0) saveNotebook();
   return resolvedCount;
 }
 
@@ -262,7 +272,6 @@ export function addLore(elementId) {
     id: `l_${elementId}`,
     type: 'lore',
     elementId,
-    text: el.desc || '',
     unlockedAt: Date.now(),
   });
   pruneEntries();

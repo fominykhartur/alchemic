@@ -1,5 +1,7 @@
 import { ELEMENTS, STARTER_IDS, SAVE_KEY, UNLOCKABLE_STARTERS } from './data.js';
 
+export const MAX_TRIED_PAIRS = 500;
+
 export const state = {
   inventory: {},
   discovered: new Set(),
@@ -35,7 +37,7 @@ export function exportGameData() {
     if (!ELEMENTS[id]?.starter) inventory[id] = qty;
   });
   const achievements = [...state.achievements];
-  const triedPairs = [...state.triedPairs];
+  const triedPairs = [...state.triedPairs].slice(-MAX_TRIED_PAIRS);
   const stats = { ...state.stats, elementCreatedCount: { ...state.stats.elementCreatedCount } };
   return { v: 1, discovered, foundRecipes, inventory, achievements, triedPairs, stats };
 }
@@ -52,7 +54,10 @@ export function importGameData(data) {
     if (!ELEMENTS[id]?.starter) state.inventory[id] = qty;
   });
   (data.achievements || []).forEach(id => state.achievements.add(id));
-  (data.triedPairs || []).forEach(p => state.triedPairs.add(p));
+  (data.triedPairs || []).slice(-MAX_TRIED_PAIRS).forEach(p => state.triedPairs.add(p));
+  if (state.triedPairs.size > MAX_TRIED_PAIRS) {
+    state.triedPairs = new Set([...state.triedPairs].slice(-MAX_TRIED_PAIRS));
+  }
   if (data.stats) {
     Object.assign(state.stats, data.stats);
     if (!data.stats.elementCreatedCount) state.stats.elementCreatedCount = {};
