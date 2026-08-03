@@ -671,9 +671,9 @@ export const RECIPES = [
   { inputs: [{ id: 'vesselOfLife', a: 1 }, { id: 'azoth', a: 1 }], output: 'homunculus' },
   { inputs: [{ id: 'homunculus', a: 1 }, { id: 'panacea', a: 1 }], output: 'adept' },
   // Эликсиры
-  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'gold', a: 1 }], output: 'aurumPotabile' },
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'gold', a: 1 }, { id: 'sun', a: 1 }, { id: 'phoenix', a: 1 }, { id: 'cosmicMonarch', a: 1 }], output: 'aurumPotabile' },
   { inputs: [{ id: 'aurumPotabile', a: 1 }, { id: 'elixir', a: 1 }], output: 'elixirVitae' },
-  { inputs: [{ id: 'elixirVitae', a: 1 }, { id: 'azoth', a: 1 }], output: 'panacea' },
+  { inputs: [{ id: 'elixirVitae', a: 1 }, { id: 'azoth', a: 1 }, { id: 'life', a: 1 }, { id: 'phoenix', a: 1 }, { id: 'deathlessWarden', a: 1 }], output: 'panacea' },
   { inputs: [{ id: 'panacea', a: 1 }, { id: 'alkahest', a: 1 }], output: 'ambrosia' },
   // Макрокосм
   { inputs: [{ id: 'quintessence', a: 1 }, { id: 'galaxy', a: 1 }], output: 'macrocosm' },
@@ -750,7 +750,7 @@ export const RECIPES = [
   { inputs: [{ id: 'parasite', a: 1 }, { id: 'overcharge', a: 1 }], output: 'virulentSwarm' },
   { inputs: [{ id: 'somnium', a: 1 }, { id: 'engine', a: 1 }], output: 'oneirograph' },
   { inputs: [{ id: 'sentinel', a: 1 }, { id: 'revenant', a: 1 }], output: 'deathlessWarden' },
-  { inputs: [{ id: 'cataclysm', a: 1 }, { id: 'abyssalSovereign', a: 1 }], output: 'apocalypse' },
+  { inputs: [{ id: 'cataclysm', a: 1 }, { id: 'abyssalSovereign', a: 1 }, { id: 'blackHole', a: 1 }, { id: 'singularity', a: 1 }, { id: 'voidExpanse', a: 1 }], output: 'apocalypse' },
   // Дух
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'ghost', a: 1 }],      output: 'possession' },
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'wand', a: 1 }],       output: 'spellbound' },
