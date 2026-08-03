@@ -147,10 +147,15 @@ function unionArrays(...arrays) {
 function merge(local, cloud) {
   const ls = local.save || {};
   const cs = cloud.save || {};
+  const useCloud = (cloud.updatedAt || 0) > (local.updatedAt || 0);
 
   const inventory = {};
   new Set([...Object.keys(ls.inventory || {}), ...Object.keys(cs.inventory || {})]).forEach(id => {
-    inventory[id] = Math.max(ls.inventory?.[id] || 0, cs.inventory?.[id] || 0);
+    const hasLocal = !!ls.inventory && id in ls.inventory;
+    const hasCloud = !!cs.inventory && id in cs.inventory;
+    inventory[id] = useCloud
+      ? (hasCloud ? cs.inventory[id] : (hasLocal ? ls.inventory[id] : 0))
+      : (hasLocal ? ls.inventory[id] : (hasCloud ? cs.inventory[id] : 0));
   });
 
   const lStats = ls.stats || {};
@@ -179,9 +184,9 @@ function merge(local, cloud) {
 
   const lnb = local.notebook || {};
   const cnb = cloud.notebook || {};
+  const mainEntries = useCloud ? (cnb.entries || []) : (lnb.entries || []);
   const entryMap = new Map();
-  (lnb.entries || []).forEach(e => e && e.id && entryMap.set(e.id, e));
-  (cnb.entries || []).forEach(e => e && e.id && entryMap.set(e.id, e));
+  mainEntries.forEach(e => e && e.id && entryMap.set(e.id, e));
 
   return {
     v: 1,
