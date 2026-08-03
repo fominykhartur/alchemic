@@ -271,12 +271,23 @@ export function getRevealCost(recipe) {
   return Math.ceil(outputDepth * 1.5 + distinct * 2 + totalAmount * 0.5);
 }
 
-export function getRevealCostForOutput(outputId) {
-  let total = 0;
-  RECIPES.forEach(r => {
-    if (r.output === outputId && !notebook.knownRecipes.includes(recipeKey(r))) total += getRevealCost(r);
-  });
-  return total;
+export function getRemainingRecipes(outputId) {
+  return RECIPES.filter(r =>
+    r.output === outputId &&
+    !state.foundRecipes.has(recipeKey(r)) &&
+    !notebook.knownRecipes.includes(recipeKey(r))
+  );
+}
+
+export function getRecipeProgressForOutput(outputId) {
+  const total = RECIPES.filter(r => r.output === outputId).length;
+  return { revealed: total - getRemainingRecipes(outputId).length, total };
+}
+
+export function pickSacrificeRecipe(outputId) {
+  const remaining = getRemainingRecipes(outputId);
+  if (remaining.length === 0) return null;
+  return remaining[Math.floor(Math.random() * remaining.length)];
 }
 
 export function getSacrificeValue(elementId) {
@@ -292,9 +303,10 @@ export function canSacrifice(elementId) {
   return true;
 }
 
-export function getRequiredAmount(outputId, sacrificeId) {
+export function getRequiredAmount(recipe, sacrificeId) {
   if (!canSacrifice(sacrificeId)) return null;
-  const cost = getRevealCostForOutput(outputId);
+  if (!recipe) return 0;
+  const cost = getRevealCost(recipe);
   if (cost <= 0) return 0;
   return Math.ceil(cost / getSacrificeValue(sacrificeId));
 }
@@ -305,19 +317,12 @@ export function isRecipeKnown(recipe) {
   return notebook.knownRecipes.includes(recipeKey(recipe));
 }
 
-export function revealRecipesForOutput(outputId) {
-  let revealed = 0;
-  RECIPES.forEach(r => {
-    if (r.output !== outputId) return;
-    const key = recipeKey(r);
-    if (!notebook.knownRecipes.includes(key)) {
-      notebook.knownRecipes.push(key);
-      revealed++;
-    }
-  });
-  if (revealed > 0) {
-    notebook.hasUnseen = true;
-    saveNotebook();
-  }
-  return revealed;
+export function revealRecipe(recipe) {
+  if (!recipe) return false;
+  const key = recipeKey(recipe);
+  if (state.foundRecipes.has(key) || notebook.knownRecipes.includes(key)) return false;
+  notebook.knownRecipes.push(key);
+  notebook.hasUnseen = true;
+  saveNotebook();
+  return true;
 }

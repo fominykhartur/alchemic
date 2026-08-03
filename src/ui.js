@@ -1,7 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook, renderWhisperText, revealRecipesForOutput, canSacrifice, getRequiredAmount, getRevealCostForOutput } from './notebook.js';
+import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -446,15 +446,14 @@ function renderNotebook() {
 }
 
 // ─── Sacrifice ritual ───
+let sacrificeRolledRecipe = null;
+
 function getSacrificeTargets() {
-  const knownKeys = new Set(notebook.knownRecipes);
   return ELEMENT_IDS.filter(id => {
     const el = ELEMENTS[id];
     if (!el || el.starter || el.infinite) return false;
     if (!state.discovered.has(id)) return false;
-    const recipesFor = RECIPES.filter(r => r.output === id);
-    if (recipesFor.length === 0) return false;
-    return !recipesFor.some(r => state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r)));
+    return getRemainingRecipes(id).length > 0;
   });
 }
 
@@ -468,18 +467,18 @@ function getSacrificeDonors() {
   });
 }
 
-function buildSacrificeDonors(donorSelect, targetId) {
+function buildSacrificeDonors(donorSelect, recipe) {
   donorSelect.innerHTML = '';
   const donors = getSacrificeDonors();
   donors.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
-  const cost = targetId ? getRevealCostForOutput(targetId) : 0;
+  const cost = recipe ? getRevealCost(recipe) : 0;
   donors.forEach(id => {
     const el = ELEMENTS[id];
     const qty = state.inventory[id] || 0;
-    const required = targetId ? getRequiredAmount(targetId, id) : 0;
+    const required = recipe ? getRequiredAmount(recipe, id) : 0;
     const opt = document.createElement('option');
     opt.value = id;
-    const enough = !targetId || required <= qty;
+    const enough = !recipe || required <= qty;
     opt.textContent = enough
       ? `${el.name} ×${qty}`
       : `${el.name} ×${qty} (нужно ${required})`;
@@ -532,7 +531,8 @@ function renderSacrificeSection(content) {
   targets.forEach(id => {
     const opt = document.createElement('option');
     opt.value = id;
-    opt.textContent = ELEMENTS[id].name;
+    const p = getRecipeProgressForOutput(id);
+    opt.textContent = `${ELEMENTS[id].name} (${p.revealed}/${p.total} рецептов)`;
     targetSelect.appendChild(opt);
   });
   targetRow.appendChild(targetLabel);
@@ -561,7 +561,7 @@ function renderSacrificeSection(content) {
     const target = targetSelect.value;
     const donor = donorSelect.value;
     if (!target || !donor) return;
-    const required = getRequiredAmount(target, donor);
+    const required = getRequiredAmount(sacrificeRolledRecipe, donor);
     if (required > (state.inventory[donor] || 0)) return;
     performSacrifice(target, donor, required);
   });
@@ -569,15 +569,16 @@ function renderSacrificeSection(content) {
 
   const note = document.createElement('div');
   note.className = 'sacrifice-hint';
-  note.textContent = 'Рецепт появится в Книге рецептов, но засчитается только после реального крафта.';
+  note.textContent = 'Каждая жертва раскрывает один случайный рецепт — приносите жертвы повторно, чтобы раскрыть остальные. Рецепт появится в Книге рецептов, но засчитается только после реального крафта.';
   box.appendChild(note);
 
-  const refreshDonors = () => {
-    const cost = buildSacrificeDonors(donorSelect, targetSelect.value);
+  const rollRecipe = () => {
+    sacrificeRolledRecipe = targetSelect.value ? pickSacrificeRecipe(targetSelect.value) : null;
+    const cost = buildSacrificeDonors(donorSelect, sacrificeRolledRecipe);
     costNote.textContent = `Стоимость: ${cost > 0 ? cost + ' очков силы' : '—'}`;
   };
-  targetSelect.addEventListener('change', refreshDonors);
-  refreshDonors();
+  targetSelect.addEventListener('change', rollRecipe);
+  rollRecipe();
 
   content.appendChild(box);
 }
@@ -590,10 +591,11 @@ function performSacrifice(targetId, donorId, amount) {
     if (qty < amount) return;
     state.inventory[donorId] = qty - amount;
   }
-  const revealed = revealRecipesForOutput(targetId);
+  const revealed = revealRecipe(sacrificeRolledRecipe);
   const target = ELEMENTS[targetId];
-  if (revealed > 0) {
-    log(`🔥 Жертва принесена: рецепт «${target?.name || targetId}» раскрыт в книге`, 'info');
+  if (revealed) {
+    const p = getRecipeProgressForOutput(targetId);
+    log(`🔥 Жертва принесена: раскрыт ${p.revealed} из ${p.total} рецептов «${target?.name || targetId}»`, 'info');
   }
   updateUI();
   renderNotebook();
