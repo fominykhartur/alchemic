@@ -921,18 +921,28 @@ export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'en
 export const ELEMENT_DEPTHS = (() => {
   const depths = {};
   STARTER_IDS.forEach(id => depths[id] = 0);
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const r of RECIPES) {
-      if (!r.inputs.every(i => depths[i.id] !== undefined)) continue;
-      const d = Math.max(...r.inputs.map(i => depths[i.id])) + 1;
-      if (depths[r.output] === undefined || depths[r.output] > d) {
-        depths[r.output] = d;
-        changed = true;
+  const propagate = () => {
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const r of RECIPES) {
+        if (!r.inputs.every(i => depths[i.id] !== undefined)) continue;
+        const d = Math.max(...r.inputs.map(i => depths[i.id])) + 1;
+        if (depths[r.output] === undefined || depths[r.output] > d) {
+          depths[r.output] = d;
+          changed = true;
+        }
       }
     }
-  }
+  };
+  propagate();
+  UNLOCKABLE_STARTERS.forEach(u => {
+    const keyDepth = depths[u.unlockedBy];
+    if (keyDepth !== undefined && depths[u.id] === undefined) {
+      depths[u.id] = keyDepth + 1;
+    }
+  });
+  propagate();
   return depths;
 })();
 
