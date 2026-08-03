@@ -69,7 +69,7 @@ function saveMeta() {
 
 function setStatus(status) {
   const el = document.getElementById('sync-status');
-  if (!el) return;
+  const ind = document.getElementById('sync-indicator');
   const labels = {
     disabled: '☁ не настроено',
     syncing: '⟳ синхронизация…',
@@ -77,8 +77,11 @@ function setStatus(status) {
     offline: '⚠ офлайн',
     denied: '⚠ неверный ключ',
   };
-  el.textContent = labels[status] || '☁';
-  el.className = 'sync-status ' + status;
+  if (el) {
+    el.textContent = labels[status] || '☁';
+    el.className = 'sync-status ' + status;
+  }
+  if (ind) ind.className = 'sync-indicator ' + status;
 }
 
 // ─── Document ───
