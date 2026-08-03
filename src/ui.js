@@ -188,7 +188,7 @@ function renderItem(grid, id) {
     item.draggable = qty > 0 || el.starter || el.infinite;
     item.addEventListener('dragstart', onDragStart);
     item.addEventListener('dragend', onDragEnd);
-    item.addEventListener('click', (e) => { if (qty > 0 || el.starter || el.infinite) showElementInfo(id); });
+    item.addEventListener('click', () => showElementInfo(id));
     item.addEventListener('mousedown', (e) => {
       if (e.shiftKey && (qty > 0 || el.starter || el.infinite)) { e.preventDefault(); showQtyPopup(e, id); }
     });
@@ -208,6 +208,7 @@ function renderItem(grid, id) {
 export function showElementInfo(id) {
   const el = ELEMENTS[id];
   if (!el || !state.discovered.has(id)) return;
+  if (window.innerWidth <= 767) switchTab('recipes');
   elementInfoActive = id;
 
   const list = document.getElementById('recipes-list');
@@ -220,18 +221,22 @@ export function showElementInfo(id) {
   header.innerHTML = `<div style="text-align:center;margin:0 auto 6px">${buildIconSVG(id, 44)}</div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div>`;
   list.appendChild(header);
 
-  const producing = RECIPES.filter(r => r.output === id && state.foundRecipes.has(recipeKey(r)));
+  const knownKeys = new Set(notebook.knownRecipes);
+  const producing = RECIPES.filter(r => r.output === id && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
   if (producing.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:6px 0 4px;text-transform:uppercase;letter-spacing:1px';
     title.textContent = '🧪 Получается из:';
     list.appendChild(title);
     producing.forEach(r => {
+      const key = recipeKey(r);
+      const isFound = state.foundRecipes.has(key);
+      const isKnown = !isFound && knownKeys.has(key);
       const formula = r.inputs.map(i => `<span style="color:${ELEMENTS[i.id]?.color || '#888'}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
       const entry = document.createElement('div');
-      entry.className = 'recipe-entry found';
+      entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
-      entry.innerHTML = `<span class="recipe-formula">${formula}</span>`;
+      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span>`;
       list.appendChild(entry);
     });
   } else if (!el.starter) {
@@ -239,20 +244,28 @@ export function showElementInfo(id) {
     none.style.cssText = 'font-size:10px;color:#555;margin:4px 0';
     none.textContent = '🔒 Рецепт ещё не открыт';
     list.appendChild(none);
+    const gBtn = document.createElement('button');
+    gBtn.style.cssText = 'margin-top:6px;width:100%;background:#1a1a2e;border:1px solid #ffd70055;border-radius:4px;color:#ffd700;padding:5px;font-size:11px;cursor:pointer';
+    gBtn.textContent = '🔮 Узнать в Гримуаре';
+    gBtn.addEventListener('click', openGrimoire);
+    list.appendChild(gBtn);
   }
 
-  const usedIn = RECIPES.filter(r => r.inputs.some(i => i.id === id) && state.foundRecipes.has(recipeKey(r)));
+  const usedIn = RECIPES.filter(r => r.inputs.some(i => i.id === id) && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
   if (usedIn.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:8px 0 4px;text-transform:uppercase;letter-spacing:1px';
     title.textContent = '🔗 Можно создать:';
     list.appendChild(title);
     usedIn.forEach(r => {
+      const key = recipeKey(r);
+      const isFound = state.foundRecipes.has(key);
+      const isKnown = !isFound && knownKeys.has(key);
       const output = ELEMENTS[r.output];
       const entry = document.createElement('div');
-      entry.className = 'recipe-entry found';
+      entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
-      entry.innerHTML = `<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>`;
+      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>`;
       list.appendChild(entry);
     });
   }
@@ -264,24 +277,26 @@ export function showElementInfo(id) {
     list.appendChild(none);
   }
 
-  const addSection = document.createElement('div');
-  addSection.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px solid #2a2a4e44';
-  const addLabel = document.createElement('div');
-  addLabel.style.cssText = 'font-size:10px;color:#888;margin-bottom:4px';
-  addLabel.textContent = '📥 Добавить в котёл:';
-  addSection.appendChild(addLabel);
-  const btnRow = document.createElement('div');
-  btnRow.style.cssText = 'display:flex;gap:3px;flex-wrap:wrap';
   const maxAdd = el.starter || el.infinite ? 9 : Math.min(state.inventory[id] || 0, 9);
-  for (let i = 1; i <= maxAdd && i <= 5; i++) {
-    const btn = document.createElement('button');
-    btn.style.cssText = 'background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:3px 8px;font-size:11px;cursor:pointer';
-    btn.textContent = `×${i}`;
-    btn.addEventListener('click', () => { addToCauldron(id, i); hideElementInfo(); });
-    btnRow.appendChild(btn);
+  if (maxAdd > 0) {
+    const addSection = document.createElement('div');
+    addSection.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px solid #2a2a4e44';
+    const addLabel = document.createElement('div');
+    addLabel.style.cssText = 'font-size:10px;color:#888;margin-bottom:4px';
+    addLabel.textContent = '📥 Добавить в котёл:';
+    addSection.appendChild(addLabel);
+    const btnRow = document.createElement('div');
+    btnRow.style.cssText = 'display:flex;gap:3px;flex-wrap:wrap';
+    for (let i = 1; i <= maxAdd && i <= 5; i++) {
+      const btn = document.createElement('button');
+      btn.style.cssText = 'background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:3px 8px;font-size:11px;cursor:pointer';
+      btn.textContent = `×${i}`;
+      btn.addEventListener('click', () => { addToCauldron(id, i); hideElementInfo(); });
+      btnRow.appendChild(btn);
+    }
+    addSection.appendChild(btnRow);
+    list.appendChild(addSection);
   }
-  addSection.appendChild(btnRow);
-  list.appendChild(addSection);
 
   const treeBtn = document.createElement('button');
   treeBtn.style.cssText = 'margin-top:8px;width:100%;background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:5px;font-size:11px;cursor:pointer';
@@ -656,6 +671,7 @@ function renderTreeNode(id, depth, visited, container) {
   }
   const el = ELEMENTS[id];
   if (!el) return;
+  const knownKeys = new Set(notebook.knownRecipes);
   const node = document.createElement('div');
   node.className = 'tree-node';
   const content = document.createElement('div');
@@ -669,7 +685,7 @@ function renderTreeNode(id, depth, visited, container) {
   children.className = 'tree-children';
 
   if (!el.starter) {
-    const producing = RECIPES.filter(r => r.output === id && state.foundRecipes.has(recipeKey(r)));
+    const producing = RECIPES.filter(r => r.output === id && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
     if (producing.length > 0) {
       const title = document.createElement('div');
       title.className = 'tree-section-title';
@@ -690,7 +706,7 @@ function renderTreeNode(id, depth, visited, container) {
     }
   }
 
-  const usedIn = RECIPES.filter(r => r.inputs.some(i => i.id === id) && state.foundRecipes.has(recipeKey(r)));
+  const usedIn = RECIPES.filter(r => r.inputs.some(i => i.id === id) && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
   if (usedIn.length > 0) {
     const title = document.createElement('div');
     title.className = 'tree-section-title';
