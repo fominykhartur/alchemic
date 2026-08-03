@@ -478,7 +478,7 @@ function getLegendProgressInfo(id) {
       .map(([cat, n]) => `${getCategoryLabel(cat)} ×${n}`)
       .join(', ');
     lines.push(`Требуется ${total} составляющих: ${summary}`);
-    if (ratio >= NAME_REVEAL_THRESHOLD) {
+    if (ratio >= NAME_REVEAL_THRESHOLD || total - knownCount <= 1) {
       tier = 3;
       const missing = best.distinct.filter(i => !state.discovered.has(i));
       lines.push(`Не хватает: ${missing.map(i => ELEMENTS[i].name).join(', ')}`);

@@ -398,6 +398,7 @@ export const ELEMENT_CATS = {
   nigredo:'alchemy', albedo:'alchemy', citrinitas:'alchemy', rubedo:'alchemy',
   azoth:'alchemy', solve:'alchemy', coagula:'alchemy', alkahest:'alchemy',
   elixirVitae:'alchemy', ambrosia:'alchemy', ignition:'alchemy',
+  primeMatter:'alchemy',
   cosmicMonarch:'cosmos',
   legendary: 'legendary', philosophersStone:'legendary',
   aurumPotabile:'legendary', panacea:'legendary', animaMundi:'legendary',
