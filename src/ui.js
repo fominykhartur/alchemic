@@ -1,7 +1,7 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint } from './notebook.js';
+import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -441,9 +441,13 @@ function renderNotebook() {
 }
 
 // ─── Legendary section ───
-function getLegendStatus(id) {
+const NAME_REVEAL_THRESHOLD = 0.6;
+const MAX_CHAIN_HINTS = 4;
+let legendSnapshot = null;
+
+function getLegendProgressInfo(id) {
   const recipes = RECIPES.filter(r => r.output === id);
-  if (recipes.length === 0) return { hint: 'Тайна откроется в глубине Делания', progress: null };
+  if (recipes.length === 0) return { lines: ['Тайна откроется в глубине Делания'], progress: null, tier: 1 };
   let best = null;
   for (const r of recipes) {
     const distinct = [...new Set(r.inputs.map(i => i.id))];
@@ -451,13 +455,44 @@ function getLegendStatus(id) {
     const progress = known.length / distinct.length;
     if (!best || progress > best.progress) best = { distinct, known, progress };
   }
-  if (best.progress >= 1) return { hint: 'Все составляющие собраны — отправляйтесь к котлу', progress: null };
-  if (best.progress === 0) return { hint: 'Тайна откроется в глубине Делания', progress: null };
-  const cats = [...new Set(
-    best.distinct.filter(i => !state.discovered.has(i)).map(i => getCategoryHint(i))
-  )];
-  const path = cats.length === 1 ? `через мир ${cats[0]}` : `через миры ${cats.join(' и ')}`;
-  return { hint: `Путь лежит ${path}`, progress: `${best.known.length}/${best.distinct.length}` };
+  const total = best.distinct.length;
+  const knownCount = best.known.length;
+  const ratio = knownCount / total;
+  const lines = [];
+  let tier;
+
+  if (ratio >= 1) {
+    tier = 4;
+    lines.push('Все составляющие собраны — отправляйтесь к котлу');
+  } else if (ratio === 0) {
+    tier = 1;
+    lines.push('Тайна откроется в глубине Делания');
+  } else {
+    tier = 2;
+    const counts = {};
+    best.distinct.forEach(i => {
+      const cat = ELEMENT_CATS[i];
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    const summary = Object.entries(counts)
+      .map(([cat, n]) => `${getCategoryLabel(cat)} ×${n}`)
+      .join(', ');
+    lines.push(`Требуется ${total} составляющих: ${summary}`);
+    if (ratio >= NAME_REVEAL_THRESHOLD) {
+      tier = 3;
+      const missing = best.distinct.filter(i => !state.discovered.has(i));
+      lines.push(`Не хватает: ${missing.map(i => ELEMENTS[i].name).join(', ')}`);
+      missing.slice(0, MAX_CHAIN_HINTS).forEach(i => {
+        const sub = RECIPES.find(r => r.output === i);
+        if (!sub) return;
+        const subCats = [...new Set(sub.inputs.map(inp => getCategoryHint(inp.id)))];
+        lines.push(`${ELEMENTS[i].name}: создаётся из ${subCats.join(' и ')}`);
+      });
+    }
+  }
+
+  const progress = ratio > 0 && ratio < 1 ? `${knownCount}/${total}` : null;
+  return { lines, progress, tier };
 }
 
 function renderLegendarySection(content) {
@@ -477,13 +512,63 @@ function renderLegendarySection(content) {
         <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${el.desc}</span></span>
         <span class="nb-target">✔</span>`;
     } else {
-      const { hint, progress } = getLegendStatus(id);
+      const { lines, progress } = getLegendProgressInfo(id);
+      const hintHtml = lines.map(l => `<span class="nb-hint">${l}</span>`).join('');
       row.innerHTML = `<span class="nb-icon">🔒</span>
-        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${hint}</span></span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span>${hintHtml}</span>
         ${progress !== null ? `<span class="nb-progress">${progress}</span>` : ''}`;
     }
     content.appendChild(row);
   });
+}
+
+// ─── Legend progress toasts ───
+export function initLegendSnapshot() {
+  const snap = {};
+  LEGENDARY_IDS.forEach(id => {
+    if (state.discovered.has(id)) return;
+    const info = getLegendProgressInfo(id);
+    snap[id] = info.tier + ':' + (info.progress || 'done');
+  });
+  legendSnapshot = snap;
+}
+
+export function checkLegendProgress() {
+  if (!legendSnapshot) initLegendSnapshot();
+  const improved = [];
+  LEGENDARY_IDS.forEach(id => {
+    if (state.discovered.has(id)) return;
+    const info = getLegendProgressInfo(id);
+    const sig = info.tier + ':' + (info.progress || 'done');
+    if (legendSnapshot[id] !== undefined && legendSnapshot[id] !== sig) {
+      improved.push({ id, info });
+    }
+    legendSnapshot[id] = sig;
+  });
+  if (improved.length === 0) return;
+  improved
+    .sort((a, b) => b.info.tier - a.info.tier)
+    .slice(0, 2)
+    .forEach((item, i) => setTimeout(() => showLegendToast(item), i * 300));
+}
+
+let legendToastTimer = null;
+
+function showLegendToast({ id, info }) {
+  const el = ELEMENTS[id];
+  const toast = document.getElementById('legend-toast');
+  if (!toast || !el) return;
+  const title = toast.querySelector('.legend-toast-title');
+  const desc = toast.querySelector('.legend-toast-desc');
+  if (title) title.textContent = `⚗ Шаг к ${el.name}`;
+  if (desc) {
+    desc.textContent = info.tier >= 3
+      ? (info.lines.find(l => l.startsWith('Не хватает')) || info.lines[0])
+      : (info.progress ? `Открыто ${info.progress} составляющих` : info.lines[0]);
+  }
+  toast.classList.add('show');
+  clearTimeout(legendToastTimer);
+  legendToastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
 // ─── Sacrifice ritual ───

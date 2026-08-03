@@ -2,7 +2,7 @@ import { ELEMENTS, ELEMENT_IDS, LEGENDARY_IDS, RECIPES, recipeKey, UNLOCKABLE_ST
 import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
-import { log, updateUI, checkAchievements, showWhisperToast } from './ui.js';
+import { log, updateUI, checkAchievements, showWhisperToast, checkLegendProgress } from './ui.js';
 import { maybeAddWhisper, resolveWhispers, onOracleUnlocked } from './notebook.js';
 
 export const canvas = document.getElementById('game-canvas');
@@ -611,6 +611,7 @@ function finishMix() {
         log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
       }
     });
+    checkLegendProgress();
   } else {
     state.inventory[outputId] = (state.inventory[outputId] || 0) + 3;
     log(`✓ Создан ${output.name}`, 'success');
@@ -669,6 +670,7 @@ function finishExplosion() {
         log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
       }
     });
+    checkLegendProgress();
     state.stats.discoveryFromExplosion++;
     playDiscover();
     startDiscoveryAnimation(picked);

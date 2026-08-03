@@ -514,6 +514,20 @@ body {
 #whisper-toast .whisper-toast-title { color: #ffd700; font-weight: bold; margin-bottom: 2px; }
 #whisper-toast .whisper-toast-desc { color: #c0c0d0; }
 
+/* Legend toast */
+#legend-toast {
+  position: fixed; bottom: 16px; right: 16px; z-index: 1100;
+  background: linear-gradient(135deg, #241f12, #18141f);
+  border: 1px solid #c9a22766; border-radius: 8px;
+  padding: 10px 14px; max-width: 320px;
+  box-shadow: 0 0 20px rgba(201,162,39,0.25);
+  font-size: 12px; transition: opacity 0.3s, transform 0.3s;
+  opacity: 0; transform: translateY(24px); pointer-events: none;
+}
+#legend-toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#legend-toast .legend-toast-title { color: #ffd700; font-weight: bold; margin-bottom: 2px; }
+#legend-toast .legend-toast-desc { color: #c0c0d0; line-height: 1.4; }
+
 /* ─── Grimoire (notebook) ─── */
 .nb-section-title {
   font-size: 12px;
@@ -555,6 +569,8 @@ body {
 .nb-legend.locked .nb-lore-name { color: #c9a227cc; }
 .nb-legend.found { border-color: #c9a22755; }
 .nb-legend .nb-progress { flex-shrink: 0; font-size: 11px; color: #c9a227aa; }
+.nb-legend .nb-hint { display: block; color: #9a9ab5; font-size: 12px; font-style: italic; line-height: 1.4; }
+.nb-legend.locked .nb-hint:first-of-type { color: #c8b890; }
 
 /* ─── Sacrifice ritual ─── */
 .recipe-entry.known {

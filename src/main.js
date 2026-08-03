@@ -1,6 +1,6 @@
 import { state, loadGame, resetGame } from './state.js';
 import { resizeCanvas, gameLoop } from './canvas.js';
-import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap, switchTab, openGrimoire, closeGrimoire, updateNotebookBadge } from './ui.js';
+import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap, switchTab, openGrimoire, closeGrimoire, updateNotebookBadge, initLegendSnapshot } from './ui.js';
 import { setupEventListeners } from './events.js';
 import { loadNotebook } from './notebook.js';
 import { initSync } from './sync.js';
@@ -28,11 +28,13 @@ function init() {
 
   const loaded = loadGame();
   loadNotebook();
+  initLegendSnapshot();
   initSync();
   updateNotebookBadge();
 
   window.addEventListener('alchemy:cloud-applied', () => {
     updateUI();
+    initLegendSnapshot();
     updateNotebookBadge();
     log('☁ Облачный прогресс применён', 'info');
   });

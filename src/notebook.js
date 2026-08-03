@@ -136,8 +136,12 @@ function pickNotableIngredient(recipe) {
   )[0];
 }
 
+export function getCategoryLabel(cat) {
+  return CATEGORY_HINTS[cat] || 'чего-то ещё';
+}
+
 export function getCategoryHint(id) {
-  return CATEGORY_HINTS[ELEMENT_CATS[id]] || 'чего-то ещё';
+  return getCategoryLabel(ELEMENT_CATS[id]);
 }
 
 function hashString(s) {
