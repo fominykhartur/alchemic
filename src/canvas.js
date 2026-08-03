@@ -16,12 +16,14 @@ export function resizeCanvas() {
   const availH = panel.clientHeight - controls.offsetHeight - 14;
   const isMobile = window.innerWidth < 768;
   const size = Math.min(availW, availH, isMobile ? Infinity : 600);
-  canvas.width = size;
-  canvas.height = size;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(size * dpr);
+  canvas.height = Math.round(size * dpr);
   canvas.style.width = size + 'px';
   canvas.style.height = size + 'px';
-  W = canvas.width;
-  H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = size;
+  H = size;
   CX = W / 2;
   CY = H / 2;
   RADIUS = Math.min(W, H) * 0.4;

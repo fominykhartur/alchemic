@@ -4,24 +4,155 @@ import { state, saveGame } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
-// ─── Drag state ───
-export let dragData = null;
+// ─── Drag & gesture state (Pointer Events) ───
+const DRAG_THRESHOLD = 8;
+const LONG_PRESS_MS = 500;
+const DOUBLE_TAP_MS = 300;
 
-export function onDragStart(e) {
-  const id = e.target.closest('.inv-item')?.dataset.elementId;
-  if (!id || !state.discovered.has(id)) { e.preventDefault(); return; }
+let activeGesture = null;
+let ghostEl = null;
+let tapTimer = null;
+let lastTap = null;
+let touchDoubleTapFired = false;
+
+function isOverCanvas(x, y) {
+  const r = document.getElementById('game-canvas').getBoundingClientRect();
+  return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+}
+
+export function isDraggingElement() {
+  return !!(activeGesture && activeGesture.dragging);
+}
+
+function createGhost(id) {
+  ghostEl = document.createElement('div');
+  ghostEl.className = 'drag-ghost';
+  ghostEl.innerHTML = buildIconSVG(id, 40);
+  document.body.appendChild(ghostEl);
+}
+
+function moveGhost(x, y) {
+  if (ghostEl) {
+    ghostEl.style.left = x + 'px';
+    ghostEl.style.top = y + 'px';
+  }
+}
+
+function removeGhost() {
+  if (ghostEl) { ghostEl.remove(); ghostEl = null; }
+}
+
+export function onItemPointerDown(e) {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  touchDoubleTapFired = false;
+  const item = e.target.closest('.inv-item');
+  if (!item) return;
+  const id = item.dataset.elementId;
+  if (!id || !state.discovered.has(id)) return;
   const el = ELEMENTS[id];
-  if (!el) { e.preventDefault(); return; }
-  if (!el.starter && !el.infinite && (!state.inventory[id] || state.inventory[id] <= 0)) { e.preventDefault(); return; }
-  dragData = { id, amount: 1 };
-  e.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-  e.dataTransfer.effectAllowed = 'copy';
-  e.target.classList.add('dragging');
+  if (!el) return;
+
+  if (e.pointerType === 'mouse' && e.shiftKey) {
+    e.preventDefault();
+    showQtyPopup(e, id);
+    return;
+  }
+
+  activeGesture = {
+    pointerId: e.pointerId,
+    id,
+    item,
+    addable: !!(el.starter || el.infinite || (state.inventory[id] || 0) > 0),
+    startX: e.clientX,
+    startY: e.clientY,
+    dragging: false,
+    moved: false,
+    longPressDone: false,
+  };
+
+  if (e.pointerType !== 'mouse') {
+    activeGesture.longPressTimer = setTimeout(() => {
+      const g = activeGesture;
+      if (g && g.pointerId === e.pointerId && !g.dragging) {
+        g.longPressDone = true;
+        showQtyPopup(e, id);
+      }
+    }, LONG_PRESS_MS);
+  }
 }
 
-export function onDragEnd(e) {
-  e.target.classList.remove('dragging');
-}
+document.addEventListener('pointermove', (e) => {
+  const g = activeGesture;
+  if (!g || e.pointerId !== g.pointerId) return;
+  const dx = e.clientX - g.startX;
+  const dy = e.clientY - g.startY;
+  if (!g.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+    g.moved = true;
+    if (!g.addable) return;
+    g.dragging = true;
+    clearTimeout(g.longPressTimer);
+    try { g.item.setPointerCapture(e.pointerId); } catch {}
+    e.preventDefault();
+    createGhost(g.id);
+    g.item.classList.add('dragging');
+  }
+  if (g.dragging) {
+    e.preventDefault();
+    moveGhost(e.clientX, e.clientY);
+    document.getElementById('game-canvas').classList.toggle('drop-active', isOverCanvas(e.clientX, e.clientY));
+  }
+});
+
+document.addEventListener('pointerup', (e) => {
+  const g = activeGesture;
+  if (!g || e.pointerId !== g.pointerId) return;
+  clearTimeout(g.longPressTimer);
+  const wasDrag = g.dragging;
+  const droppedOnCanvas = wasDrag && isOverCanvas(e.clientX, e.clientY);
+  g.item.classList.remove('dragging');
+  removeGhost();
+  document.getElementById('game-canvas').classList.remove('drop-active');
+  activeGesture = null;
+
+  if (wasDrag) {
+    if (droppedOnCanvas) addToCauldron(g.id, 1);
+    return;
+  }
+
+  if (g.longPressDone || g.moved) return;
+
+  // Mouse: single click → info, native dblclick → add 1
+  if (e.pointerType === 'mouse') {
+    showElementInfo(g.id);
+    return;
+  }
+
+  // Touch: single tap → info (delayed for double-tap), double tap → add 1
+  const now = performance.now();
+  if (lastTap && lastTap.id === g.id && now - lastTap.time < DOUBLE_TAP_MS) {
+    clearTimeout(tapTimer);
+    lastTap = null;
+    touchDoubleTapFired = true;
+    addToCauldron(g.id, 1);
+  } else {
+    lastTap = { id: g.id, time: now };
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => {
+      lastTap = null;
+      showElementInfo(g.id);
+    }, DOUBLE_TAP_MS);
+  }
+});
+
+document.addEventListener('pointercancel', (e) => {
+  const g = activeGesture;
+  if (!g || e.pointerId !== g.pointerId) return;
+  clearTimeout(g.longPressTimer);
+  g.item.classList.remove('dragging');
+  removeGhost();
+  document.getElementById('game-canvas').classList.remove('drop-active');
+  activeGesture = null;
+});
 
 // ─── Quantity popup ───
 let qtyPopupElement = null;
@@ -58,7 +189,10 @@ export function addToCauldron(id, amount) {
   if (!el.starter && !el.infinite && (!state.inventory[id] || state.inventory[id] < amount)) return;
   const currentTotal = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
   const space = 10 - currentTotal;
-  if (space <= 0) return;
+  if (space <= 0) {
+    log('⚠ Котёл полон (10/10)!', 'info');
+    return;
+  }
   const addAmt = Math.min(amount, space);
   state.cauldron[id] = (state.cauldron[id] || 0) + addAmt;
   state.cauldronEntryTime[id] = performance.now();
@@ -185,12 +319,11 @@ function renderItem(grid, id) {
     label.className = 'name-label';
     label.textContent = el.name;
     item.appendChild(label);
-    item.draggable = qty > 0 || el.starter || el.infinite;
-    item.addEventListener('dragstart', onDragStart);
-    item.addEventListener('dragend', onDragEnd);
-    item.addEventListener('click', () => showElementInfo(id));
-    item.addEventListener('mousedown', (e) => {
-      if (e.shiftKey && (qty > 0 || el.starter || el.infinite)) { e.preventDefault(); showQtyPopup(e, id); }
+    item.addEventListener('pointerdown', onItemPointerDown);
+    item.addEventListener('dblclick', (e) => {
+      if (touchDoubleTapFired) { touchDoubleTapFired = false; return; }
+      e.preventDefault();
+      addToCauldron(id, 1);
     });
     item.addEventListener('mouseenter', (e) => { showTooltip(id, e); });
     item.addEventListener('mouseleave', hideTooltip);

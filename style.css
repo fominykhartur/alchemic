@@ -7,8 +7,11 @@ body {
   color: #d8d8e8;
   overflow: hidden;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   user-select: none;
+  overscroll-behavior: none;
+  -webkit-touch-callout: none;
 }
 
 #app {
@@ -20,8 +23,12 @@ body {
     "inventory center recipes"
     "log log log";
   height: 100vh;
+  height: 100dvh;
   gap: 2px;
   background: #0a0a1a;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .header {
@@ -194,6 +201,7 @@ body {
   overflow-y: auto;
   flex: 1;
   padding: 2px;
+  touch-action: pan-y;
 }
 #inventory-grid::-webkit-scrollbar { width: 4px; }
 #inventory-grid::-webkit-scrollbar-track { background: #0a0a1a; }
@@ -214,6 +222,8 @@ body {
   font-size: 12px;
   color: #ccc;
   text-shadow: 0 0 4px #000;
+  touch-action: none;
+  -webkit-touch-callout: none;
 }
 .inv-item .quantity {
   position: absolute;
@@ -272,6 +282,20 @@ body {
   cursor: crosshair;
   flex: 0 0 auto;
   min-height: 0;
+  touch-action: none;
+}
+#game-canvas.drop-active {
+  outline: 2px solid #ffd70088;
+  box-shadow: 0 0 24px rgba(255,215,0,0.4);
+  transition: box-shadow 0.15s;
+}
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
 }
 #cauldron-controls {
   display: flex;
@@ -897,6 +921,20 @@ body {
 }
 #tab-bar .tab-btn:hover {
   color: #ffd70088;
+}
+
+/* ─── Tablet / landscape layout ─── */
+@media (max-width: 1100px) and (min-width: 768px) {
+  #app {
+    grid-template-columns: 200px 1fr 200px;
+  }
+  #inventory-grid .inv-item {
+    width: 52px;
+    height: 52px;
+  }
+  #inventory-grid .name-label {
+    font-size: 9px;
+  }
 }
 
 /* ─── Mobile layout ─── */
