@@ -545,6 +545,17 @@ body {
 .nb-whisper.prophecy .nb-text { color: #d8c890; }
 .nb-empty { color: #777; font-size: 13px; text-align: center; padding: 24px 8px; font-style: italic; }
 
+/* Legendary section */
+.nb-lore-body { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.nb-lore-name { color: #ddd; font-weight: bold; font-size: 13px; }
+.nb-lore-desc { color: #9a9ab5; font-size: 12px; font-style: italic; }
+.nb-target { flex-shrink: 0; color: #ffd70088; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+.nb-legend { align-items: center; }
+.nb-legend.locked { border-color: #c9a22733; background: #18141f; }
+.nb-legend.locked .nb-lore-name { color: #c9a227cc; }
+.nb-legend.found { border-color: #c9a22755; }
+.nb-legend .nb-progress { flex-shrink: 0; font-size: 11px; color: #c9a227aa; }
+
 /* ─── Sacrifice ritual ─── */
 .recipe-entry.known {
   opacity: 1;

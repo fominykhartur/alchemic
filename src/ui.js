@@ -1,7 +1,7 @@
-import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
 import { state, saveGame } from './state.js';
-import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount } from './notebook.js';
+import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
 // ─── Drag state ───
@@ -435,14 +435,55 @@ function renderNotebook() {
     });
   }
 
-  renderSacrificeSection(content);
+  renderLegendarySection(content);
 
-  if (unresolved.length === 0) {
-    const empty = document.createElement('div');
-    empty.className = 'nb-empty';
-    empty.textContent = 'Гримуар пока пуст. Смешивайте элементы — здесь появятся намёки.';
-    content.appendChild(empty);
+  renderSacrificeSection(content);
+}
+
+// ─── Legendary section ───
+function getLegendStatus(id) {
+  const recipes = RECIPES.filter(r => r.output === id);
+  if (recipes.length === 0) return { hint: 'Тайна откроется в глубине Делания', progress: null };
+  let best = null;
+  for (const r of recipes) {
+    const distinct = [...new Set(r.inputs.map(i => i.id))];
+    const known = distinct.filter(i => state.discovered.has(i));
+    const progress = known.length / distinct.length;
+    if (!best || progress > best.progress) best = { distinct, known, progress };
   }
+  if (best.progress >= 1) return { hint: 'Все составляющие собраны — отправляйтесь к котлу', progress: null };
+  if (best.progress === 0) return { hint: 'Тайна откроется в глубине Делания', progress: null };
+  const cats = [...new Set(
+    best.distinct.filter(i => !state.discovered.has(i)).map(i => getCategoryHint(i))
+  )];
+  const path = cats.length === 1 ? `через мир ${cats[0]}` : `через миры ${cats.join(' и ')}`;
+  return { hint: `Путь лежит ${path}`, progress: `${best.known.length}/${best.distinct.length}` };
+}
+
+function renderLegendarySection(content) {
+  const title = document.createElement('div');
+  title.className = 'nb-section-title';
+  title.textContent = '👑 Легенды';
+  content.appendChild(title);
+
+  LEGENDARY_IDS.forEach(id => {
+    const el = ELEMENTS[id];
+    if (!el) return;
+    const found = state.discovered.has(id);
+    const row = document.createElement('div');
+    row.className = `nb-entry nb-legend ${found ? 'found' : 'locked'}`;
+    if (found) {
+      row.innerHTML = `<span class="nb-icon">${buildIconSVG(id, 18)}</span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${el.desc}</span></span>
+        <span class="nb-target">✔</span>`;
+    } else {
+      const { hint, progress } = getLegendStatus(id);
+      row.innerHTML = `<span class="nb-icon">🔒</span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${hint}</span></span>
+        ${progress !== null ? `<span class="nb-progress">${progress}</span>` : ''}`;
+    }
+    content.appendChild(row);
+  });
 }
 
 // ─── Sacrifice ritual ───

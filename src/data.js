@@ -407,6 +407,10 @@ export const ELEMENT_CATS = {
   chaosLord:'legendary', entropyLord:'legendary', oblivion:'legendary',
 };
 
+export const LEGENDARY_IDS = Object.entries(ELEMENT_CATS)
+  .filter(([id, cat]) => cat === 'legendary' && ELEMENTS[id])
+  .map(([id]) => id);
+
 export const UNLOCKABLE_STARTERS = [
   { id: 'spirit',  unlockedBy: 'philosophersStone' },
   { id: 'matter',  unlockedBy: 'philosophersStone' },

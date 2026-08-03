@@ -107,6 +107,7 @@ const PROPHECY_GRAND_TEMPLATES = [
 ];
 
 const CATEGORY_HINTS = {
+  starter: 'первостихий',
   nature: 'природы', metal: 'металла', artifact: 'рукотворного',
   magic: 'магии', entities: 'иных существ', spirit: 'духа',
   chronomancy: 'времени', illusion: 'иллюзий', cosmos: 'космоса',
@@ -135,7 +136,7 @@ function pickNotableIngredient(recipe) {
   )[0];
 }
 
-function getCategoryHint(id) {
+export function getCategoryHint(id) {
   return CATEGORY_HINTS[ELEMENT_CATS[id]] || 'чего-то ещё';
 }
 

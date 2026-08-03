@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from './data.js';
+import { ELEMENTS, ELEMENT_IDS, LEGENDARY_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from './data.js';
 import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
@@ -655,7 +655,7 @@ function finishExplosion() {
   log(`💥 Взрыв! ${totalUnits} ед. материи уничтожено`, 'fail');
   playExplode();
 
-  const undiscovered = ELEMENT_IDS.filter(id => !state.discovered.has(id));
+  const undiscovered = ELEMENT_IDS.filter(id => !state.discovered.has(id) && !LEGENDARY_IDS.includes(id));
   const chaosChance = Math.max(0, 0.25 + totalUnits * 0.02 - (types - 1) * 0.05);
   if (undiscovered.length > 0 && Math.random() < chaosChance) {
     const picked = undiscovered[Math.floor(Math.random() * undiscovered.length)];
