@@ -14,6 +14,7 @@ let ghostEl = null;
 let tapTimer = null;
 let lastTap = null;
 let touchDoubleTapFired = false;
+let pausedTab = null;
 
 function isOverCanvas(x, y) {
   const open = document.querySelector('.mobile-visible');
@@ -96,11 +97,16 @@ document.addEventListener('pointermove', (e) => {
     if (!g.addable) return;
     g.dragging = true;
     clearTimeout(g.longPressTimer);
-    if (g.item.closest('.mobile-visible')) switchTab('cauldron');
     try { g.item.setPointerCapture(e.pointerId); } catch {}
     e.preventDefault();
     createGhost(g.id);
     g.item.classList.add('dragging');
+
+    const openPanel = document.querySelector('.mobile-visible');
+    if (openPanel && window.innerWidth <= 767) {
+      pausedTab = openPanel.id.replace('-panel', '');
+      openPanel.classList.remove('mobile-visible');
+    }
   }
   if (g.dragging) {
     e.preventDefault();
@@ -122,6 +128,7 @@ document.addEventListener('pointerup', (e) => {
 
   if (wasDrag) {
     if (droppedOnCanvas) addToCauldron(g.id, 1);
+    if (pausedTab) { switchTab(pausedTab); pausedTab = null; }
     return;
   }
 
@@ -158,6 +165,7 @@ document.addEventListener('pointercancel', (e) => {
   removeGhost();
   document.getElementById('game-canvas').classList.remove('drop-active');
   activeGesture = null;
+  if (pausedTab) { switchTab(pausedTab); pausedTab = null; }
 });
 
 // ─── Quantity popup ───
@@ -458,7 +466,7 @@ export function renderRecipes() {
   const foundAny = RECIPES.some(r => state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r)));
   if (!foundAny) {
     const empty = document.createElement('div');
-    empty.style.cssText = 'color:#555;text-align:center;padding:20px;font-size:13px;';
+    empty.className = 'recipes-empty';
     empty.textContent = '🔒 Рецепты будут открываться по мере смешивания';
     list.appendChild(empty);
     return;
