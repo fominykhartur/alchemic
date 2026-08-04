@@ -16,6 +16,11 @@ let lastTap = null;
 let touchDoubleTapFired = false;
 
 function isOverCanvas(x, y) {
+  const open = document.querySelector('.mobile-visible');
+  if (open) {
+    const pr = open.getBoundingClientRect();
+    if (x >= pr.left && x <= pr.right && y >= pr.top && y <= pr.bottom) return false;
+  }
   const r = document.getElementById('game-canvas').getBoundingClientRect();
   return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
 }
@@ -91,6 +96,7 @@ document.addEventListener('pointermove', (e) => {
     if (!g.addable) return;
     g.dragging = true;
     clearTimeout(g.longPressTimer);
+    if (g.item.closest('.mobile-visible')) switchTab('cauldron');
     try { g.item.setPointerCapture(e.pointerId); } catch {}
     e.preventDefault();
     createGhost(g.id);
