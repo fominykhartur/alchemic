@@ -224,6 +224,7 @@ export function renderInventory() {
 
   if (!window._sortMode) window._sortMode = 'category';
   const sortToggle = document.createElement('div');
+  sortToggle.className = 'inv-full-row';
   sortToggle.style.cssText = 'width:100%;text-align:center;margin-bottom:4px;font-size:9px;color:#555;cursor:pointer';
   sortToggle.textContent = window._sortMode === 'category' ? '🔽 По категориям' : '🔤 По алфавиту';
   sortToggle.addEventListener('click', () => {
@@ -241,6 +242,7 @@ export function renderInventory() {
       if (ids.length === 0) return;
       const catInfo = CATEGORIES[cat];
       const header = document.createElement('div');
+      header.className = 'inv-full-row';
       header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${catInfo.color}22;margin-top:2px;text-transform:uppercase;letter-spacing:1px`;
       header.textContent = catInfo.label;
       grid.appendChild(header);
@@ -253,6 +255,7 @@ export function renderInventory() {
 
   if (undiscovered.length > 0) {
     const sep = document.createElement('div');
+    sep.className = 'inv-full-row';
     sep.style.cssText = 'width:100%;font-size:9px;color:#2a2a4e;padding:4px 2px 2px;border-bottom:1px solid #1a1a2e;margin-top:4px;text-transform:uppercase;letter-spacing:1px';
     sep.textContent = '❓ Неоткрыто';
     grid.appendChild(sep);

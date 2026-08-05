@@ -197,21 +197,23 @@ body {
   flex-direction: column;
 }
 #inventory-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   gap: 4px;
-  align-content: flex-start;
+  align-content: start;
   overflow-y: auto;
   flex: 1;
   padding: 2px;
   touch-action: pan-y;
+}
+#inventory-grid > .inv-full-row {
+  grid-column: 1 / -1;
 }
 #inventory-grid::-webkit-scrollbar { width: 4px; }
 #inventory-grid::-webkit-scrollbar-track { background: #0a0a1a; }
 #inventory-grid::-webkit-scrollbar-thumb { background: #2a2a4e; border-radius: 2px; }
 
 .inv-item {
-  width: 60px;
   height: 60px;
   border-radius: 8px;
   display: flex;
@@ -942,8 +944,10 @@ body {
   #app {
     grid-template-columns: 200px 1fr 200px;
   }
+  #inventory-grid {
+    grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
+  }
   #inventory-grid .inv-item {
-    width: 52px;
     height: 52px;
   }
   #inventory-grid .name-label {
