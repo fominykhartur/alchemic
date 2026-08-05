@@ -202,6 +202,7 @@ body {
   gap: 4px;
   align-content: start;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
   padding: 2px;
   touch-action: pan-y;
