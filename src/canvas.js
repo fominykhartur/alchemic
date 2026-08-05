@@ -27,6 +27,7 @@ export function resizeCanvas() {
   CX = W / 2;
   CY = H / 2;
   RADIUS = Math.min(W, H) * 0.4;
+  initBackgroundDecor();
 }
 
 let time = 0;
@@ -46,6 +47,7 @@ function drawScene() {
   }
   ctx.fillStyle = '#0a0a1a';
   ctx.fillRect(0, 0, W, H);
+  drawBackgroundDecor();
   drawCircle();
   drawCapacityIndicator();
   const entries = Object.entries(state.cauldron);
@@ -392,6 +394,142 @@ function spawnAmbientParticles() {
     color: `rgba(255,215,0,${0.1 + Math.random() * 0.2})`,
     size: 1 + Math.random() * 2,
   });
+}
+
+// ─── Ambient background decor: nebula + starfield + floating alchemical symbols ───
+let stars = [];
+let bgSymbols = [];
+let nebulaCanvas = null;
+let isMobileView = false;
+
+function symTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symInvTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, s / 2); ctx.lineTo(s / 2, -s / 2); ctx.lineTo(-s / 2, -s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symCircleDot(ctx, s) {
+  ctx.beginPath(); ctx.arc(0, 0, s / 2, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 0, 1.4, 0, Math.PI * 2); ctx.fill();
+}
+function symCrescent(ctx, s) {
+  ctx.beginPath(); ctx.arc(0, 0, s / 2, Math.PI * 0.25, Math.PI * 1.6); ctx.stroke();
+}
+function symHourglass(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(-s / 2, -s / 2); ctx.lineTo(s / 2, -s / 2);
+  ctx.lineTo(-s / 2, s / 2); ctx.lineTo(s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symEyeTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, s * 0.08, s * 0.14, 0, Math.PI * 2); ctx.stroke();
+}
+function symSquareCross(ctx, s) {
+  ctx.strokeRect(-s / 2, -s / 2, s, s);
+  ctx.beginPath();
+  ctx.moveTo(-s / 2, 0); ctx.lineTo(s / 2, 0);
+  ctx.moveTo(0, -s / 2); ctx.lineTo(0, s / 2);
+  ctx.stroke();
+}
+function symSpiral(ctx, s) {
+  ctx.beginPath();
+  for (let a = 0; a < Math.PI * 5; a += 0.3) {
+    const rr = 1 + a * (s / 2 / (Math.PI * 5));
+    const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+    a === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}
+const SYMBOL_DRAWERS = [symTriangle, symInvTriangle, symCircleDot, symCrescent, symHourglass, symEyeTriangle, symSquareCross, symSpiral];
+
+function initBackgroundDecor() {
+  isMobileView = window.innerWidth < 768;
+  const dpr = window.devicePixelRatio || 1;
+
+  const starCount = isMobileView ? 40 : 90;
+  stars = Array.from({ length: starCount }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: 0.4 + Math.random() * 1.1,
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.3 + Math.random() * 0.6,
+  }));
+
+  const symCount = isMobileView ? 5 : 9;
+  bgSymbols = [];
+  let attempts = 0;
+  while (bgSymbols.length < symCount && attempts < symCount * 20) {
+    attempts++;
+    const x = Math.random() * W;
+    const y = Math.random() * H;
+    if (Math.hypot(x - CX, y - CY) < RADIUS * 1.35) continue;
+    bgSymbols.push({
+      baseX: x, baseY: y,
+      kind: SYMBOL_DRAWERS[Math.floor(Math.random() * SYMBOL_DRAWERS.length)],
+      size: 14 + Math.random() * 16,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.05,
+      driftR: 6 + Math.random() * 10,
+      driftSpeed: 0.15 + Math.random() * 0.2,
+      driftPhase: Math.random() * Math.PI * 2,
+      hue: Math.random() < 0.6 ? '#ffd700' : '#b080e0',
+      alpha: 0.06 + Math.random() * 0.07,
+    });
+  }
+
+  nebulaCanvas = document.createElement('canvas');
+  nebulaCanvas.width = W * dpr;
+  nebulaCanvas.height = H * dpr;
+  const nctx = nebulaCanvas.getContext('2d');
+  nctx.scale(dpr, dpr);
+  [
+    { x: W * 0.12, y: H * 0.15, r: W * 0.55, c: 'rgba(147,80,220,0.06)' },
+    { x: W * 0.92, y: H * 0.88, r: W * 0.6, c: 'rgba(255,190,60,0.045)' },
+    { x: W * 0.85, y: H * 0.08, r: W * 0.4, c: 'rgba(120,70,200,0.05)' },
+  ].forEach(b => {
+    const grad = nctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+    grad.addColorStop(0, b.c);
+    grad.addColorStop(1, 'transparent');
+    nctx.fillStyle = grad;
+    nctx.fillRect(0, 0, W, H);
+  });
+}
+
+function drawBackgroundDecor() {
+  const t = time * 0.001;
+  if (nebulaCanvas) ctx.drawImage(nebulaCanvas, 0, 0, W, H);
+
+  ctx.save();
+  stars.forEach(s => {
+    ctx.globalAlpha = 0.35 + 0.35 * Math.sin(t * s.speed + s.phase);
+    ctx.fillStyle = '#e8e0ff';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.restore();
+
+  bgSymbols.forEach(sym => {
+    const dx = Math.cos(t * sym.driftSpeed + sym.driftPhase) * sym.driftR;
+    const dy = Math.sin(t * sym.driftSpeed * 0.8 + sym.driftPhase) * sym.driftR;
+    ctx.save();
+    ctx.translate(sym.baseX + dx, sym.baseY + dy);
+    ctx.rotate(sym.rot + t * sym.rotSpeed);
+    ctx.globalAlpha = sym.alpha * (0.7 + 0.3 * Math.sin(t * 0.3 + sym.driftPhase));
+    ctx.strokeStyle = sym.hue;
+    ctx.fillStyle = sym.hue;
+    ctx.lineWidth = 1;
+    sym.kind(ctx, sym.size);
+    ctx.restore();
+  });
+  ctx.globalAlpha = 1;
 }
 
 function startMixAnimation(recipe, dominantId) {
