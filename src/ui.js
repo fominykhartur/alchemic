@@ -1,5 +1,5 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
-import { buildIconSVG, ICON_DESIGNS, TIER } from './icons.js';
+import { buildIconSVG, ICON_DESIGNS, TIER, textSafeColor } from './icons.js';
 import { state, saveGame } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
@@ -379,7 +379,7 @@ export function showElementInfo(id) {
       const key = recipeKey(r);
       const isFound = state.foundRecipes.has(key);
       const isKnown = !isFound && knownKeys.has(key);
-      const formula = r.inputs.map(i => `<span style="color:${ELEMENTS[i.id]?.color || '#888'}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
+      const formula = r.inputs.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
       const entry = document.createElement('div');
       entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
@@ -412,7 +412,7 @@ export function showElementInfo(id) {
       const entry = document.createElement('div');
       entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
-      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>`;
+      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>`;
       list.appendChild(entry);
     });
   }
@@ -479,8 +479,8 @@ export function renderRecipes() {
     const output = ELEMENTS[r.output];
     const entry = document.createElement('div');
     entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
-    const formula = r.inputs.map(i => `<span style="color:${ELEMENTS[i.id]?.color || '#888'}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
-    entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${output ? output.color : '#888'}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
+    const formula = r.inputs.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
+    entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
     list.appendChild(entry);
   });
 }
