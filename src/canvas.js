@@ -7,7 +7,24 @@ import { maybeAddWhisper, resolveWhispers, onOracleUnlocked } from './notebook.j
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
+export const bgCanvas = document.getElementById('bg-canvas');
+export const bgCtx = bgCanvas.getContext('2d');
 export let W, H, CX, CY, RADIUS;
+let BGW, BGH;
+
+function resizeBgCanvas() {
+  const panel = document.getElementById('center-panel');
+  const rect = panel.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  BGW = rect.width;
+  BGH = rect.height;
+  bgCanvas.width = Math.round(BGW * dpr);
+  bgCanvas.height = Math.round(BGH * dpr);
+  bgCanvas.style.width = BGW + 'px';
+  bgCanvas.style.height = BGH + 'px';
+  bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  initBackgroundDecor();
+}
 
 export function resizeCanvas() {
   const panel = document.getElementById('center-panel');
@@ -27,7 +44,7 @@ export function resizeCanvas() {
   CX = W / 2;
   CY = H / 2;
   RADIUS = Math.min(W, H) * 0.4;
-  initBackgroundDecor();
+  resizeBgCanvas();
 }
 
 let time = 0;
@@ -45,9 +62,7 @@ function drawScene() {
     ctx.translate(sx, sy);
     shakeTimer--;
   }
-  ctx.fillStyle = '#0a0a1a';
-  ctx.fillRect(0, 0, W, H);
-  drawBackgroundDecor();
+  ctx.clearRect(0, 0, W, H);
   drawCircle();
   drawCapacityIndicator();
   const entries = Object.entries(state.cauldron);
@@ -455,8 +470,8 @@ function initBackgroundDecor() {
 
   const starCount = isMobileView ? 40 : 90;
   stars = Array.from({ length: starCount }, () => ({
-    x: Math.random() * W,
-    y: Math.random() * H,
+    x: Math.random() * BGW,
+    y: Math.random() * BGH,
     r: 0.4 + Math.random() * 1.1,
     phase: Math.random() * Math.PI * 2,
     speed: 0.3 + Math.random() * 0.6,
@@ -467,9 +482,9 @@ function initBackgroundDecor() {
   let attempts = 0;
   while (bgSymbols.length < symCount && attempts < symCount * 20) {
     attempts++;
-    const x = Math.random() * W;
-    const y = Math.random() * H;
-    if (Math.hypot(x - CX, y - CY) < RADIUS * 1.35) continue;
+    const x = Math.random() * BGW;
+    const y = Math.random() * BGH;
+    if (Math.hypot(x - BGW / 2, y - BGH / 2) < RADIUS * 1.35) continue;
     bgSymbols.push({
       baseX: x, baseY: y,
       kind: SYMBOL_DRAWERS[Math.floor(Math.random() * SYMBOL_DRAWERS.length)],
@@ -485,51 +500,52 @@ function initBackgroundDecor() {
   }
 
   nebulaCanvas = document.createElement('canvas');
-  nebulaCanvas.width = W * dpr;
-  nebulaCanvas.height = H * dpr;
+  nebulaCanvas.width = BGW * dpr;
+  nebulaCanvas.height = BGH * dpr;
   const nctx = nebulaCanvas.getContext('2d');
   nctx.scale(dpr, dpr);
   [
-    { x: W * 0.12, y: H * 0.15, r: W * 0.55, c: 'rgba(147,80,220,0.06)' },
-    { x: W * 0.92, y: H * 0.88, r: W * 0.6, c: 'rgba(255,190,60,0.045)' },
-    { x: W * 0.85, y: H * 0.08, r: W * 0.4, c: 'rgba(120,70,200,0.05)' },
+    { x: BGW * 0.12, y: BGH * 0.15, r: BGW * 0.55, c: 'rgba(147,80,220,0.06)' },
+    { x: BGW * 0.92, y: BGH * 0.88, r: BGW * 0.6, c: 'rgba(255,190,60,0.045)' },
+    { x: BGW * 0.85, y: BGH * 0.08, r: BGW * 0.4, c: 'rgba(120,70,200,0.05)' },
   ].forEach(b => {
     const grad = nctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
     grad.addColorStop(0, b.c);
     grad.addColorStop(1, 'transparent');
     nctx.fillStyle = grad;
-    nctx.fillRect(0, 0, W, H);
+    nctx.fillRect(0, 0, BGW, BGH);
   });
 }
 
 function drawBackgroundDecor() {
+  bgCtx.clearRect(0, 0, BGW, BGH);
   const t = time * 0.001;
-  if (nebulaCanvas) ctx.drawImage(nebulaCanvas, 0, 0, W, H);
+  if (nebulaCanvas) bgCtx.drawImage(nebulaCanvas, 0, 0, BGW, BGH);
 
-  ctx.save();
+  bgCtx.save();
   stars.forEach(s => {
-    ctx.globalAlpha = 0.35 + 0.35 * Math.sin(t * s.speed + s.phase);
-    ctx.fillStyle = '#e8e0ff';
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fill();
+    bgCtx.globalAlpha = 0.35 + 0.35 * Math.sin(t * s.speed + s.phase);
+    bgCtx.fillStyle = '#e8e0ff';
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
   });
-  ctx.restore();
+  bgCtx.restore();
 
   bgSymbols.forEach(sym => {
     const dx = Math.cos(t * sym.driftSpeed + sym.driftPhase) * sym.driftR;
     const dy = Math.sin(t * sym.driftSpeed * 0.8 + sym.driftPhase) * sym.driftR;
-    ctx.save();
-    ctx.translate(sym.baseX + dx, sym.baseY + dy);
-    ctx.rotate(sym.rot + t * sym.rotSpeed);
-    ctx.globalAlpha = sym.alpha * (0.7 + 0.3 * Math.sin(t * 0.3 + sym.driftPhase));
-    ctx.strokeStyle = sym.hue;
-    ctx.fillStyle = sym.hue;
-    ctx.lineWidth = 1;
-    sym.kind(ctx, sym.size);
-    ctx.restore();
+    bgCtx.save();
+    bgCtx.translate(sym.baseX + dx, sym.baseY + dy);
+    bgCtx.rotate(sym.rot + t * sym.rotSpeed);
+    bgCtx.globalAlpha = sym.alpha * (0.7 + 0.3 * Math.sin(t * 0.3 + sym.driftPhase));
+    bgCtx.strokeStyle = sym.hue;
+    bgCtx.fillStyle = sym.hue;
+    bgCtx.lineWidth = 1;
+    sym.kind(bgCtx, sym.size);
+    bgCtx.restore();
   });
-  ctx.globalAlpha = 1;
+  bgCtx.globalAlpha = 1;
 }
 
 function startMixAnimation(recipe, dominantId) {
@@ -902,6 +918,7 @@ export function performMix() {
 export function gameLoop(timestamp) {
   time = timestamp || 0;
   if (Math.random() < 0.1) spawnAmbientParticles();
+  drawBackgroundDecor();
   drawScene();
   requestAnimationFrame(gameLoop);
 }
