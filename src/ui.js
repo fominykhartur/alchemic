@@ -368,7 +368,9 @@ export function showElementInfo(id) {
 
   const header = document.createElement('div');
   header.style.cssText = 'text-align:center;padding:8px;margin-bottom:6px;border-bottom:1px solid #2a2a4e44';
-  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px">${buildIconSVG(id, 44)}</div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div>`;
+  const wrapCls = 'card-icon-wrap' + (id === 'void' ? ' void' : id === 'abyss' ? ' abyss' : '');
+  const wrapStyle = `background:linear-gradient(135deg, ${el.color}44, ${el.color}11);` + (id === 'void' || id === 'abyss' ? '' : `border-color:${el.color}66`);
+  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div>`;
   list.appendChild(header);
 
   const knownKeys = new Set(notebook.knownRecipes);

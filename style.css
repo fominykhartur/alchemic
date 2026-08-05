@@ -758,6 +758,21 @@ body {
   flex-shrink: 0;
 }
 
+.card-icon-wrap {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #2a2a4e;
+}
+.card-icon-wrap.void {
+  border-color: #9B5FCF;
+  box-shadow: 0 0 12px rgba(123,63,175,0.4), inset 0 0 8px rgba(123,63,175,0.15);
+}
+.card-icon-wrap.abyss {
+  border-color: #4A00AA;
+  box-shadow: 0 0 10px rgba(74,0,170,0.3);
+}
+
 .inv-item:hover .icon-container svg {
   filter: drop-shadow(0 0 6px currentColor);
   transform: scale(1.1);
