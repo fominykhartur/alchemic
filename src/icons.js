@@ -648,6 +648,8 @@ export const TIER = (() => {
   return t;
 })();
 
+let iconGradSeq = 0;
+
 export function buildIconSVG(id, size) {
   const el = ELEMENTS[id];
   const design = ICON_DESIGNS[id];
@@ -661,7 +663,7 @@ export function buildIconSVG(id, size) {
   const rotAttr = rot ? ` transform="rotate(${rot} 10 10)"` : '';
 
   const lighter = lightenColor(color, 40);
-  const gradId = `g-${id.replace(/[^a-zA-Z0-9]/g, '')}`;
+  const gradId = `g-${id.replace(/[^a-zA-Z0-9]/g, '')}-${++iconGradSeq}`;
   const gradDef = `<radialGradient id="${gradId}" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter}" stop-opacity="0.95"/><stop offset="100%" stop-color="${color}" stop-opacity="0.95"/></radialGradient>`;
 
   const glyphColor = isLightColor(color) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)';

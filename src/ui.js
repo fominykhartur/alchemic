@@ -4,6 +4,10 @@ import { state, saveGame } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
+function hexRgba(hex, alpha) {
+  return `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${alpha})`;
+}
+
 // ─── Drag & gesture state (Pointer Events) ───
 const DRAG_THRESHOLD = 8;
 const LONG_PRESS_MS = 500;
@@ -243,7 +247,7 @@ export function renderInventory() {
       const catInfo = CATEGORIES[cat];
       const header = document.createElement('div');
       header.className = 'inv-full-row';
-      header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${catInfo.color}22;margin-top:2px;text-transform:uppercase;letter-spacing:1px`;
+      header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${hexRgba(catInfo.color, 0.13)};margin-top:2px;text-transform:uppercase;letter-spacing:1px`;
       header.textContent = catInfo.label;
       grid.appendChild(header);
       ids.forEach(id => renderItem(grid, id));
@@ -312,8 +316,8 @@ function renderItem(grid, id) {
   item.dataset.elementId = id;
 
   if (discovered) {
-    item.style.background = `linear-gradient(135deg, ${el.color}44, ${el.color}11)`;
-    item.style.borderColor = el.color + '66';
+    item.style.background = `linear-gradient(135deg, ${hexRgba(el.color, 0.27)}, ${hexRgba(el.color, 0.07)})`;
+    item.style.borderColor = hexRgba(el.color, 0.4);
     if (id === 'void') {
       item.style.borderColor = '#9B5FCF';
       item.style.boxShadow = '0 0 12px rgba(123,63,175,0.4), inset 0 0 8px rgba(123,63,175,0.15)';
@@ -367,9 +371,9 @@ export function showElementInfo(id) {
   panelTitle.innerHTML = `<a href="#" onclick="hideElementInfo();return false" style="color:#ffd700;text-decoration:none;margin-right:6px">←</a> ${el.name}`;
 
   const header = document.createElement('div');
-  header.style.cssText = 'text-align:center;padding:8px;margin-bottom:6px;border-bottom:1px solid #2a2a4e44';
+  header.style.cssText = 'text-align:center;padding:8px;margin-bottom:6px;border-bottom:1px solid rgba(42,42,78,0.27)';
   const wrapCls = 'card-icon-wrap' + (id === 'void' ? ' void' : id === 'abyss' ? ' abyss' : '');
-  const wrapStyle = `background:linear-gradient(135deg, ${el.color}44, ${el.color}11);` + (id === 'void' || id === 'abyss' ? '' : `border-color:${el.color}66`);
+  const wrapStyle = `background:linear-gradient(135deg, ${hexRgba(el.color, 0.27)}, ${hexRgba(el.color, 0.07)});` + (id === 'void' || id === 'abyss' ? '' : `border-color:${hexRgba(el.color, 0.4)}`);
   header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div>`;
   list.appendChild(header);
 
