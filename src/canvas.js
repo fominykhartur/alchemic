@@ -78,6 +78,12 @@ function drawScene() {
 
 function drawCircle() {
   const t = time * 0.001;
+
+  ctx.fillStyle = 'rgba(10,10,26,0.8)';
+  ctx.beginPath();
+  ctx.arc(CX, CY, RADIUS * 0.95, 0, Math.PI * 2);
+  ctx.fill();
+
   const grad = ctx.createRadialGradient(CX, CY, RADIUS * 0.5, CX, CY, RADIUS * 0.95);
   grad.addColorStop(0, 'transparent');
   grad.addColorStop(0.7, 'rgba(45,3,53,0.1)');
@@ -505,9 +511,10 @@ function initBackgroundDecor() {
   const nctx = nebulaCanvas.getContext('2d');
   nctx.scale(dpr, dpr);
   [
-    { x: BGW * 0.12, y: BGH * 0.15, r: BGW * 0.55, c: 'rgba(147,80,220,0.06)' },
-    { x: BGW * 0.92, y: BGH * 0.88, r: BGW * 0.6, c: 'rgba(255,190,60,0.045)' },
-    { x: BGW * 0.85, y: BGH * 0.08, r: BGW * 0.4, c: 'rgba(120,70,200,0.05)' },
+    { x: BGW * 0.05, y: BGW * 0.05, r: BGW * 0.4, c: 'rgba(147,80,220,0.06)' },
+    { x: BGW * 0.95, y: BGH * 0.95, r: BGW * 0.4, c: 'rgba(147,80,220,0.05)' },
+    { x: BGW * 0.95, y: BGH * 0.05, r: BGW * 0.3, c: 'rgba(120,70,200,0.045)' },
+    { x: BGW * 0.05, y: BGH * 0.95, r: BGW * 0.3, c: 'rgba(147,80,220,0.04)' },
   ].forEach(b => {
     const grad = nctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
     grad.addColorStop(0, b.c);
@@ -524,7 +531,7 @@ function drawBackgroundDecor() {
 
   bgCtx.save();
   stars.forEach(s => {
-    bgCtx.globalAlpha = 0.35 + 0.35 * Math.sin(t * s.speed + s.phase);
+    bgCtx.globalAlpha = 0.4 + 0.45 * Math.sin(t * s.speed + s.phase);
     bgCtx.fillStyle = '#e8e0ff';
     bgCtx.beginPath();
     bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
