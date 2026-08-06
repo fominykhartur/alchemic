@@ -328,6 +328,15 @@ export const GLYPH_PATHS = {
   sproutSym:       { d: 'M10,18 L10,11 C10,11 6,10 6,7 C9,7 10,9 10,9 C10,9 11,6 14,6 C14,9 11,10 10,11', useShapeFill: true, round: true },
   virulentSwarmSym:{ d: 'M6,6 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M13,5 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M15,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M11,15 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M5,13 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M10,9 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0', fill: true, round: true },
   substanceSym:    { d: 'M10,2 C14,2 17,5 16,9 C19,11 17,16 13,16 C12,19 7,19 6,16 C2,15 2,10 5,8 C4,4 7,2 10,2 Z', useShapeFill: true, round: true },
+  // Уникальные иконки: механизмы/артефакты/финал (ревизия дубликатов, партия 2)
+  pistonEngineSym: { d: 'M10,2 L11,4 L9,4 Z M10,18 L11,16 L9,16 Z M2,10 L4,9 L4,11 Z M18,10 L16,9 L16,11 Z M10,10 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0', strokePath: 'M10,6 L10,14', useShapeFill: true, round: true },
+  plasmaEnergySym: { d: 'M10,2 L11,13 L10,17 L9,13 Z M8,13 L12,13 L11,16 L9,16 Z', strokePath: 'M6,5 L8,7 L6,9 M14,5 L12,7 L14,9 M6,11 L7.5,12 M14,11 L12.5,12', useShapeFill: true, round: true },
+  monolithSym:     { d: 'M7,18 L7,4 L13,4 L13,18 Z', strokePath: 'M8,7 L12,7 M8,11 L12,11 M9,3 L9,1 M11,3 L11,1', useShapeFill: true, round: true },
+  ironWillSym:     { d: 'M10,2 L16,5 L16,10 C16,15 13,18 10,19 C7,18 4,15 4,10 L4,5 Z', strokePath: 'M10,2 L10,19 M6,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,7 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M6,13 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12,13 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0', useShapeFill: true, round: true },
+  forgeHeartSym:   { d: 'M10,17 C5,13 4,9 6,6.5 C8,4.5 10,7 10,7 C10,7 12,4.5 14,6.5 C16,9 15,13 10,17 Z', strokePath: 'M10,7 C9,9 8,11 10,13 C12,11 11,9 10,7 Z', useShapeFill: true, round: true },
+  absoluteMassSym: { d: 'M10,10 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0', strokePath: 'M10,0.5 L10,3.5 M10,16.5 L10,19.5 M0.5,10 L3.5,10 M16.5,10 L19.5,10 M3,3 L5.2,5.2 M14.8,14.8 L17,17 M17,3 L14.8,5.2 M5.2,14.8 L3,17', useShapeFill: true, round: true },
+  possessedArmorSym:{ d: 'M5,5 L10,2 L15,5 L15,9 L13,9 L13,13 L10,19 L7,13 L7,9 L5,9 Z', strokePath: 'M9,8 a0.9,0.9 0 1,0 1.8,0 M11.2,8 a0.9,0.9 0 1,0 1.8,0', useShapeFill: true, round: true },
+  worldAnvilSym:   { d: 'M3,14 L17,14 L17,16 L3,16 Z M6,14 L6,10 L11,10 L14,7 L14,10 L11,12 L11,14 Z', strokePath: 'M15,4 L17,2 M16,5 L18,4 M14,6 L16,5', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -510,7 +519,7 @@ export const ICON_DESIGNS = {
   parasite:     { shape: 'diamond', glyph: 'parasiteSym',    rot: 0 },
   // Катализ
   ignition:     { shape: 'diamond', glyph: 'ignitionSym',    rot: 0 },
-  engine:       { shape: 'square',  glyph: 'engineSym',      rot: 0 },
+  engine:       { shape: 'square',  glyph: 'pistonEngineSym',rot: 0 },
   // Янтарь
   amberRelic:   { shape: 'hexagon', glyph: 'ambersym',       rot: 0 },
   revenant:     { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
@@ -527,7 +536,7 @@ export const ICON_DESIGNS = {
   whisperingWinds:{ shape: 'diamond', glyph: 'whisperingWindsSym', rot: 0 },
   banshee:      { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
   // Технологии
-  plasmaBlade:  { shape: 'square',  glyph: 'sword',          rot: 0 },
+  plasmaBlade:  { shape: 'square',  glyph: 'plasmaEnergySym',rot: 0, glow: 0.12 },
   resonator:    { shape: 'hexagon', glyph: 'prismshp',       rot: 0 },
   overcharge:   { shape: 'star',    glyph: 'lightningsym',   rot: 0 },
   // Катаклизмы
@@ -595,7 +604,7 @@ export const ICON_DESIGNS = {
   soulJar:       { shape: 'hexagon', glyph: 'vesselSym',        rot: 0 },
   spiritGuide:   { shape: 'star',    glyph: 'fairysym',         rot: 0 },
   seance:        { shape: 'hexagon', glyph: 'scrollsym',        rot: 0 },
-  possessedArmor:{ shape: 'square',  glyph: 'tee',              rot: 0 },
+  possessedArmor:{ shape: 'square',  glyph: 'possessedArmorSym', rot: 0 },
   wraithLord:    { shape: 'star',    glyph: 'skull',            rot: 0 },
   ancestralChorus:{shape: 'star',    glyph: 'ghostsym',         rot: 0 },
   spiritRealm:   { shape: 'circle',  glyph: 'ethersym',         rot: 0 },
@@ -603,12 +612,12 @@ export const ICON_DESIGNS = {
   // Ветка Материи
   substance:     { shape: 'diamond', glyph: 'substanceSym',     rot: 0 },
   bedrock:       { shape: 'diamond', glyph: 'bedrockSym',       rot: 0 },
-  monolith:      { shape: 'square',  glyph: 'mountains',        rot: 0 },
+  monolith:      { shape: 'square',  glyph: 'monolithSym',      rot: 0 },
   golemCore:     { shape: 'hexagon', glyph: 'golemsym',         rot: 0 },
-  ironWill:      { shape: 'square',  glyph: 'ingot',            rot: 0 },
-  forgeHeart:    { shape: 'triangle',glyph: 'flame',            rot: 0 },
-  worldAnvil:    { shape: 'hexagon', glyph: 'engineSym',        rot: 0 },
-  absoluteMass:  { shape: 'circle',  glyph: 'blackHoleSym',     rot: 0 },
+  ironWill:      { shape: 'square',  glyph: 'ironWillSym',      rot: 0 },
+  forgeHeart:    { shape: 'triangle',glyph: 'forgeHeartSym',    rot: 0 },
+  worldAnvil:    { shape: 'hexagon', glyph: 'worldAnvilSym',    rot: 0 },
+  absoluteMass:  { shape: 'circle',  glyph: 'absoluteMassSym',  rot: 0 },
   titan:         { shape: 'star',    glyph: 'titanSym',         rot: 0 },
   primeMatter:   { shape: 'circle',  glyph: 'transcendenceSym', rot: 0 },
   // Слияние
