@@ -309,6 +309,25 @@ export const GLYPH_PATHS = {
   titanSym:        { d: 'M2,18 L5,10 L8,15 L12,3 L16,15 L18,18 Z M8,15 L12,3 L14,12 M5,10 L5,14', useShapeFill: true, round: true },
   greatBindingSym: { d: 'M7,3 A6,6 0 1,1 7,15 A6,6 0 1,1 7,3 M13,5 A6,6 0 1,1 13,17 A6,6 0 1,1 13,5 M10,9 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0', useShapeFill: true, round: true },
   anchorSym:       { d: 'M7,11 L13,11 L13,15 L7,15 Z M10,4 L10,11 M8,4 L12,4 M5,14 L7,14 L7,17 L5,17 Z M13,14 L15,14 L15,17 L13,17 Z', useShapeFill: true, round: true },
+  // Уникальные иконки: буря/природа/материя (ревизия дубликатов)
+  maelstromSym:    { d: 'M17,10 A7,7 0 1,0 8.5,16.8 A5,5 0 1,1 14.5,9 A3,3 0 1,0 8,11.5', useShapeFill: true, round: true },
+  tempestSym:      { d: 'M10,2 L7.5,9 L11,9 L8,18 M14,3.5 L15.5,9.5 L18.5,9 L15,16 M2,9.5 L6,10 L3.5,15.5', useShapeFill: true, round: true },
+  ancientGroveSym: { d: 'M10,2 C6.5,2 4.5,5.5 5.5,8.5 C3,9.5 2.5,13 5,14.5 L8,13 L8,18 L12,18 L12,13 L15,14.5 C17.5,13 17,9.5 14.5,8.5 C15.5,5.5 13.5,2 10,2 Z M6,18 L4,20.5 M14,18 L16,20.5', useShapeFill: true, round: true },
+  treantSym:       { d: 'M10,3 C6.5,3 5,6.5 6.5,9 C4.5,10 4.5,13.5 7.5,13.5 L7.5,18 L12.5,18 L12.5,13.5 C15.5,13.5 15.5,10 13.5,9 C15,6.5 13.5,3 10,3 Z', strokePath: 'M8,8 a0.9,0.9 0 1,0 1.8,0 M10.2,8 a0.9,0.9 0 1,0 1.8,0 M8,11 Q10,12.5 12,11', useShapeFill: true, round: true },
+  worldTreeSym:    { d: 'M10,10 L10,17 M10,10 L10,3 M10,5.5 L6,2.5 M10,5.5 L14,2.5 M10,8 L5.5,6 M10,8 L14.5,6 M10,13 L6.5,16 M10,13 L13.5,16 M10,15.5 L6,17.5 M10,15.5 L14,17.5', round: true },
+  eternalBlightSym:{ d: 'M10,10 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0', strokePath: 'M10,3 L10,7 M10,13 L10,17 M3,10 L7,10 M13,10 L17,10 M5,5 L7.5,7.5 M12.5,12.5 L15,15 M15,5 L12.5,7.5 M7.5,12.5 L5,15', useShapeFill: true, round: true },
+  decaySym:        { d: 'M10,10 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0', strokePath: 'M6,4 L9,9 L5,12 M14,5 L11,9 L15,13 M8,15 L10,11 L13,16', useShapeFill: true, round: true },
+  livingShieldSym: { d: 'M10,2 L17,5 L17,10 C17,15 13,18 10,19 C7,18 3,15 3,10 L3,5 Z', strokePath: 'M10,6 C8,9 8,13 10,16 C12,13 12,9 10,6 Z M10,9 L7.5,11 M10,9 L12.5,11 M10,12.5 L8,14 M10,12.5 L12,14', useShapeFill: true, round: true },
+  whisperingWindsSym:{ d: 'M3,7 Q6.5,3 10,7 Q13.5,3 17,7 M2.5,11.5 Q7,8.5 10,11.5 Q13,8.5 17.5,11.5 M4,16 Q8,14 10,16 Q12,14 16,16', round: true },
+  massSym:         { d: 'M10,10 m-4.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0', strokePath: 'M10,1.5 L10,4 M10,16 L10,18.5 M1.5,10 L4,10 M16,10 L18.5,10', useShapeFill: true, round: true },
+  densitySym:      { d: 'M6,6 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13,6 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M6,14 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13,14 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M8.8,10 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0', strokePath: 'M2.5,2.5 L17.5,2.5 L17.5,17.5 L2.5,17.5 Z', useShapeFill: true, round: true },
+  ruinSym:         { d: 'M6,18 L6,8 L8,8 L8,18 Z M12,18 L12,5 L14,5 L14,18 Z', strokePath: 'M4,18 L16,18 M12,5 L9,3 M9,3 L11,3', useShapeFill: true, round: true },
+  bedrockSym:      { d: 'M3,16 L17,16 L17,18 L3,18 Z M4,12 L16,12 L16,15 L4,15 Z M3,8 L17,8 L17,11 L3,11 Z M5,4 L15,4 L15,7 L5,7 Z', useShapeFill: true, round: true },
+  chaosStormSym:   { d: 'M10,2 C15,2 18,6 16,10 C19,12 17,17 12,16 C13,19 8,19 7,16 C2,17 1,12 4,10 C1,7 4,3 8,4 C7,1 12,1 10,4 Z', strokePath: 'M10,7 L12,10 L9,12 L11,14', useShapeFill: true, round: true },
+  erosionSym:      { d: 'M4,17 L4,10 L7,6 L9,10 L11,5 L13,10 L16,7 L16,17 Z', strokePath: 'M3,13 Q6,11.5 9,13 Q12,14.5 17,12.5', useShapeFill: true, round: true },
+  sproutSym:       { d: 'M10,18 L10,11 C10,11 6,10 6,7 C9,7 10,9 10,9 C10,9 11,6 14,6 C14,9 11,10 10,11', useShapeFill: true, round: true },
+  virulentSwarmSym:{ d: 'M6,6 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M13,5 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M15,11 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M11,15 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M5,13 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M10,9 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0', fill: true, round: true },
+  substanceSym:    { d: 'M10,2 C14,2 17,5 16,9 C19,11 17,16 13,16 C12,19 7,19 6,16 C2,15 2,10 5,8 C4,4 7,2 10,2 Z', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -500,40 +519,40 @@ export const ICON_DESIGNS = {
   aurora:       { shape: 'circle',  glyph: 'auroraSym',      rot: 0 },
   auroraCrown:  { shape: 'hexagon', glyph: 'crownsym',       rot: 0 },
   // Страж
-  livingShield: { shape: 'diamond', glyph: 'tee',            rot: 0 },
+  livingShield: { shape: 'diamond', glyph: 'livingShieldSym',rot: 0 },
   guardian:     { shape: 'diamond', glyph: 'taproot',        rot: 0 },
   sentinel:     { shape: 'star',    glyph: 'trees',          rot: 0 },
   // Эхо
   canyon:       { shape: 'diamond', glyph: 'peak',           rot: 0 },
-  whisperingWinds:{ shape: 'diamond', glyph: 'gust',         rot: 0 },
+  whisperingWinds:{ shape: 'diamond', glyph: 'whisperingWindsSym', rot: 0 },
   banshee:      { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
   // Технологии
   plasmaBlade:  { shape: 'square',  glyph: 'sword',          rot: 0 },
   resonator:    { shape: 'hexagon', glyph: 'prismshp',       rot: 0 },
   overcharge:   { shape: 'star',    glyph: 'lightningsym',   rot: 0 },
   // Катаклизмы
-  maelstrom:    { shape: 'diamond', glyph: 'hurricanSym',    rot: 0 },
-  tempest:      { shape: 'diamond', glyph: 'hurricanSym',    rot: 0 },
+  maelstrom:    { shape: 'diamond', glyph: 'maelstromSym',   rot: 0 },
+  tempest:      { shape: 'diamond', glyph: 'tempestSym',      rot: 15 },
   cataclysm:    { shape: 'star',    glyph: 'volcano',        rot: 0 },
   // Сон
   stasis:       { shape: 'diamond', glyph: 'iceCube',        rot: 0 },
   dreamRealm:   { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
   somnium:      { shape: 'circle',  glyph: 'voidsym',        rot: 0 },
   // Древний лес
-  ancientGrove: { shape: 'diamond', glyph: 'trees',          rot: 0 },
-  treant:       { shape: 'diamond', glyph: 'log',            rot: 0 },
-  worldTree:    { shape: 'diamond', glyph: 'taproot',        rot: 0 },
+  ancientGrove: { shape: 'diamond', glyph: 'ancientGroveSym',rot: 0 },
+  treant:       { shape: 'diamond', glyph: 'treantSym',      rot: 0 },
+  worldTree:    { shape: 'diamond', glyph: 'worldTreeSym',   rot: 0 },
   // Некромантия
   grimoire:     { shape: 'hexagon', glyph: 'scrollsym',      rot: 0 },
   necronomicon: { shape: 'hexagon', glyph: 'runesym',        rot: 0 },
   lich:         { shape: 'star',    glyph: 'skull',          rot: 0 },
   // Кросс-комбо
   abyssalSovereign:{ shape: 'star',   glyph: 'sovereignSym',    rot: 0 },
-  eternalBlight:   { shape: 'diamond', glyph: 'plagueSym',       rot: 0 },
+  eternalBlight:   { shape: 'diamond', glyph: 'eternalBlightSym',rot: 0, glow: 0.15 },
   choirOfSorrow:   { shape: 'diamond', glyph: 'ghostsym',        rot: 0 },
   cosmicMonarch:   { shape: 'star',    glyph: 'singularitySym',  rot: 0 },
   fatebreaker:     { shape: 'diamond', glyph: 'nemesisSym',      rot: 0 },
-  virulentSwarm:   { shape: 'triangle',glyph: 'parasiteSym',     rot: 0 },
+  virulentSwarm:   { shape: 'triangle',glyph: 'virulentSwarmSym',rot: 0 },
   oneirograph:     { shape: 'square',  glyph: 'oneirographSym',   rot: 0 },
   deathlessWarden: { shape: 'square',  glyph: 'tee',             rot: 0 },
   apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0, glow: 0.22 },
@@ -551,8 +570,8 @@ export const ICON_DESIGNS = {
   spellbound:  { shape: 'hexagon', glyph: 'runesym',      rot: 0 },
   exorcism:    { shape: 'star',    glyph: 'cross',        rot: 0 },
   // Материя — ветка
-  mass:        { shape: 'diamond', glyph: 'mountains',    rot: 0 },
-  density:     { shape: 'diamond', glyph: 'gemfacets',    rot: 0 },
+  mass:        { shape: 'diamond', glyph: 'massSym',      rot: 0 },
+  density:     { shape: 'diamond', glyph: 'densitySym',   rot: 0 },
   compression: { shape: 'square',  glyph: 'engineSym',    rot: 0 },
   // Время — ветка
   chronosphere:{ shape: 'circle',  glyph: 'timepieceSym', rot: 0 },
@@ -567,8 +586,8 @@ export const ICON_DESIGNS = {
   anarchy:     { shape: 'star',    glyph: 'tricksterSym', rot: 0 },
   primordialStorm:{ shape: 'hexagon',glyph: 'hurricanSym',rot: 0 },
   // Энтропия — ветка
-  decay:       { shape: 'triangle',glyph: 'plagueSym',    rot: 0 },
-  ruin:        { shape: 'diamond', glyph: 'ember',        rot: 0 },
+  decay:       { shape: 'triangle',glyph: 'decaySym',     rot: 0 },
+  ruin:        { shape: 'diamond', glyph: 'ruinSym',      rot: 0 },
   heatDeath:   { shape: 'circle',  glyph: 'blackHoleSym', rot: 0 },
   // Ветка Духа
   breath:        { shape: 'circle',  glyph: 'airsym',           rot: 0 },
@@ -582,8 +601,8 @@ export const ICON_DESIGNS = {
   spiritRealm:   { shape: 'circle',  glyph: 'ethersym',         rot: 0 },
   transcendence: { shape: 'star',    glyph: 'transcendenceSym', rot: 0 },
   // Ветка Материи
-  substance:     { shape: 'diamond', glyph: 'droplet',          rot: 0 },
-  bedrock:       { shape: 'diamond', glyph: 'mountains',        rot: 0 },
+  substance:     { shape: 'diamond', glyph: 'substanceSym',     rot: 0 },
+  bedrock:       { shape: 'diamond', glyph: 'bedrockSym',       rot: 0 },
   monolith:      { shape: 'square',  glyph: 'mountains',        rot: 0 },
   golemCore:     { shape: 'hexagon', glyph: 'golemsym',         rot: 0 },
   ironWill:      { shape: 'square',  glyph: 'ingot',            rot: 0 },
@@ -616,12 +635,12 @@ export const ICON_DESIGNS = {
   // Ветка Хаоса
   spark:       { shape: 'triangle',glyph: 'lightningsym',       rot: 0 },
   discord:     { shape: 'triangle',glyph: 'tricksterSym',       rot: 0 },
-  chaosStorm:  { shape: 'hexagon', glyph: 'hurricanSym',        rot: 0 },
+  chaosStorm:  { shape: 'hexagon', glyph: 'chaosStormSym',      rot: 0 },
   chaosBeast:  { shape: 'star',    glyph: 'chimerasym',         rot: 0 },
   voidSpawn:   { shape: 'star',    glyph: 'voidRiftSym',        rot: 0 },
   chaosLord:   { shape: 'star',    glyph: 'chaosSym',           rot: 0, glow: 0.25 },
   // Ветка Энтропии
-  erosion:     { shape: 'diamond', glyph: 'waves',              rot: 0 },
+  erosion:     { shape: 'diamond', glyph: 'erosionSym',         rot: 0 },
   entropyField:{ shape: 'circle',  glyph: 'entropySym',         rot: 0 },
   extinction:  { shape: 'star',    glyph: 'skull',              rot: 0 },
   voidCollapse:{ shape: 'circle',  glyph: 'blackHoleSym',       rot: 0 },
@@ -633,7 +652,7 @@ export const ICON_DESIGNS = {
   lighthouse: { shape: 'square', glyph: 'lightsym',     rot: 0 },
   veil:       { shape: 'diamond',glyph: 'miragesym',    rot: 0 },
   shroud:     { shape: 'diamond',glyph: 'phantomsym',   rot: 0 },
-  sprout:     { shape: 'square', glyph: 'seed',         rot: 0 },
+  sprout:     { shape: 'square', glyph: 'sproutSym',    rot: 0 },
   sapling:    { shape: 'square', glyph: 'trunk',        rot: 0 },
   deathKnight:{ shape: 'star',   glyph: 'skull',        rot: 0 },
 };
