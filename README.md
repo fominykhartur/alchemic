@@ -145,7 +145,7 @@ Repo → **Settings → Secrets and variables → Actions** → новые се�
 ### 3. Деплой
 
 - Repo → **Settings → Pages → Source: GitHub Actions**
-- Workflow `.github/workflows/deploy.yml` генерирует `src/config.js` из секретов и публикует на Pages при каждом `git push` в `dev`.
+- Workflow `.github/workflows/deploy.yml` генерирует `src/config.js` из секретов и публикует на Pages при каждом `git push` в `master`.
 
 > Локально без конфига (`src/config.js` пуст) облако отключено — игра работает как раньше, только localStorage. Управление облаком в шапке: «Применить» — сохранить код+ключ и синхронизировать, «⧉» — скопировать ключ доступа, «👁» — показать/скрыть ключ, «🗑» — удалить облачное сохранение.
 
