@@ -337,6 +337,16 @@ export const GLYPH_PATHS = {
   absoluteMassSym: { d: 'M10,10 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0', strokePath: 'M10,0.5 L10,3.5 M10,16.5 L10,19.5 M0.5,10 L3.5,10 M16.5,10 L19.5,10 M3,3 L5.2,5.2 M14.8,14.8 L17,17 M17,3 L14.8,5.2 M5.2,14.8 L3,17', useShapeFill: true, round: true },
   possessedArmorSym:{ d: 'M5,5 L10,2 L15,5 L15,9 L13,9 L13,13 L10,19 L7,13 L7,9 L5,9 Z', strokePath: 'M9,8 a0.9,0.9 0 1,0 1.8,0 M11.2,8 a0.9,0.9 0 1,0 1.8,0', useShapeFill: true, round: true },
   worldAnvilSym:   { d: 'M3,14 L17,14 L17,16 L3,16 Z M6,14 L6,10 L11,10 L14,7 L14,10 L11,12 L11,14 Z', strokePath: 'M15,4 L17,2 M16,5 L18,4 M14,6 L16,5', useShapeFill: true, round: true },
+  // Уникальные иконки: стражи/нежить/бестиарий (ревизия дубликатов, партия 3)
+  fatebreakerSym:  { d: 'M2,5 Q7,3 9,7 Q10,9 8,10 M8,7 L11,4 M8,10 L5,13 M12,10 L15,7 M12,10 L9,13 M12,10 Q13,12 18,15', round: true },
+  guardianSym:     { d: 'M10,2 C6,2 3,6 3,10 C3,15 7,18 10,19 C13,18 17,15 17,10 C17,6 14,2 10,2 Z', strokePath: 'M6,9 Q10,6 14,9 Q10,12 6,9 Z M10,9 a1,1 0 1,0 0.1,0', useShapeFill: true, round: true },
+  sentinelSym:     { d: 'M9,18 L9,8 L11,8 L11,18 Z', strokePath: 'M6,8 L10,3 L14,8 Z M10,3 a1.2,1.2 0 1,0 0.1,0', useShapeFill: true, round: true },
+  choirOfSorrowSym:{ d: 'M4,10 C4,6 7,4 7,7 C7,9 5,9 5,11 M10,12 C10,7 13,5 13,8 C13,10 11,10 11,12 M16,9 C16,6 18,5 18,7 C18,8.5 17,8.5 17,10', round: true },
+  deathlessWardenSym:{ d: 'M10,2 L16,5 L16,10 C16,15 13,18 10,19 C7,18 4,15 4,10 L4,5 Z', strokePath: 'M6,10 C6,8 8,8 10,10 C12,12 14,12 14,10 C14,8 12,8 10,10 C8,12 6,12 6,10 Z', useShapeFill: true, round: true },
+  wraithLordSym:   { d: 'M5,10 C5,4 15,4 15,10 C15,13 13,15 12,15 L11,17 L10,15 L9,17 L8,15 C7,15 5,13 5,10 Z', strokePath: 'M6,4 L6,2 M8,4 L8,1 M10,4 L10,0.5 M12,4 L12,1 M14,4 L14,2 M6.5,9 a1,1 0 1,0 2,0 M11.5,9 a1,1 0 1,0 2,0', useShapeFill: true, round: true },
+  chaosBeastSym:   { d: 'M10,17 C6,17 4,14 5,10 C3,9 3,5 6,4 C6,6 8,6 8,4 C9,3 11,3 12,4 C12,6 14,6 14,4 C17,5 17,9 15,10 C16,14 14,17 10,17 Z', strokePath: 'M7,10 a1,1 0 1,0 2,0 M11,10 a1,1 0 1,0 2,0 M8,13 L12,13', useShapeFill: true, round: true },
+  voidSpawnSym:    { d: 'M10,3 C13,3 15,6 14,9 C16,10 16,14 13,15 C13,17 7,17 7,15 C4,14 4,10 6,9 C5,6 7,3 10,3 Z', strokePath: 'M7.5,9 a1,1 0 1,0 2,0 M10.5,9 a1,1 0 1,0 2,0', useShapeFill: true, round: true },
+  deathKnightSym:  { d: 'M6,9 C6,4 14,4 14,9 C14,12 12,13 10,13 C8,13 6,12 6,9 Z', strokePath: 'M10,2 L10,4 M4,13 L16,7 M4,7 L16,13 M7,9 a0.8,0.8 0 1,0 1.6,0 M11.4,9 a0.8,0.8 0 1,0 1.6,0', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -529,8 +539,8 @@ export const ICON_DESIGNS = {
   auroraCrown:  { shape: 'hexagon', glyph: 'crownsym',       rot: 0 },
   // Страж
   livingShield: { shape: 'diamond', glyph: 'livingShieldSym',rot: 0 },
-  guardian:     { shape: 'diamond', glyph: 'taproot',        rot: 0 },
-  sentinel:     { shape: 'star',    glyph: 'trees',          rot: 0 },
+  guardian:     { shape: 'diamond', glyph: 'guardianSym',    rot: 0 },
+  sentinel:     { shape: 'star',    glyph: 'sentinelSym',    rot: 0 },
   // Эхо
   canyon:       { shape: 'diamond', glyph: 'peak',           rot: 0 },
   whisperingWinds:{ shape: 'diamond', glyph: 'whisperingWindsSym', rot: 0 },
@@ -558,12 +568,12 @@ export const ICON_DESIGNS = {
   // Кросс-комбо
   abyssalSovereign:{ shape: 'star',   glyph: 'sovereignSym',    rot: 0 },
   eternalBlight:   { shape: 'diamond', glyph: 'eternalBlightSym',rot: 0, glow: 0.15 },
-  choirOfSorrow:   { shape: 'diamond', glyph: 'ghostsym',        rot: 0 },
+  choirOfSorrow:   { shape: 'diamond', glyph: 'choirOfSorrowSym', rot: 0 },
   cosmicMonarch:   { shape: 'star',    glyph: 'singularitySym',  rot: 0 },
-  fatebreaker:     { shape: 'diamond', glyph: 'nemesisSym',      rot: 0 },
+  fatebreaker:     { shape: 'diamond', glyph: 'fatebreakerSym',  rot: 0 },
   virulentSwarm:   { shape: 'triangle',glyph: 'virulentSwarmSym',rot: 0 },
   oneirograph:     { shape: 'square',  glyph: 'oneirographSym',   rot: 0 },
-  deathlessWarden: { shape: 'square',  glyph: 'tee',             rot: 0 },
+  deathlessWarden: { shape: 'square',  glyph: 'deathlessWardenSym', rot: 0 },
   apocalypse:      { shape: 'hexagon', glyph: 'apocalypseSym',   rot: 0, glow: 0.22 },
   // Врата — Дух и Материя
   spirit:      { shape: 'circle',  glyph: 'spiritSym',    rot: 0 },
@@ -605,7 +615,7 @@ export const ICON_DESIGNS = {
   spiritGuide:   { shape: 'star',    glyph: 'fairysym',         rot: 0 },
   seance:        { shape: 'hexagon', glyph: 'scrollsym',        rot: 0 },
   possessedArmor:{ shape: 'square',  glyph: 'possessedArmorSym', rot: 0 },
-  wraithLord:    { shape: 'star',    glyph: 'skull',            rot: 0 },
+  wraithLord:    { shape: 'star',    glyph: 'wraithLordSym',    rot: 0 },
   ancestralChorus:{shape: 'star',    glyph: 'ghostsym',         rot: 0 },
   spiritRealm:   { shape: 'circle',  glyph: 'ethersym',         rot: 0 },
   transcendence: { shape: 'star',    glyph: 'transcendenceSym', rot: 0 },
@@ -645,8 +655,8 @@ export const ICON_DESIGNS = {
   spark:       { shape: 'triangle',glyph: 'lightningsym',       rot: 0 },
   discord:     { shape: 'triangle',glyph: 'tricksterSym',       rot: 0 },
   chaosStorm:  { shape: 'hexagon', glyph: 'chaosStormSym',      rot: 0 },
-  chaosBeast:  { shape: 'star',    glyph: 'chimerasym',         rot: 0 },
-  voidSpawn:   { shape: 'star',    glyph: 'voidRiftSym',        rot: 0 },
+  chaosBeast:  { shape: 'star',    glyph: 'chaosBeastSym',         rot: 0 },
+  voidSpawn:   { shape: 'star',    glyph: 'voidSpawnSym',          rot: 0 },
   chaosLord:   { shape: 'star',    glyph: 'chaosSym',           rot: 0, glow: 0.25 },
   // Ветка Энтропии
   erosion:     { shape: 'diamond', glyph: 'erosionSym',         rot: 0 },
@@ -663,7 +673,7 @@ export const ICON_DESIGNS = {
   shroud:     { shape: 'diamond',glyph: 'phantomsym',   rot: 0 },
   sprout:     { shape: 'square', glyph: 'sproutSym',    rot: 0 },
   sapling:    { shape: 'square', glyph: 'trunk',        rot: 0 },
-  deathKnight:{ shape: 'star',   glyph: 'skull',        rot: 0 },
+  deathKnight:{ shape: 'star',   glyph: 'deathKnightSym', rot: 0 },
 };
 
 export const TIER = (() => {
