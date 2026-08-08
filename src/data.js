@@ -927,6 +927,7 @@ export const ELEMENT_DEPTHS = (() => {
   const depths = {};
   STARTER_IDS.forEach(id => depths[id] = 0);
   const propagate = () => {
+    let anyChanged = false;
     let changed = true;
     while (changed) {
       changed = false;
@@ -938,16 +939,22 @@ export const ELEMENT_DEPTHS = (() => {
           changed = true;
         }
       }
+      if (changed) anyChanged = true;
     }
+    return anyChanged;
   };
-  propagate();
-  UNLOCKABLE_STARTERS.forEach(u => {
-    const keyDepth = depths[u.unlockedBy];
-    if (keyDepth !== undefined && depths[u.id] === undefined) {
-      depths[u.id] = keyDepth + 1;
-    }
-  });
-  propagate();
+  let progressed = true;
+  while (progressed) {
+    progressed = false;
+    UNLOCKABLE_STARTERS.forEach(u => {
+      const keyDepth = depths[u.unlockedBy];
+      if (keyDepth !== undefined && depths[u.id] === undefined) {
+        depths[u.id] = keyDepth + 1;
+        progressed = true;
+      }
+    });
+    if (propagate()) progressed = true;
+  }
   return depths;
 })();
 

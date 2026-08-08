@@ -273,7 +273,7 @@ export function getRevealCost(recipe) {
   const outputDepth = ELEMENT_DEPTHS[recipe.output] ?? 0;
   const distinct = new Set(recipe.inputs.map(i => i.id)).size;
   const totalAmount = recipe.inputs.reduce((sum, i) => sum + i.a, 0);
-  return Math.ceil(outputDepth * 1.5 + distinct * 2 + totalAmount * 0.5);
+  return Math.ceil(outputDepth * (1 + outputDepth / 8) + distinct * 2 + totalAmount * 0.5);
 }
 
 export function getRemainingRecipes(outputId) {
