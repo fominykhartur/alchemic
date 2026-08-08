@@ -261,10 +261,10 @@ export const GLYPH_PATHS = {
   homunculusSym: { d: 'M10,4 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0 M7,10 L13,10 L13,16 L7,16 Z', useShapeFill: true, round: true },
   adeptSym:      { d: 'M10,1 L14,5 L18,5 L15,9 L18,13 L14,13 L10,17 L6,13 L2,13 L5,9 L2,5 L6,5 Z', useShapeFill: true, round: true },
   // Эликсиры
-  aurumPotabileSym:{ d: 'M10,3 A6,6 0 1,1 10,15 A6,6 0 1,1 10,3 M16,6 L13,4 M16,12 L13,14', useShapeFill: true, round: true },
-  elixirVitaeSym:{ d: 'M10,3 L10,17 M4,10 L16,10 M14,5 L12,3 M6,15 L8,17', useShapeFill: true, round: true },
+  aurumPotabileSym:{ d: 'M8,7.5 L8,16.5 A3,3 0 0,0 12,16.5 L12,7.5 Z M7.3,5.5 L12.7,5.5 L12.7,7.5 L7.3,7.5 Z M10,2.2 L10.5,3.3 L11.6,3.8 L10.5,4.3 L10,5.4 L9.5,4.3 L8.4,3.8 L9.5,3.3 Z', strokePath: 'M8.3,12 L11.7,12', useShapeFill: true, round: true },
+  elixirVitaeSym:{ d: 'M8,7 L8,15 A3,3 0 0,0 12,15 L12,7 Z M10,7 C10,7 8.3,4.8 9.3,3.3 C10.3,4.5 10,6.5 10,7 Z M10,7 C10,7 11.7,4.8 10.7,3.3 C9.7,4.5 10,6.5 10,7 Z', strokePath: 'M8.3,11 L9.2,11 L9.7,9.5 L10.3,12.5 L10.8,11 L11.7,11', useShapeFill: true, round: true },
   panaceaSym:    { d: 'M10,3 A7,7 0 1,1 10,17 A7,7 0 1,1 10,3 M10,6 L10,14 M6,10 L14,10', useShapeFill: true, round: true },
-  ambrosiaSym:   { d: 'M8,18 C8,12 5,8 8,6 C11,8 8,12 8,18 M12,18 C12,12 9,8 12,6 C15,8 12,12 12,18 M16,18 C16,12 13,8 16,6 C19,8 16,12 16,18', useShapeFill: true, round: true },
+  ambrosiaSym:   { d: 'M4,4 L4,7 C4,10 7,11 10,11 C13,11 16,10 16,7 L16,4 Z M9,11 L11,11 L11,15 L9,15 Z M6.5,15 L13.5,15 L13.5,16.5 L6.5,16.5 Z M10,1 C11,2.5 10.7,4 10,4 C9.3,4 9,2.5 10,1 Z M6.5,2.5 C7.2,3.5 7,4.5 6.5,4.5 C6,4.5 5.8,3.5 6.5,2.5 Z M13.5,2.5 C14.2,3.5 14,4.5 13.5,4.5 C13,4.5 12.8,3.5 13.5,2.5 Z', useShapeFill: true, round: true },
   // Макрокосм
   macrocosmSym:  { d: 'M10,2 A8,8 0 1,1 10,18 A8,8 0 1,1 10,2 M10,5 A5,5 0 1,1 10,15 A5,5 0 1,1 10,5 M10,10 a1.5,1.5 0 1,1 3,0', useShapeFill: true, round: true },
   hermeticSym:   { d: 'M4,4 L16,4 L16,16 L4,16 Z M10,6 A4,4 0 1,1 10,14 A4,4 0 1,1 10,6', useShapeFill: true, round: true },
@@ -301,7 +301,7 @@ export const GLYPH_PATHS = {
   spiritSym:    { d: 'M10,3 a3.5,3.5 0 1,1 7,0 a3.5,3.5 0 1,1 -7,0 M10,6 C8,10 5,12 4,16 M10,6 C12,10 15,12 16,16', useShapeFill: true, round: true },
   matterSym:    { d: 'M10,2 L18,6 L10,10 L2,6 Z M2,6 L2,14 L10,18 L10,10 M18,6 L18,14 L10,18', useShapeFill: true, round: true },
   timeSym:      { d: 'M6,3 L14,3 L10,10 L14,17 L6,17 L10,10 Z', useShapeFill: true, round: true },
-  spaceSym:     { d: 'M5,3.7 L5.4,4.6 L6.3,5 L5.4,5.4 L5,6.3 L4.6,5.4 L3.7,5 L4.6,4.6 Z M15,5.7 L15.4,6.6 L16.3,7 L15.4,7.4 L15,8.3 L14.6,7.4 L13.7,7 L14.6,6.6 Z M9,13.7 L9.4,14.6 L10.3,15 L9.4,15.4 L9,16.3 L8.6,15.4 L7.7,15 L8.6,14.6 Z', strokePath: 'M6,6.3 L6.7,7.7 M7.6,9.6 L8.3,11 M9.2,12.9 L9.5,13.6', useShapeFill: true, round: true },
+  spaceSym:     { d: 'M3,7 L3,3 L7,3 M13,3 L17,3 L17,7 M3,13 L3,17 L7,17 M17,13 L17,17 L13,17 M6.4,7 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M12.5,8 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0 M8.3,13 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0', round: true },
   chaosSym:     { d: 'M10,2 L13,8 L19,5 L14,11 L19,16 L12,14 L10,19 L8,14 L1,16 L6,11 L1,5 L7,8 Z', useShapeFill: true, round: true },
   entropySym:   { d: 'M10,3 C15,3 17,8 14,11 C11,14 6,12 7,9 C8,6 12,7 12,9 L12,16', useShapeFill: true, round: true },
   // Ветка Духа и Материи
@@ -396,6 +396,8 @@ export const GLYPH_PATHS = {
   continuumSym:    { d: 'M2.5,10 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0 M9.5,10 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0 M5.5,10 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0 M12.9,8 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M14.9,11 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M11.2,11.3 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0', round: true },
   entropyLordSym:  { d: 'M4,8 L5.5,3.5 L7.5,7 L10,2.5 L12.5,7 L14.5,3.5 L16,8 L16,9.5 L4,9.5 Z M10,11 C12,11 13,12.5 12,14 C11.3,15 9.8,14.7 10,13.5 M7.4,16 a0.6,0.6 0 1,0 1.2,0 a0.6,0.6 0 1,0 -1.2,0 M5.6,17.5 a0.4,0.4 0 1,0 0.8,0 a0.4,0.4 0 1,0 -0.8,0', useShapeFill: true, round: true },
   chaosLordSym:    { d: 'M4,9 L5,3 L7,6.5 L9.5,2 L11,7.5 L13.5,3.5 L16,9.5 L16,11 L4,11 Z M6,13 L7,14.5 L5.5,15 L6.5,16.5 M13,13.5 L12,15 L13.5,15.5 L12.5,17 M9.3,12.5 L10.2,14 L9.5,14.8', useShapeFill: true, round: true },
+  masterOfTimeSym: { d: 'M4,9 L5.5,4 L7.5,7.5 L10,3 L12.5,7.5 L14.5,4 L16,9 L16,10.5 L4,10.5 Z M7.5,12.5 L12.5,12.5 L10,15.5 Z M7.5,18 L12.5,18 L10,15.5 Z', strokePath: 'M7,12 L13,12 M7,18.3 L13,18.3', useShapeFill: true, round: true },
+  masterOfSpaceSym:{ d: 'M4,9 L5.5,4 L7.5,7.5 L10,3 L12.5,7.5 L14.5,4 L16,9 L16,10.5 L4,10.5 Z M8,14.5 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0', strokePath: 'M4,14.5 A6,2 0 1,0 16,14.5 A6,2 0 1,0 4,14.5', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -689,7 +691,7 @@ export const ICON_DESIGNS = {
   reincarnation: { shape: 'star',    glyph: 'reincarnationSym',    rot: 0 },
   chronoWeaver:  { shape: 'hexagon', glyph: 'chronoWeaverSym',     rot: 0 },
   temporalSigil: { shape: 'star',    glyph: 'temporalSigilSym',    rot: 0 },
-  masterOfTime:  { shape: 'star',    glyph: 'timeSym',           rot: 0, glow: 0.25 },
+  masterOfTime:  { shape: 'star',    glyph: 'masterOfTimeSym',   rot: 0, glow: 0.25 },
   // Ветка Пространства
   horizon:       { shape: 'diamond', glyph: 'horizonSym',        rot: 0 },
   dimension:     { shape: 'hexagon', glyph: 'voidsym',           rot: 0 },
@@ -697,7 +699,7 @@ export const ICON_DESIGNS = {
   parallelWorld: { shape: 'circle',  glyph: 'parallelWorldSym',  rot: 0 },
   infiniteRealms:{ shape: 'diamond',  glyph: 'infiniteRealmsSym', rot: 0 },
   spatialAnchor: { shape: 'hexagon', glyph: 'anchorSym',         rot: 0 },
-  masterOfSpace: { shape: 'star',    glyph: 'voidRiftSym',       rot: 0, glow: 0.25 },
+  masterOfSpace: { shape: 'star',    glyph: 'masterOfSpaceSym',  rot: 0, glow: 0.25 },
   // Финальное слияние
   spacetimeContinuum:{ shape: 'hexagon', glyph: 'continuumSym',     rot: 0, glow: 0.3 },
   // Ветка Хаоса
