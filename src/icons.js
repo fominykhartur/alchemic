@@ -398,6 +398,21 @@ export const GLYPH_PATHS = {
   chaosLordSym:    { d: 'M4,9 L5,3 L7,6.5 L9.5,2 L11,7.5 L13.5,3.5 L16,9.5 L16,11 L4,11 Z M6,13 L7,14.5 L5.5,15 L6.5,16.5 M13,13.5 L12,15 L13.5,15.5 L12.5,17 M9.3,12.5 L10.2,14 L9.5,14.8', useShapeFill: true, round: true },
   masterOfTimeSym: { d: 'M4,9 L5.5,4 L7.5,7.5 L10,3 L12.5,7.5 L14.5,4 L16,9 L16,10.5 L4,10.5 Z M7.5,12.5 L12.5,12.5 L10,15.5 Z M7.5,18 L12.5,18 L10,15.5 Z', strokePath: 'M7,12 L13,12 M7,18.3 L13,18.3', useShapeFill: true, round: true },
   masterOfSpaceSym:{ d: 'M4,9 L5.5,4 L7.5,7.5 L10,3 L12.5,7.5 L14.5,4 L16,9 L16,10.5 L4,10.5 Z M8,14.5 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0', strokePath: 'M4,14.5 A6,2 0 1,0 16,14.5 A6,2 0 1,0 4,14.5', useShapeFill: true, round: true },
+  // Ветка Средоточия Стихий
+  elementalConfluenceSym:{ d: 'M8.7,10 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0 M10,8.3 C11,6.5 10.8,3.5 10,1.8 C9.2,3.5 9,6.5 10,8.3 Z M11.7,10 C13.5,9 16.5,9.2 18.2,10 C16.5,10.8 13.5,11 11.7,10 Z M10,11.7 C10,11.7 8.5,13.5 9.3,15.7 C9.8,17 11.3,16.8 11.2,15.4 M8.3,10 L1.8,8.5 L1.8,11.5 Z', useShapeFill: true, round: true },
+  fifthElementSym:{ d: 'M8.7,10 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0 M10,8.3 C11,6.5 10.8,3.5 10,1.8 C9.2,3.5 9,6.5 10,8.3 Z M11.7,10 C13.5,9 16.5,9.2 18.2,10 C16.5,10.8 13.5,11 11.7,10 Z M10,11.7 C10,11.7 8.5,13.5 9.3,15.7 C9.8,17 11.3,16.8 11.2,15.4 M8.3,10 L1.8,8.5 L1.8,11.5 Z', strokePath: 'M1.3,10 a8.7,8.7 0 1,0 17.4,0 a8.7,8.7 0 1,0 -17.4,0', useShapeFill: true, round: true },
+  elementalWardenSym:{ d: 'M7.5,5 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M5,18 C5,13 6.5,10.5 10,10.5 C13.5,10.5 15,13 15,18 Z M3.2,7 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M15.2,7 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M4.2,14.5 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0 M14.3,14.5 a0.7,0.7 0 1,0 1.4,0 a0.7,0.7 0 1,0 -1.4,0', useShapeFill: true, round: true },
+  elementalRuptureSym:{ d: 'M10,8.3 C11,6.5 10.8,3.5 10,1.8 C9.2,3.5 9,6.5 10,8.3 Z M11.7,10 C13.5,9 16.5,9.2 18.2,10 C16.5,10.8 13.5,11 11.7,10 Z M10,11.7 C10,11.7 8.5,13.5 9.3,15.7 C9.8,17 11.3,16.8 11.2,15.4 M8.3,10 L1.8,8.5 L1.8,11.5 Z', strokePath: 'M3,4 L8,9 L5,11 L11,15 L9,17', useShapeFill: true, round: true },
+  // Мосты между базовыми и вторыми стихиями
+  zealSym:      { d: 'M10,2 C12,5 12.5,8 11,11 C13,9.5 13.5,12 12,14.5 C10.5,17 9.5,17 8,14.5 C6.5,12 7,9.5 9,11 C7.5,8 8,5 10,2 Z M10,15.3 L11,16.8 L10,18.3 L9,16.8 Z', useShapeFill: true, round: true },
+  tearsSym:     { d: 'M10,4 C12,7 13,10 10,13 C7,10 8,7 10,4 Z M5,9 C6,11 6.5,12.5 5,14 C3.5,12.5 4,11 5,9 Z M15,9 C16,11 16.5,12.5 15,14 C13.5,12.5 14,11 15,9 Z', useShapeFill: true, round: true },
+  locusSym:     { d: 'M9,10 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0', strokePath: 'M10,2 L10,6 M10,14 L10,18 M2,10 L6,10 M14,10 L18,10', useShapeFill: true, round: true },
+  futilitySym:  { d: 'M9,18 L9,11 L7,11 L10,5 L13,11 L11,11 L11,17 Z', strokePath: 'M10,4.3 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0 M7.2,3 a0.35,0.35 0 1,0 0.7,0 a0.35,0.35 0 1,0 -0.7,0 M13,2.6 a0.25,0.25 0 1,0 0.5,0 a0.25,0.25 0 1,0 -0.5,0 M9.2,1 a0.15,0.15 0 1,0 0.3,0 a0.15,0.15 0 1,0 -0.3,0', useShapeFill: true, round: true },
+  hollowSym:    { d: 'M10,2 C7,2 6,5 6,7 C4,9 4,14 4,17 L16,17 C16,14 16,9 14,7 C14,5 13,2 10,2 Z M8,7 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0', round: true },
+  volatileMatterSym:{ d: 'M7,4 L13,3 L16,8 L14,14 L9,17 L4,12 L5,7 Z', strokePath: 'M8,6 L10,10 L8,13 M15,9 L16.5,8.5 L17,10.5 L15.5,11', useShapeFill: true, round: true },
+  fadingSym:    { d: 'M7,18 L7,13 C7,10 8,9 10,9 C12,9 13,10 13,13 L13,18 Z M8.5,6.5 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M9.1,3.8 a0.9,0.9 0 1,0 1.8,0 a0.9,0.9 0 1,0 -1.8,0 M9.5,1.8 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', useShapeFill: true, round: true },
+  timeShardSym: { d: 'M10,2 L13,7 L11.5,17 L8.5,17 L7,7 Z', strokePath: 'M10,8 L10,10 L11.3,10.7', useShapeFill: true, round: true },
+  chronicleSym: { d: 'M2,5 L9.5,4 L9.5,16 L2,17 Z M18,5 L10.5,4 L10.5,16 L18,17 Z', strokePath: 'M4,7.5 L8,7 M4,10 L8,9.5 M4,12.5 L8,12 M12,7 L16,7.5 M12,9.5 L16,10 M12,12 L16,12.5', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -725,6 +740,19 @@ export const ICON_DESIGNS = {
   sprout:     { shape: 'square', glyph: 'sproutSym',    rot: 0 },
   sapling:    { shape: 'square', glyph: 'trunk',        rot: 0 },
   deathKnight:{ shape: 'star',   glyph: 'deathKnightSym', rot: 0 },
+  elementalConfluence:{ shape: 'circle', glyph: 'elementalConfluenceSym', rot: 0 },
+  fifthElement:       { shape: 'circle', glyph: 'fifthElementSym',       rot: 0 },
+  elementalWarden:    { shape: 'hexagon',glyph: 'elementalWardenSym',    rot: 0 },
+  elementalRupture:   { shape: 'triangle',glyph: 'elementalRuptureSym',  rot: 0 },
+  zeal:      { shape: 'diamond', glyph: 'zealSym',           rot: 0 },
+  tears:     { shape: 'circle',  glyph: 'tearsSym',          rot: 0 },
+  locus:     { shape: 'diamond', glyph: 'locusSym',          rot: 0 },
+  futility:  { shape: 'triangle',glyph: 'futilitySym',       rot: 0 },
+  hollow:    { shape: 'circle',  glyph: 'hollowSym',         rot: 0 },
+  volatileMatter:{ shape: 'square', glyph: 'volatileMatterSym', rot: 0 },
+  fading:    { shape: 'circle',  glyph: 'fadingSym',         rot: 0 },
+  timeShard: { shape: 'diamond', glyph: 'timeShardSym',      rot: 0 },
+  chronicle: { shape: 'square',  glyph: 'chronicleSym',      rot: 0 },
 };
 
 export const TIER = (() => {

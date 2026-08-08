@@ -306,6 +306,21 @@ export const ELEMENTS = {
   sprout:    { id: 'sprout',    name: 'Росток', color: '#7CDC5A', glow: 'rgba(124,220,90,0.4)', desc: 'Первый шаг из семени' },
   sapling:   { id: 'sapling',   name: 'Саженец', color: '#5CA83A', glow: 'rgba(92,168,58,0.4)', desc: 'Дерево, ещё помнящее себя ростком' },
   deathKnight:{ id: 'deathKnight', name: 'Рыцарь Смерти', color: '#2A1A3A', glow: 'rgba(42,26,58,0.6)', desc: 'Броня и дух, ставшие одним проклятием' },
+  // Средоточие Стихий — мост из 4 базовых стихий
+  elementalConfluence:{ id: 'elementalConfluence', name: 'Средоточие Стихий', color: '#C9A876', glow: 'rgba(201,168,118,0.5)', desc: 'Четыре стихии, слитые в единое целое' },
+  fifthElement:{ id: 'fifthElement', name: 'Пятая Стихия', color: '#4A2E6B', glow: 'rgba(74,46,107,0.6)', desc: 'Пустота, замкнувшая круг стихий' },
+  elementalWarden:{ id: 'elementalWarden', name: 'Страж Стихий', color: '#8A7858', glow: 'rgba(138,120,88,0.5)', desc: 'Дух, рождённый равновесием стихий' },
+  elementalRupture:{ id: 'elementalRupture', name: 'Разлад Стихий', color: '#C4325A', glow: 'rgba(196,50,90,0.5)', desc: 'Равновесие стихий, разрушенное хаосом' },
+  // Мосты между базовыми и вторыми стихиями
+  zeal:      { id: 'zeal',      name: 'Рвение',        color: '#FF8C5A', glow: 'rgba(255,140,90,0.5)',  desc: 'Огонь воли, что не гаснет' },
+  tears:     { id: 'tears',     name: 'Слёзы',         color: '#A8C8E8', glow: 'rgba(168,200,232,0.5)', desc: 'Скорбь, ставшая видимой' },
+  locus:     { id: 'locus',     name: 'Точка',         color: '#4A3A7A', glow: 'rgba(74,58,122,0.5)',   desc: 'Здесь и сейчас, ставшие одной точкой' },
+  futility:  { id: 'futility',  name: 'Тщета',         color: '#6A5A6A', glow: 'rgba(106,90,106,0.5)',  desc: 'Усилие, обречённое раствориться' },
+  hollow:    { id: 'hollow',    name: 'Пустая Оболочка', color: '#5A4A6A', glow: 'rgba(90,74,106,0.5)', desc: 'Форма без содержимого' },
+  volatileMatter:{ id: 'volatileMatter', name: 'Нестабильная Материя', color: '#B8C838', glow: 'rgba(184,200,56,0.5)', desc: 'Материя на грани распада' },
+  fading:    { id: 'fading',    name: 'Угасание',      color: '#C8C0B8', glow: 'rgba(200,192,184,0.4)', desc: 'Дух, теряющий себя' },
+  timeShard: { id: 'timeShard', name: 'Осколок Времени', color: '#C08A4A', glow: 'rgba(192,138,74,0.5)', desc: 'Материя, застывшая в моменте' },
+  chronicle: { id: 'chronicle', name: 'Летопись',      color: '#D4B896', glow: 'rgba(212,184,150,0.5)', desc: 'Мгновения, записанные навсегда' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -362,17 +377,21 @@ export const ELEMENT_CATS = {
   rex:'entities', regina:'entities', rebis:'entities',
   choirOfSorrow:'entities', fatebreaker:'entities',
   guardian:'entities', willOWisp:'entities', deathKnight:'entities',
+  elementalWarden:'entities',
+  hollow:'entities',
   // spirit — ветка Духа
   breath:'spirit', possession:'spirit', spellbound:'spirit', exorcism:'spirit',
   astralForm:'spirit', spiritGuide:'spirit', seance:'spirit',
   ancestralChorus:'spirit', transcendence:'spirit',
   animatedFlesh:'spirit', spiritRealm:'spirit', soulJar:'spirit',
+  zeal:'spirit', tears:'spirit', fading:'spirit',
   // chronomancy — ветка Времени
   chronomancer:'chronomancy', paradox:'chronomancy',
   chronosphere:'chronomancy', eternalLoop:'chronomancy',
   temporalRift:'chronomancy', chronoWeaver:'chronomancy', reincarnation:'chronomancy',
   instant:'chronomancy', eternity:'chronomancy', timeline:'chronomancy',
   timepiece:'chronomancy', temporalSigil:'chronomancy',
+  locus:'chronomancy', timeShard:'chronomancy', chronicle:'chronomancy',
   // illusion — ветка Иллюзий
   illusion:'illusion', mirage:'illusion', spectrum:'illusion',
   parallelWorld:'illusion', dreamRealm:'illusion', somnium:'illusion',
@@ -382,6 +401,8 @@ export const ELEMENT_CATS = {
   overcharge:'magic', cataclysm:'magic', stasis:'magic',
   spark:'magic', discord:'magic', anarchy:'magic', extinction:'magic',
   veil:'magic', shroud:'magic',
+  futility:'magic',
+  elementalConfluence:'magic', fifthElement:'magic', elementalRupture:'magic',
   ether:'cosmos', star:'cosmos', nova:'cosmos', meteor:'cosmos',
   moon:'cosmos', sun:'cosmos', galaxy:'cosmos', eclipse:'cosmos',
   quintessence:'cosmos', macrocosm:'cosmos', voidRift:'cosmos',
@@ -398,7 +419,7 @@ export const ELEMENT_CATS = {
   nigredo:'alchemy', albedo:'alchemy', citrinitas:'alchemy', rubedo:'alchemy',
   azoth:'alchemy', solve:'alchemy', coagula:'alchemy', alkahest:'alchemy',
   elixirVitae:'alchemy', ambrosia:'alchemy', ignition:'alchemy',
-  primeMatter:'alchemy',
+  primeMatter:'alchemy', volatileMatter:'alchemy',
   cosmicMonarch:'cosmos',
   legendary: 'legendary', philosophersStone:'legendary',
   aurumPotabile:'legendary', panacea:'legendary', animaMundi:'legendary',
@@ -841,10 +862,28 @@ export const RECIPES = [
   { inputs: [{ id: 'spring', a: 1 }, { id: 'earth', a: 1 }],            output: 'life' },
   { inputs: [{ id: 'ash', a: 1 }, { id: 'void', a: 1 }],                output: 'shadow' },
   { inputs: [{ id: 'stone', a: 1 }, { id: 'lightning', a: 1 }],         output: 'crystal' },
-  { inputs: [{ id: 'earth', a: 1 }, { id: 'spring', a: 1 }],            output: 'wood' },
+  { inputs: [{ id: 'spring', a: 1 }, { id: 'air', a: 1 }],              output: 'wood' },
   { inputs: [{ id: 'rift', a: 1 }, { id: 'stone', a: 1 }],              output: 'death' },
   { inputs: [{ id: 'gale', a: 1 }, { id: 'fire', a: 1 }],               output: 'lightning' },
   { inputs: [{ id: 'crystal', a: 1 }, { id: 'essence', a: 1 }],         output: 'rune' },
+  // Средоточие Стихий
+  { inputs: [{ id: 'fire', a: 1 }, { id: 'water', a: 1 }, { id: 'air', a: 1 }, { id: 'earth', a: 1 }], output: 'elementalConfluence' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'void', a: 1 }],  output: 'fifthElement' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'guardian', a: 1 }], output: 'elementalWarden' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'chaos', a: 1 }], output: 'elementalRupture' },
+  { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'essence', a: 1 }],    output: 'quintessence' },
+  // Мосты между базовыми и вторыми стихиями
+  { inputs: [{ id: 'fire', a: 1 }, { id: 'spirit', a: 1 }],             output: 'zeal' },
+  { inputs: [{ id: 'water', a: 1 }, { id: 'spirit', a: 1 }],            output: 'tears' },
+  { inputs: [{ id: 'time', a: 1 }, { id: 'space', a: 1 }],              output: 'locus' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'entropy', a: 1 }],           output: 'futility' },
+  { inputs: [{ id: 'void', a: 1 }, { id: 'spirit', a: 1 }],             output: 'hollow' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'chaos', a: 1 }],            output: 'volatileMatter' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'entropy', a: 1 }],          output: 'fading' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'time', a: 1 }],             output: 'timeShard' },
+  { inputs: [{ id: 'timeShard', a: 1 }, { id: 'oneirograph', a: 1 }],   output: 'chronicle' },
+  { inputs: [{ id: 'tears', a: 1 }, { id: 'ghost', a: 1 }],             output: 'banshee' },
+  { inputs: [{ id: 'volatileMatter', a: 1 }, { id: 'fire', a: 1 }],     output: 'plasma' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
