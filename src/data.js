@@ -321,6 +321,13 @@ export const ELEMENTS = {
   fading:    { id: 'fading',    name: 'Угасание',      color: '#C8C0B8', glow: 'rgba(200,192,184,0.4)', desc: 'Дух, теряющий себя' },
   timeShard: { id: 'timeShard', name: 'Осколок Времени', color: '#C08A4A', glow: 'rgba(192,138,74,0.5)', desc: 'Материя, застывшая в моменте' },
   chronicle: { id: 'chronicle', name: 'Летопись',      color: '#D4B896', glow: 'rgba(212,184,150,0.5)', desc: 'Мгновения, записанные навсегда' },
+  // Второй слой — соединения мостов друг с другом
+  purpose:   { id: 'purpose',   name: 'Цель',          color: '#E8A838', glow: 'rgba(232,168,56,0.5)',  desc: 'Воля, направленная в одну точку' },
+  requiem:   { id: 'requiem',   name: 'Реквием',       color: '#7A8CA0', glow: 'rgba(122,140,160,0.5)', desc: 'Плач по тому, что угасает' },
+  husk:      { id: 'husk',      name: 'Остов',         color: '#7A8A5A', glow: 'rgba(122,138,90,0.5)',  desc: 'Тело без хозяина, готовое взорваться' },
+  forgottenPage:{ id: 'forgottenPage', name: 'Забытая Страница', color: '#A89880', glow: 'rgba(168,152,128,0.4)', desc: 'Летопись того, что не имело смысла' },
+  ardentGuardian:{ id: 'ardentGuardian', name: 'Пламенный Страж', color: '#D4823A', glow: 'rgba(212,130,58,0.5)', desc: 'Страж, обретший рвение' },
+  axis:      { id: 'axis',      name: 'Ось Мироздания', color: '#2A4A6A', glow: 'rgba(42,74,106,0.6)',  desc: 'Точка, вокруг которой вращается всё сущее' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -379,12 +386,14 @@ export const ELEMENT_CATS = {
   guardian:'entities', willOWisp:'entities', deathKnight:'entities',
   elementalWarden:'entities',
   hollow:'entities',
+  husk:'entities', ardentGuardian:'entities',
   // spirit — ветка Духа
   breath:'spirit', possession:'spirit', spellbound:'spirit', exorcism:'spirit',
   astralForm:'spirit', spiritGuide:'spirit', seance:'spirit',
   ancestralChorus:'spirit', transcendence:'spirit',
   animatedFlesh:'spirit', spiritRealm:'spirit', soulJar:'spirit',
   zeal:'spirit', tears:'spirit', fading:'spirit',
+  requiem:'spirit',
   // chronomancy — ветка Времени
   chronomancer:'chronomancy', paradox:'chronomancy',
   chronosphere:'chronomancy', eternalLoop:'chronomancy',
@@ -392,6 +401,7 @@ export const ELEMENT_CATS = {
   instant:'chronomancy', eternity:'chronomancy', timeline:'chronomancy',
   timepiece:'chronomancy', temporalSigil:'chronomancy',
   locus:'chronomancy', timeShard:'chronomancy', chronicle:'chronomancy',
+  forgottenPage:'chronomancy',
   // illusion — ветка Иллюзий
   illusion:'illusion', mirage:'illusion', spectrum:'illusion',
   parallelWorld:'illusion', dreamRealm:'illusion', somnium:'illusion',
@@ -402,10 +412,12 @@ export const ELEMENT_CATS = {
   spark:'magic', discord:'magic', anarchy:'magic', extinction:'magic',
   veil:'magic', shroud:'magic',
   futility:'magic',
+  purpose:'magic',
   elementalConfluence:'magic', fifthElement:'magic', elementalRupture:'magic',
   ether:'cosmos', star:'cosmos', nova:'cosmos', meteor:'cosmos',
   moon:'cosmos', sun:'cosmos', galaxy:'cosmos', eclipse:'cosmos',
   quintessence:'cosmos', macrocosm:'cosmos', voidRift:'cosmos',
+  axis:'cosmos',
   blackHole:'cosmos', singularity:'cosmos', aurora:'cosmos',
   vacuum:'cosmos', nebula:'cosmos', multiverse:'cosmos',
   maelchaos:'cosmos', heatDeath:'cosmos',
@@ -884,6 +896,14 @@ export const RECIPES = [
   { inputs: [{ id: 'timeShard', a: 1 }, { id: 'oneirograph', a: 1 }],   output: 'chronicle' },
   { inputs: [{ id: 'tears', a: 1 }, { id: 'ghost', a: 1 }],             output: 'banshee' },
   { inputs: [{ id: 'volatileMatter', a: 1 }, { id: 'fire', a: 1 }],     output: 'plasma' },
+  // Второй слой — соединения мостов друг с другом
+  { inputs: [{ id: 'locus', a: 1 }, { id: 'zeal', a: 1 }],              output: 'purpose' },
+  { inputs: [{ id: 'tears', a: 1 }, { id: 'fading', a: 1 }],            output: 'requiem' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'volatileMatter', a: 1 }],   output: 'husk' },
+  { inputs: [{ id: 'futility', a: 1 }, { id: 'chronicle', a: 1 }],      output: 'forgottenPage' },
+  { inputs: [{ id: 'elementalWarden', a: 1 }, { id: 'zeal', a: 1 }],    output: 'ardentGuardian' },
+  { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'locus', a: 1 }],      output: 'axis' },
+  { inputs: [{ id: 'husk', a: 1 }, { id: 'abyss', a: 1 }],              output: 'voidSpawn' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];

@@ -413,6 +413,13 @@ export const GLYPH_PATHS = {
   fadingSym:    { d: 'M7,18 L7,13 C7,10 8,9 10,9 C12,9 13,10 13,13 L13,18 Z M8.5,6.5 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M9.1,3.8 a0.9,0.9 0 1,0 1.8,0 a0.9,0.9 0 1,0 -1.8,0 M9.5,1.8 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0', useShapeFill: true, round: true },
   timeShardSym: { d: 'M10,2 L13,7 L11.5,17 L8.5,17 L7,7 Z', strokePath: 'M10,8 L10,10 L11.3,10.7', useShapeFill: true, round: true },
   chronicleSym: { d: 'M2,5 L9.5,4 L9.5,16 L2,17 Z M18,5 L10.5,4 L10.5,16 L18,17 Z', strokePath: 'M4,7.5 L8,7 M4,10 L8,9.5 M4,12.5 L8,12 M12,7 L16,7.5 M12,9.5 L16,10 M12,12 L16,12.5', useShapeFill: true, round: true },
+  // Второй слой — соединения мостов друг с другом
+  purposeSym:   { d: 'M3,3 L9.5,9.5 L8.3,10.7 L1.8,4.2 Z M10,11.3 C11,9.8 11.3,8.3 10.5,7.3 C10,8.3 9.3,9.8 10,11.3 Z', strokePath: 'M6.7,13.3 a3.3,3.3 0 1,0 6.6,0 a3.3,3.3 0 1,0 -6.6,0', useShapeFill: true, round: true },
+  requiemSym:   { d: 'M10,6 C12.5,9.5 13.5,13 10,16.5 C6.5,13 7.5,9.5 10,6 Z', strokePath: 'M10,4.5 a0.8,0.8 0 1,0 0.01,0 M8.7,2.3 a0.5,0.5 0 1,0 0.01,0 M11.5,1.8 a0.3,0.3 0 1,0 0.01,0', useShapeFill: true, round: true },
+  huskSym:      { d: 'M10,2 C7,2 6,5 6,7 C4,9 4,14 4,17 L16,17 C16,14 16,9 14,7 C14,5 13,2 10,2 Z', strokePath: 'M8,7 L10,11 L8,14 M12,8 L10.5,11 L12.5,13 M9,16.5 L9.5,15 M11,16.5 L10.5,15', useShapeFill: true, round: true },
+  forgottenPageSym:{ d: 'M4,3 L14,3 L16,5 L16,17 L4,17 Z M14,3 L14,5 L16,5 Z', strokePath: 'M6,7.5 L12,7.5 M6,10 L12,10 M6,12.5 L10,12.5 M9,2.3 a0.4,0.4 0 1,0 0.01,0 M11.5,1 a0.25,0.25 0 1,0 0.01,0', useShapeFill: true, round: true },
+  ardentGuardianSym:{ d: 'M7.5,5 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M5,18 C5,13 6.5,10.5 10,10.5 C13.5,10.5 15,13 15,18 Z M10,0.3 C11,1.5 11.2,2.5 10.5,3.2 C11,2.2 10.3,1.5 10,0.3 C9.7,1.5 9,2.2 9.5,3.2 C8.8,2.5 9,1.5 10,0.3 Z', strokePath: 'M3.2,9 a0.7,0.7 0 1,0 0.01,0 M16.8,9 a0.7,0.7 0 1,0 0.01,0', useShapeFill: true, round: true },
+  axisSym:      { d: 'M8.8,10 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0', strokePath: 'M1.5,10 a8.5,8.5 0 1,0 17,0 a8.5,8.5 0 1,0 -17,0 M10,3 L10,6 M10,14 L10,17 M3,10 L6,10 M14,10 L17,10', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -753,6 +760,12 @@ export const ICON_DESIGNS = {
   fading:    { shape: 'circle',  glyph: 'fadingSym',         rot: 0 },
   timeShard: { shape: 'diamond', glyph: 'timeShardSym',      rot: 0 },
   chronicle: { shape: 'square',  glyph: 'chronicleSym',      rot: 0 },
+  purpose:   { shape: 'diamond', glyph: 'purposeSym',        rot: 0 },
+  requiem:   { shape: 'circle',  glyph: 'requiemSym',        rot: 0 },
+  husk:      { shape: 'hexagon', glyph: 'huskSym',           rot: 0 },
+  forgottenPage:{ shape: 'square', glyph: 'forgottenPageSym', rot: 0 },
+  ardentGuardian:{ shape: 'hexagon', glyph: 'ardentGuardianSym', rot: 0 },
+  axis:      { shape: 'star',    glyph: 'axisSym',           rot: 0 },
 };
 
 export const TIER = (() => {
