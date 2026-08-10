@@ -359,8 +359,8 @@ export const GLYPH_PATHS = {
   temporalSigilSym:{ d: 'M17.2,7 L13,2.8 L7,2.8 L2.8,7 L2.8,13 L7,17.2 L13,17.2 L17.2,13 Z', strokePath: 'M8,6.5 L8,13.5 M12,6.5 L12,13.5', useShapeFill: true, round: true },
   // Уникальные иконки: свет/сны/отражения (ревизия дубликатов, партия 5)
   spectrumSym:     { d: 'M3,16.5 L17,16.5 M3.9,16.5 L3.9,13.5 M5.9,16.5 L5.9,11.5 M7.9,16.5 L7.9,9.5 M9.9,16.5 L9.9,7.5 M11.9,16.5 L11.9,9.5 M13.9,16.5 L13.9,11.5 M15.9,16.5 L15.9,13.5', round: true },
-  dreamRealmSym:   { d: 'M3.5,10 A6.5,6.5 0 1,1 16.5,10 A6.5,6.5 0 1,1 3.5,10 M7.7,10 A4.6,4.6 0 1,0 16.9,10 A4.6,4.6 0 1,0 7.7,10', strokePath: 'M13,7.5 a1,1 0 1,0 2,0 M11.5,11.5 a0.8,0.8 0 1,0 1.6,0 M14.5,12.5 a0.7,0.7 0 1,0 1.4,0 M12,14.5 a0.6,0.6 0 1,0 1.2,0', useShapeFill: true, round: true },
-  somniumSym:      { d: 'M4.5,9.5 Q10,6 15.5,9.5 Q10,13.5 4.5,9.5 Z', strokePath: 'M6,9.2 Q10,7.5 14,9.2 M5.5,11.5 Q10,13 14.5,11.5 M7,13.2 L7,15.5 M10,13.8 L10,16 M13,13.2 L13,15.5 M10,10 a0.9,0.9 0 1,0 1.8,0 a0.9,0.9 0 1,0 -1.8,0', useShapeFill: true, round: true },
+  dreamRealmSym:   { d: 'M4,11 C4,8 6,6.5 8,7 C8.5,4.5 12,4 13.5,6 C16,5.5 17,8 15.5,10 C17,11 16,13.5 13.5,13 C12.5,15 8.5,15 7,13 C4.5,13.5 3,12 4,11 Z', strokePath: 'M11,7.5 C11,9 9.8,10.2 8.3,10 C9.3,9.7 9.8,8.6 9.5,7.5 C9.2,6.4 8.2,5.8 7.2,6 C8.4,5.2 10.2,5.7 11,7.5 Z M4,15.5 a0.8,0.8 0 1,0 0.01,0 M2.3,17.3 a0.5,0.5 0 1,0 0.01,0', useShapeFill: true, round: true },
+  somniumSym:      { d: 'M2,10 C5,6 15,6 18,10 C15,13.5 5,13.5 2,10 Z', strokePath: 'M8,10 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M16,6.5 L17,5.3 M17.3,7.3 L18.5,6.8', useShapeFill: true, round: true },
   parallelWorldSym:{ d: 'M7.5,10 m-4.2,0 a4.2,4.2 0 1,0 8.4,0 a4.2,4.2 0 1,0 -8.4,0 M12.5,10 m-4.2,0 a4.2,4.2 0 1,0 8.4,0 a4.2,4.2 0 1,0 -8.4,0', strokePath: 'M7.5,10 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M12.5,10 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0', useShapeFill: true, round: true },
   // Ветка Духа — уникальные иконки (ревизия дублей)
   possessionSym:   { d: 'M7.2,5 a2.8,2.8 0 1,1 5.6,0 a2.8,2.8 0 1,1 -5.6,0 M4.5,18 C4.5,12.5 6.8,10 10,10 C13.2,10 15.5,12.5 15.5,18 Z', strokePath: 'M7.3,4.3 L9.3,6.3 M9.3,4.3 L7.3,6.3 M10.7,4.3 L12.7,6.3 M12.7,4.3 L10.7,6.3 M9,1.2 C9,0.5 11,0.5 11,1.2 C11,1.8 10.5,1.5 10,1.9 C9.5,1.5 9,1.8 9,1.2 Z', useShapeFill: true, round: true },
@@ -420,6 +420,25 @@ export const GLYPH_PATHS = {
   forgottenPageSym:{ d: 'M4,3 L14,3 L16,5 L16,17 L4,17 Z M14,3 L14,5 L16,5 Z', strokePath: 'M6,7.5 L12,7.5 M6,10 L12,10 M6,12.5 L10,12.5 M9,2.3 a0.4,0.4 0 1,0 0.01,0 M11.5,1 a0.25,0.25 0 1,0 0.01,0', useShapeFill: true, round: true },
   ardentGuardianSym:{ d: 'M7.5,5 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M5,18 C5,13 6.5,10.5 10,10.5 C13.5,10.5 15,13 15,18 Z M10,0.3 C11,1.5 11.2,2.5 10.5,3.2 C11,2.2 10.3,1.5 10,0.3 C9.7,1.5 9,2.2 9.5,3.2 C8.8,2.5 9,1.5 10,0.3 Z', strokePath: 'M3.2,9 a0.7,0.7 0 1,0 0.01,0 M16.8,9 a0.7,0.7 0 1,0 0.01,0', useShapeFill: true, round: true },
   axisSym:      { d: 'M8.8,10 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0', strokePath: 'M1.5,10 a8.5,8.5 0 1,0 17,0 a8.5,8.5 0 1,0 -17,0 M10,3 L10,6 M10,14 L10,17 M3,10 L6,10 M14,10 L17,10', useShapeFill: true, round: true },
+  // Развитие старых тупиковых веток
+  faithfulFlameSym:{ d: 'M10,3 C12,6 12.5,9 10,12.5 C7.5,9 8,6 10,3 Z M8,12.5 L12,12.5 L14,18 L6,18 Z', useShapeFill: true, round: true },
+  gravewardenSym:{ d: 'M6,7 C6,3 14,3 14,7 C14,10 12,11 10,11 C8,11 6,10 6,7 Z M5,11 L15,11 L14,18 C12,17 8,17 6,18 Z', strokePath: 'M7.5,8.5 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M10.9,8.5 a0.8,0.8 0 1,0 1.6,0 a0.8,0.8 0 1,0 -1.6,0 M10,14 L10,17 M8.5,15.3 L11.5,15.3', useShapeFill: true, round: true },
+  mourningGroveSym:{ d: 'M9.3,18 L9.3,10 L10.7,10 L10.7,18 Z M7,7 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 M5,17 C5.5,17.8 5.6,18.3 5,18.8 C4.4,18.3 4.5,17.8 5,17 Z M15,17 C15.5,17.8 15.6,18.3 15,18.8 C14.4,18.3 14.5,17.8 15,17 Z', strokePath: 'M7,6 C5,8.5 4.5,12.5 5,16.5 M13,6 C15,8.5 15.5,12.5 15,16.5 M8,7.5 C6.5,10.5 6.3,13.5 7,16.5', useShapeFill: true, round: true },
+  eternalPunishmentSym:{ d: 'M4,10 L10,8.5 L16,10 L16,15 L10,13.5 L4,15 Z M9.3,2 L10.7,2 L10.7,16 L10,18 L9.3,16 Z', useShapeFill: true, round: true },
+  plagueStormSym:{ d: 'M4,9 C4,6 7,5 8,7 C9,4 13,4 14,7 C17,7 17,11 14,11 L6,11 C3,11 3,9 4,9 Z', strokePath: 'M6,13 L6,15 M6,15 L5.3,15.7 M6,15 L6.7,15.7 M10,13.5 L10,16 M10,16 L9.3,16.7 M10,16 L10.7,16.7 M14,13 L14,15 M14,15 L13.3,15.7 M14,15 L14.7,15.7', useShapeFill: true, round: true },
+  genesisSym:   { d: 'M10,9 C12,9 12.5,11.5 10,13 C7.5,11.5 8,9 10,9 Z', strokePath: 'M10,7 L10,2 M7.5,7.8 L4.5,4.5 M12.5,7.8 L15.5,4.5 M6,10 L2,9.5 M14,10 L18,9.5', useShapeFill: true, round: true },
+  worldsEndSym: { d: 'M8.5,18 L8.5,7 L9.5,5 L10.5,5 L11.5,7 L11.5,18 Z M9,5 L11,5 L11,3.5 L9,3.5 Z', strokePath: 'M2,18 L8.5,18 M11.5,18 L14,18 L15.5,16.5 L14.5,15.5 L16.5,14', useShapeFill: true, round: true },
+  axisKeeperSym:{ d: 'M7.7,4 a2.3,2.3 0 1,1 4.6,0 a2.3,2.3 0 1,1 -4.6,0 M6,15.5 C6,11.5 7.3,9.5 10,9.5 C12.7,9.5 14,11.5 14,15.5 Z', strokePath: 'M6,17 a4,2 0 1,0 8,0 a4,2 0 1,0 -8,0 M10,15 L10,19', useShapeFill: true, round: true },
+  brokenVesselSym:{ d: 'M5,8 L5,15 A4,3 0 0,0 9,17 L9,10 L7,8 Z M11,8 L13,10 L11,17 A4,3 0 0,0 15,15 L15,8 Z', strokePath: 'M9.5,11 L10.5,12.5 L9,13.5 Z', useShapeFill: true, round: true },
+  cosmicArchiveSym:{ d: 'M4,3 L14,3 L16,5 L16,17 L6,17 L4,15 Z M14,3 L14,5 L16,5 Z', strokePath: 'M8,7 a0.5,0.5 0 1,0 0.01,0 M11.5,9 a0.4,0.4 0 1,0 0.01,0 M7.5,12 a0.35,0.35 0 1,0 0.01,0 M6,8 a3,1.8 0 1,0 6,0 a3,1.8 0 1,0 -6,0', useShapeFill: true, round: true },
+  // Расширение ветки Иллюзий
+  selfDeceptionSym:{ d: 'M10,3 C13.5,3 15,6 15,10 C15,14.5 13,17 10,17 C7,17 5,14.5 5,10 C5,6 6.5,3 10,3 Z', strokePath: 'M7.3,9 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0 M10.1,9 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0 M10,13 L10,15', useShapeFill: true, round: true },
+  phantomMemorySym:{ d: 'M10,5 C12.5,8.5 13.5,12 10,15.5 C6.5,12 7.5,8.5 10,5 Z', strokePath: 'M4,7 C5,8 3,9 4,10 C5,11 3,12 4,13 M16,7 C15,8 17,9 16,10 C15,11 17,12 16,13', useShapeFill: true, round: true },
+  crossroadsSym:{ d: 'M10,8.5 L11.5,10 L10,11.5 L8.5,10 Z', strokePath: 'M10,8.5 L10,2 M11.5,10 L18,8 M10,11.5 L10,18 M8.5,10 L2,12 M11,9 L16,3 M9,11 L4,17', useShapeFill: true, round: true },
+  forgottenDreamSym:{ d: 'M5,10 C5,6 8,4 11,5 C9,6 8,8.5 9.5,10.5 C11,12.5 13.5,12 14.5,10 C14,13.5 10.5,15.5 7.5,14 C5.5,13 4.5,11.5 5,10 Z', strokePath: 'M15,9 a0.6,0.6 0 1,0 0.01,0 M16.5,7.5 a0.4,0.4 0 1,0 0.01,0 M17.5,6.3 a0.25,0.25 0 1,0 0.01,0', useShapeFill: true, round: true },
+  prophecySym:  { d: 'M2,10 C5,6 15,6 18,10 C15,14 5,14 2,10 Z', strokePath: 'M8.5,10 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M6.5,16.3 L13.5,16.3', useShapeFill: true, round: true },
+  afterimageSym:{ d: 'M10,4 L15,15 L5,15 Z', strokePath: 'M7.5,6 L11.5,15 L2.5,15 Z M6,7.5 L9,15 L1,15 Z', useShapeFill: true, round: true },
+  fatewalkerSym:{ d: 'M10,3 C7.5,3 6.5,5.5 7,7.5 L6,9 L7,9.5 L6.5,18 L13.5,18 L13,9.5 L14,9 L13,7.5 C13.5,5.5 12.5,3 10,3 Z', strokePath: 'M6.5,18 L3.5,19.3 M13.5,18 L16.5,19.3 M10,18.3 L10,19.6', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -766,6 +785,23 @@ export const ICON_DESIGNS = {
   forgottenPage:{ shape: 'square', glyph: 'forgottenPageSym', rot: 0 },
   ardentGuardian:{ shape: 'hexagon', glyph: 'ardentGuardianSym', rot: 0 },
   axis:      { shape: 'star',    glyph: 'axisSym',           rot: 0 },
+  faithfulFlame:{ shape: 'circle', glyph: 'faithfulFlameSym', rot: 0 },
+  gravewarden:  { shape: 'square', glyph: 'gravewardenSym',   rot: 0 },
+  mourningGrove:{ shape: 'diamond',glyph: 'mourningGroveSym', rot: 0 },
+  eternalPunishment:{ shape: 'star', glyph: 'eternalPunishmentSym', rot: 0 },
+  plagueStorm:  { shape: 'triangle',glyph: 'plagueStormSym',  rot: 0 },
+  genesis:      { shape: 'circle', glyph: 'genesisSym',       rot: 0 },
+  worldsEnd:    { shape: 'square', glyph: 'worldsEndSym',     rot: 0 },
+  axisKeeper:   { shape: 'hexagon',glyph: 'axisKeeperSym',    rot: 0 },
+  brokenVessel: { shape: 'hexagon',glyph: 'brokenVesselSym',  rot: 0 },
+  cosmicArchive:{ shape: 'square', glyph: 'cosmicArchiveSym', rot: 0 },
+  selfDeception:{ shape: 'hexagon',glyph: 'selfDeceptionSym', rot: 0 },
+  phantomMemory:{ shape: 'circle', glyph: 'phantomMemorySym', rot: 0 },
+  crossroads:   { shape: 'diamond',glyph: 'crossroadsSym',    rot: 0 },
+  forgottenDream:{ shape: 'star',  glyph: 'forgottenDreamSym',rot: 0 },
+  prophecy:     { shape: 'hexagon',glyph: 'prophecySym',      rot: 0 },
+  afterimage:   { shape: 'triangle',glyph: 'afterimageSym',   rot: 0 },
+  fatewalker:   { shape: 'square', glyph: 'fatewalkerSym',    rot: 0 },
 };
 
 export const TIER = (() => {

@@ -328,6 +328,25 @@ export const ELEMENTS = {
   forgottenPage:{ id: 'forgottenPage', name: 'Забытая Страница', color: '#A89880', glow: 'rgba(168,152,128,0.4)', desc: 'Летопись того, что не имело смысла' },
   ardentGuardian:{ id: 'ardentGuardian', name: 'Пламенный Страж', color: '#D4823A', glow: 'rgba(212,130,58,0.5)', desc: 'Страж, обретший рвение' },
   axis:      { id: 'axis',      name: 'Ось Мироздания', color: '#2A4A6A', glow: 'rgba(42,74,106,0.6)',  desc: 'Точка, вокруг которой вращается всё сущее' },
+  // Развитие старых тупиковых веток
+  faithfulFlame:{ id: 'faithfulFlame', name: 'Верный Огонь',   color: '#C8E87A', glow: 'rgba(200,232,122,0.5)', desc: 'Блуждающий огонёк, выбравший вести к правде' },
+  gravewarden:  { id: 'gravewarden',   name: 'Страж Могилы',   color: '#4A3A4A', glow: 'rgba(74,58,74,0.6)',    desc: 'Тот, кто хранит покой мёртвых, сам не зная покоя' },
+  mourningGrove:{ id: 'mourningGrove', name: 'Скорбная Роща',  color: '#3A5A4A', glow: 'rgba(58,90,74,0.5)',    desc: 'Лес, что оплакивает сам себя' },
+  eternalPunishment:{ id: 'eternalPunishment', name: 'Вечная Кара', color: '#6A1A3A', glow: 'rgba(106,26,58,0.6)', desc: 'Возмездие, вписанное в летопись навсегда' },
+  plagueStorm:  { id: 'plagueStorm',   name: 'Мор',            color: '#6A7A2A', glow: 'rgba(106,122,42,0.5)',  desc: 'Буря, что несёт не дождь, а болезнь' },
+  genesis:      { id: 'genesis',       name: 'Бытие',          color: '#FFE8A8', glow: 'rgba(255,232,168,0.6)', desc: 'Первый миг, когда хаос обрёл форму' },
+  worldsEnd:    { id: 'worldsEnd',     name: 'Край Мира',      color: '#C87850', glow: 'rgba(200,120,80,0.5)',  desc: 'Маяк, что стоит там, где кончается карта' },
+  axisKeeper:   { id: 'axisKeeper',    name: 'Хранитель Оси',  color: '#1A3A5A', glow: 'rgba(26,58,90,0.6)',    desc: 'Страж, не дающий миру сорваться в хаос' },
+  brokenVessel: { id: 'brokenVessel',  name: 'Разбитый Сосуд', color: '#8A4A5A', glow: 'rgba(138,74,90,0.5)',   desc: 'Оболочка, не выдержавшая разлада стихий' },
+  cosmicArchive:{ id: 'cosmicArchive', name: 'Космический Архив', color: '#6A5A8A', glow: 'rgba(106,90,138,0.5)', desc: 'Память мира, что переживёт сам мир' },
+  // Расширение ветки Иллюзий
+  selfDeception:{ id: 'selfDeception', name: 'Самообман',      color: '#B888A8', glow: 'rgba(184,136,168,0.5)', desc: 'Иллюзия, поверившая в саму себя' },
+  phantomMemory:{ id: 'phantomMemory', name: 'Призрачное Воспоминание', color: '#88A8C8', glow: 'rgba(136,168,200,0.5)', desc: 'Видение того, кого больше нет' },
+  crossroads:   { id: 'crossroads',    name: 'Перекрёсток Миров', color: '#7858A8', glow: 'rgba(120,88,168,0.5)', desc: 'Место, где разные реальности пересекаются' },
+  forgottenDream:{ id: 'forgottenDream', name: 'Забытый Сон',  color: '#5868A0', glow: 'rgba(88,104,160,0.4)',  desc: 'Сон, что тает, едва начавшись' },
+  prophecy:     { id: 'prophecy',      name: 'Пророчество',    color: '#C8A8E8', glow: 'rgba(200,168,232,0.5)', desc: 'Сон, что стал предсказанием' },
+  afterimage:   { id: 'afterimage',    name: 'Остаточный Образ', color: '#D8C0E0', glow: 'rgba(216,192,224,0.4)', desc: 'Свет, что остался после того, как погасла его причина' },
+  fatewalker:   { id: 'fatewalker',    name: 'Идущий Тропами', color: '#4A3868', glow: 'rgba(74,56,104,0.6)',   desc: 'Тот, кто ходит нитями несбывшихся миров' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -360,6 +379,7 @@ export const ELEMENT_CATS = {
   livingShield:'nature', guardian:'nature', canyon:'nature', whisperingWinds:'nature',
   maelstrom:'nature', tempest:'nature', ancientGrove:'nature', treant:'nature', worldTree:'nature',
   eternalBlight:'nature', virulentSwarm:'nature', primordialStorm:'nature', chaosStorm:'nature',
+  mourningGrove:'nature', plagueStorm:'nature',
   erosion:'nature', decay:'nature', ruin:'nature', sprout:'nature', sapling:'nature',
   mass:'nature', density:'nature', compression:'nature', substance:'nature', bedrock:'nature',
   metal:'metal', steel:'metal', blade:'metal', rust:'metal', stone:'metal', crystal:'metal',
@@ -386,7 +406,10 @@ export const ELEMENT_CATS = {
   guardian:'entities', willOWisp:'entities', deathKnight:'entities',
   elementalWarden:'entities',
   hollow:'entities',
+  faithfulFlame:'entities',
   husk:'entities', ardentGuardian:'entities',
+  gravewarden:'entities', brokenVessel:'entities',
+  fatewalker:'entities',
   // spirit — ветка Духа
   breath:'spirit', possession:'spirit', spellbound:'spirit', exorcism:'spirit',
   astralForm:'spirit', spiritGuide:'spirit', seance:'spirit',
@@ -402,9 +425,12 @@ export const ELEMENT_CATS = {
   timepiece:'chronomancy', temporalSigil:'chronomancy',
   locus:'chronomancy', timeShard:'chronomancy', chronicle:'chronomancy',
   forgottenPage:'chronomancy',
+  eternalPunishment:'chronomancy', cosmicArchive:'chronomancy',
   // illusion — ветка Иллюзий
   illusion:'illusion', mirage:'illusion', spectrum:'illusion',
   parallelWorld:'illusion', dreamRealm:'illusion', somnium:'illusion',
+  selfDeception:'illusion', phantomMemory:'illusion', crossroads:'illusion',
+  forgottenDream:'illusion', prophecy:'illusion', afterimage:'illusion',
   // magic — оставшиеся 14
   light:'magic', shadow:'magic', essence:'magic', abyss:'magic',
   rift:'magic', wand:'magic', curse:'magic',
@@ -418,6 +444,7 @@ export const ELEMENT_CATS = {
   moon:'cosmos', sun:'cosmos', galaxy:'cosmos', eclipse:'cosmos',
   quintessence:'cosmos', macrocosm:'cosmos', voidRift:'cosmos',
   axis:'cosmos',
+  worldsEnd:'cosmos', genesis:'cosmos', axisKeeper:'cosmos',
   blackHole:'cosmos', singularity:'cosmos', aurora:'cosmos',
   vacuum:'cosmos', nebula:'cosmos', multiverse:'cosmos',
   maelchaos:'cosmos', heatDeath:'cosmos',
@@ -904,6 +931,26 @@ export const RECIPES = [
   { inputs: [{ id: 'elementalWarden', a: 1 }, { id: 'zeal', a: 1 }],    output: 'ardentGuardian' },
   { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'locus', a: 1 }],      output: 'axis' },
   { inputs: [{ id: 'husk', a: 1 }, { id: 'abyss', a: 1 }],              output: 'voidSpawn' },
+  // Развитие старых тупиковых веток
+  { inputs: [{ id: 'willOWisp', a: 1 }, { id: 'lighthouse', a: 1 }],    output: 'faithfulFlame' },
+  { inputs: [{ id: 'shroud', a: 1 }, { id: 'deathKnight', a: 1 }],      output: 'gravewarden' },
+  { inputs: [{ id: 'choirOfSorrow', a: 1 }, { id: 'eternalBlight', a: 1 }, { id: 'tears', a: 1 }], output: 'mourningGrove' },
+  { inputs: [{ id: 'fatebreaker', a: 1 }, { id: 'chronicle', a: 1 }],   output: 'eternalPunishment' },
+  { inputs: [{ id: 'virulentSwarm', a: 1 }, { id: 'primordialStorm', a: 1 }], output: 'plagueStorm' },
+  { inputs: [{ id: 'primordialStorm', a: 1 }, { id: 'primeMatter', a: 1 }, { id: 'fifthElement', a: 1 }], output: 'genesis' },
+  { inputs: [{ id: 'lighthouse', a: 1 }, { id: 'horizon', a: 1 }],      output: 'worldsEnd' },
+  { inputs: [{ id: 'axis', a: 1 }, { id: 'ardentGuardian', a: 1 }, { id: 'purpose', a: 1 }], output: 'axisKeeper' },
+  { inputs: [{ id: 'elementalRupture', a: 1 }, { id: 'husk', a: 1 }],   output: 'brokenVessel' },
+  { inputs: [{ id: 'forgottenPage', a: 1 }, { id: 'axis', a: 1 }],      output: 'cosmicArchive' },
+  // Расширение ветки Иллюзий
+  { inputs: [{ id: 'illusion', a: 1 }, { id: 'hollow', a: 1 }],         output: 'selfDeception' },
+  { inputs: [{ id: 'mirage', a: 1 }, { id: 'tears', a: 1 }],            output: 'phantomMemory' },
+  { inputs: [{ id: 'parallelWorld', a: 1 }, { id: 'locus', a: 1 }],     output: 'crossroads' },
+  { inputs: [{ id: 'dreamRealm', a: 1 }, { id: 'fading', a: 1 }],       output: 'forgottenDream' },
+  { inputs: [{ id: 'somnium', a: 1 }, { id: 'chronicle', a: 1 }],       output: 'prophecy' },
+  { inputs: [{ id: 'spectrum', a: 1 }, { id: 'fading', a: 1 }],         output: 'afterimage' },
+  { inputs: [{ id: 'crossroads', a: 1 }, { id: 'prophecy', a: 1 }],     output: 'fatewalker' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'mirror', a: 1 }],           output: 'illusion' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
