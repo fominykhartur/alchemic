@@ -461,6 +461,17 @@ export const GLYPH_PATHS = {
   warcrySym:    { d: 'M5,8 L15,8 L12,14 L8,14 Z', strokePath: 'M15,8 L18,6 M15,10 L18,10 M5,8 L2,6 M5,10 L2,10', useShapeFill: true, round: true },
   symphonySym:  { d: 'M9.3,2 L10.7,2 L10.7,15 L9.3,15 Z', strokePath: 'M6,6 A4,4 0 0,0 6,12 M14,6 A4,4 0 0,1 14,12', useShapeFill: true, round: true },
   resonanceOfWorldsSym:{ d: 'M10,8.5 L11.5,10 L10,11.5 L8.5,10 Z', strokePath: 'M3,10 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0 M10,8.5 L10,3 M10,11.5 L10,17 M8.5,10 L3,10 M11.5,10 L17,10', useShapeFill: true, round: true },
+  copperSym:    { d: 'M4,13 L6,7 L14,7 L16,13 L14,16 L6,16 Z', strokePath: 'M8,10 a1,1 0 1,0 0.01,0 M12,12 a0.7,0.7 0 1,0 0.01,0 M9.5,13.5 a0.5,0.5 0 1,0 0.01,0', useShapeFill: true, round: true },
+  bronzeSym:    { d: 'M3.5,10 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0', strokePath: 'M10,5 L10,15 M6.5,7.5 L13.5,12.5 M13.5,7.5 L6.5,12.5', useShapeFill: true, round: true },
+  platinumSym:  { d: 'M10,2 L15,6 L15,14 L10,18 L5,14 L5,6 Z', strokePath: 'M10,2 L10,18 M5,6 L15,14 M15,6 L5,14', useShapeFill: true, round: true },
+  wireSym:      { d: 'M10,3 C13,3 15,5 15,8 C15,11 12,12 10,12 C8.5,12 7,11 7,9.5 C7,8.5 8,7.5 9,7.5 C9.8,7.5 10.5,8.2 10.5,9', round: true },
+  magnetSym:    { d: 'M4,3 L8,3 L8,12 C8,13.5 8.7,14 10,14 C11.3,14 12,13.5 12,12 L12,3 L16,3 L16,12 C16,16 13.5,18 10,18 C6.5,18 4,16 4,12 Z', strokePath: 'M6,3 L6,6 M14,3 L14,6', useShapeFill: true, round: true },
+  temperedBladeSym:{ d: 'M10,2 L11,2 L12,14 L10,17 L8,14 Z M8.5,16.5 L11.5,16.5 L11.5,18 L8.5,18 Z', strokePath: 'M10,4.5 L10,13', useShapeFill: true, round: true },
+  chainmailSym: { d: 'M5,6 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M11,6 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M8,10 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M5,14 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M11,14 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0', round: true },
+  filigreeSym:  { d: 'M10,3 C6,3 5,6 7,8 M7,8 C4,8 3,11 6,13 M6,13 C5,16 8,17 10,15 M10,15 C12,17 15,16 14,13 M14,13 C17,11 16,8 13,8 M13,8 C15,6 14,3 10,3', round: true },
+  adamantSym:   { d: 'M10,1 L14,5 L16,11 L12,18 L8,18 L4,11 L6,5 Z', strokePath: 'M10,1 L10,7 M6,5 L10,7 L14,5 M4,11 L10,7 L16,11 M8,18 L10,7 L12,18', useShapeFill: true, round: true },
+  worldsmithSym:{ d: 'M7.5,4 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M5,14 C5,10 6.5,8.5 10,8.5 C13.5,8.5 15,10 15,14 L15,17 L5,17 Z', strokePath: 'M14,4 L16,2 M15,3.3 L17.3,1 L18.3,2 L16,4.3 Z', useShapeFill: true, round: true },
+  relicBladeSym:{ d: 'M9.3,2 L10.7,2 L11,12 L10,14 L9,12 Z', strokePath: 'M6,16 L14,16 L14,18 L6,18 Z M7.5,17 L12.5,17', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -846,6 +857,17 @@ export const ICON_DESIGNS = {
   warcry:    { shape: 'triangle',glyph: 'warcrySym',         rot: 0 },
   symphony:  { shape: 'hexagon', glyph: 'symphonySym',       rot: 0 },
   resonanceOfWorlds:{ shape: 'star', glyph: 'resonanceOfWorldsSym', rot: 0 },
+  copper:    { shape: 'hexagon', glyph: 'copperSym',        rot: 0 },
+  bronze:    { shape: 'circle',  glyph: 'bronzeSym',         rot: 0 },
+  platinum:  { shape: 'hexagon', glyph: 'platinumSym',       rot: 0 },
+  wire:      { shape: 'circle',  glyph: 'wireSym',           rot: 0 },
+  magnet:    { shape: 'square',  glyph: 'magnetSym',         rot: 0 },
+  temperedBlade:{ shape: 'diamond', glyph: 'temperedBladeSym', rot: 0 },
+  chainmail: { shape: 'square',  glyph: 'chainmailSym',      rot: 0 },
+  filigree:  { shape: 'circle',  glyph: 'filigreeSym',       rot: 0 },
+  adamant:   { shape: 'hexagon', glyph: 'adamantSym',        rot: 0 },
+  worldsmith:{ shape: 'square',  glyph: 'worldsmithSym',     rot: 0 },
+  relicBlade:{ shape: 'diamond', glyph: 'relicBladeSym',     rot: 0 },
 };
 
 export const TIER = (() => {

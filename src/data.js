@@ -371,6 +371,18 @@ export const ELEMENTS = {
   warcry:    { id: 'warcry',    name: 'Боевой Клич',   color: '#C83A3A', glow: 'rgba(200,58,58,0.5)',   desc: 'Крик, что становится оружием' },
   symphony:  { id: 'symphony',  name: 'Симфония',      color: '#7FCFEF', glow: 'rgba(127,207,239,0.6)', desc: 'Порядок и хаос, звучащие вместе' },
   resonanceOfWorlds:{ id: 'resonanceOfWorlds', name: 'Резонанс Миров', color: '#4A9AC8', glow: 'rgba(74,154,200,0.6)', desc: 'Звук, что проходит сквозь границы реальностей' },
+  // Расширение ветки Металлов
+  copper:    { id: 'copper',    name: 'Медь',              color: '#C8783A', glow: 'rgba(200,120,58,0.4)',  desc: 'Металл, что покрывается зеленью времени' },
+  bronze:    { id: 'bronze',    name: 'Бронза',            color: '#A67C3A', glow: 'rgba(166,124,58,0.4)',  desc: 'Сплав, что помнит первых кузнецов' },
+  platinum:  { id: 'platinum',  name: 'Платина',           color: '#C8D0D8', glow: 'rgba(200,208,216,0.4)', desc: 'Металл, что не спорит ни с золотом, ни с серебром' },
+  wire:      { id: 'wire',      name: 'Проволока',         color: '#A0A8A8', glow: 'rgba(160,168,168,0.3)', desc: 'Медь, вытянутая в нить' },
+  magnet:    { id: 'magnet',    name: 'Магнит',            color: '#5A6878', glow: 'rgba(90,104,120,0.5)',  desc: 'Железо, что помнит удар молнии' },
+  temperedBlade:{ id: 'temperedBlade', name: 'Закалённый Клинок', color: '#B85838', glow: 'rgba(184,88,56,0.5)', desc: 'Клинок, закалённый не только огнём, но и волей' },
+  chainmail: { id: 'chainmail', name: 'Кольчуга',          color: '#8090A0', glow: 'rgba(128,144,160,0.4)', desc: 'Тысяча колец, что держат друг друга' },
+  filigree:  { id: 'filigree',  name: 'Филигрань',         color: '#D4AF6A', glow: 'rgba(212,175,106,0.5)', desc: 'Проволока, свитая с точным умыслом' },
+  adamant:   { id: 'adamant',   name: 'Адамант',           color: '#2A2A32', glow: 'rgba(42,42,50,0.6)',    desc: 'Металл, что отказывается уступать даже времени' },
+  worldsmith:{ id: 'worldsmith',name: 'Кузнец Миров',      color: '#8A4A2A', glow: 'rgba(138,74,42,0.6)',   desc: 'Тот, кто куёт не вещи, а саму реальность' },
+  relicBlade:{ id: 'relicBlade',name: 'Клинок-Реликвия',   color: '#9A7A4A', glow: 'rgba(154,122,74,0.5)',  desc: 'Клинок, чья история выкована в металл' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -463,6 +475,10 @@ export const ELEMENT_CATS = {
   whisper:'sound', silence:'sound', cacophony:'sound', harmony:'sound',
   thunderclap:'sound', reverberation:'sound', lullaby:'sound', warcry:'sound',
   symphony:'sound', resonanceOfWorlds:'sound',
+  copper:'metal', bronze:'metal', platinum:'metal', wire:'metal', magnet:'metal',
+  temperedBlade:'metal', chainmail:'metal', filigree:'metal', adamant:'metal',
+  relicBlade:'metal',
+  worldsmith:'entities',
   // magic — оставшиеся 14
   light:'magic', shadow:'magic', essence:'magic', abyss:'magic',
   rift:'magic', wand:'magic', curse:'magic',
@@ -1007,6 +1023,18 @@ export const RECIPES = [
   { inputs: [{ id: 'echo', a: 1 }, { id: 'anger', a: 1 }],              output: 'warcry' },
   { inputs: [{ id: 'harmony', a: 1 }, { id: 'cacophony', a: 1 }],       output: 'symphony' },
   { inputs: [{ id: 'symphony', a: 1 }, { id: 'crossroads', a: 1 }],     output: 'resonanceOfWorlds' },
+  // Расширение ветки Металлов
+  { inputs: [{ id: 'metal', a: 1 }, { id: 'moss', a: 1 }],              output: 'copper' },
+  { inputs: [{ id: 'copper', a: 1 }, { id: 'steel', a: 1 }],            output: 'bronze' },
+  { inputs: [{ id: 'gold', a: 1 }, { id: 'silver', a: 1 }],             output: 'platinum' },
+  { inputs: [{ id: 'copper', a: 1 }, { id: 'air', a: 1 }],              output: 'wire' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'lightning', a: 1 }],          output: 'magnet' },
+  { inputs: [{ id: 'blade', a: 1 }, { id: 'zeal', a: 1 }],              output: 'temperedBlade' },
+  { inputs: [{ id: 'wire', a: 1 }, { id: 'steel', a: 1 }],              output: 'chainmail' },
+  { inputs: [{ id: 'wire', a: 1 }, { id: 'purpose', a: 1 }],            output: 'filigree' },
+  { inputs: [{ id: 'ironWill', a: 1 }, { id: 'diamond', a: 1 }, { id: 'purpose', a: 1 }], output: 'adamant' },
+  { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'adamant', a: 1 }],      output: 'worldsmith' },
+  { inputs: [{ id: 'temperedBlade', a: 1 }, { id: 'chronicle', a: 1 }], output: 'relicBlade' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
