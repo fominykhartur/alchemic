@@ -112,6 +112,7 @@ const CATEGORY_HINTS = {
   magic: 'магии', entities: 'иных существ', spirit: 'духа',
   chronomancy: 'времени', illusion: 'иллюзий', cosmos: 'космоса',
   alchemy: 'алхимии', state: 'стихийных состояний', legendary: 'легенд',
+  emotion: 'чувств', sound: 'звука',
 };
 
 const ORACLE_ELEMENT = 'mirror';

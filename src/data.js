@@ -347,6 +347,30 @@ export const ELEMENTS = {
   prophecy:     { id: 'prophecy',      name: 'Пророчество',    color: '#C8A8E8', glow: 'rgba(200,168,232,0.5)', desc: 'Сон, что стал предсказанием' },
   afterimage:   { id: 'afterimage',    name: 'Остаточный Образ', color: '#D8C0E0', glow: 'rgba(216,192,224,0.4)', desc: 'Свет, что остался после того, как погасла его причина' },
   fatewalker:   { id: 'fatewalker',    name: 'Идущий Тропами', color: '#4A3868', glow: 'rgba(74,56,104,0.6)',   desc: 'Тот, кто ходит нитями несбывшихся миров' },
+  // Категория: Чувства
+  hope:      { id: 'hope',      name: 'Надежда',       color: '#FFD888', glow: 'rgba(255,216,136,0.5)', desc: 'Свет, что не гаснет даже во тьме слёз' },
+  fear:      { id: 'fear',      name: 'Страх',         color: '#3A2A4A', glow: 'rgba(58,42,74,0.6)',    desc: 'Пустота, обретшая голос' },
+  anger:     { id: 'anger',     name: 'Гнев',          color: '#D82A2A', glow: 'rgba(216,42,42,0.5)',   desc: 'Пламя, что не спрашивает цели' },
+  love:      { id: 'love',      name: 'Любовь',        color: '#FF6A9A', glow: 'rgba(255,106,154,0.5)', desc: 'Цель, что живёт ради другого' },
+  courage:   { id: 'courage',   name: 'Смелость',      color: '#E8A838', glow: 'rgba(232,168,56,0.5)',  desc: 'Страх, обращённый в действие' },
+  serenity:  { id: 'serenity',  name: 'Безмятежность', color: '#A8D8E8', glow: 'rgba(168,216,232,0.4)', desc: 'Точка, где всё движение затихает' },
+  envy:      { id: 'envy',      name: 'Зависть',       color: '#5A8A3A', glow: 'rgba(90,138,58,0.5)',   desc: 'Отражение чужого счастья' },
+  nostalgia: { id: 'nostalgia', name: 'Ностальгия',    color: '#B89AC8', glow: 'rgba(184,154,200,0.4)', desc: 'Тоска по тому, что никогда не вернётся' },
+  wonder:    { id: 'wonder',    name: 'Изумление',     color: '#FFE0A8', glow: 'rgba(255,224,168,0.6)', desc: 'Миг, когда неизвестное становится явным' },
+  pride:     { id: 'pride',     name: 'Гордость',      color: '#C89838', glow: 'rgba(200,152,56,0.5)',  desc: 'Воля, возомнившая себя центром мира' },
+  compassion:{ id: 'compassion',name: 'Сострадание',   color: '#E888A8', glow: 'rgba(232,136,168,0.5)', desc: 'Скорбь, обращённая в заботу о другом' },
+  catharsis: { id: 'catharsis', name: 'Катарсис',      color: '#88C8D8', glow: 'rgba(136,200,216,0.5)', desc: 'Буря чувств, что находит покой' },
+  // Категория: Звук
+  whisper:   { id: 'whisper',   name: 'Шёпот',         color: '#8898A8', glow: 'rgba(136,152,168,0.3)', desc: 'Слово, едва решившееся прозвучать' },
+  silence:   { id: 'silence',   name: 'Тишина',        color: '#2A2A3A', glow: 'rgba(42,42,58,0.5)',    desc: 'Молчание, что тяжелее любого крика' },
+  cacophony: { id: 'cacophony', name: 'Какофония',     color: '#B84A6A', glow: 'rgba(184,74,106,0.5)',  desc: 'Звук, что отрицает сам себя' },
+  harmony:   { id: 'harmony',   name: 'Гармония',      color: '#5FB8D8', glow: 'rgba(95,184,216,0.5)',  desc: 'Множество голосов, ставших одним' },
+  thunderclap:{ id: 'thunderclap', name: 'Раскат Грома', color: '#8888C8', glow: 'rgba(136,136,200,0.5)', desc: 'Звук, что бежит быстрее самой молнии' },
+  reverberation:{ id: 'reverberation', name: 'Отзвук', color: '#A89878', glow: 'rgba(168,152,120,0.4)', desc: 'Голос, что не находит конца' },
+  lullaby:   { id: 'lullaby',   name: 'Колыбельная',   color: '#C8B8E8', glow: 'rgba(200,184,232,0.4)', desc: 'Песня, что усыпляет даже боль' },
+  warcry:    { id: 'warcry',    name: 'Боевой Клич',   color: '#C83A3A', glow: 'rgba(200,58,58,0.5)',   desc: 'Крик, что становится оружием' },
+  symphony:  { id: 'symphony',  name: 'Симфония',      color: '#7FCFEF', glow: 'rgba(127,207,239,0.6)', desc: 'Порядок и хаос, звучащие вместе' },
+  resonanceOfWorlds:{ id: 'resonanceOfWorlds', name: 'Резонанс Миров', color: '#4A9AC8', glow: 'rgba(74,154,200,0.6)', desc: 'Звук, что проходит сквозь границы реальностей' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -364,6 +388,8 @@ export const CATEGORIES = {
   magic:     { label: '🔮 Магия', color: '#9370db' },
   cosmos:    { label: '🌌 Космос', color: '#4a6fa5' },
   alchemy:   { label: '⚗ Алхимия', color: '#7cfc00' },
+  emotion:   { label: '💗 Чувства', color: '#E85A8A' },
+  sound:     { label: '🔔 Звук', color: '#5FB8D8' },
   legendary: { label: '👑 Легендарное', color: '#C9A227' },
 };
 
@@ -431,6 +457,12 @@ export const ELEMENT_CATS = {
   parallelWorld:'illusion', dreamRealm:'illusion', somnium:'illusion',
   selfDeception:'illusion', phantomMemory:'illusion', crossroads:'illusion',
   forgottenDream:'illusion', prophecy:'illusion', afterimage:'illusion',
+  hope:'emotion', fear:'emotion', anger:'emotion', love:'emotion', courage:'emotion',
+  serenity:'emotion', envy:'emotion', nostalgia:'emotion', wonder:'emotion',
+  pride:'emotion', compassion:'emotion', catharsis:'emotion',
+  whisper:'sound', silence:'sound', cacophony:'sound', harmony:'sound',
+  thunderclap:'sound', reverberation:'sound', lullaby:'sound', warcry:'sound',
+  symphony:'sound', resonanceOfWorlds:'sound',
   // magic — оставшиеся 14
   light:'magic', shadow:'magic', essence:'magic', abyss:'magic',
   rift:'magic', wand:'magic', curse:'magic',
@@ -951,6 +983,30 @@ export const RECIPES = [
   { inputs: [{ id: 'spectrum', a: 1 }, { id: 'fading', a: 1 }],         output: 'afterimage' },
   { inputs: [{ id: 'crossroads', a: 1 }, { id: 'prophecy', a: 1 }],     output: 'fatewalker' },
   { inputs: [{ id: 'hollow', a: 1 }, { id: 'mirror', a: 1 }],           output: 'illusion' },
+  // Категория: Чувства
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'tears', a: 1 }],              output: 'hope' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'shadow', a: 1 }],           output: 'fear' },
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'chaos', a: 1 }],              output: 'anger' },
+  { inputs: [{ id: 'purpose', a: 1 }, { id: 'tears', a: 1 }],           output: 'love' },
+  { inputs: [{ id: 'fear', a: 1 }, { id: 'purpose', a: 1 }],            output: 'courage' },
+  { inputs: [{ id: 'water', a: 1 }, { id: 'locus', a: 1 }],             output: 'serenity' },
+  { inputs: [{ id: 'mirror', a: 1 }, { id: 'fear', a: 1 }],             output: 'envy' },
+  { inputs: [{ id: 'phantomMemory', a: 1 }, { id: 'requiem', a: 1 }],   output: 'nostalgia' },
+  { inputs: [{ id: 'genesis', a: 1 }, { id: 'prophecy', a: 1 }],        output: 'wonder' },
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'axis', a: 1 }],               output: 'pride' },
+  { inputs: [{ id: 'requiem', a: 1 }, { id: 'hope', a: 1 }],            output: 'compassion' },
+  { inputs: [{ id: 'anger', a: 1 }, { id: 'serenity', a: 1 }],          output: 'catharsis' },
+  // Категория: Звук
+  { inputs: [{ id: 'air', a: 1 }, { id: 'hollow', a: 1 }],              output: 'whisper' },
+  { inputs: [{ id: 'void', a: 1 }, { id: 'shroud', a: 1 }],             output: 'silence' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'chaos', a: 1 }],         output: 'cacophony' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'purpose', a: 1 }],       output: 'harmony' },
+  { inputs: [{ id: 'thunder', a: 1 }, { id: 'echo', a: 1 }],            output: 'thunderclap' },
+  { inputs: [{ id: 'canyon', a: 1 }, { id: 'echo', a: 1 }],             output: 'reverberation' },
+  { inputs: [{ id: 'silence', a: 1 }, { id: 'hope', a: 1 }],            output: 'lullaby' },
+  { inputs: [{ id: 'echo', a: 1 }, { id: 'anger', a: 1 }],              output: 'warcry' },
+  { inputs: [{ id: 'harmony', a: 1 }, { id: 'cacophony', a: 1 }],       output: 'symphony' },
+  { inputs: [{ id: 'symphony', a: 1 }, { id: 'crossroads', a: 1 }],     output: 'resonanceOfWorlds' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -1027,7 +1083,7 @@ export function recipeKey(recipe) {
 
 export const SAVE_KEY = 'alchemic_save_v1';
 export const TREE_MAX_DEPTH = 3;
-export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'entities', 'spirit', 'chronomancy', 'illusion', 'magic', 'cosmos', 'alchemy', 'legendary'];
+export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'entities', 'spirit', 'chronomancy', 'illusion', 'magic', 'cosmos', 'alchemy', 'emotion', 'sound', 'legendary'];
 
 export const ELEMENT_DEPTHS = (() => {
   const depths = {};
