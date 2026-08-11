@@ -91,6 +91,14 @@ export function onItemPointerDown(e) {
   }
 }
 
+const invSearch = document.getElementById('inv-search');
+if (invSearch && typeof invSearch.addEventListener === 'function') {
+  invSearch.addEventListener('input', () => renderInventory());
+  invSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { invSearch.value = ''; invSearch.blur(); renderInventory(); }
+  });
+}
+
 document.addEventListener('pointermove', (e) => {
   const g = activeGesture;
   if (!g || e.pointerId !== g.pointerId) return;
@@ -239,6 +247,14 @@ export function renderInventory() {
 
   const discovered = ELEMENT_IDS.filter(id => state.discovered.has(id));
   const undiscovered = ELEMENT_IDS.filter(id => !state.discovered.has(id));
+  const searchInput = document.getElementById('inv-search');
+  const q = (searchInput && searchInput.value || '').trim().toLowerCase();
+
+  if (q) {
+    discovered.sort((a, b) => ELEMENTS[a].name.localeCompare(ELEMENTS[b].name));
+    discovered.filter(id => ELEMENTS[id].name.toLowerCase().includes(q)).forEach(id => renderItem(grid, id));
+    return;
+  }
 
   if (window._sortMode === 'category') {
     CAT_ORDER.forEach(cat => {
