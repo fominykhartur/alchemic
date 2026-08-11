@@ -383,6 +383,18 @@ export const ELEMENTS = {
   adamant:   { id: 'adamant',   name: 'Адамант',           color: '#2A2A32', glow: 'rgba(42,42,50,0.6)',    desc: 'Металл, что отказывается уступать даже времени' },
   worldsmith:{ id: 'worldsmith',name: 'Кузнец Миров',      color: '#8A4A2A', glow: 'rgba(138,74,42,0.6)',   desc: 'Тот, кто куёт не вещи, а саму реальность' },
   relicBlade:{ id: 'relicBlade',name: 'Клинок-Реликвия',   color: '#9A7A4A', glow: 'rgba(154,122,74,0.5)',  desc: 'Клинок, чья история выкована в металл' },
+  // Расширение ветки Духа
+  invocation:{ id: 'invocation', name: 'Воззвание',       color: '#C8B8E0', glow: 'rgba(200,184,224,0.5)', desc: 'Дыхание, ставшее словом призыва' },
+  geas:      { id: 'geas',      name: 'Гейс',             color: '#8858A8', glow: 'rgba(136,88,168,0.5)',  desc: 'Чары, что стали клятвой' },
+  celestialBody:{ id: 'celestialBody', name: 'Небесное Тело', color: '#B8D8F0', glow: 'rgba(184,216,240,0.5)', desc: 'Форма духа, что коснулась звёзд' },
+  spiritVoice:{ id: 'spiritVoice', name: 'Голос Духов',   color: '#9888C8', glow: 'rgba(152,136,200,0.5)', desc: 'Слова, что произносят не живые' },
+  eternalPrison:{ id: 'eternalPrison', name: 'Вечная Темница', color: '#4A4A5A', glow: 'rgba(74,74,90,0.6)', desc: 'Сосуд, что не разобьётся никогда' },
+  eternalMourning:{ id: 'eternalMourning', name: 'Вечная Скорбь', color: '#5A5A78', glow: 'rgba(90,90,120,0.5)', desc: 'Хор, что оплакивает вечно' },
+  betweenWorlds:{ id: 'betweenWorlds', name: 'Между Мирами', color: '#7868A0', glow: 'rgba(120,104,160,0.5)', desc: 'Дух, застрявший между явью и небытием' },
+  awakenedWill:{ id: 'awakenedWill', name: 'Пробуждённая Воля', color: '#D8A868', glow: 'rgba(216,168,104,0.5)', desc: 'Плоть, что обрела цель' },
+  banisher:  { id: 'banisher',  name: 'Изгоняющий',      color: '#E8D8A8', glow: 'rgba(232,216,168,0.5)', desc: 'Тот, кто не боится идти против духов' },
+  wayfinder: { id: 'wayfinder', name: 'Проводник Пути',  color: '#88B8A8', glow: 'rgba(136,184,168,0.5)', desc: 'Дух, что знает каждую точку пути' },
+  psychopomp:{ id: 'psychopomp',name: 'Проводник Душ',   color: '#3A3A52', glow: 'rgba(58,58,82,0.6)',    desc: 'Тот, кто ведёт мёртвых их последним путём' },
 };
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
@@ -479,6 +491,9 @@ export const ELEMENT_CATS = {
   temperedBlade:'metal', chainmail:'metal', filigree:'metal', adamant:'metal',
   relicBlade:'metal',
   worldsmith:'entities',
+  invocation:'spirit', geas:'spirit', celestialBody:'spirit', spiritVoice:'spirit',
+  eternalPrison:'spirit', eternalMourning:'spirit', betweenWorlds:'spirit', awakenedWill:'spirit',
+  banisher:'entities', wayfinder:'entities', psychopomp:'entities',
   // magic — оставшиеся 14
   light:'magic', shadow:'magic', essence:'magic', abyss:'magic',
   rift:'magic', wand:'magic', curse:'magic',
@@ -1035,6 +1050,18 @@ export const RECIPES = [
   { inputs: [{ id: 'ironWill', a: 1 }, { id: 'diamond', a: 1 }, { id: 'purpose', a: 1 }], output: 'adamant' },
   { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'adamant', a: 1 }],      output: 'worldsmith' },
   { inputs: [{ id: 'temperedBlade', a: 1 }, { id: 'chronicle', a: 1 }], output: 'relicBlade' },
+  // Расширение ветки Духа
+  { inputs: [{ id: 'breath', a: 1 }, { id: 'whisper', a: 1 }],          output: 'invocation' },
+  { inputs: [{ id: 'spellbound', a: 1 }, { id: 'purpose', a: 1 }],      output: 'geas' },
+  { inputs: [{ id: 'astralForm', a: 1 }, { id: 'wonder', a: 1 }],       output: 'celestialBody' },
+  { inputs: [{ id: 'seance', a: 1 }, { id: 'whisper', a: 1 }],          output: 'spiritVoice' },
+  { inputs: [{ id: 'soulJar', a: 1 }, { id: 'adamant', a: 1 }],         output: 'eternalPrison' },
+  { inputs: [{ id: 'ancestralChorus', a: 1 }, { id: 'requiem', a: 1 }], output: 'eternalMourning' },
+  { inputs: [{ id: 'spiritRealm', a: 1 }, { id: 'crossroads', a: 1 }],  output: 'betweenWorlds' },
+  { inputs: [{ id: 'animatedFlesh', a: 1 }, { id: 'purpose', a: 1 }],   output: 'awakenedWill' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'courage', a: 1 }],        output: 'banisher' },
+  { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'locus', a: 1 }],       output: 'wayfinder' },
+  { inputs: [{ id: 'betweenWorlds', a: 1 }, { id: 'wayfinder', a: 1 }], output: 'psychopomp' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];

@@ -472,6 +472,17 @@ export const GLYPH_PATHS = {
   adamantSym:   { d: 'M10,1 L14,5 L16,11 L12,18 L8,18 L4,11 L6,5 Z', strokePath: 'M10,1 L10,7 M6,5 L10,7 L14,5 M4,11 L10,7 L16,11 M8,18 L10,7 L12,18', useShapeFill: true, round: true },
   worldsmithSym:{ d: 'M7.5,4 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0 M5,14 C5,10 6.5,8.5 10,8.5 C13.5,8.5 15,10 15,14 L15,17 L5,17 Z', strokePath: 'M14,4 L16,2 M15,3.3 L17.3,1 L18.3,2 L16,4.3 Z', useShapeFill: true, round: true },
   relicBladeSym:{ d: 'M9.3,2 L10.7,2 L11,12 L10,14 L9,12 Z', strokePath: 'M6,16 L14,16 L14,18 L6,18 Z M7.5,17 L12.5,17', useShapeFill: true, round: true },
+  invocationSym:{ d: 'M8.5,16 L11.5,16 L11.5,17 L8.5,17 Z', strokePath: 'M10,15 C10.5,12.5 9.5,10 10,7.5 M8.3,4.5 a1.7,1.7 0 1,0 3.4,0 a1.7,1.7 0 1,0 -3.4,0', useShapeFill: true, round: true },
+  geasSym:      { d: 'M4,10 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M7.5,7.5 L12.5,12.5 M12.5,7.5 L7.5,12.5', round: true },
+  celestialBodySym:{ d: 'M10,5 L11,8.5 L14.5,8.5 L11.7,10.7 L12.7,14 L10,12 L7.3,14 L8.3,10.7 L5.5,8.5 L9,8.5 Z', strokePath: 'M3,10 a7,3 0 1,0 14,0 a7,3 0 1,0 -14,0', useShapeFill: true, round: true },
+  spiritVoiceSym:{ d: 'M10,3 a3.5,3.5 0 1,1 -0.01,0 M6.5,6.5 C6.5,10 6.5,13 8,15 L8,17 L9,15.5 L10,17 L11,15.5 L12,17 L12,15 C13.5,13 13.5,10 13.5,6.5 Z', strokePath: 'M14,9 A2,2 0 0,1 14,13 M16,7.5 A4.5,4.5 0 0,1 16,14.5', useShapeFill: true, round: true },
+  eternalPrisonSym:{ d: 'M6,8 L6,15 A4,3 0 0,0 14,15 L14,8 C14,4.5 6,4.5 6,8 Z', strokePath: 'M6,10 L14,10 M6,13 L14,13 M6.5,10 a0.4,0.4 0 1,0 0.01,0 M13.5,10 a0.4,0.4 0 1,0 0.01,0 M6.5,13 a0.4,0.4 0 1,0 0.01,0 M13.5,13 a0.4,0.4 0 1,0 0.01,0', useShapeFill: true, round: true },
+  eternalMourningSym:{ d: 'M5,13 C5,9 5,6 7,6 C9,6 9,9 9,13 Z M8,14.5 C8,9 8,6 10,6 C12,6 12,9 12,14.5 Z M11,13 C11,9 11,6 13,6 C15,6 15,9 15,13 Z', strokePath: 'M7,14 L7,16 M10,15.5 L10,17.5 M13,14 L13,16', useShapeFill: true, round: true },
+  betweenWorldsSym:{ d: 'M10,3 L10,17 L6,17 C6,13 6,10 6,7 C6,5 8,3 10,3 Z', strokePath: 'M10,3 C12,3 14,5 14,7 C14,10 14,13 14,17 L10,17 M15.5,8 a0.5,0.5 0 1,0 0.01,0 M16.5,11 a0.4,0.4 0 1,0 0.01,0 M15.8,14 a0.3,0.3 0 1,0 0.01,0', useShapeFill: true, round: true },
+  awakenedWillSym:{ d: 'M7.7,4.3 a2.3,2.3 0 1,1 4.6,0 a2.3,2.3 0 1,1 -4.6,0 M6,7 L14,7 L14,18 L6,18 Z', strokePath: 'M8.5,4 a0.5,0.5 0 1,0 0.01,0 M11.5,4 a0.5,0.5 0 1,0 0.01,0 M8.5,12.5 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0 M10,11.5 L10,13.5 M9,12.5 L11,12.5', useShapeFill: true, round: true },
+  banisherSym:  { d: 'M10,2 L15,4 L15,9 C15,13.5 12.5,16.5 10,18 C7.5,16.5 5,13.5 5,9 L5,4 Z', strokePath: 'M10,6 L10,13 M7,9.5 L13,9.5', useShapeFill: true, round: true },
+  wayfinderSym: { d: 'M10,2 L11.3,8.2 L17,10 L11.3,11.8 L10,18 L8.7,11.8 L3,10 L8.7,8.2 Z', strokePath: 'M6,14 a0.5,0.5 0 1,0 0.01,0 M4,16.5 a0.4,0.4 0 1,0 0.01,0 M2.5,18.3 a0.3,0.3 0 1,0 0.01,0', useShapeFill: true, round: true },
+  psychopompSym:{ d: 'M9,3 a2,2 0 1,1 2,0 M7,7 C7,5 8,4 10,4 C12,4 13,5 13,7 L14,17 L6,17 Z', strokePath: 'M14,7 L16,5 M15,6.3 a1,1 0 1,0 0.01,0 M4,15 C4,15 3,13.5 4,12.5', useShapeFill: true, round: true },
 };
 
 export const SHAPE_POLYGONS = {
@@ -868,6 +879,17 @@ export const ICON_DESIGNS = {
   adamant:   { shape: 'hexagon', glyph: 'adamantSym',        rot: 0 },
   worldsmith:{ shape: 'square',  glyph: 'worldsmithSym',     rot: 0 },
   relicBlade:{ shape: 'diamond', glyph: 'relicBladeSym',     rot: 0 },
+  invocation:{ shape: 'circle',  glyph: 'invocationSym',     rot: 0 },
+  geas:      { shape: 'hexagon', glyph: 'geasSym',           rot: 0 },
+  celestialBody:{ shape: 'star', glyph: 'celestialBodySym',  rot: 0 },
+  spiritVoice:{ shape: 'star',   glyph: 'spiritVoiceSym',    rot: 0 },
+  eternalPrison:{ shape: 'hexagon', glyph: 'eternalPrisonSym', rot: 0 },
+  eternalMourning:{ shape: 'star', glyph: 'eternalMourningSym', rot: 0 },
+  betweenWorlds:{ shape: 'circle', glyph: 'betweenWorldsSym', rot: 0 },
+  awakenedWill:{ shape: 'circle', glyph: 'awakenedWillSym',  rot: 0 },
+  banisher:  { shape: 'square',  glyph: 'banisherSym',       rot: 0 },
+  wayfinder: { shape: 'star',    glyph: 'wayfinderSym',      rot: 0 },
+  psychopomp:{ shape: 'square',  glyph: 'psychopompSym',     rot: 0 },
 };
 
 export const TIER = (() => {
