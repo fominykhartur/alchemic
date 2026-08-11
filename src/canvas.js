@@ -373,17 +373,17 @@ function drawCauldronSigils() {
   const t = time * 0.001;
   const baseAngle = t * 0.15;
   const count = entries.length;
-  entries.forEach(([id, qty], i) => {
+  const total = count * 2;
+  for (let k = 0; k < total; k++) {
+    const angle = baseAngle + (k / total) * Math.PI * 2;
+    const [id] = entries[k % count];
     const color = ELEMENTS[id]?.color || '#888';
-    for (let j = 0; j < 2; j++) {
-      const angle = baseAngle + (i / count) * Math.PI * 2 + j * Math.PI;
-      const dist = RADIUS + 16 + Math.sin(t * 0.4 + i + j * 2) * 3;
-      const sx = CX + Math.cos(angle) * dist;
-      const sy = CY + Math.sin(angle) * dist;
-      const alpha = 0.2 + 0.15 * Math.sin(t + i * 0.7 + j * 1.3);
-      drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
-    }
-  });
+    const dist = RADIUS + 16 + Math.sin(t * 0.4 + k) * 3;
+    const sx = CX + Math.cos(angle) * dist;
+    const sy = CY + Math.sin(angle) * dist;
+    const alpha = 0.2 + 0.15 * Math.sin(t + k * 0.7);
+    drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
+  }
 }
 
 function drawAmbientParticles() {

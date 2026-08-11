@@ -14,7 +14,7 @@
   <div class="header">
     <h1>✦ Алхимия</h1>
     <div class="stats">
-      Открыто: <span id="discovered-count">5</span>/<span id="total-count">262</span>
+      Открыто: <span id="discovered-count">5</span>/<span id="total-count">342</span>
       | Рецептов: <span id="recipe-count">0</span>
       | <a href="#" onclick="openAchievements();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Достижения">🏆 <span id="ach-count">0</span></a>
       | <a href="#" id="notebook-link" onclick="openGrimoire();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Гримуар">📖<span id="notebook-badge" style="display:none"></span></a>
@@ -27,7 +27,10 @@
 
   <div id="inventory-panel" class="panel">
     <div class="panel-title">Инвентарь</div>
-    <input id="inv-search" type="text" placeholder="🔍 Поиск..." autocomplete="off" style="width:calc(100% - 8px);margin:0 4px 4px;padding:3px 6px;box-sizing:border-box;background:#12122a;border:1px solid #2a2a4e;border-radius:4px;color:#c8c8e8;font-size:11px;outline:none">
+    <div style="display:flex;gap:4px;margin:0 4px 4px">
+      <input id="inv-search" type="text" placeholder="🔍 Поиск..." autocomplete="new-password" style="flex:1;min-width:0;padding:3px 6px;box-sizing:border-box;background:#12122a;border:1px solid #2a2a4e;border-radius:4px;color:#c8c8e8;font-size:11px;outline:none">
+      <button id="inv-search-clear" title="Очистить поиск" style="padding:3px 8px;background:#2a2a4e;border:1px solid #3a3a5e;border-radius:4px;color:#8888b8;font-size:11px;cursor:pointer">✕</button>
+    </div>
     <div id="inventory-grid"></div>
   </div>
 

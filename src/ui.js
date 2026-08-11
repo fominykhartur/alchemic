@@ -98,6 +98,14 @@ if (invSearch && typeof invSearch.addEventListener === 'function') {
     if (e.key === 'Escape') { invSearch.value = ''; invSearch.blur(); renderInventory(); }
   });
 }
+const invSearchClear = document.getElementById('inv-search-clear');
+if (invSearch && invSearchClear && typeof invSearchClear.addEventListener === 'function') {
+  invSearchClear.addEventListener('click', () => {
+    invSearch.value = '';
+    invSearch.focus();
+    renderInventory();
+  });
+}
 
 document.addEventListener('pointermove', (e) => {
   const g = activeGesture;
