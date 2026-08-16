@@ -597,6 +597,7 @@ function startDiscoveryAnimation(elementId) {
   state.animating = true;
   animType = 'discover';
   animProgress = 0;
+  state.pendingReveal = elementId;
   animData = { elementId, color: ELEMENTS[elementId].color, name: ELEMENTS[elementId].name, progress: 0, phase: 'reveal', particles: [] };
   for (let i = 0; i < 30; i++) {
     const angle = Math.random() * Math.PI * 2;
@@ -740,6 +741,19 @@ function drawDiscoverAnim() {
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
+  if (d.progress > 0.45) {
+    const badgeAlpha = Math.min(1, (d.progress - 0.45) / 0.2);
+    ctx.globalAlpha = badgeAlpha;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = 'bold 14px Alegreya, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 12;
+    ctx.fillText('NEW!', CX, CY - 30);
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+  }
   if (d.progress >= 1) finishDiscovery();
 }
 
@@ -765,7 +779,7 @@ function finishMix() {
   if (isNew) {
     state.discovered.add(outputId);
     state.inventory[outputId] = 3;
-    log(`✦ Открыт новый элемент: ${output.name}!`, 'discovery');
+    log(`✦ Открыт новый элемент!`, 'discovery');
     // Открыть стартеры за вратами
     UNLOCKABLE_STARTERS.forEach(s => {
       if (outputId === s.unlockedBy && !state.discovered.has(s.id)) {
@@ -831,7 +845,7 @@ function finishExplosion() {
     const picked = undiscovered[Math.floor(Math.random() * undiscovered.length)];
     state.discovered.add(picked);
     state.inventory[picked] = 2;
-    log(`✨ Из хаоса родилось: ${ELEMENTS[picked].name}!`, 'discovery');
+    log(`✨ Из хаоса родилось что-то новое!`, 'discovery');
     UNLOCKABLE_STARTERS.forEach(s => {
       if (picked === s.unlockedBy && !state.discovered.has(s.id)) {
         state.discovered.add(s.id);
@@ -856,6 +870,7 @@ function finishExplosion() {
 }
 
 function finishDiscovery() {
+  state.pendingReveal = null;
   updateUI();
   state.animating = false;
   animData = null;

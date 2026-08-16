@@ -340,6 +340,22 @@ function renderItem(grid, id) {
   item.dataset.elementId = id;
 
   if (discovered) {
+    if (id === state.pendingReveal) {
+      item.style.background = 'linear-gradient(135deg, rgba(90,90,130,0.25), rgba(60,60,90,0.08))';
+      item.style.borderColor = 'rgba(160,160,190,0.35)';
+      const iconDiv = document.createElement('div');
+      iconDiv.className = 'icon-container';
+      iconDiv.textContent = '❔';
+      iconDiv.style.fontSize = '28px';
+      iconDiv.style.lineHeight = '32px';
+      item.appendChild(iconDiv);
+      const label = document.createElement('div');
+      label.className = 'name-label';
+      label.textContent = '???';
+      item.appendChild(label);
+      grid.appendChild(item);
+      return;
+    }
     item.style.background = `linear-gradient(135deg, ${hexRgba(el.color, 0.27)}, ${hexRgba(el.color, 0.07)})`;
     item.style.borderColor = hexRgba(el.color, 0.4);
     if (id === 'void') {
@@ -546,13 +562,13 @@ function updateStats() {
   document.getElementById('ach-count').textContent = state.achievements.size;
 }
 
-function updateCauldronIndicator() {
+export function updateCauldronIndicator() {
   const indicator = document.getElementById('cauldron-indicator');
   const entries = Object.entries(state.cauldron);
   if (entries.length === 0) {
     indicator.innerHTML = 'Перетащите элементы в круг';
   } else {
-    const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${buildIconSVG(id, 14)} ${ELEMENTS[id].name} <b>×${qty}</b></span>`);
+    const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${id === state.pendingReveal ? '❔' : buildIconSVG(id, 14)} ${id === state.pendingReveal ? '???' : ELEMENTS[id].name} <b>×${qty}</b></span>`);
     indicator.innerHTML = parts.join(' ');
     const types = Object.keys(state.cauldron).sort();
     if (types.length > 1 && state.triedPairs.has(types.join('+'))) {

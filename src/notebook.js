@@ -97,6 +97,30 @@ const TRIPLE_TEMPLATES = [
   (a, cat) => `...${a} одно не устоит — нужна опора, и она где-то среди ${cat}`,
 ];
 
+// ── Пара — стадия 2: вторая ступень конкретности — происхождение недостающего спутника
+const PAIR_STAGE2_TEMPLATES = [
+  (a, cat1, cat2) => `...${a} ищет спутника из мира ${cat1} — и тот, в свою очередь, рождён из ${cat2}`,
+  (a, cat1, cat2) => `...союз с ${a} приведёт к тому, кто из ${cat1}; а сам он вышел из ${cat2}`,
+  (a, cat1, cat2) => `...спутник ${a} родом из ${cat1}, и в его крови — ${cat2}`,
+  (a, cat1, cat2) => `...${a} ждёт кого-то из ${cat1}; того, кто был сделан из ${cat2}`,
+  (a, cat1, cat2) => `...друг ${a} явится из ${cat1} — и его собственный путь начался в ${cat2}`,
+  (a, cat1, cat2) => `...чувствую двойную нить: ${a} и спутник из ${cat1}, что сам собран из ${cat2}`,
+  (a, cat1, cat2) => `...недостающий спутник — из ${cat1}, и он не первороден: его создали из ${cat2}`,
+  (a, cat1, cat2) => `...${a} тянется к ${cat1} — к тому, чьи истоки лежат в ${cat2}`,
+];
+
+// ── Тройка — стадия 2: называем категории обоих недостающих
+const TRIPLE_STAGE2_TEMPLATES = [
+  (a, cat1, cat2) => `...${a} сплетается с нитью из ${cat1} и ещё одной из ${cat2}`,
+  (a, cat1, cat2) => `...чувствую уже две недостающие нити: одна из ${cat1}, другая из ${cat2}`,
+  (a, cat1, cat2) => `...союз с ${a} потребует двух спутников: из ${cat1} и из ${cat2}`,
+  (a, cat1, cat2) => `...${a} не одинок: рядом встанут ${cat1} и ${cat2}`,
+  (a, cat1, cat2) => `...узел из трёх нитей проясняется: ${a}, ${cat1} и ${cat2}`,
+  (a, cat1, cat2) => `...${a} ищет двоих — по одному из ${cat1} и ${cat2}`,
+  (a, cat1, cat2) => `...вторая и третья нити различимы: ${cat1} и ${cat2}, обе рядом с ${a}`,
+  (a, cat1, cat2) => `...${a} поведёт за собой ${cat1} и ${cat2} — теперь я вижу обе тени`,
+];
+
 // ── Grand (4+ ингредиентов) — стадия 1: число частей + один названный ингредиент
 const GRAND_TEMPLATES = [
   (a, n) => `...это не рецепт из двух вещей — тут нужно собрать вместе ${n} разных сущностей, и ${a} — одна из них`,
@@ -256,11 +280,11 @@ function hashString(s) {
 }
 
 // Сколько стадий раскрытия доступно рецепту в зависимости от числа уникальных ингредиентов.
-// 2-3 ингредиента — как раньше, один шёпот. 4-5 — можно "дозреть" до второго имени.
+// 2-3 ингредиента — две ступени (спутник → его происхождение / обе категории).
 // 6+ (по сути только редкие вершинные рецепты) — плюс финальный намёк на жертвоприношение.
 function getMaxStage(distinctCount) {
   if (distinctCount >= 6) return 3;
-  if (distinctCount >= 4) return 2;
+  if (distinctCount >= 2) return 2;
   return 1;
 }
 
@@ -288,6 +312,12 @@ function buildWhisperText(recipe, level = 'ambient', seed = 0, stage = 1) {
   const others = distinct.filter(id => id !== notable.id);
 
   if (distinct.length === 2) {
+    if (stage >= 2) {
+      const otherRecipe = RECIPES.find(r => r.output === others[0]);
+      const origin = otherRecipe ? getCategoryHint(pickNotableIngredient(otherRecipe).id) : getCategoryHint(others[0]);
+      const t = PAIR_STAGE2_TEMPLATES[seed % PAIR_STAGE2_TEMPLATES.length];
+      return t(name, getCategoryHint(others[0]), origin);
+    }
     const cat = getCategoryHint(others[0]);
     const set = level === 'prophecy' ? PROPHECY_PAIR_TEMPLATES
       : level === 'oracle' ? ORACLE_PAIR_TEMPLATES
@@ -297,6 +327,10 @@ function buildWhisperText(recipe, level = 'ambient', seed = 0, stage = 1) {
   }
 
   if (distinct.length === 3) {
+    if (stage >= 2) {
+      const t = TRIPLE_STAGE2_TEMPLATES[seed % TRIPLE_STAGE2_TEMPLATES.length];
+      return t(name, getCategoryHint(others[0]), getCategoryHint(others[1]));
+    }
     const set = level === 'prophecy' ? PROPHECY_TRIPLE_TEMPLATES
       : level === 'oracle' ? ORACLE_TRIPLE_TEMPLATES
       : TRIPLE_TEMPLATES;
@@ -339,6 +373,8 @@ export function renderWhisperText(entry) {
 }
 
 function pickWhisperTarget() {
+  const unresolvedCount = notebook.entries.filter(e => e.type === 'whisper' && !e.resolved).length;
+  if (unresolvedCount >= 4) return null;
   const reachable = getReachableRecipes();
   if (reachable.length === 0) return null;
   const alreadyHinted = new Set(
@@ -375,7 +411,7 @@ function upgradeWhisper(entry, level) {
 
 export function maybeAddWhisper() {
   const level = getOracleLevel();
-  const every = level === 'prophecy' ? 3 : level === 'oracle' ? 5 : 7;
+  const every = level === 'prophecy' ? 5 : level === 'oracle' ? 8 : 12;
   if (state.stats.mixCount % every !== 0) return;
 
   const upgrade = pickWhisperUpgrade();

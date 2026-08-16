@@ -12,6 +12,7 @@ export const state = {
   cauldronEntryTime: {},
   animating: false,
   pendingAction: null,
+  pendingReveal: null,
   achievements: new Set(),
   triedPairs: new Set(),
   stats: {
