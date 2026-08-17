@@ -2,6 +2,7 @@ import { ELEMENTS } from './data.js';
 import { state } from './state.js';
 import { performMix, canvas, W, H, CX, CY, RADIUS } from './canvas.js';
 import { log, updateUI, hideElementInfo, closeAchievements, closeTree, closeGrimoire, isDraggingElement } from './ui.js';
+import { finishWelcome } from './welcome.js';
 
 const CANVAS_LONG_PRESS_MS = 500;
 let canvasPress = null;
@@ -120,8 +121,10 @@ export function setupEventListeners() {
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) performMix();
+    const welcomeOpen = document.getElementById('welcome-modal')?.style.display !== 'none';
+    if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !welcomeOpen) performMix();
     if (e.key === 'Escape') {
+      if (welcomeOpen) { finishWelcome(); return; }
       hideElementInfo();
       closeAchievements();
       closeTree();
