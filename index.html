@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Алхимия — игра смешивания элементов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700&family=Noto+Sans+Runic&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,20 +14,28 @@
   <div class="header">
     <h1>✦ Алхимия</h1>
     <div class="stats">
-      Открыто: <span id="discovered-count">5</span>/<span id="total-count">61</span>
+      Открыто: <span id="discovered-count">5</span>/<span id="total-count">342</span>
       | Рецептов: <span id="recipe-count">0</span>
       | <a href="#" onclick="openAchievements();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Достижения">🏆 <span id="ach-count">0</span></a>
+      | <a href="#" id="notebook-link" onclick="openGrimoire();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Гримуар">📖<span id="notebook-badge" style="display:none"></span></a>
       | <a href="#" onclick="resetGame();return false" style="color:#ff6b6b;text-decoration:none;font-size:12px" title="Сбросить прогресс">⟳ Сброс</a>
       | <a href="#" onclick="openStats();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Статистика">📊</a>
+      | <a href="#" onclick="openCraftRoadmap();return false" style="color:#ffd700;text-decoration:none;font-size:12px" title="Полное древо">🗺</a>
+      | <a href="#" id="sync-indicator" class="sync-indicator" onclick="openStats();return false" title="Синхронизация">☁</a>
     </div>
   </div>
 
   <div id="inventory-panel" class="panel">
     <div class="panel-title">Инвентарь</div>
+    <div style="display:flex;gap:4px;margin:0 4px 4px">
+      <input id="inv-search" type="text" placeholder="🔍 Поиск..." autocomplete="new-password" style="flex:1;min-width:0;padding:3px 6px;box-sizing:border-box;background:#12122a;border:1px solid #2a2a4e;border-radius:4px;color:#c8c8e8;font-size:11px;outline:none">
+      <button id="inv-search-clear" title="Очистить поиск" style="padding:3px 8px;background:#2a2a4e;border:1px solid #3a3a5e;border-radius:4px;color:#8888b8;font-size:11px;cursor:pointer">✕</button>
+    </div>
     <div id="inventory-grid"></div>
   </div>
 
   <div id="center-panel" class="panel">
+    <canvas id="bg-canvas"></canvas>
     <canvas id="game-canvas"></canvas>
     <div id="cauldron-controls">
       <span id="cauldron-indicator">Перетащите элементы в круг</span>
@@ -42,6 +53,13 @@
     <div class="panel-title">Журнал</div>
     <div id="log-content"></div>
   </div>
+
+  <div id="tab-bar">
+    <button class="tab-btn active" data-tab="cauldron" onclick="switchTab('cauldron')">🧪</button>
+    <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory')">📦</button>
+    <button class="tab-btn" data-tab="recipes" onclick="switchTab('recipes')">📜</button>
+    <button class="tab-btn" data-tab="log" onclick="switchTab('log')">📋</button>
+  </div>
 </div>
 
 <div id="qty-popup">
@@ -52,9 +70,19 @@
 
 <div id="tooltip"></div>
 
+<div id="whisper-toast">
+  <div class="whisper-toast-title">📖 Загадка из книжки разгадана</div>
+  <div class="whisper-toast-desc">Откройте Гримуар, чтобы прочесть намёк</div>
+</div>
+
 <div id="ach-toast">
   <div class="ach-toast-title">🏆 Достижение!</div>
   <div class="ach-toast-desc"></div>
+</div>
+
+<div id="legend-toast">
+  <div class="legend-toast-title"></div>
+  <div class="legend-toast-desc"></div>
 </div>
 
 <div id="achievement-modal" class="modal-overlay" style="display:none" onclick="closeAchievements(event)">
@@ -85,6 +113,21 @@
         <div class="stat-item"><div class="stat-value" id="stats-achievements">—</div><div class="stat-label">Достижений</div></div>
         <div class="stat-item full"><div class="stat-value" id="stats-top-element">—</div><div class="stat-label">Самый создаваемый</div></div>
       </div>
+      <div class="sync-section">
+        <div class="sync-section-title">☁ Синхронизация</div>
+        <div id="sync-status" class="sync-status">☁</div>
+        <div class="sync-section-row">
+          <input id="sync-key-input" class="sync-key-input" maxlength="24" autocomplete="off" spellcheck="false" placeholder="код" title="Код синхронизации — «адрес» сохранения. Можно спокойно показывать">
+          <input id="sync-token-input" class="sync-key-input sync-token-input" type="password" maxlength="64" autocomplete="off" spellcheck="false" placeholder="ключ доступа" title="Секретный ключ доступа. Скопируйте его с исходного устройства кнопкой ⧉">
+        </div>
+        <div class="sync-section-row">
+          <button id="sync-key-apply" class="sync-btn" title="Применить код + ключ и синхронизировать">Применить</button>
+          <button id="sync-copy" class="sync-btn" title="Скопировать ключ доступа">⧉</button>
+          <button id="sync-reveal" class="sync-btn" title="Показать/скрыть ключ">👁</button>
+          <button id="sync-delete" class="sync-btn danger" title="Удалить облачное сохранение">🗑</button>
+        </div>
+        <div class="sync-hint">Код — это «адрес» сохранения, его можно показывать другим. Ключ доступа — секретный: скопируйте его кнопкой ⧉ и вставьте на втором устройстве.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -96,6 +139,30 @@
       <span class="modal-close" onclick="closeTree()">&times;</span>
     </div>
     <div class="modal-body" id="tree-content"></div>
+  </div>
+</div>
+
+<div id="roadmap-modal" class="modal-overlay" style="display:none" onclick="closeCraftRoadmap(event)">
+  <div class="modal-box roadmap-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>🗺 Полное древо крафта</span>
+      <label class="roadmap-spoiler-toggle" title="Показать неоткрытые элементы">
+        <input type="checkbox" id="roadmap-spoiler">
+        <span>Показать всё</span>
+      </label>
+      <span class="modal-close" onclick="closeCraftRoadmap()">&times;</span>
+    </div>
+    <div class="modal-body" id="roadmap-content"></div>
+  </div>
+</div>
+
+<div id="grimoire-modal" class="modal-overlay" style="display:none" onclick="closeGrimoire(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>📖 Гримуар</span>
+      <span class="modal-close" onclick="closeGrimoire()">&times;</span>
+    </div>
+    <div class="modal-body" id="notebook-content"></div>
   </div>
 </div>
 

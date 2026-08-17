@@ -1,7 +1,9 @@
 import { state, loadGame, resetGame } from './state.js';
 import { resizeCanvas, gameLoop } from './canvas.js';
-import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats } from './ui.js';
+import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap, switchTab, openGrimoire, closeGrimoire, updateNotebookBadge, initLegendSnapshot } from './ui.js';
 import { setupEventListeners } from './events.js';
+import { loadNotebook } from './notebook.js';
+import { initSync } from './sync.js';
 
 // Expose to window for onclick="" attributes in HTML
 window.openAchievements = openAchievements;
@@ -13,6 +15,11 @@ window.closeQtyPopup = closeQtyPopup;
 window.resetGame = resetGame;
 window.openStats = openStats;
 window.closeStats = closeStats;
+window.openCraftRoadmap = openCraftRoadmap;
+window.closeCraftRoadmap = closeCraftRoadmap;
+window.switchTab = switchTab;
+window.openGrimoire = openGrimoire;
+window.closeGrimoire = closeGrimoire;
 
 function init() {
   resizeCanvas();
@@ -20,6 +27,17 @@ function init() {
   setupEventListeners();
 
   const loaded = loadGame();
+  loadNotebook();
+  initLegendSnapshot();
+  initSync();
+  updateNotebookBadge();
+
+  window.addEventListener('alchemy:cloud-applied', () => {
+    updateUI();
+    initLegendSnapshot();
+    updateNotebookBadge();
+    log('☁ Облачный прогресс применён', 'info');
+  });
 
   if (!state.stats.startTime) state.stats.startTime = Date.now();
 

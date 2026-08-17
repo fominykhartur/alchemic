@@ -1,28 +1,50 @@
-import { ELEMENTS, ELEMENT_IDS, RECIPES, recipeKey } from './data.js';
-import { drawGlyph } from './icons.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_DEPTHS, LEGENDARY_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from './data.js';
+import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
-import { log, updateUI, checkAchievements } from './ui.js';
+import { log, updateUI, checkAchievements, showWhisperToast, checkLegendProgress } from './ui.js';
+import { maybeAddWhisper, resolveWhispers, onOracleUnlocked } from './notebook.js';
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
+export const bgCanvas = document.getElementById('bg-canvas');
+export const bgCtx = bgCanvas.getContext('2d');
 export let W, H, CX, CY, RADIUS;
+let BGW, BGH;
+
+function resizeBgCanvas() {
+  const panel = document.getElementById('center-panel');
+  const rect = panel.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  BGW = rect.width;
+  BGH = rect.height;
+  bgCanvas.width = Math.round(BGW * dpr);
+  bgCanvas.height = Math.round(BGH * dpr);
+  bgCanvas.style.width = BGW + 'px';
+  bgCanvas.style.height = BGH + 'px';
+  bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  initBackgroundDecor();
+}
 
 export function resizeCanvas() {
   const panel = document.getElementById('center-panel');
   const controls = document.getElementById('cauldron-controls');
   const availW = panel.clientWidth - 10;
   const availH = panel.clientHeight - controls.offsetHeight - 14;
-  const size = Math.min(availW, availH, 600);
-  canvas.width = size;
-  canvas.height = size;
+  const isMobile = window.innerWidth < 768;
+  const size = Math.min(availW, availH, isMobile ? Infinity : 600);
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(size * dpr);
+  canvas.height = Math.round(size * dpr);
   canvas.style.width = size + 'px';
   canvas.style.height = size + 'px';
-  W = canvas.width;
-  H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = size;
+  H = size;
   CX = W / 2;
   CY = H / 2;
   RADIUS = Math.min(W, H) * 0.4;
+  resizeBgCanvas();
 }
 
 let time = 0;
@@ -40,9 +62,9 @@ function drawScene() {
     ctx.translate(sx, sy);
     shakeTimer--;
   }
-  ctx.fillStyle = '#0a0a1a';
-  ctx.fillRect(0, 0, W, H);
+  ctx.clearRect(0, 0, W, H);
   drawCircle();
+  drawCapacityIndicator();
   const entries = Object.entries(state.cauldron);
   if (entries.length > 0 && !state.animating) {
     drawCauldronElements();
@@ -56,13 +78,19 @@ function drawScene() {
 
 function drawCircle() {
   const t = time * 0.001;
-  const grad = ctx.createRadialGradient(CX, CY, RADIUS * 0.5, CX, CY, RADIUS * 1.3);
+
+  ctx.fillStyle = 'rgba(10,10,26,0.8)';
+  ctx.beginPath();
+  ctx.arc(CX, CY, RADIUS * 0.95, 0, Math.PI * 2);
+  ctx.fill();
+
+  const grad = ctx.createRadialGradient(CX, CY, RADIUS * 0.5, CX, CY, RADIUS * 0.95);
   grad.addColorStop(0, 'transparent');
   grad.addColorStop(0.7, 'rgba(45,3,53,0.1)');
   grad.addColorStop(1, 'rgba(255,215,0,0.03)');
   ctx.fillStyle = grad;
   ctx.beginPath();
-  ctx.arc(CX, CY, RADIUS * 1.3, 0, Math.PI * 2);
+  ctx.arc(CX, CY, RADIUS * 0.95, 0, Math.PI * 2);
   ctx.fill();
   ctx.strokeStyle = 'rgba(255,215,0,0.15)';
   ctx.lineWidth = 2;
@@ -89,7 +117,7 @@ function drawCircle() {
     const x = CX + Math.cos(angle) * r;
     const y = CY + Math.sin(angle) * r;
     ctx.fillStyle = `rgba(255,215,0,${0.1 + 0.05 * Math.sin(t * 0.03 + i)})`;
-    ctx.font = '10px serif';
+    ctx.font = '10px "Noto Sans Runic", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(runes[i % runes.length], x, y);
@@ -102,11 +130,40 @@ function drawCircle() {
   ctx.fillText('✧', CX, CY);
 }
 
+function drawCapacityIndicator() {
+  const total = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+  const cap = 10;
+  const frac = total / cap;
+
+  // Fullness arc on outer ring
+  if (total > 0) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(255,215,0,${0.3 + 0.5 * frac})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(CX, CY, RADIUS + 4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * frac);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Text indicator
+  const textAlpha = 0.5 + 0.4 * frac;
+  ctx.save();
+  ctx.globalAlpha = textAlpha;
+  ctx.fillStyle = '#ffd700';
+  ctx.font = '9px sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`${total}/${cap}`, CX + RADIUS - 2, CY - RADIUS + 16);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
 function drawDropHint() {
   const t = time * 0.001;
   const alpha = 0.3 + 0.15 * Math.sin(t);
   ctx.fillStyle = `rgba(255,215,0,${alpha})`;
-  ctx.font = '14px Georgia, serif';
+  ctx.font = '16px Alegreya, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('Перетащите элементы сюда', CX, CY);
@@ -120,43 +177,193 @@ function drawCauldronElements() {
   const count = entries.length;
   if (count === 0) return;
   const t = time * 0.001;
+  const items = [];
   entries.forEach(([id, qty], i) => {
     const el = ELEMENTS[id];
     if (!el) return;
+    const design = ICON_DESIGNS[id];
     const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
-    const dist = RADIUS * 0.4;
-    const x = CX + Math.cos(angle) * dist;
-    const y = CY + Math.sin(angle) * dist;
-    const grad = ctx.createRadialGradient(x, y, 0, x, y, 20);
-    grad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
-    grad.addColorStop(1, 'transparent');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(x, y, 22, 0, Math.PI * 2);
-    ctx.fill();
+    const targetDist = RADIUS * 0.4;
+    const entryTime = state.cauldronEntryTime[id] || 0;
+    const age = time - entryTime;
+    const animDuration = 400;
+    let animT = Math.min(1, age / animDuration);
+    const easeOut = 1 - Math.pow(1 - animT, 3);
+    let dist = targetDist + (RADIUS * 0.8 - targetDist) * (1 - easeOut);
+
+    // Settle bounce after fly-in
+    let distOffset = 0;
+    if (animT >= 1) {
+      const settleAge = age - animDuration;
+      distOffset = -6 * Math.exp(-settleAge / 180) * Math.sin(settleAge / 80 * Math.PI);
+    }
+    dist += distOffset;
+
+    // Idle float after settle
+    let floatY = 0;
+    if (age > animDuration + 400) {
+      floatY = Math.sin(t * 0.8 + i * 1.7) * 1.2;
+    }
+
+    const alpha = 0.3 + 0.7 * animT;
+    const baseX = CX + Math.cos(angle) * dist;
+    const baseY = CY + Math.sin(angle) * dist;
+    const x = baseX;
+    const y = baseY + floatY;
+    items.push({ id, qty, el, design, i, x, y, alpha, angle, baseX, baseY, floatY });
+  });
+  if (items.length === 0) return;
+
+  // Connecting constellation lines with animated dashes
+  if (items.length > 1) {
+    ctx.save();
+    ctx.setLineDash([2, 6]);
+    ctx.lineDashOffset = -t * 12;
+    for (let i = 0; i < items.length; i++) {
+      const a = items[i];
+      const b = items[(i + 1) % items.length];
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = 'rgba(255,215,0,0.12)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // Spawn element sparkles
+  if (Math.random() < 0.3 && items.length > 0) {
+    const src = items[Math.floor(Math.random() * items.length)];
+    const sparkleAngle = Math.random() * Math.PI * 2;
+    const sparkleDist = 6 + Math.random() * 10;
+    state.particles.push({
+      x: src.x + Math.cos(sparkleAngle) * sparkleDist,
+      y: src.y + Math.sin(sparkleAngle) * sparkleDist,
+      vx: Math.cos(sparkleAngle) * 0.2,
+      vy: Math.sin(sparkleAngle) * 0.2 - 0.3,
+      life: 0.4 + Math.random() * 0.4,
+      color: src.el.glow || 'rgba(255,215,0,0.6)',
+      size: 0.8 + Math.random() * 1.2,
+    });
+  }
+
+  items.forEach(({ id, qty, el, design, i, x, y, alpha }) => {
+    const gData = design ? GLYPH_PATHS[design.glyph] : null;
     const pulse = 1 + 0.05 * Math.sin(t * 0.5 + i);
+    const r = 14 * pulse;
+    ctx.globalAlpha = alpha;
+
+    // Pulsing ambient glow
+    const glowPulse = 0.7 + 0.3 * Math.sin(t * 0.6 + i * 1.1);
+    const glowR = gData?.useShapeFill ? 14 : 22;
+    const glowGrad = ctx.createRadialGradient(x, y, 0, x, y, glowR * (0.85 + 0.15 * glowPulse));
+    glowGrad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
+    glowGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = glowGrad;
     ctx.beginPath();
-    ctx.arc(x, y, 14 * pulse, 0, Math.PI * 2);
-    ctx.fillStyle = el.color;
-    ctx.shadowColor = el.color;
-    ctx.shadowBlur = 10;
+    ctx.arc(x, y, glowR, 0, Math.PI * 2);
     ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    drawGlyph(ctx, id, x, y, 0.7);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px sans-serif';
+
+    // Enhanced outer glow for legendary elements
+    if (design?.glow) {
+      const legendR = 26;
+      const legendGrad = ctx.createRadialGradient(x, y, 0, x, y, legendR);
+      legendGrad.addColorStop(0, el.glow || 'rgba(255,215,0,0.15)');
+      legendGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = legendGrad;
+      ctx.beginPath();
+      ctx.arc(x, y, legendR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (design?.shape) {
+      const lighter = lightenColor(el.color, 40);
+      const shapeGrad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, 0, x, y, r);
+      shapeGrad.addColorStop(0, lighter);
+      shapeGrad.addColorStop(1, el.color);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.shadowColor = el.color;
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = shapeGrad;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Highlight
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.clip();
+      const hlGrad = ctx.createRadialGradient(x - r * 0.4, y - r * 0.4, 0, x, y, r * 0.7);
+      hlGrad.addColorStop(0, 'rgba(255,255,255,0.12)');
+      hlGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = hlGrad;
+      ctx.fillRect(x - r, y - r, r * 2, r * 2);
+      ctx.restore();
+
+      // Goldish rim
+      ctx.beginPath();
+      ctx.arc(x, y, r * 0.9, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Glyph
+    drawGlyph(ctx, id, x, y, 0.8);
+
+    // Name plate with quantity badge
+    const label = el.name;
+    ctx.font = '8px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-    ctx.shadowBlur = 3;
-    ctx.fillText(qty > 1 ? qty : '', x, y + 1);
     ctx.shadowBlur = 0;
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.font = '8px sans-serif';
-    ctx.fillText(el.name, x, y + 24);
+    const textW = ctx.measureText(label).width;
+    const plateW = textW + 8;
+    const plateH = 12;
+    const plateX = x - plateW / 2;
+    const plateY = y + 19;
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(plateX, plateY, plateW, plateH, 3);
+    } else {
+      ctx.rect(plateX, plateY, plateW, plateH);
+    }
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText(label, x, y + 25);
+
+    if (qty > 1) {
+      const badgeText = '' + qty;
+      ctx.font = 'bold 7px sans-serif';
+      const bw = ctx.measureText(badgeText).width;
+      const bpad = 3;
+      const br = Math.max(5, bw / 2 + bpad);
+      const bx = x + plateW / 2 + br + 1;
+      const by = y + 25;
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,215,0,0.4)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,215,0,0.9)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badgeText, bx, by + 0.5);
+    }
+
+    ctx.globalAlpha = 1;
   });
 }
 
@@ -166,17 +373,17 @@ function drawCauldronSigils() {
   const t = time * 0.001;
   const baseAngle = t * 0.15;
   const count = entries.length;
-  entries.forEach(([id, qty], i) => {
+  const total = count * 2;
+  for (let k = 0; k < total; k++) {
+    const angle = baseAngle + (k / total) * Math.PI * 2;
+    const [id] = entries[k % count];
     const color = ELEMENTS[id]?.color || '#888';
-    for (let j = 0; j < 2; j++) {
-      const angle = baseAngle + (i / count) * Math.PI * 2 + j * Math.PI;
-      const dist = RADIUS + 16 + Math.sin(t * 0.4 + i + j * 2) * 3;
-      const sx = CX + Math.cos(angle) * dist;
-      const sy = CY + Math.sin(angle) * dist;
-      const alpha = 0.2 + 0.15 * Math.sin(t + i * 0.7 + j * 1.3);
-      drawGlyph(ctx, id, sx, sy, 0.55, color, alpha);
-    }
-  });
+    const dist = RADIUS + 16 + Math.sin(t * 0.4 + k) * 3;
+    const sx = CX + Math.cos(angle) * dist;
+    const sy = CY + Math.sin(angle) * dist;
+    const alpha = 0.2 + 0.15 * Math.sin(t + k * 0.7);
+    drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
+  }
 }
 
 function drawAmbientParticles() {
@@ -208,6 +415,144 @@ function spawnAmbientParticles() {
     color: `rgba(255,215,0,${0.1 + Math.random() * 0.2})`,
     size: 1 + Math.random() * 2,
   });
+}
+
+// ─── Ambient background decor: nebula + starfield + floating alchemical symbols ───
+let stars = [];
+let bgSymbols = [];
+let nebulaCanvas = null;
+let isMobileView = false;
+
+function symTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symInvTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, s / 2); ctx.lineTo(s / 2, -s / 2); ctx.lineTo(-s / 2, -s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symCircleDot(ctx, s) {
+  ctx.beginPath(); ctx.arc(0, 0, s / 2, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 0, 1.4, 0, Math.PI * 2); ctx.fill();
+}
+function symCrescent(ctx, s) {
+  ctx.beginPath(); ctx.arc(0, 0, s / 2, Math.PI * 0.25, Math.PI * 1.6); ctx.stroke();
+}
+function symHourglass(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(-s / 2, -s / 2); ctx.lineTo(s / 2, -s / 2);
+  ctx.lineTo(-s / 2, s / 2); ctx.lineTo(s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+}
+function symEyeTriangle(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, -s / 2); ctx.lineTo(s / 2, s / 2); ctx.lineTo(-s / 2, s / 2);
+  ctx.closePath(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, s * 0.08, s * 0.14, 0, Math.PI * 2); ctx.stroke();
+}
+function symSquareCross(ctx, s) {
+  ctx.strokeRect(-s / 2, -s / 2, s, s);
+  ctx.beginPath();
+  ctx.moveTo(-s / 2, 0); ctx.lineTo(s / 2, 0);
+  ctx.moveTo(0, -s / 2); ctx.lineTo(0, s / 2);
+  ctx.stroke();
+}
+function symSpiral(ctx, s) {
+  ctx.beginPath();
+  for (let a = 0; a < Math.PI * 5; a += 0.3) {
+    const rr = 1 + a * (s / 2 / (Math.PI * 5));
+    const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+    a === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}
+const SYMBOL_DRAWERS = [symTriangle, symInvTriangle, symCircleDot, symCrescent, symHourglass, symEyeTriangle, symSquareCross, symSpiral];
+
+function initBackgroundDecor() {
+  isMobileView = window.innerWidth < 768;
+  const dpr = window.devicePixelRatio || 1;
+
+  const starCount = isMobileView ? 40 : 90;
+  stars = Array.from({ length: starCount }, () => ({
+    x: Math.random() * BGW,
+    y: Math.random() * BGH,
+    r: 0.4 + Math.random() * 1.1,
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.3 + Math.random() * 0.6,
+  }));
+
+  const symCount = isMobileView ? 5 : 9;
+  bgSymbols = [];
+  let attempts = 0;
+  while (bgSymbols.length < symCount && attempts < symCount * 20) {
+    attempts++;
+    const x = Math.random() * BGW;
+    const y = Math.random() * BGH;
+    if (Math.hypot(x - BGW / 2, y - BGH / 2) < RADIUS * 1.35) continue;
+    bgSymbols.push({
+      baseX: x, baseY: y,
+      kind: SYMBOL_DRAWERS[Math.floor(Math.random() * SYMBOL_DRAWERS.length)],
+      size: 14 + Math.random() * 16,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.05,
+      driftR: 6 + Math.random() * 10,
+      driftSpeed: 0.15 + Math.random() * 0.2,
+      driftPhase: Math.random() * Math.PI * 2,
+      hue: Math.random() < 0.6 ? '#ffd700' : '#b080e0',
+      alpha: 0.06 + Math.random() * 0.07,
+    });
+  }
+
+  nebulaCanvas = document.createElement('canvas');
+  nebulaCanvas.width = BGW * dpr;
+  nebulaCanvas.height = BGH * dpr;
+  const nctx = nebulaCanvas.getContext('2d');
+  nctx.scale(dpr, dpr);
+  [
+    { x: BGW * 0.05, y: BGW * 0.05, r: BGW * 0.4, c: 'rgba(147,80,220,0.06)' },
+    { x: BGW * 0.95, y: BGH * 0.95, r: BGW * 0.4, c: 'rgba(147,80,220,0.05)' },
+    { x: BGW * 0.95, y: BGH * 0.05, r: BGW * 0.3, c: 'rgba(120,70,200,0.045)' },
+    { x: BGW * 0.05, y: BGH * 0.95, r: BGW * 0.3, c: 'rgba(147,80,220,0.04)' },
+  ].forEach(b => {
+    const grad = nctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+    grad.addColorStop(0, b.c);
+    grad.addColorStop(1, 'transparent');
+    nctx.fillStyle = grad;
+    nctx.fillRect(0, 0, BGW, BGH);
+  });
+}
+
+function drawBackgroundDecor() {
+  bgCtx.clearRect(0, 0, BGW, BGH);
+  const t = time * 0.001;
+  if (nebulaCanvas) bgCtx.drawImage(nebulaCanvas, 0, 0, BGW, BGH);
+
+  bgCtx.save();
+  stars.forEach(s => {
+    bgCtx.globalAlpha = 0.4 + 0.45 * Math.sin(t * s.speed + s.phase);
+    bgCtx.fillStyle = '#e8e0ff';
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
+  });
+  bgCtx.restore();
+
+  bgSymbols.forEach(sym => {
+    const dx = Math.cos(t * sym.driftSpeed + sym.driftPhase) * sym.driftR;
+    const dy = Math.sin(t * sym.driftSpeed * 0.8 + sym.driftPhase) * sym.driftR;
+    bgCtx.save();
+    bgCtx.translate(sym.baseX + dx, sym.baseY + dy);
+    bgCtx.rotate(sym.rot + t * sym.rotSpeed);
+    bgCtx.globalAlpha = sym.alpha * (0.7 + 0.3 * Math.sin(t * 0.3 + sym.driftPhase));
+    bgCtx.strokeStyle = sym.hue;
+    bgCtx.fillStyle = sym.hue;
+    bgCtx.lineWidth = 1;
+    sym.kind(bgCtx, sym.size);
+    bgCtx.restore();
+  });
+  bgCtx.globalAlpha = 1;
 }
 
 function startMixAnimation(recipe, dominantId) {
@@ -252,6 +597,7 @@ function startDiscoveryAnimation(elementId) {
   state.animating = true;
   animType = 'discover';
   animProgress = 0;
+  state.pendingReveal = elementId;
   animData = { elementId, color: ELEMENTS[elementId].color, name: ELEMENTS[elementId].name, progress: 0, phase: 'reveal', particles: [] };
   for (let i = 0; i < 30; i++) {
     const angle = Math.random() * Math.PI * 2;
@@ -386,12 +732,25 @@ function drawDiscoverAnim() {
     const textAlpha = Math.min(1, (d.progress - 0.3) / 0.3);
     ctx.globalAlpha = textAlpha;
     ctx.fillStyle = d.color;
-    ctx.font = 'bold 22px Georgia, serif';
+    ctx.font = 'bold 24px Alegreya, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = d.color;
     ctx.shadowBlur = 20;
     ctx.fillText('✦ ' + d.name + ' ✦', CX, CY);
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+  }
+  if (d.progress > 0.45) {
+    const badgeAlpha = Math.min(1, (d.progress - 0.45) / 0.2);
+    ctx.globalAlpha = badgeAlpha;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = 'bold 14px Alegreya, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 12;
+    ctx.fillText('NEW!', CX, CY - 30);
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
@@ -407,10 +766,11 @@ function finishMix() {
     const id = inp.id;
     const amt = inp.a;
     state.cauldron[id] -= amt;
-    if (state.cauldron[id] <= 0) delete state.cauldron[id];
+    if (state.cauldron[id] <= 0) { delete state.cauldron[id]; delete state.cauldronEntryTime[id]; }
   });
 
   state.cauldron[outputId] = (state.cauldron[outputId] || 0) + 1;
+  state.cauldronEntryTime[outputId] = performance.now();
 
   const rkey = recipeKey(recipe);
   state.foundRecipes.add(rkey);
@@ -419,7 +779,16 @@ function finishMix() {
   if (isNew) {
     state.discovered.add(outputId);
     state.inventory[outputId] = 3;
-    log(`✦ Открыт новый элемент: ${output.name}!`, 'discovery');
+    log(`✦ Открыт новый элемент!`, 'discovery');
+    // Открыть стартеры за вратами
+    UNLOCKABLE_STARTERS.forEach(s => {
+      if (outputId === s.unlockedBy && !state.discovered.has(s.id)) {
+        state.discovered.add(s.id);
+        state.inventory[s.id] = 9;
+        log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
+      }
+    });
+    checkLegendProgress();
   } else {
     state.inventory[outputId] = (state.inventory[outputId] || 0) + 3;
     log(`✓ Создан ${output.name}`, 'success');
@@ -429,6 +798,18 @@ function finishMix() {
   state.stats.totalCreated += 3;
   state.stats.elementCreatedCount[outputId] = (state.stats.elementCreatedCount[outputId] || 0) + 3;
   checkAchievements();
+
+  if (isNew) {
+    if (outputId === 'mirror') {
+      onOracleUnlocked('oracle');
+      log('🔮 Зеркало отражает грань грядущего — Гримуар шепчет', 'discovery');
+    } else if (outputId === 'chronomancer') {
+      onOracleUnlocked('prophecy');
+      log('✨ Хрономант прозревает нити времени — предвидение обострилось', 'discovery');
+    }
+  }
+  if (resolveWhispers(outputId) > 0) showWhisperToast();
+  maybeAddWhisper();
 
   if (isNew) {
     startDiscoveryAnimation(outputId);
@@ -443,17 +824,36 @@ function finishMix() {
 
 function finishExplosion() {
   const totalUnits = Object.values(state.cauldron).reduce((s, v) => s + v, 0);
+  const types = Object.keys(state.cauldron).length;
+  const explodedTypes = Object.keys(state.cauldron).sort();
+  if (explodedTypes.length > 1) state.triedPairs.add(explodedTypes.join('+'));
   state.cauldron = {};
+  state.cauldronEntryTime = {};
 
   log(`💥 Взрыв! ${totalUnits} ед. материи уничтожено`, 'fail');
   playExplode();
 
-  const undiscovered = ELEMENT_IDS.filter(id => !state.discovered.has(id));
-  if (undiscovered.length > 0 && Math.random() < 0.25 + totalUnits * 0.02) {
+  const gateIds = new Set(UNLOCKABLE_STARTERS.map(s => s.id));
+  const undiscovered = ELEMENT_IDS.filter(id =>
+    !state.discovered.has(id) &&
+    !LEGENDARY_IDS.includes(id) &&
+    !gateIds.has(id) &&
+    (ELEMENT_DEPTHS[id] ?? Infinity) <= 4
+  );
+  const chaosChance = Math.max(0, 0.25 + totalUnits * 0.02 - (types - 1) * 0.05);
+  if (undiscovered.length > 0 && Math.random() < chaosChance) {
     const picked = undiscovered[Math.floor(Math.random() * undiscovered.length)];
     state.discovered.add(picked);
     state.inventory[picked] = 2;
-    log(`✨ Из хаоса родилось: ${ELEMENTS[picked].name}!`, 'discovery');
+    log(`✨ Из хаоса родилось что-то новое!`, 'discovery');
+    UNLOCKABLE_STARTERS.forEach(s => {
+      if (picked === s.unlockedBy && !state.discovered.has(s.id)) {
+        state.discovered.add(s.id);
+        state.inventory[s.id] = 9;
+        log(`✦ Открыта новая стихия-врата: ${ELEMENTS[s.id].name}!`, 'discovery');
+      }
+    });
+    checkLegendProgress();
     state.stats.discoveryFromExplosion++;
     playDiscover();
     startDiscoveryAnimation(picked);
@@ -470,6 +870,7 @@ function finishExplosion() {
 }
 
 function finishDiscovery() {
+  state.pendingReveal = null;
   updateUI();
   state.animating = false;
   animData = null;
@@ -545,6 +946,7 @@ export function performMix() {
 export function gameLoop(timestamp) {
   time = timestamp || 0;
   if (Math.random() < 0.1) spawnAmbientParticles();
+  drawBackgroundDecor();
   drawScene();
   requestAnimationFrame(gameLoop);
 }

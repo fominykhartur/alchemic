@@ -93,52 +93,456 @@ export const ELEMENTS = {
   curse:    { id: 'curse',    name: 'Проклятие', color: '#4A0033', glow: 'rgba(74,0,51,0.5)',   desc: 'Тёмное заклятие' },
   fairy:    { id: 'fairy',    name: 'Фея',       color: '#FFB7C5', glow: 'rgba(255,183,197,0.4)',desc: 'Крылатый дух' },
   phantom:  { id: 'phantom',  name: 'Фантом',    color: '#A0A0C0', glow: 'rgba(160,160,192,0.3)',desc: 'Бестелесная тень' },
+  philosophersStone: { id: 'philosophersStone', name: 'Философский Камень', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Венец алхимии', infinite: true },
   moon:     { id: 'moon',     name: 'Луна',      color: '#F5F5DC', glow: 'rgba(245,245,220,0.3)',desc: 'Ночное светило' },
   sun:      { id: 'sun',      name: 'Солнце',    color: '#FF8C00', glow: 'rgba(255,140,0,0.5)', desc: 'Дневное светило' },
   galaxy:   { id: 'galaxy',   name: 'Галактика', color: '#9370DB', glow: 'rgba(147,112,219,0.4)',desc: 'Звёздный вихрь' },
   elixir:   { id: 'elixir',   name: 'Эликсир',   color: '#00FF7F', glow: 'rgba(0,255,127,0.4)', desc: 'Чистая субстанция' },
   catalyst: { id: 'catalyst', name: 'Катализатор',color: '#FFD700', glow: 'rgba(255,215,0,0.5)',desc: 'Ускоритель реакций' },
   salt:     { id: 'salt',     name: 'Соль',      color: '#F5F5F5', glow: 'rgba(245,245,245,0.3)',desc: 'Кристаллический осадок' },
+  // Tria Prima
+  rawSulfur:  { id: 'rawSulfur',  name: 'Неочищенная Сера', color: '#D4A843', glow: 'rgba(212,168,67,0.4)', desc: 'Жёлтый минерал' },
+  rawMercury: { id: 'rawMercury', name: 'Неочищенная Ртуть',color: '#B8C4D0', glow: 'rgba(184,196,208,0.3)',desc: 'Тяжёлая жидкость' },
+  sulfurPhil: { id: 'sulfurPhil', name: 'Философская Сера', color: '#FFD700', glow: 'rgba(255,215,0,0.5)', desc: 'Очищенная сера' },
+  mercuryPhil:{ id: 'mercuryPhil',name: 'Философская Ртуть',color: '#E0E8F8', glow: 'rgba(224,232,248,0.4)',desc: 'Очищенная ртуть' },
+  saltPhil:   { id: 'saltPhil',   name: 'Философская Соль', color: '#F5F0E8', glow: 'rgba(245,240,232,0.3)',desc: 'Очищенная соль' },
+  // Magnum Opus
+  nigredo:    { id: 'nigredo',    name: 'Нигредо',          color: '#0A0A0A', glow: 'rgba(10,10,10,0.5)',  desc: 'Чернение, смерть материи' },
+  albedo:     { id: 'albedo',     name: 'Альбедо',           color: '#F0F0FF', glow: 'rgba(240,240,255,0.4)',desc: 'Обеление, очищение' },
+  citrinitas: { id: 'citrinitas', name: 'Цитринитас',       color: '#FFD700', glow: 'rgba(255,215,0,0.5)', desc: 'Пожелтение, просветление' },
+  rubedo:     { id: 'rubedo',     name: 'Рубедо',            color: '#DC143C', glow: 'rgba(220,20,60,0.5)', desc: 'Покраснение, завершение' },
+  // Rebis
+  rex:        { id: 'rex',        name: 'Король',           color: '#FF8C00', glow: 'rgba(255,140,0,0.4)', desc: 'Солнечный принцип' },
+  regina:     { id: 'regina',     name: 'Королева',         color: '#A8C4E0', glow: 'rgba(168,196,224,0.3)',desc: 'Лунный принцип' },
+  rebis:      { id: 'rebis',      name: 'Ребис',             color: '#9370DB', glow: 'rgba(147,112,219,0.5)',desc: 'Священный брак' },
+  // Athanor
+  athanor:    { id: 'athanor',    name: 'Атанор',           color: '#8B5E3C', glow: 'rgba(139,94,60,0.4)', desc: 'Алхимическая печь' },
+  philosophersEgg: { id: 'philosophersEgg', name: 'Философское Яйцо', color: '#E8D8B8', glow: 'rgba(232,216,184,0.3)', desc: 'Герметичный сосуд' },
+  // Quintessence
+  quintessence:{ id: 'quintessence', name: 'Квинтэссенция', color: '#00CED1', glow: 'rgba(0,206,209,0.4)', desc: 'Пятый элемент' },
+  // Solve et Coagula
+  azoth:        { id: 'azoth',        name: 'Азот',            color: '#B8A0FF', glow: 'rgba(184,160,255,0.5)', desc: 'Дух-Ртуть, не путать с газом — начало и конец Делания' },
+  solve:        { id: 'solve',        name: 'Растворение',      color: '#5DDCFF', glow: 'rgba(93,220,255,0.4)',  desc: 'Принцип разложения формы' },
+  coagula:      { id: 'coagula',      name: 'Соединение',       color: '#C97B4A', glow: 'rgba(201,123,74,0.4)',  desc: 'Принцип связывания сущности' },
+  alkahest:     { id: 'alkahest',     name: 'Алкагест',         color: '#7CFF9E', glow: 'rgba(124,255,158,0.5)', desc: 'Универсальный растворитель' },
+  // Микрокосм
+  vesselOfLife: { id: 'vesselOfLife', name: 'Сосуд Жизни',      color: '#E8C4C8', glow: 'rgba(232,196,200,0.4)', desc: 'Вместилище для зарождения' },
+  homunculus:   { id: 'homunculus',   name: 'Гомункул',         color: '#E8B4B8', glow: 'rgba(232,180,184,0.4)', desc: 'Искусственно созданная жизнь' },
+  adept:        { id: 'adept',        name: 'Адепт',            color: '#FFEFC0', glow: 'rgba(255,239,192,0.5)', desc: 'Совершенный посвящённый' },
+  // Эликсиры
+  aurumPotabile:{ id: 'aurumPotabile',name: 'Питьевое Золото',  color: '#FFC400', glow: 'rgba(255,196,0,0.5)',   desc: 'Золото, обращённое в эликсир' },
+  elixirVitae:  { id: 'elixirVitae',  name: 'Эликсир Жизни',    color: '#4AFF7A', glow: 'rgba(74,255,122,0.5)',  desc: 'Отдельный от обычных зелий состав' },
+  panacea:      { id: 'panacea',      name: 'Панацея',          color: '#00FFC8', glow: 'rgba(0,255,200,0.5)',   desc: 'Средство от всех бед' },
+  ambrosia:     { id: 'ambrosia',     name: 'Амброзия',         color: '#FFF4D0', glow: 'rgba(255,244,208,0.5)', desc: 'Пища богов' },
+  // Макрокосм
+  macrocosm:    { id: 'macrocosm',    name: 'Макрокосм',        color: '#5A3FA0', glow: 'rgba(90,63,160,0.5)',   desc: 'Вселенная как единое тело' },
+  hermeticSeal: { id: 'hermeticSeal', name: 'Герметическая Печать', color: '#C9A227', glow: 'rgba(201,162,39,0.4)', desc: 'Связь малого и великого' },
+  // Финал
+  animaMundi:   { id: 'animaMundi',   name: 'Мировая Душа',     color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'Душа, пронизывающая всё сущее' },
+  // Мутация
+  basilisk:    { id: 'basilisk',    name: 'Василиск',      color: '#6B8E3D', glow: 'rgba(107,142,61,0.4)',  desc: 'Взгляд, обращающий в камень' },
+  wyvern:      { id: 'wyvern',      name: 'Виверна',       color: '#B84A4A', glow: 'rgba(184,74,74,0.4)',   desc: 'Крылатый хищник бурь' },
+  leviathan:   { id: 'leviathan',   name: 'Левиафан',      color: '#1A3A5A', glow: 'rgba(26,58,90,0.5)',    desc: 'Древний повелитель глубин' },
+  // Поглощение
+  voidRift:    { id: 'voidRift',    name: 'Провал Пустоты', color: '#2A0A40', glow: 'rgba(42,10,64,0.5)',   desc: 'Разрыв между тьмой и бездной' },
+  blackHole:   { id: 'blackHole',   name: 'Чёрная Дыра',   color: '#000000', glow: 'rgba(80,0,120,0.6)',    desc: 'Точка, где гаснет свет' },
+  singularity: { id: 'singularity', name: 'Сингулярность', color: '#FFFFFF', glow: 'rgba(255,255,255,0.7)', desc: 'Бесконечность в точке' },
+  // Иллюзия
+  illusion:    { id: 'illusion',    name: 'Иллюзия',       color: '#D8A0E8', glow: 'rgba(216,160,232,0.4)', desc: 'Образ без сущности' },
+  trickster:   { id: 'trickster',   name: 'Плут',          color: '#E85A9C', glow: 'rgba(232,90,156,0.4)',  desc: 'Дух обмана и переменчивости' },
+  nemesis:     { id: 'nemesis',     name: 'Немезида',      color: '#8B0030', glow: 'rgba(139,0,48,0.5)',    desc: 'Неотвратимое возмездие' },
+  // Время
+  timepiece:   { id: 'timepiece',   name: 'Часовой Механизм', color: '#B8965A', glow: 'rgba(184,150,90,0.4)', desc: 'Устройство, пленившее время' },
+  chronomancer:{ id: 'chronomancer',name: 'Хрономант',     color: '#5A8FB8', glow: 'rgba(90,143,184,0.4)',  desc: 'Повелевающий течением времени' },
+  paradox:     { id: 'paradox',     name: 'Парадокс',      color: '#7A3FA0', glow: 'rgba(122,63,160,0.5)',  desc: 'Момент, противоречащий себе' },
+  // Разложение
+  spore:       { id: 'spore',       name: 'Спора',         color: '#9ACD5A', glow: 'rgba(154,205,90,0.4)',  desc: 'Семя грядущего заражения' },
+  plague:      { id: 'plague',      name: 'Мор',           color: '#5A6B3A', glow: 'rgba(90,107,58,0.5)',   desc: 'Болезнь, пожирающая земли' },
+  parasite:    { id: 'parasite',    name: 'Паразит',       color: '#7A4A5A', glow: 'rgba(122,74,90,0.4)',   desc: 'Жизнь за счёт чужой жизни' },
+  // Катализ
+  ignition:      { id: 'ignition',      name: 'Воспламенение', color: '#FF6B1A', glow: 'rgba(255,107,26,0.5)', desc: 'Момент, когда реакция срывается с цепи' },
+  engine:        { id: 'engine',        name: 'Двигатель',     color: '#8A8A8A', glow: 'rgba(138,138,138,0.4)',desc: 'Механизм, обращающий огонь в движение' },
+  // Янтарь
+  amberRelic:    { id: 'amberRelic',    name: 'Янтарная Реликвия', color: '#D89030', glow: 'rgba(216,144,48,0.4)', desc: 'Мгновение, застывшее на тысячи лет' },
+  revenant:      { id: 'revenant',      name: 'Ревенант',      color: '#6A5A3A', glow: 'rgba(106,90,58,0.4)',  desc: 'Вернувшийся из глубин времени' },
+  // Спектр
+  spectrum:      { id: 'spectrum',      name: 'Спектр',        color: '#FF4AE8', glow: 'rgba(255,74,232,0.4)', desc: 'Свет, распавшийся на обещания' },
+  aurora:        { id: 'aurora',        name: 'Аврора',        color: '#4AFFC8', glow: 'rgba(74,255,200,0.5)', desc: 'Небо, охваченное сиянием' },
+  auroraCrown:   { id: 'auroraCrown',   name: 'Венец Авроры',  color: '#B8FFE0', glow: 'rgba(184,255,224,0.6)',desc: 'Регалия, сотканная из полярного света' },
+  // Страж
+  livingShield:  { id: 'livingShield',  name: 'Живой Щит',     color: '#4A8A3A', glow: 'rgba(74,138,58,0.4)',  desc: 'Броня, что растёт и заживает' },
+  guardian:      { id: 'guardian',      name: 'Хранитель',     color: '#3A6A2A', glow: 'rgba(58,106,42,0.4)',  desc: 'Страж, вросший корнями в свой пост' },
+  sentinel:      { id: 'sentinel',      name: 'Часовой Леса',  color: '#2A5A3A', glow: 'rgba(42,90,58,0.5)',   desc: 'Дух, охраняющий границы рощи' },
+  // Эхо
+  canyon:        { id: 'canyon',        name: 'Каньон',        color: '#B8703A', glow: 'rgba(184,112,58,0.4)', desc: 'Место, где голос не умирает' },
+  whisperingWinds:{ id: 'whisperingWinds', name: 'Шепчущие Ветра', color: '#A0C8D8', glow: 'rgba(160,200,216,0.4)', desc: 'Голоса, унесённые и не забытые' },
+  banshee:       { id: 'banshee',       name: 'Банши',         color: '#D0D8F0', glow: 'rgba(208,216,240,0.5)',desc: 'Крик, предвещающий конец' },
+  // Технологии
+  plasmaBlade: { id: 'plasmaBlade', name: 'Плазменный Клинок', color: '#FF3FE0', glow: 'rgba(255,63,224,0.5)', desc: 'Оружие из чистой энергии' },
+  resonator:   { id: 'resonator',   name: 'Резонатор',        color: '#5FE8FF', glow: 'rgba(95,232,255,0.4)', desc: 'Усилитель энергетических потоков' },
+  overcharge:  { id: 'overcharge',  name: 'Перезаряд',        color: '#FFE800', glow: 'rgba(255,232,0,0.6)',  desc: 'Энергия на грани взрыва' },
+  // Катаклизмы
+  maelstrom:   { id: 'maelstrom',   name: 'Мальстрём',        color: '#0A6E8C', glow: 'rgba(10,110,140,0.5)', desc: 'Водоворот, поглощающий всё' },
+  tempest:     { id: 'tempest',     name: 'Тремпест',         color: '#3A5A8C', glow: 'rgba(58,90,140,0.5)',  desc: 'Буря вселенского масштаба' },
+  cataclysm:   { id: 'cataclysm',   name: 'Катаклизм',        color: '#7A2A2A', glow: 'rgba(122,42,42,0.5)',  desc: 'Конец одного мира, начало другого' },
+  // Сон/заморозка
+  stasis:      { id: 'stasis',      name: 'Стазис',           color: '#A8E0F0', glow: 'rgba(168,224,240,0.4)',desc: 'Мгновение, застывшее навечно' },
+  dreamRealm:  { id: 'dreamRealm',  name: 'Царство Снов',     color: '#8C7AB8', glow: 'rgba(140,122,184,0.4)',desc: 'Мир по ту сторону сна' },
+  somnium:     { id: 'somnium',     name: 'Сомниум',          color: '#4A3A6A', glow: 'rgba(74,58,106,0.5)',  desc: 'Сновидение, ставшее явью' },
+  // Древний лес
+  ancientGrove:{ id: 'ancientGrove',name: 'Древняя Роща',     color: '#2A5A2A', glow: 'rgba(42,90,42,0.4)',   desc: 'Место, где время замедляется' },
+  treant:      { id: 'treant',      name: 'Древень',          color: '#4A6A3A', glow: 'rgba(74,106,58,0.4)',  desc: 'Дерево, обретшее волю' },
+  worldTree:   { id: 'worldTree',   name: 'Мировое Древо',    color: '#3A8A4A', glow: 'rgba(58,138,74,0.5)',  desc: 'Корни и крона, держащие мир' },
+  // Некромантия
+  grimoire:    { id: 'grimoire',    name: 'Гримуар',          color: '#3A2A1A', glow: 'rgba(58,42,26,0.4)',   desc: 'Книга запретного знания' },
+  necronomicon:{ id: 'necronomicon',name: 'Некрономикон',     color: '#1A0A1A', glow: 'rgba(26,10,26,0.6)',   desc: 'Книга мёртвых имён' },
+  lich:        { id: 'lich',        name: 'Лич',              color: '#3AFF9E', glow: 'rgba(58,255,158,0.5)', desc: 'Бессмертный через проклятие' },
+  // Кросс-комбо
+  abyssalSovereign:{ id: 'abyssalSovereign', name: 'Владыка Бездны',   color: '#0A2A4A', glow: 'rgba(10,42,74,0.6)',   desc: 'Левиафан, вросший в собственный водоворот' },
+  eternalBlight:   { id: 'eternalBlight',    name: 'Вечная Порча',     color: '#3A4A2A', glow: 'rgba(58,74,42,0.5)',   desc: 'Мировое Древо, корни которого уже не помнят жизни' },
+  choirOfSorrow:   { id: 'choirOfSorrow',    name: 'Хор Скорби',       color: '#C0C8E8', glow: 'rgba(192,200,232,0.5)',desc: 'Крик Банши, записанный в книге мёртвых имён' },
+  cosmicMonarch:   { id: 'cosmicMonarch',    name: 'Космический Монарх', color: '#FFFFFF', glow: 'rgba(255,255,255,0.7)', desc: 'Точка бесконечности, коронованная светом' },
+  fatebreaker:     { id: 'fatebreaker',      name: 'Разрушитель Судьбы', color: '#5A1A5A', glow: 'rgba(90,26,90,0.5)',   desc: 'Возмездие, освобождённое от хода времени' },
+  virulentSwarm:   { id: 'virulentSwarm',    name: 'Вирулентный Рой',    color: '#8AAA2A', glow: 'rgba(138,170,42,0.5)', desc: 'Паразит, ускоренный сверх меры' },
+  oneirograph:     { id: 'oneirograph',      name: 'Онейрограф',         color: '#6A4A9A', glow: 'rgba(106,74,154,0.5)', desc: 'Машина, что печатает чужие сны' },
+  deathlessWarden: { id: 'deathlessWarden',  name: 'Бессмертный Страж',  color: '#2A4A3A', glow: 'rgba(42,74,58,0.5)',   desc: 'Часовой леса, вернувшийся из-за грани смерти' },
+  apocalypse:      { id: 'apocalypse',       name: 'Апокалипсис',        color: '#8A0A0A', glow: 'rgba(138,10,10,0.7)', desc: 'Конец, к которому вело всё вне Делания' },
+  // Врата — Дух и Материя (через Философский Камень)
+  spirit:    { id: 'spirit',    name: 'Дух',          color: '#D8C8FF', glow: 'rgba(216,200,255,0.5)', infinite: true, gate: 'philosophersStone', desc: 'То, что остаётся, когда форма снята' },
+  matter:    { id: 'matter',    name: 'Материя',      color: '#8A7A6A', glow: 'rgba(138,122,106,0.4)', infinite: true, gate: 'philosophersStone', desc: 'То, что заполняет форму' },
+  // Врата — Время и Пространство (через Anima Mundi)
+  time:      { id: 'time',      name: 'Время',        color: '#B8965A', glow: 'rgba(184,150,90,0.5)',  infinite: true, gate: 'animaMundi',      desc: 'Течение, ставшее ощутимым' },
+  space:     { id: 'space',     name: 'Пространство', color: '#2A1A4A', glow: 'rgba(42,26,74,0.5)',    infinite: true, gate: 'animaMundi',      desc: 'Промежуток между всем сущим' },
+  // Врата — Хаос и Энтропия (через Апокалипсис)
+  chaos:     { id: 'chaos',     name: 'Хаос',         color: '#8A1A5A', glow: 'rgba(138,26,90,0.5)',   infinite: true, gate: 'apocalypse',      desc: 'То, что было до всякого порядка' },
+  entropy:   { id: 'entropy',   name: 'Энтропия',     color: '#4A4A3A', glow: 'rgba(74,74,58,0.5)',    infinite: true, gate: 'apocalypse',      desc: 'Медленное возвращение всего в ничто' },
+  // Дух — ветка
+  possession:{ id: 'possession',name: 'Одержимость',    color: '#8A5AA8', glow: 'rgba(138,90,168,0.4)',  desc: 'Дух, занявший чужое тело' },
+  spellbound:{ id: 'spellbound',name: 'Заворожение',    color: '#A85AC0', glow: 'rgba(168,90,192,0.4)',  desc: 'Воля, скованная чужим словом' },
+  exorcism:  { id: 'exorcism',  name: 'Экзорцизм',      color: '#FFE8A0', glow: 'rgba(255,232,160,0.5)', desc: 'Изгнание духа обратно за грань' },
+  // Материя — ветка
+  mass:      { id: 'mass',      name: 'Масса',          color: '#7A6A5A', glow: 'rgba(122,106,90,0.4)',   desc: 'Вес, который нельзя отменить' },
+  density:   { id: 'density',   name: 'Плотность',      color: '#B8A030', glow: 'rgba(184,160,48,0.4)',   desc: 'Материя, сжатая до предела возможного' },
+  compression:{id: 'compression',name: 'Сжатие',        color: '#D0D8E8', glow: 'rgba(208,216,232,0.5)',   desc: 'Предел, за которым материя меняет закон' },
+  // Время — ветка
+  chronosphere:{id: 'chronosphere',name: 'Хроносфера', color: '#B8965A', glow: 'rgba(184,150,90,0.4)',  desc: 'Механизм, пленивший течение' },
+  eternalLoop:{id: 'eternalLoop',name: 'Вечный Цикл', color: '#8A6A3A', glow: 'rgba(138,106,58,0.4)',  desc: 'Момент, повторяющий сам себя' },
+  temporalRift:{id: 'temporalRift',name: 'Временной Разлом',color: '#4A2A0A', glow: 'rgba(74,42,10,0.4)', desc: 'Трещина, сквозь которую видно всё сразу' },
+  // Пространство — ветка
+  vacuum:    { id: 'vacuum',    name: 'Вакуум',        color: '#1A1A2A', glow: 'rgba(26,26,42,0.4)',   desc: 'Пространство без содержимого' },
+  nebula:    { id: 'nebula',    name: 'Туманность',    color: '#8A5AC0', glow: 'rgba(138,90,192,0.4)',desc: 'Пыль, из которой рождаются звёзды' },
+  multiverse:{ id: 'multiverse',name: 'Мультивселенная',color: '#2A0A4A', glow: 'rgba(42,10,74,0.5)',   desc: 'Бесконечность, помноженная на себя' },
+  // Хаос — ветка
+  maelchaos: { id: 'maelchaos', name: 'Мальхаос',       color: '#8A2A4A', glow: 'rgba(138,42,74,0.4)',  desc: 'Воронка из неупорядоченной энергии' },
+  anarchy:   { id: 'anarchy',   name: 'Анархия',       color: '#5A0A8A', glow: 'rgba(90,10,138,0.5)',  desc: 'Мир, отменивший свои же правила' },
+  primordialStorm:{id: 'primordialStorm',name: 'Первозданная Буря',color: '#4A0A2A', glow: 'rgba(74,10,42,0.5)', desc: 'Шторм, бывший до всякого творения' },
+  // Энтропия — ветка
+  decay:     { id: 'decay',     name: 'Распад',        color: '#5A6B3A', glow: 'rgba(90,107,58,0.4)',  desc: 'Первый шаг распада' },
+  ruin:      { id: 'ruin',      name: 'Руина',         color: '#6A5A4A', glow: 'rgba(106,90,74,0.4)',   desc: 'То, что осталось после тлена' },
+  heatDeath: { id: 'heatDeath', name: 'Тепловая Смерть',color: '#1A1A1A', glow: 'rgba(26,26,26,0.6)',   desc: 'Точка, где угасает всякое движение' },
+  // Ветка Духа
+  breath:        { id: 'breath',        name: 'Дыхание',             color: '#E0E8FF', glow: 'rgba(224,232,255,0.4)', desc: 'Первое движение духа в мире' },
+  astralForm:    { id: 'astralForm',    name: 'Астральная Форма',    color: '#C0A8FF', glow: 'rgba(192,168,255,0.5)', desc: 'Дух, обретший подобие тела' },
+  soulJar:       { id: 'soulJar',       name: 'Сосуд Души',          color: '#7A9AC8', glow: 'rgba(122,154,200,0.4)', desc: 'Плен для изгнанного духа' },
+  spiritGuide:   { id: 'spiritGuide',   name: 'Дух-Проводник',       color: '#B8E0FF', glow: 'rgba(184,224,255,0.5)', desc: 'Тот, кто ведёт между мирами' },
+  seance:        { id: 'seance',        name: 'Спиритический Сеанс', color: '#6A4A8A', glow: 'rgba(106,74,138,0.5)',  desc: 'Собрание живых ради разговора с мёртвыми' },
+  possessedArmor:{ id: 'possessedArmor',name: 'Одержимая Броня',     color: '#4A4A6A', glow: 'rgba(74,74,106,0.4)',  desc: 'Металл, помнящий чужую волю' },
+  wraithLord:    { id: 'wraithLord',    name: 'Владыка Мороков',     color: '#2A2A4A', glow: 'rgba(42,42,74,0.5)',   desc: 'Дух, что перестал желать возвращения' },
+  ancestralChorus:{id: 'ancestralChorus',name: 'Хор Предков',       color: '#D0C8FF', glow: 'rgba(208,200,255,0.5)', desc: 'Множество голосов, ведущих как один' },
+  spiritRealm:   { id: 'spiritRealm',   name: 'Мир Духов',           color: '#5A3A7A', glow: 'rgba(90,58,122,0.5)',  desc: 'Плоскость, где нет плоти' },
+  transcendence: { id: 'transcendence', name: 'Трансценденция',      color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'Дух, вышедший за пределы формы вовсе' },
+  // Ветка Материи
+  substance:     { id: 'substance',     name: 'Субстанция',          color: '#9A8A6A', glow: 'rgba(154,138,106,0.4)', desc: 'Материя, обретшая форму' },
+  bedrock:       { id: 'bedrock',       name: 'Коренная Порода',     color: '#5A4A3A', glow: 'rgba(90,74,58,0.4)',   desc: 'Материя, из которой всё остальное' },
+  monolith:      { id: 'monolith',      name: 'Монолит',             color: '#3A3A3A', glow: 'rgba(58,58,58,0.4)',   desc: 'Единая масса, не помнящая швов' },
+  golemCore:     { id: 'golemCore',     name: 'Ядро Голема',         color: '#8A7050', glow: 'rgba(138,112,80,0.4)', desc: 'Сердце, вытесанное из камня' },
+  ironWill:      { id: 'ironWill',      name: 'Железная Воля',       color: '#6A6A7A', glow: 'rgba(106,106,122,0.4)',desc: 'Материя, отказавшаяся ломаться' },
+  forgeHeart:    { id: 'forgeHeart',    name: 'Сердце Кузни',        color: '#FF5A2A', glow: 'rgba(255,90,42,0.5)',   desc: 'Огонь, вплавленный в металл навсегда' },
+  worldAnvil:    { id: 'worldAnvil',    name: 'Наковальня Мира',     color: '#4A3A2A', glow: 'rgba(74,58,42,0.5)',   desc: 'То, на чём куётся сама реальность' },
+  absoluteMass:  { id: 'absoluteMass',  name: 'Абсолютная Масса',    color: '#1A1A1A', glow: 'rgba(26,26,26,0.6)',   desc: 'Материя на грани коллапса в себя' },
+  titan:         { id: 'titan',         name: 'Титан',               color: '#8A6A3A', glow: 'rgba(138,106,58,0.5)', desc: 'Материя, вставшая и обретшая волю' },
+  primeMatter:   { id: 'primeMatter',   name: 'Прима Материя',       color: '#FFFFFF', glow: 'rgba(255,255,255,0.6)', desc: 'То, из чего состоит всё до всякой формы' },
+  // Слияние
+  animatedFlesh: { id: 'animatedFlesh', name: 'Одушевлённая Плоть',  color: '#C89A8A', glow: 'rgba(200,154,138,0.4)', desc: 'Дух, впервые нашедший себе тело' },
+  greatBinding:  { id: 'greatBinding',  name: 'Великое Связывание',  color: '#FFD700', glow: 'rgba(255,215,0,0.7)',   desc: 'Дух и материя, более не различимые' },
+  // Ветка Времени
+  instant:       { id: 'instant',       name: 'Мгновение',          color: '#E8D8A0', glow: 'rgba(232,216,160,0.4)', desc: 'Время, застигнутое врасплох' },
+  eternity:      { id: 'eternity',      name: 'Вечность',           color: '#FFF0C0', glow: 'rgba(255,240,192,0.5)', desc: 'Время, переставшее течь' },
+  timeline:      { id: 'timeline',      name: 'Линия Времени',      color: '#C0A860', glow: 'rgba(192,168,96,0.4)', desc: 'Путь от начала к концу' },
+  reincarnation: { id: 'reincarnation', name: 'Реинкарнация',       color: '#FF8A5A', glow: 'rgba(255,138,90,0.5)', desc: 'Смерть, что не считается концом' },
+  chronoWeaver:  { id: 'chronoWeaver',  name: 'Ткач Времён',        color: '#7A5AA8', glow: 'rgba(122,90,168,0.5)', desc: 'Тот, кто плетёт нити причины и следствия' },
+  temporalSigil: { id: 'temporalSigil', name: 'Печать Времени',     color: '#D0A830', glow: 'rgba(208,168,48,0.5)', desc: 'Знак, останавливающий часы' },
+  masterOfTime:  { id: 'masterOfTime',  name: 'Владыка Времени',    color: '#FFD700', glow: 'rgba(255,215,0,0.6)',  desc: 'Тот, для кого время — инструмент' },
+  // Ветка Пространства
+  horizon:       { id: 'horizon',       name: 'Горизонт',           color: '#A0C0E0', glow: 'rgba(160,192,224,0.3)',desc: 'Грань видимого и невидимого' },
+  dimension:     { id: 'dimension',     name: 'Измерение',          color: '#4A2A6A', glow: 'rgba(74,42,106,0.5)', desc: 'Пространство, свёрнутое в слой' },
+  voidExpanse:   { id: 'voidExpanse',   name: 'Простор Пустоты',   color: '#2A1A4A', glow: 'rgba(42,26,74,0.5)',  desc: 'Пространство до всякой формы' },
+  parallelWorld: { id: 'parallelWorld', name: 'Параллельный Мир',  color: '#5AC0D0', glow: 'rgba(90,192,208,0.4)',desc: 'Отражение, ставшее реальным' },
+  infiniteRealms:{ id: 'infiniteRealms',name: 'Бескрайние Земли',   color: '#D05AA0', glow: 'rgba(208,90,160,0.5)',desc: 'Пространство без края и предела' },
+  spatialAnchor: { id: 'spatialAnchor', name: 'Пространственный Якорь', color: '#B8862F', glow: 'rgba(184,134,47,0.4)', desc: 'Точка, держащая мир на месте' },
+  masterOfSpace: { id: 'masterOfSpace', name: 'Владыка Пространства',   color: '#FFD700', glow: 'rgba(255,215,0,0.6)', desc: 'Тот, для кого расстояние — иллюзия' },
+  // Финальное слияние
+  spacetimeContinuum:{ id: 'spacetimeContinuum', name: 'Континуум', color: '#FFFFFF', glow: 'rgba(255,255,255,0.8)', desc: 'Время и пространство, ставшие одним' },
+  // Ветка Хаоса
+  spark:       { id: 'spark',       name: 'Искра Хаоса',        color: '#E8309A', glow: 'rgba(232,48,154,0.4)', desc: 'Первое нарушение порядка' },
+  discord:     { id: 'discord',     name: 'Раздор',             color: '#B01A5A', glow: 'rgba(176,26,90,0.4)',  desc: 'Согласие, обращённое в спор' },
+  chaosStorm:  { id: 'chaosStorm',  name: 'Буря Хаоса',         color: '#8A0AC0', glow: 'rgba(138,10,192,0.5)', desc: 'Стихия без закона и цели' },
+  chaosBeast:  { id: 'chaosBeast',  name: 'Тварь Хаоса',        color: '#C020A0', glow: 'rgba(192,32,160,0.5)', desc: 'Существо без формы, что не должно было родиться' },
+  voidSpawn:   { id: 'voidSpawn',   name: 'Порождение Пустоты', color: '#3A0A5A', glow: 'rgba(58,10,90,0.5)',   desc: 'То, что бездна создала по своему подобию' },
+  chaosLord:   { id: 'chaosLord',   name: 'Владыка Хаоса',      color: '#FF00C8', glow: 'rgba(255,0,200,0.6)',  desc: 'Тот, для кого беспорядок и есть закон' },
+  // Ветка Энтропии
+  erosion:     { id: 'erosion',     name: 'Эрозия',             color: '#8A7A5A', glow: 'rgba(138,122,90,0.4)', desc: 'Медленное стирание формы' },
+  entropyField:{ id: 'entropyField',name: 'Поле Энтропии',      color: '#3A3A2A', glow: 'rgba(58,58,42,0.5)',   desc: 'Пространство, где всё стремится к покою' },
+  extinction:  { id: 'extinction',  name: 'Вымирание',          color: '#3A2A2A', glow: 'rgba(58,42,42,0.5)',   desc: 'Конец всякого вида' },
+  voidCollapse:{ id: 'voidCollapse',name: 'Коллапс Пустоты',    color: '#0A0A1A', glow: 'rgba(10,10,26,0.6)',   desc: 'Пустота, схлопнувшаяся в саму себя' },
+  entropyLord: { id: 'entropyLord', name: 'Владыка Энтропии',   color: '#4A4A4A', glow: 'rgba(74,74,74,0.6)',   desc: 'Тот, для кого конец — единственный закон' },
+  // Финальное слияние
+  oblivion:    { id: 'oblivion',    name: 'Забвение',           color: '#000000', glow: 'rgba(0,0,0,0.8)',      desc: 'То, что остаётся, когда не остаётся ничего' },
+  // Мосты
+  willOWisp: { id: 'willOWisp', name: 'Блуждающий Огонёк', color: '#7CFF9E', glow: 'rgba(124,255,158,0.5)', desc: 'Огонёк, что заводит путников' },
+  lighthouse:{ id: 'lighthouse', name: 'Маяк', color: '#FFD700', glow: 'rgba(255,215,0,0.5)', desc: 'Свет, зовущий домой' },
+  veil:      { id: 'veil',      name: 'Завеса', color: '#8A8AA0', glow: 'rgba(138,138,160,0.4)', desc: 'Граница между явным и скрытым' },
+  shroud:    { id: 'shroud',    name: 'Саван', color: '#4A4A5A', glow: 'rgba(74,74,90,0.5)', desc: 'Последнее сокрытие' },
+  sprout:    { id: 'sprout',    name: 'Росток', color: '#7CDC5A', glow: 'rgba(124,220,90,0.4)', desc: 'Первый шаг из семени' },
+  sapling:   { id: 'sapling',   name: 'Саженец', color: '#5CA83A', glow: 'rgba(92,168,58,0.4)', desc: 'Дерево, ещё помнящее себя ростком' },
+  deathKnight:{ id: 'deathKnight', name: 'Рыцарь Смерти', color: '#2A1A3A', glow: 'rgba(42,26,58,0.6)', desc: 'Броня и дух, ставшие одним проклятием' },
+  // Средоточие Стихий — мост из 4 базовых стихий
+  elementalConfluence:{ id: 'elementalConfluence', name: 'Средоточие Стихий', color: '#C9A876', glow: 'rgba(201,168,118,0.5)', desc: 'Четыре стихии, слитые в единое целое' },
+  fifthElement:{ id: 'fifthElement', name: 'Пятая Стихия', color: '#4A2E6B', glow: 'rgba(74,46,107,0.6)', desc: 'Пустота, замкнувшая круг стихий' },
+  elementalWarden:{ id: 'elementalWarden', name: 'Страж Стихий', color: '#8A7858', glow: 'rgba(138,120,88,0.5)', desc: 'Дух, рождённый равновесием стихий' },
+  elementalRupture:{ id: 'elementalRupture', name: 'Разлад Стихий', color: '#C4325A', glow: 'rgba(196,50,90,0.5)', desc: 'Равновесие стихий, разрушенное хаосом' },
+  // Мосты между базовыми и вторыми стихиями
+  zeal:      { id: 'zeal',      name: 'Рвение',        color: '#FF8C5A', glow: 'rgba(255,140,90,0.5)',  desc: 'Огонь воли, что не гаснет' },
+  tears:     { id: 'tears',     name: 'Слёзы',         color: '#A8C8E8', glow: 'rgba(168,200,232,0.5)', desc: 'Скорбь, ставшая видимой' },
+  locus:     { id: 'locus',     name: 'Точка',         color: '#4A3A7A', glow: 'rgba(74,58,122,0.5)',   desc: 'Здесь и сейчас, ставшие одной точкой' },
+  futility:  { id: 'futility',  name: 'Тщета',         color: '#6A5A6A', glow: 'rgba(106,90,106,0.5)',  desc: 'Усилие, обречённое раствориться' },
+  hollow:    { id: 'hollow',    name: 'Пустая Оболочка', color: '#5A4A6A', glow: 'rgba(90,74,106,0.5)', desc: 'Форма без содержимого' },
+  volatileMatter:{ id: 'volatileMatter', name: 'Нестабильная Материя', color: '#B8C838', glow: 'rgba(184,200,56,0.5)', desc: 'Материя на грани распада' },
+  fading:    { id: 'fading',    name: 'Угасание',      color: '#C8C0B8', glow: 'rgba(200,192,184,0.4)', desc: 'Дух, теряющий себя' },
+  timeShard: { id: 'timeShard', name: 'Осколок Времени', color: '#C08A4A', glow: 'rgba(192,138,74,0.5)', desc: 'Материя, застывшая в моменте' },
+  chronicle: { id: 'chronicle', name: 'Летопись',      color: '#D4B896', glow: 'rgba(212,184,150,0.5)', desc: 'Мгновения, записанные навсегда' },
+  // Второй слой — соединения мостов друг с другом
+  purpose:   { id: 'purpose',   name: 'Цель',          color: '#E8A838', glow: 'rgba(232,168,56,0.5)',  desc: 'Воля, направленная в одну точку' },
+  requiem:   { id: 'requiem',   name: 'Реквием',       color: '#7A8CA0', glow: 'rgba(122,140,160,0.5)', desc: 'Плач по тому, что угасает' },
+  husk:      { id: 'husk',      name: 'Остов',         color: '#7A8A5A', glow: 'rgba(122,138,90,0.5)',  desc: 'Тело без хозяина, готовое взорваться' },
+  forgottenPage:{ id: 'forgottenPage', name: 'Забытая Страница', color: '#A89880', glow: 'rgba(168,152,128,0.4)', desc: 'Летопись того, что не имело смысла' },
+  ardentGuardian:{ id: 'ardentGuardian', name: 'Пламенный Страж', color: '#D4823A', glow: 'rgba(212,130,58,0.5)', desc: 'Страж, обретший рвение' },
+  axis:      { id: 'axis',      name: 'Ось Мироздания', color: '#2A4A6A', glow: 'rgba(42,74,106,0.6)',  desc: 'Точка, вокруг которой вращается всё сущее' },
+  // Развитие старых тупиковых веток
+  faithfulFlame:{ id: 'faithfulFlame', name: 'Верный Огонь',   color: '#C8E87A', glow: 'rgba(200,232,122,0.5)', desc: 'Блуждающий огонёк, выбравший вести к правде' },
+  gravewarden:  { id: 'gravewarden',   name: 'Страж Могилы',   color: '#4A3A4A', glow: 'rgba(74,58,74,0.6)',    desc: 'Тот, кто хранит покой мёртвых, сам не зная покоя' },
+  mourningGrove:{ id: 'mourningGrove', name: 'Скорбная Роща',  color: '#3A5A4A', glow: 'rgba(58,90,74,0.5)',    desc: 'Лес, что оплакивает сам себя' },
+  eternalPunishment:{ id: 'eternalPunishment', name: 'Вечная Кара', color: '#6A1A3A', glow: 'rgba(106,26,58,0.6)', desc: 'Возмездие, вписанное в летопись навсегда' },
+  plagueStorm:  { id: 'plagueStorm',   name: 'Мор',            color: '#6A7A2A', glow: 'rgba(106,122,42,0.5)',  desc: 'Буря, что несёт не дождь, а болезнь' },
+  genesis:      { id: 'genesis',       name: 'Бытие',          color: '#FFE8A8', glow: 'rgba(255,232,168,0.6)', desc: 'Первый миг, когда хаос обрёл форму' },
+  worldsEnd:    { id: 'worldsEnd',     name: 'Край Мира',      color: '#C87850', glow: 'rgba(200,120,80,0.5)',  desc: 'Маяк, что стоит там, где кончается карта' },
+  axisKeeper:   { id: 'axisKeeper',    name: 'Хранитель Оси',  color: '#1A3A5A', glow: 'rgba(26,58,90,0.6)',    desc: 'Страж, не дающий миру сорваться в хаос' },
+  brokenVessel: { id: 'brokenVessel',  name: 'Разбитый Сосуд', color: '#8A4A5A', glow: 'rgba(138,74,90,0.5)',   desc: 'Оболочка, не выдержавшая разлада стихий' },
+  cosmicArchive:{ id: 'cosmicArchive', name: 'Космический Архив', color: '#6A5A8A', glow: 'rgba(106,90,138,0.5)', desc: 'Память мира, что переживёт сам мир' },
+  // Расширение ветки Иллюзий
+  selfDeception:{ id: 'selfDeception', name: 'Самообман',      color: '#B888A8', glow: 'rgba(184,136,168,0.5)', desc: 'Иллюзия, поверившая в саму себя' },
+  phantomMemory:{ id: 'phantomMemory', name: 'Призрачное Воспоминание', color: '#88A8C8', glow: 'rgba(136,168,200,0.5)', desc: 'Видение того, кого больше нет' },
+  crossroads:   { id: 'crossroads',    name: 'Перекрёсток Миров', color: '#7858A8', glow: 'rgba(120,88,168,0.5)', desc: 'Место, где разные реальности пересекаются' },
+  forgottenDream:{ id: 'forgottenDream', name: 'Забытый Сон',  color: '#5868A0', glow: 'rgba(88,104,160,0.4)',  desc: 'Сон, что тает, едва начавшись' },
+  prophecy:     { id: 'prophecy',      name: 'Пророчество',    color: '#C8A8E8', glow: 'rgba(200,168,232,0.5)', desc: 'Сон, что стал предсказанием' },
+  afterimage:   { id: 'afterimage',    name: 'Остаточный Образ', color: '#D8C0E0', glow: 'rgba(216,192,224,0.4)', desc: 'Свет, что остался после того, как погасла его причина' },
+  fatewalker:   { id: 'fatewalker',    name: 'Идущий Тропами', color: '#4A3868', glow: 'rgba(74,56,104,0.6)',   desc: 'Тот, кто ходит нитями несбывшихся миров' },
+  // Категория: Чувства
+  hope:      { id: 'hope',      name: 'Надежда',       color: '#FFD888', glow: 'rgba(255,216,136,0.5)', desc: 'Свет, что не гаснет даже во тьме слёз' },
+  fear:      { id: 'fear',      name: 'Страх',         color: '#3A2A4A', glow: 'rgba(58,42,74,0.6)',    desc: 'Пустота, обретшая голос' },
+  anger:     { id: 'anger',     name: 'Гнев',          color: '#D82A2A', glow: 'rgba(216,42,42,0.5)',   desc: 'Пламя, что не спрашивает цели' },
+  love:      { id: 'love',      name: 'Любовь',        color: '#FF6A9A', glow: 'rgba(255,106,154,0.5)', desc: 'Цель, что живёт ради другого' },
+  courage:   { id: 'courage',   name: 'Смелость',      color: '#E8A838', glow: 'rgba(232,168,56,0.5)',  desc: 'Страх, обращённый в действие' },
+  serenity:  { id: 'serenity',  name: 'Безмятежность', color: '#A8D8E8', glow: 'rgba(168,216,232,0.4)', desc: 'Точка, где всё движение затихает' },
+  envy:      { id: 'envy',      name: 'Зависть',       color: '#5A8A3A', glow: 'rgba(90,138,58,0.5)',   desc: 'Отражение чужого счастья' },
+  nostalgia: { id: 'nostalgia', name: 'Ностальгия',    color: '#B89AC8', glow: 'rgba(184,154,200,0.4)', desc: 'Тоска по тому, что никогда не вернётся' },
+  wonder:    { id: 'wonder',    name: 'Изумление',     color: '#FFE0A8', glow: 'rgba(255,224,168,0.6)', desc: 'Миг, когда неизвестное становится явным' },
+  pride:     { id: 'pride',     name: 'Гордость',      color: '#C89838', glow: 'rgba(200,152,56,0.5)',  desc: 'Воля, возомнившая себя центром мира' },
+  compassion:{ id: 'compassion',name: 'Сострадание',   color: '#E888A8', glow: 'rgba(232,136,168,0.5)', desc: 'Скорбь, обращённая в заботу о другом' },
+  catharsis: { id: 'catharsis', name: 'Катарсис',      color: '#88C8D8', glow: 'rgba(136,200,216,0.5)', desc: 'Буря чувств, что находит покой' },
+  // Категория: Звук
+  whisper:   { id: 'whisper',   name: 'Шёпот',         color: '#8898A8', glow: 'rgba(136,152,168,0.3)', desc: 'Слово, едва решившееся прозвучать' },
+  silence:   { id: 'silence',   name: 'Тишина',        color: '#2A2A3A', glow: 'rgba(42,42,58,0.5)',    desc: 'Молчание, что тяжелее любого крика' },
+  cacophony: { id: 'cacophony', name: 'Какофония',     color: '#B84A6A', glow: 'rgba(184,74,106,0.5)',  desc: 'Звук, что отрицает сам себя' },
+  harmony:   { id: 'harmony',   name: 'Гармония',      color: '#5FB8D8', glow: 'rgba(95,184,216,0.5)',  desc: 'Множество голосов, ставших одним' },
+  thunderclap:{ id: 'thunderclap', name: 'Раскат Грома', color: '#8888C8', glow: 'rgba(136,136,200,0.5)', desc: 'Звук, что бежит быстрее самой молнии' },
+  reverberation:{ id: 'reverberation', name: 'Отзвук', color: '#A89878', glow: 'rgba(168,152,120,0.4)', desc: 'Голос, что не находит конца' },
+  lullaby:   { id: 'lullaby',   name: 'Колыбельная',   color: '#C8B8E8', glow: 'rgba(200,184,232,0.4)', desc: 'Песня, что усыпляет даже боль' },
+  warcry:    { id: 'warcry',    name: 'Боевой Клич',   color: '#C83A3A', glow: 'rgba(200,58,58,0.5)',   desc: 'Крик, что становится оружием' },
+  symphony:  { id: 'symphony',  name: 'Симфония',      color: '#7FCFEF', glow: 'rgba(127,207,239,0.6)', desc: 'Порядок и хаос, звучащие вместе' },
+  resonanceOfWorlds:{ id: 'resonanceOfWorlds', name: 'Резонанс Миров', color: '#4A9AC8', glow: 'rgba(74,154,200,0.6)', desc: 'Звук, что проходит сквозь границы реальностей' },
+  // Расширение ветки Металлов
+  copper:    { id: 'copper',    name: 'Медь',              color: '#C8783A', glow: 'rgba(200,120,58,0.4)',  desc: 'Металл, что покрывается зеленью времени' },
+  bronze:    { id: 'bronze',    name: 'Бронза',            color: '#A67C3A', glow: 'rgba(166,124,58,0.4)',  desc: 'Сплав, что помнит первых кузнецов' },
+  platinum:  { id: 'platinum',  name: 'Платина',           color: '#C8D0D8', glow: 'rgba(200,208,216,0.4)', desc: 'Металл, что не спорит ни с золотом, ни с серебром' },
+  wire:      { id: 'wire',      name: 'Проволока',         color: '#A0A8A8', glow: 'rgba(160,168,168,0.3)', desc: 'Медь, вытянутая в нить' },
+  magnet:    { id: 'magnet',    name: 'Магнит',            color: '#5A6878', glow: 'rgba(90,104,120,0.5)',  desc: 'Железо, что помнит удар молнии' },
+  temperedBlade:{ id: 'temperedBlade', name: 'Закалённый Клинок', color: '#B85838', glow: 'rgba(184,88,56,0.5)', desc: 'Клинок, закалённый не только огнём, но и волей' },
+  chainmail: { id: 'chainmail', name: 'Кольчуга',          color: '#8090A0', glow: 'rgba(128,144,160,0.4)', desc: 'Тысяча колец, что держат друг друга' },
+  filigree:  { id: 'filigree',  name: 'Филигрань',         color: '#D4AF6A', glow: 'rgba(212,175,106,0.5)', desc: 'Проволока, свитая с точным умыслом' },
+  adamant:   { id: 'adamant',   name: 'Адамант',           color: '#2A2A32', glow: 'rgba(42,42,50,0.6)',    desc: 'Металл, что отказывается уступать даже времени' },
+  worldsmith:{ id: 'worldsmith',name: 'Кузнец Миров',      color: '#8A4A2A', glow: 'rgba(138,74,42,0.6)',   desc: 'Тот, кто куёт не вещи, а саму реальность' },
+  relicBlade:{ id: 'relicBlade',name: 'Клинок-Реликвия',   color: '#9A7A4A', glow: 'rgba(154,122,74,0.5)',  desc: 'Клинок, чья история выкована в металл' },
+  // Расширение ветки Духа
+  invocation:{ id: 'invocation', name: 'Воззвание',       color: '#C8B8E0', glow: 'rgba(200,184,224,0.5)', desc: 'Дыхание, ставшее словом призыва' },
+  geas:      { id: 'geas',      name: 'Гейс',             color: '#8858A8', glow: 'rgba(136,88,168,0.5)',  desc: 'Чары, что стали клятвой' },
+  celestialBody:{ id: 'celestialBody', name: 'Небесное Тело', color: '#B8D8F0', glow: 'rgba(184,216,240,0.5)', desc: 'Форма духа, что коснулась звёзд' },
+  spiritVoice:{ id: 'spiritVoice', name: 'Голос Духов',   color: '#9888C8', glow: 'rgba(152,136,200,0.5)', desc: 'Слова, что произносят не живые' },
+  eternalPrison:{ id: 'eternalPrison', name: 'Вечная Темница', color: '#4A4A5A', glow: 'rgba(74,74,90,0.6)', desc: 'Сосуд, что не разобьётся никогда' },
+  eternalMourning:{ id: 'eternalMourning', name: 'Вечная Скорбь', color: '#5A5A78', glow: 'rgba(90,90,120,0.5)', desc: 'Хор, что оплакивает вечно' },
+  betweenWorlds:{ id: 'betweenWorlds', name: 'Между Мирами', color: '#7868A0', glow: 'rgba(120,104,160,0.5)', desc: 'Дух, застрявший между явью и небытием' },
+  awakenedWill:{ id: 'awakenedWill', name: 'Пробуждённая Воля', color: '#D8A868', glow: 'rgba(216,168,104,0.5)', desc: 'Плоть, что обрела цель' },
+  banisher:  { id: 'banisher',  name: 'Изгоняющий',      color: '#E8D8A8', glow: 'rgba(232,216,168,0.5)', desc: 'Тот, кто не боится идти против духов' },
+  wayfinder: { id: 'wayfinder', name: 'Проводник Пути',  color: '#88B8A8', glow: 'rgba(136,184,168,0.5)', desc: 'Дух, что знает каждую точку пути' },
+  psychopomp:{ id: 'psychopomp',name: 'Проводник Душ',   color: '#3A3A52', glow: 'rgba(58,58,82,0.6)',    desc: 'Тот, кто ведёт мёртвых их последним путём' },
 };
-
 export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
 
 export const CATEGORIES = {
-  starter: { label: '🔥 Стихии', color: '#ffd700' },
-  state:   { label: '🌊 Состояния', color: '#88ddff' },
-  nature:  { label: '🌿 Природа', color: '#32cd32' },
-  metal:   { label: '⛰ Металлы', color: '#708090' },
-  artifact:{ label: '🏺 Артефакты', color: '#d2691e' },
-  magic:   { label: '🔮 Магия', color: '#9370db' },
-  cosmos:  { label: '🌌 Космос', color: '#4a6fa5' },
-  alchemy: { label: '⚗ Алхимия', color: '#7cfc00' },
+  starter:   { label: '🔥 Стихии', color: '#ffd700' },
+  state:     { label: '🌊 Состояния', color: '#88ddff' },
+  nature:    { label: '🌿 Природа', color: '#32cd32' },
+  metal:     { label: '⛰ Металлы', color: '#708090' },
+  artifact:  { label: '🏺 Артефакты', color: '#d2691e' },
+  entities:  { label: '👤 Сущности', color: '#c0508a' },
+  spirit:    { label: '👻 Дух', color: '#b8a0ff' },
+  chronomancy:{ label: '⏳ Хрономантия', color: '#b8965a' },
+  illusion:  { label: '🎭 Иллюзии', color: '#e0a0e0' },
+  magic:     { label: '🔮 Магия', color: '#9370db' },
+  cosmos:    { label: '🌌 Космос', color: '#4a6fa5' },
+  alchemy:   { label: '⚗ Алхимия', color: '#7cfc00' },
+  emotion:   { label: '💗 Чувства', color: '#E85A8A' },
+  sound:     { label: '🔔 Звук', color: '#5FB8D8' },
+  legendary: { label: '👑 Легендарное', color: '#C9A227' },
 };
 
 export const ELEMENT_CATS = {
   fire:'starter', water:'starter', earth:'starter', air:'starter', void:'starter',
+  spirit:'starter', matter:'starter', time:'starter', space:'starter', chaos:'starter', entropy:'starter',
   steam:'state', hotSteam:'state', wetSteam:'state', ice:'state', mist:'state',
   dust:'state', ash:'state', lava:'state', magma:'state', scoria:'state', mud:'state', sludge:'state', storm:'state',
+  inferno:'state', gale:'state', thunder:'state', frost:'state', bubble:'state', echo:'state',
   wood:'nature', forest:'nature', flower:'nature', life:'nature', swamp:'nature', poison:'nature',
+  moss:'nature', spring:'nature', mountain:'nature', coral:'nature', vine:'nature', root:'nature',
+  mushroom:'nature', seed:'nature', spore:'nature', plague:'nature', parasite:'nature',
+  livingShield:'nature', guardian:'nature', canyon:'nature', whisperingWinds:'nature',
+  maelstrom:'nature', tempest:'nature', ancientGrove:'nature', treant:'nature', worldTree:'nature',
+  eternalBlight:'nature', virulentSwarm:'nature', primordialStorm:'nature', chaosStorm:'nature',
+  mourningGrove:'nature', plagueStorm:'nature',
+  erosion:'nature', decay:'nature', ruin:'nature', sprout:'nature', sapling:'nature',
+  mass:'nature', density:'nature', compression:'nature', substance:'nature', bedrock:'nature',
   metal:'metal', steel:'metal', blade:'metal', rust:'metal', stone:'metal', crystal:'metal',
+  diamond:'metal', gold:'metal', silver:'metal', iron:'metal', engine:'metal', plasmaBlade:'metal',
+  monolith:'metal', ironWill:'metal', forgeHeart:'metal', absoluteMass:'metal',
   glass:'artifact', brick:'artifact', ceramic:'artifact', clay:'artifact', crown:'artifact',
-  amulet:'artifact', rune:'artifact', prism:'artifact',
-  light:'magic', shadow:'magic', essence:'magic', ghost:'magic', golem:'magic',
-  phoenix:'magic', chimera:'magic', abyss:'magic',
+  amulet:'artifact', rune:'artifact', prism:'artifact', mirror:'artifact', clockwork:'artifact',
+  scroll:'artifact', lantern:'artifact', key:'artifact', shield:'artifact', timepiece:'artifact',
+  athanor:'artifact', philosophersEgg:'artifact', vesselOfLife:'artifact', hermeticSeal:'artifact',
+  amberRelic:'artifact', auroraCrown:'artifact', resonator:'artifact', grimoire:'artifact',
+  necronomicon:'artifact', oneirograph:'artifact', possessedArmor:'artifact',
+  golemCore:'artifact', worldAnvil:'artifact', spatialAnchor:'artifact',
+  lighthouse:'artifact',
+  // entities — разумные существа и лорды
+  golem:'entities', ghost:'entities', phoenix:'entities', chimera:'entities',
+  siren:'entities', fairy:'entities', phantom:'entities', homunculus:'entities',
+  adept:'entities', basilisk:'entities', wyvern:'entities', leviathan:'entities',
+  trickster:'entities', nemesis:'entities', revenant:'entities', sentinel:'entities',
+  banshee:'entities', lich:'entities', abyssalSovereign:'entities',
+  deathlessWarden:'entities', wraithLord:'entities', titan:'entities',
+  chaosBeast:'entities', voidSpawn:'entities',
+  rex:'entities', regina:'entities', rebis:'entities',
+  choirOfSorrow:'entities', fatebreaker:'entities',
+  guardian:'entities', willOWisp:'entities', deathKnight:'entities',
+  elementalWarden:'entities',
+  hollow:'entities',
+  faithfulFlame:'entities',
+  husk:'entities', ardentGuardian:'entities',
+  gravewarden:'entities', brokenVessel:'entities',
+  fatewalker:'entities',
+  // spirit — ветка Духа
+  breath:'spirit', possession:'spirit', spellbound:'spirit', exorcism:'spirit',
+  astralForm:'spirit', spiritGuide:'spirit', seance:'spirit',
+  ancestralChorus:'spirit', transcendence:'spirit',
+  animatedFlesh:'spirit', spiritRealm:'spirit', soulJar:'spirit',
+  zeal:'spirit', tears:'spirit', fading:'spirit',
+  requiem:'spirit',
+  // chronomancy — ветка Времени
+  chronomancer:'chronomancy', paradox:'chronomancy',
+  chronosphere:'chronomancy', eternalLoop:'chronomancy',
+  temporalRift:'chronomancy', chronoWeaver:'chronomancy', reincarnation:'chronomancy',
+  instant:'chronomancy', eternity:'chronomancy', timeline:'chronomancy',
+  timepiece:'chronomancy', temporalSigil:'chronomancy',
+  locus:'chronomancy', timeShard:'chronomancy', chronicle:'chronomancy',
+  forgottenPage:'chronomancy',
+  eternalPunishment:'chronomancy', cosmicArchive:'chronomancy',
+  // illusion — ветка Иллюзий
+  illusion:'illusion', mirage:'illusion', spectrum:'illusion',
+  parallelWorld:'illusion', dreamRealm:'illusion', somnium:'illusion',
+  selfDeception:'illusion', phantomMemory:'illusion', crossroads:'illusion',
+  forgottenDream:'illusion', prophecy:'illusion', afterimage:'illusion',
+  hope:'emotion', fear:'emotion', anger:'emotion', love:'emotion', courage:'emotion',
+  serenity:'emotion', envy:'emotion', nostalgia:'emotion', wonder:'emotion',
+  pride:'emotion', compassion:'emotion', catharsis:'emotion',
+  whisper:'sound', silence:'sound', cacophony:'sound', harmony:'sound',
+  thunderclap:'sound', reverberation:'sound', lullaby:'sound', warcry:'sound',
+  symphony:'sound', resonanceOfWorlds:'sound',
+  copper:'metal', bronze:'metal', platinum:'metal', wire:'metal', magnet:'metal',
+  temperedBlade:'metal', chainmail:'metal', filigree:'metal', adamant:'metal',
+  relicBlade:'metal',
+  worldsmith:'entities',
+  invocation:'spirit', geas:'spirit', celestialBody:'spirit', spiritVoice:'spirit',
+  eternalPrison:'spirit', eternalMourning:'spirit', betweenWorlds:'spirit', awakenedWill:'spirit',
+  banisher:'entities', wayfinder:'entities', psychopomp:'entities',
+  // magic — оставшиеся 14
+  light:'magic', shadow:'magic', essence:'magic', abyss:'magic',
+  rift:'magic', wand:'magic', curse:'magic',
+  overcharge:'magic', cataclysm:'magic', stasis:'magic',
+  spark:'magic', discord:'magic', anarchy:'magic', extinction:'magic',
+  veil:'magic', shroud:'magic',
+  futility:'magic',
+  purpose:'magic',
+  elementalConfluence:'magic', fifthElement:'magic', elementalRupture:'magic',
   ether:'cosmos', star:'cosmos', nova:'cosmos', meteor:'cosmos',
+  moon:'cosmos', sun:'cosmos', galaxy:'cosmos', eclipse:'cosmos',
+  quintessence:'cosmos', macrocosm:'cosmos', voidRift:'cosmos',
+  axis:'cosmos',
+  worldsEnd:'cosmos', genesis:'cosmos', axisKeeper:'cosmos',
+  blackHole:'cosmos', singularity:'cosmos', aurora:'cosmos',
+  vacuum:'cosmos', nebula:'cosmos', multiverse:'cosmos',
+  maelchaos:'cosmos', heatDeath:'cosmos',
+  horizon:'cosmos', dimension:'cosmos', voidExpanse:'cosmos',
+  infiniteRealms:'cosmos', entropyField:'cosmos', voidCollapse:'cosmos',
   potion:'alchemy', acid:'alchemy', pearl:'alchemy', sand:'alchemy', obsidian:'alchemy',
   fossil:'alchemy', geyser:'alchemy', hurricane:'alchemy', lightning:'alchemy',
-  plasma:'alchemy', death:'alchemy',
-  inferno:'state', spring:'nature', mountain:'nature', gale:'state', rift:'magic',
-  moss:'nature', coral:'nature', amber:'alchemy', mirage:'magic', eclipse:'cosmos',
-  thunder:'state', diamond:'metal', mirror:'artifact', siren:'magic', clockwork:'artifact',
-  frost:'state', bubble:'state', echo:'state', vine:'nature', root:'nature',
-  mushroom:'nature', seed:'nature', gold:'metal', silver:'metal', iron:'metal',
-  scroll:'artifact', lantern:'artifact', key:'artifact', shield:'artifact',
-  wand:'magic', curse:'magic', fairy:'magic', phantom:'magic',
-  moon:'cosmos', sun:'cosmos', galaxy:'cosmos',
-  elixir:'alchemy', catalyst:'alchemy', salt:'alchemy',
+  plasma:'alchemy', death:'alchemy', amber:'alchemy', elixir:'alchemy',
+  catalyst:'alchemy', salt:'alchemy', rawSulfur:'alchemy', rawMercury:'alchemy',
+  sulfurPhil:'alchemy', mercuryPhil:'alchemy', saltPhil:'alchemy',
+  nigredo:'alchemy', albedo:'alchemy', citrinitas:'alchemy', rubedo:'alchemy',
+  azoth:'alchemy', solve:'alchemy', coagula:'alchemy', alkahest:'alchemy',
+  elixirVitae:'alchemy', ambrosia:'alchemy', ignition:'alchemy',
+  primeMatter:'alchemy', volatileMatter:'alchemy',
+  cosmicMonarch:'cosmos',
+  legendary: 'legendary', philosophersStone:'legendary',
+  aurumPotabile:'legendary', panacea:'legendary', animaMundi:'legendary',
+  apocalypse:'legendary', greatBinding:'legendary',
+  masterOfTime:'legendary', masterOfSpace:'legendary',
+  spacetimeContinuum:'legendary',
+  chaosLord:'legendary', entropyLord:'legendary', oblivion:'legendary',
 };
+
+export const LEGENDARY_IDS = Object.entries(ELEMENT_CATS)
+  .filter(([id, cat]) => cat === 'legendary' && ELEMENTS[id])
+  .map(([id]) => id);
+
+export const UNLOCKABLE_STARTERS = [
+  { id: 'spirit',  unlockedBy: 'philosophersStone' },
+  { id: 'matter',  unlockedBy: 'philosophersStone' },
+  { id: 'time',    unlockedBy: 'animaMundi' },
+  { id: 'space',   unlockedBy: 'animaMundi' },
+  { id: 'chaos',   unlockedBy: 'apocalypse' },
+  { id: 'entropy', unlockedBy: 'apocalypse' },
+];
 
 export const RECIPES = [
   { inputs: [{ id: 'fire', a: 1 }, { id: 'water', a: 1 }], output: 'steam' },
@@ -167,13 +571,12 @@ export const RECIPES = [
   { inputs: [{ id: 'water', a: 1 }, { id: 'dust', a: 1 }], output: 'sand' },
   { inputs: [{ id: 'air', a: 1 }, { id: 'dust', a: 1 }], output: 'sand' },
   { inputs: [{ id: 'fire', a: 1 }, { id: 'sand', a: 1 }], output: 'glass' },
-  { inputs: [{ id: 'fire', a: 1 }, { id: 'mud', a: 1 }], output: 'brick' },
+  { inputs: [{ id: 'clay', a: 2 }, { id: 'fire', a: 1 }], output: 'brick', ratio: { id: 'clay', min: 1.5, max: Infinity } },
   { inputs: [{ id: 'mud', a: 1 }, { id: 'shadow', a: 1 }], output: 'poison' },
   { inputs: [{ id: 'light', a: 1 }, { id: 'water', a: 1 }], output: 'life' },
   { inputs: [{ id: 'shadow', a: 1 }, { id: 'void', a: 1 }], output: 'death' },
   { inputs: [{ id: 'light', a: 1 }, { id: 'shadow', a: 1 }], output: 'essence' },
   { inputs: [{ id: 'steam', a: 1 }, { id: 'air', a: 1 }], output: 'mist' },
-  { inputs: [{ id: 'fire', a: 1 }, { id: 'stone', a: 1 }], output: 'lava' },
   { inputs: [{ id: 'water', a: 1 }, { id: 'stone', a: 1 }], output: 'sand' },
   { inputs: [{ id: 'life', a: 1 }, { id: 'death', a: 1 }], output: 'essence' },
   { inputs: [{ id: 'ice', a: 1 }, { id: 'fire', a: 1 }], output: 'steam' },
@@ -184,7 +587,6 @@ export const RECIPES = [
   { inputs: [{ id: 'mud', a: 1 }, { id: 'earth', a: 1 }], output: 'clay' },
   { inputs: [{ id: 'fire', a: 1 }, { id: 'clay', a: 1 }], output: 'ceramic' },
   { inputs: [{ id: 'mud', a: 1 }, { id: 'poison', a: 1 }], output: 'swamp' },
-  { inputs: [{ id: 'wood', a: 1 }, { id: 'earth', a: 1 }], output: 'forest' },
   { inputs: [{ id: 'wood', a: 1 }, { id: 'light', a: 1 }], output: 'flower' },
   { inputs: [{ id: 'sand', a: 1 }, { id: 'light', a: 1 }], output: 'pearl' },
   { inputs: [{ id: 'metal', a: 1 }, { id: 'fire', a: 1 }], output: 'steel' },
@@ -193,7 +595,6 @@ export const RECIPES = [
   { inputs: [{ id: 'stone', a: 1 }, { id: 'light', a: 1 }], output: 'rune' },
   { inputs: [{ id: 'water', a: 1 }, { id: 'crystal', a: 1 }], output: 'potion' },
   { inputs: [{ id: 'shadow', a: 1 }, { id: 'ether', a: 1 }], output: 'ghost' },
-  { inputs: [{ id: 'stone', a: 1 }, { id: 'life', a: 1 }], output: 'golem' },
   { inputs: [{ id: 'storm', a: 1 }, { id: 'water', a: 1 }], output: 'hurricane' },
   { inputs: [{ id: 'fire', a: 1 }, { id: 'shadow', a: 1 }], output: 'obsidian' },
   { inputs: [{ id: 'crystal', a: 1 }, { id: 'rune', a: 1 }], output: 'amulet' },
@@ -237,7 +638,6 @@ export const RECIPES = [
   { inputs: [{ id: 'fossil', a: 1 }, { id: 'light', a: 1 }], output: 'amber' },
   { inputs: [{ id: 'void', a: 1 }, { id: 'light', a: 1 }], output: 'mirage' },
   { inputs: [{ id: 'dust', a: 1 }, { id: 'light', a: 1 }], output: 'mirage' },
-  { inputs: [{ id: 'light', a: 1 }, { id: 'shadow', a: 1 }], output: 'eclipse' },
   { inputs: [{ id: 'essence', a: 1 }, { id: 'void', a: 1 }], output: 'eclipse' },
   { inputs: [{ id: 'lightning', a: 1 }, { id: 'storm', a: 1 }], output: 'thunder' },
   { inputs: [{ id: 'air', a: 1 }, { id: 'storm', a: 1 }], output: 'thunder' },
@@ -256,7 +656,7 @@ export const RECIPES = [
   { inputs: [{ id: 'rust', a: 1 }, { id: 'fire', a: 1 }], output: 'metal' },
   { inputs: [{ id: 'blade', a: 1 }, { id: 'rune', a: 1 }], output: 'clockwork' },
   { inputs: [{ id: 'crown', a: 1 }, { id: 'crystal', a: 1 }], output: 'amulet' },
-  { inputs: [{ id: 'pearl', a: 1 }, { id: 'potion', a: 1 }], output: 'amber' },
+  { inputs: [{ id: 'wood', a: 1 }, { id: 'fossil', a: 1 }], output: 'amber' },
   { inputs: [{ id: 'meteor', a: 1 }, { id: 'fire', a: 1 }], output: 'nova' },
   { inputs: [{ id: 'nova', a: 1 }, { id: 'void', a: 1 }], output: 'star' },
   { inputs: [{ id: 'golem', a: 1 }, { id: 'essence', a: 1 }], output: 'chimera' },
@@ -274,7 +674,6 @@ export const RECIPES = [
   { inputs: [{ id: 'life', a: 1 }, { id: 'wood', a: 1 }], output: 'vine' },
   // root
   { inputs: [{ id: 'earth', a: 1 }, { id: 'wood', a: 1 }], output: 'root' },
-  { inputs: [{ id: 'earth', a: 1 }, { id: 'flower', a: 1 }], output: 'root' },
   // mushroom
   { inputs: [{ id: 'swamp', a: 1 }, { id: 'life', a: 1 }], output: 'mushroom' },
   { inputs: [{ id: 'wood', a: 1 }, { id: 'moss', a: 1 }], output: 'mushroom' },
@@ -302,7 +701,7 @@ export const RECIPES = [
   { inputs: [{ id: 'gold', a: 1 }, { id: 'rune', a: 1 }], output: 'key' },
   // shield
   { inputs: [{ id: 'steel', a: 1 }, { id: 'earth', a: 1 }], output: 'shield' },
-  { inputs: [{ id: 'iron', a: 1 }, { id: 'clay', a: 1 }], output: 'shield' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'wood', a: 1 }], output: 'shield' },
   // wand
   { inputs: [{ id: 'wood', a: 1 }, { id: 'essence', a: 1 }], output: 'wand' },
   { inputs: [{ id: 'wood', a: 1 }, { id: 'crystal', a: 1 }], output: 'wand' },
@@ -320,7 +719,6 @@ export const RECIPES = [
   { inputs: [{ id: 'silver', a: 1 }, { id: 'void', a: 1 }], output: 'moon' },
   // sun
   { inputs: [{ id: 'star', a: 1 }, { id: 'fire', a: 1 }], output: 'sun' },
-  { inputs: [{ id: 'fire', a: 1 }, { id: 'essence', a: 1 }], output: 'sun' },
   // galaxy
   { inputs: [{ id: 'star', a: 2 }], output: 'galaxy' },
   { inputs: [{ id: 'nova', a: 1 }, { id: 'ether', a: 1 }], output: 'galaxy' },
@@ -357,6 +755,333 @@ export const RECIPES = [
   { inputs: [{ id: 'clockwork', a: 1 }, { id: 'essence', a: 1 }], output: 'golem' },
   { inputs: [{ id: 'flower', a: 1 }, { id: 'shadow', a: 1 }], output: 'curse' },
   { inputs: [{ id: 'mountain', a: 1 }, { id: 'earth', a: 1 }], output: 'stone' },
+  // Tria Prima
+  { inputs: [{ id: 'stone', a: 1 }, { id: 'fire', a: 1 }], output: 'rawSulfur' },
+  { inputs: [{ id: 'moon', a: 1 }, { id: 'metal', a: 1 }], output: 'rawMercury' },
+  { inputs: [{ id: 'rawSulfur', a: 1 }, { id: 'essence', a: 1 }], output: 'sulfurPhil' },
+  { inputs: [{ id: 'rawMercury', a: 1 }, { id: 'ether', a: 1 }], output: 'mercuryPhil' },
+  { inputs: [{ id: 'salt', a: 1 }, { id: 'light', a: 1 }], output: 'saltPhil' },
+  // Magnum Opus
+  { inputs: [{ id: 'death', a: 1 }, { id: 'shadow', a: 1 }], output: 'nigredo' },
+  { inputs: [{ id: 'nigredo', a: 1 }, { id: 'light', a: 1 }], output: 'albedo' },
+  { inputs: [{ id: 'albedo', a: 1 }, { id: 'sulfurPhil', a: 1 }], output: 'citrinitas' },
+  { inputs: [{ id: 'citrinitas', a: 1 }, { id: 'mercuryPhil', a: 1 }], output: 'rubedo' },
+  // Rebis
+  { inputs: [{ id: 'gold', a: 1 }, { id: 'sun', a: 1 }], output: 'rex' },
+  { inputs: [{ id: 'silver', a: 1 }, { id: 'moon', a: 1 }], output: 'regina' },
+  { inputs: [{ id: 'rex', a: 1 }, { id: 'regina', a: 1 }], output: 'rebis' },
+  // Athanor
+  { inputs: [{ id: 'brick', a: 1 }, { id: 'fire', a: 1 }], output: 'athanor' },
+  { inputs: [{ id: 'athanor', a: 1 }, { id: 'glass', a: 1 }], output: 'philosophersEgg' },
+  // Quintessence
+  { inputs: [{ id: 'ether', a: 1 }, { id: 'essence', a: 1 }], output: 'quintessence' },
+  // Philosopher's Stone (10 units — full cauldron)
+  { inputs: [
+    { id: 'sulfurPhil', a: 1 }, { id: 'mercuryPhil', a: 1 }, { id: 'saltPhil', a: 1 },
+    { id: 'rubedo', a: 1 },
+    { id: 'rebis', a: 1 },
+    { id: 'philosophersEgg', a: 1 },
+    { id: 'quintessence', a: 1 },
+    { id: 'elixir', a: 1 }, { id: 'catalyst', a: 1 }, { id: 'essence', a: 1 },
+  ], output: 'philosophersStone' },
+  // Solve et Coagula
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'quintessence', a: 1 }], output: 'azoth' },
+  { inputs: [{ id: 'azoth', a: 1 }, { id: 'acid', a: 1 }], output: 'solve' },
+  { inputs: [{ id: 'azoth', a: 1 }, { id: 'saltPhil', a: 1 }], output: 'coagula' },
+  { inputs: [{ id: 'solve', a: 1 }, { id: 'coagula', a: 1 }], output: 'alkahest' },
+  // Микрокосм
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'clay', a: 1 }, { id: 'life', a: 1 }], output: 'vesselOfLife' },
+  { inputs: [{ id: 'vesselOfLife', a: 1 }, { id: 'azoth', a: 1 }], output: 'homunculus' },
+  { inputs: [{ id: 'homunculus', a: 1 }, { id: 'panacea', a: 1 }], output: 'adept' },
+  // Эликсиры
+  { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'gold', a: 1 }, { id: 'sun', a: 1 }, { id: 'phoenix', a: 1 }, { id: 'cosmicMonarch', a: 1 }], output: 'aurumPotabile' },
+  { inputs: [{ id: 'aurumPotabile', a: 1 }, { id: 'elixir', a: 1 }], output: 'elixirVitae' },
+  { inputs: [{ id: 'elixirVitae', a: 1 }, { id: 'azoth', a: 1 }, { id: 'life', a: 1 }, { id: 'phoenix', a: 1 }, { id: 'deathlessWarden', a: 1 }], output: 'panacea' },
+  { inputs: [{ id: 'panacea', a: 1 }, { id: 'alkahest', a: 1 }], output: 'ambrosia' },
+  // Макрокосм
+  { inputs: [{ id: 'quintessence', a: 1 }, { id: 'galaxy', a: 1 }], output: 'macrocosm' },
+  { inputs: [{ id: 'adept', a: 1 }, { id: 'macrocosm', a: 1 }], output: 'hermeticSeal' },
+  // Финал второго слоя
+  { inputs: [
+    { id: 'alkahest', a: 1 }, { id: 'ambrosia', a: 1 },
+    { id: 'hermeticSeal', a: 1 }, { id: 'azoth', a: 1 },
+  ], output: 'animaMundi' },
+  // Мутация
+  { inputs: [{ id: 'chimera', a: 1 }, { id: 'poison', a: 1 }], output: 'basilisk' },
+  { inputs: [{ id: 'chimera', a: 1 }, { id: 'storm', a: 1 }], output: 'wyvern' },
+  { inputs: [{ id: 'basilisk', a: 1 }, { id: 'wyvern', a: 1 }], output: 'leviathan' },
+  // Поглощение
+  { inputs: [{ id: 'eclipse', a: 1 }, { id: 'abyss', a: 1 }], output: 'voidRift' },
+  { inputs: [{ id: 'voidRift', a: 1 }, { id: 'star', a: 1 }], output: 'blackHole' },
+  { inputs: [{ id: 'blackHole', a: 1 }, { id: 'galaxy', a: 1 }], output: 'singularity' },
+  // Иллюзия
+  { inputs: [{ id: 'siren', a: 1 }, { id: 'mirror', a: 1 }], output: 'illusion' },
+  { inputs: [{ id: 'illusion', a: 1 }, { id: 'fairy', a: 1 }], output: 'trickster' },
+  { inputs: [{ id: 'trickster', a: 1 }, { id: 'curse', a: 1 }], output: 'nemesis' },
+  // Время
+  { inputs: [{ id: 'key', a: 1 }, { id: 'clockwork', a: 1 }], output: 'timepiece' },
+  { inputs: [{ id: 'timepiece', a: 1 }, { id: 'rune', a: 1 }], output: 'chronomancer' },
+  { inputs: [{ id: 'chronomancer', a: 1 }, { id: 'rift', a: 1 }], output: 'paradox' },
+  // Разложение
+  { inputs: [{ id: 'mushroom', a: 1 }, { id: 'poison', a: 1 }], output: 'spore' },
+  { inputs: [{ id: 'spore', a: 1 }, { id: 'swamp', a: 1 }], output: 'plague' },
+  { inputs: [{ id: 'plague', a: 1 }, { id: 'life', a: 1 }], output: 'parasite' },
+  // Катализ
+  { inputs: [{ id: 'catalyst', a: 1 }, { id: 'lightning', a: 1 }], output: 'ignition' },
+  { inputs: [{ id: 'ignition', a: 1 }, { id: 'metal', a: 1 }], output: 'engine' },
+  // Янтарь
+  { inputs: [{ id: 'amber', a: 1 }, { id: 'fossil', a: 1 }], output: 'amberRelic' },
+  { inputs: [{ id: 'amberRelic', a: 1 }, { id: 'life', a: 1 }], output: 'revenant' },
+  // Спектр
+  { inputs: [{ id: 'prism', a: 1 }, { id: 'mirage', a: 1 }], output: 'spectrum' },
+  { inputs: [{ id: 'spectrum', a: 1 }, { id: 'storm', a: 1 }], output: 'aurora' },
+  { inputs: [{ id: 'aurora', a: 1 }, { id: 'ice', a: 1 }], output: 'auroraCrown' },
+  // Страж
+  { inputs: [{ id: 'shield', a: 1 }, { id: 'vine', a: 1 }], output: 'livingShield' },
+  { inputs: [{ id: 'livingShield', a: 1 }, { id: 'root', a: 1 }], output: 'guardian' },
+  { inputs: [{ id: 'guardian', a: 1 }, { id: 'forest', a: 1 }], output: 'sentinel' },
+  // Эхо
+  { inputs: [{ id: 'echo', a: 1 }, { id: 'mountain', a: 1 }], output: 'canyon' },
+  { inputs: [{ id: 'canyon', a: 1 }, { id: 'gale', a: 1 }], output: 'whisperingWinds' },
+  { inputs: [{ id: 'whisperingWinds', a: 1 }, { id: 'ghost', a: 1 }], output: 'banshee' },
+  // Технологии
+  { inputs: [{ id: 'obsidian', a: 1 }, { id: 'plasma', a: 1 }], output: 'plasmaBlade' },
+  { inputs: [{ id: 'plasmaBlade', a: 1 }, { id: 'crystal', a: 1 }], output: 'resonator' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'lightning', a: 1 }], output: 'overcharge' },
+  // Катаклизмы
+  { inputs: [{ id: 'geyser', a: 1 }, { id: 'hurricane', a: 1 }], output: 'maelstrom' },
+  { inputs: [{ id: 'maelstrom', a: 1 }, { id: 'storm', a: 1 }], output: 'tempest' },
+  { inputs: [{ id: 'tempest', a: 1 }, { id: 'earth', a: 1 }], output: 'cataclysm' },
+  // Сон/заморозка
+  { inputs: [{ id: 'frost', a: 1 }, { id: 'bubble', a: 1 }], output: 'stasis' },
+  { inputs: [{ id: 'stasis', a: 1 }, { id: 'ghost', a: 1 }], output: 'dreamRealm' },
+  { inputs: [{ id: 'dreamRealm', a: 1 }, { id: 'moon', a: 1 }], output: 'somnium' },
+  // Древний лес
+  { inputs: [{ id: 'forest', a: 1 }, { id: 'moss', a: 1 }], output: 'ancientGrove' },
+  { inputs: [{ id: 'ancientGrove', a: 1 }, { id: 'life', a: 1 }], output: 'treant' },
+  { inputs: [{ id: 'treant', a: 1 }, { id: 'essence', a: 1 }], output: 'worldTree' },
+  // Некромантия
+  { inputs: [{ id: 'scroll', a: 1 }, { id: 'phantom', a: 1 }], output: 'grimoire' },
+  { inputs: [{ id: 'grimoire', a: 1 }, { id: 'curse', a: 1 }], output: 'necronomicon' },
+  { inputs: [{ id: 'necronomicon', a: 1 }, { id: 'death', a: 1 }], output: 'lich' },
+  // Кросс-комбо
+  { inputs: [{ id: 'leviathan', a: 1 }, { id: 'maelstrom', a: 1 }], output: 'abyssalSovereign' },
+  { inputs: [{ id: 'lich', a: 1 }, { id: 'worldTree', a: 1 }], output: 'eternalBlight' },
+  { inputs: [{ id: 'banshee', a: 1 }, { id: 'necronomicon', a: 1 }], output: 'choirOfSorrow' },
+  { inputs: [{ id: 'singularity', a: 1 }, { id: 'auroraCrown', a: 1 }], output: 'cosmicMonarch' },
+  { inputs: [{ id: 'nemesis', a: 1 }, { id: 'paradox', a: 1 }], output: 'fatebreaker' },
+  { inputs: [{ id: 'parasite', a: 1 }, { id: 'overcharge', a: 1 }], output: 'virulentSwarm' },
+  { inputs: [{ id: 'somnium', a: 1 }, { id: 'engine', a: 1 }], output: 'oneirograph' },
+  { inputs: [{ id: 'sentinel', a: 1 }, { id: 'revenant', a: 1 }], output: 'deathlessWarden' },
+  { inputs: [{ id: 'cataclysm', a: 1 }, { id: 'abyssalSovereign', a: 1 }, { id: 'blackHole', a: 1 }, { id: 'singularity', a: 1 }, { id: 'voidExpanse', a: 1 }], output: 'apocalypse' },
+  // Дух
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'ghost', a: 1 }],      output: 'possession' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'wand', a: 1 }],       output: 'spellbound' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'air', a: 1 }],        output: 'breath' },
+  { inputs: [{ id: 'spirit', a: 2 }], output: 'astralForm' },
+  { inputs: [{ id: 'possession', a: 1 }, { id: 'spellbound', a: 1 }, { id: 'light', a: 1 }], output: 'exorcism' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'amulet', a: 1 }],   output: 'soulJar' },
+  { inputs: [{ id: 'astralForm', a: 1 }, { id: 'breath', a: 1 }, { id: 'fairy', a: 1 }], output: 'spiritGuide' },
+  { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'mirror', a: 1 }, { id: 'scroll', a: 1 }], output: 'seance' },
+  { inputs: [{ id: 'possession', a: 1 }, { id: 'livingShield', a: 1 }, { id: 'metal', a: 1 }], output: 'possessedArmor' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'phantom', a: 1 }, { id: 'curse', a: 1 }], output: 'wraithLord' },
+  { inputs: [{ id: 'spiritGuide', a: 3 }], output: 'ancestralChorus' },
+  { inputs: [{ id: 'seance', a: 1 }, { id: 'wraithLord', a: 1 }], output: 'spiritRealm' },
+  { inputs: [{ id: 'spiritRealm', a: 1 }, { id: 'ancestralChorus', a: 1 }, { id: 'azoth', a: 1 }, { id: 'soulJar', a: 1 }], output: 'transcendence' },
+  // Материя
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'stone', a: 1 }],      output: 'mass' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'earth', a: 1 }],      output: 'substance' },
+  { inputs: [{ id: 'mass', a: 1 }, { id: 'gold', a: 1 }],         output: 'density' },
+  { inputs: [{ id: 'matter', a: 2 }], output: 'bedrock' },
+  { inputs: [{ id: 'density', a: 1 }, { id: 'crystal', a: 1 }, { id: 'substance', a: 1 }], output: 'compression' },
+  { inputs: [{ id: 'bedrock', a: 1 }, { id: 'compression', a: 1 }], output: 'monolith' },
+  { inputs: [{ id: 'monolith', a: 1 }, { id: 'golem', a: 1 }, { id: 'rune', a: 1 }], output: 'golemCore' },
+  { inputs: [{ id: 'golemCore', a: 1 }, { id: 'iron', a: 1 }, { id: 'steel', a: 1 }], output: 'ironWill' },
+  { inputs: [{ id: 'ironWill', a: 1 }, { id: 'engine', a: 1 }, { id: 'ignition', a: 1 }], output: 'forgeHeart' },
+  { inputs: [{ id: 'monolith', a: 2 }, { id: 'worldTree', a: 1 }], output: 'worldAnvil' },
+  { inputs: [{ id: 'compression', a: 3 }], output: 'absoluteMass' },
+  { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'worldAnvil', a: 1 }], output: 'titan' },
+  { inputs: [{ id: 'titan', a: 1 }, { id: 'absoluteMass', a: 1 }, { id: 'matter', a: 2 }], output: 'primeMatter' },
+  // Слияние
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'matter', a: 1 }], output: 'animatedFlesh' },
+  { inputs: [{ id: 'transcendence', a: 1 }, { id: 'primeMatter', a: 1 }, { id: 'animatedFlesh', a: 1 }, { id: 'philosophersStone', a: 1 }], output: 'greatBinding' },
+  // Время
+  { inputs: [{ id: 'time', a: 1 }, { id: 'air', a: 1 }],           output: 'instant' },
+  { inputs: [{ id: 'time', a: 1 }, { id: 'clockwork', a: 1 }],     output: 'chronosphere' },
+  { inputs: [{ id: 'time', a: 2 }], output: 'eternity' },
+  { inputs: [{ id: 'chronosphere', a: 1 }, { id: 'moon', a: 1 }],  output: 'eternalLoop' },
+  { inputs: [{ id: 'eternalLoop', a: 1 }, { id: 'paradox', a: 1 }], output: 'temporalRift' },
+  { inputs: [{ id: 'instant', a: 1 }, { id: 'eternity', a: 1 }, { id: 'eternalLoop', a: 1 }], output: 'timeline' },
+  { inputs: [{ id: 'timeline', a: 1 }, { id: 'phoenix', a: 1 }],   output: 'reincarnation' },
+  { inputs: [{ id: 'temporalRift', a: 1 }, { id: 'reincarnation', a: 1 }], output: 'chronoWeaver' },
+  { inputs: [{ id: 'chronoWeaver', a: 1 }, { id: 'rune', a: 2 }],  output: 'temporalSigil' },
+  { inputs: [{ id: 'timeline', a: 1 }, { id: 'temporalSigil', a: 1 }, { id: 'chronoWeaver', a: 1 }], output: 'masterOfTime' },
+  // Пространство
+  { inputs: [{ id: 'space', a: 1 }, { id: 'void', a: 1 }],          output: 'vacuum' },
+  { inputs: [{ id: 'space', a: 1 }, { id: 'air', a: 1 }],           output: 'horizon' },
+  { inputs: [{ id: 'space', a: 2 }], output: 'dimension' },
+  { inputs: [{ id: 'vacuum', a: 1 }, { id: 'star', a: 1 }],         output: 'nebula' },
+  { inputs: [{ id: 'nebula', a: 1 }, { id: 'galaxy', a: 1 }],       output: 'multiverse' },
+  { inputs: [{ id: 'horizon', a: 1 }, { id: 'dimension', a: 1 }, { id: 'vacuum', a: 1 }], output: 'voidExpanse' },
+  { inputs: [{ id: 'voidExpanse', a: 1 }, { id: 'mirror', a: 1 }],  output: 'parallelWorld' },
+  { inputs: [{ id: 'multiverse', a: 1 }, { id: 'parallelWorld', a: 1 }], output: 'infiniteRealms' },
+  { inputs: [{ id: 'infiniteRealms', a: 1 }, { id: 'amulet', a: 2 }], output: 'spatialAnchor' },
+  { inputs: [{ id: 'voidExpanse', a: 1 }, { id: 'spatialAnchor', a: 1 }, { id: 'infiniteRealms', a: 1 }], output: 'masterOfSpace' },
+  // Финальное слияние
+  { inputs: [{ id: 'masterOfTime', a: 1 }, { id: 'masterOfSpace', a: 1 }, { id: 'animaMundi', a: 1 }], output: 'spacetimeContinuum' },
+  // Хаос
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'lightning', a: 1 }],   output: 'spark' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'curse', a: 1 }],       output: 'discord' },
+  { inputs: [{ id: 'chaos', a: 2 }], output: 'chaosStorm' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'storm', a: 1 }],       output: 'maelchaos' },
+  { inputs: [{ id: 'discord', a: 1 }, { id: 'rift', a: 1 }, { id: 'spark', a: 1 }], output: 'anarchy' },
+  { inputs: [{ id: 'maelchaos', a: 1 }, { id: 'anarchy', a: 1 }], output: 'primordialStorm' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'chimera', a: 1 }],     output: 'chaosBeast' },
+  { inputs: [{ id: 'anarchy', a: 1 }, { id: 'abyss', a: 1 }],     output: 'voidSpawn' },
+  { inputs: [{ id: 'chaosBeast', a: 1 }, { id: 'voidSpawn', a: 1 }, { id: 'chaosStorm', a: 2 }], output: 'chaosLord' },
+  // Энтропия
+  { inputs: [{ id: 'entropy', a: 1 }, { id: 'rust', a: 1 }],      output: 'decay' },
+  { inputs: [{ id: 'entropy', a: 1 }, { id: 'water', a: 1 }],     output: 'erosion' },
+  { inputs: [{ id: 'entropy', a: 2 }], output: 'entropyField' },
+  { inputs: [{ id: 'decay', a: 1 }, { id: 'dust', a: 1 }],        output: 'ruin' },
+  { inputs: [{ id: 'ruin', a: 1 }, { id: 'death', a: 1 }, { id: 'erosion', a: 1 }], output: 'extinction' },
+  { inputs: [{ id: 'entropyField', a: 1 }, { id: 'extinction', a: 1 }], output: 'heatDeath' },
+  { inputs: [{ id: 'heatDeath', a: 1 }, { id: 'abyss', a: 1 }],   output: 'voidCollapse' },
+  { inputs: [{ id: 'extinction', a: 1 }, { id: 'voidCollapse', a: 1 }, { id: 'entropyField', a: 1 }], output: 'entropyLord' },
+  // Финальное слияние
+  { inputs: [{ id: 'chaosLord', a: 1 }, { id: 'entropyLord', a: 1 }, { id: 'apocalypse', a: 1 }], output: 'oblivion' },
+  // Мосты — новые элементы
+  { inputs: [{ id: 'lantern', a: 1 }, { id: 'ghost', a: 1 }],           output: 'willOWisp' },
+  { inputs: [{ id: 'lantern', a: 1 }, { id: 'storm', a: 1 }],           output: 'lighthouse' },
+  { inputs: [{ id: 'mist', a: 1 }, { id: 'shadow', a: 1 }],             output: 'veil' },
+  { inputs: [{ id: 'veil', a: 1 }, { id: 'phantom', a: 1 }],            output: 'shroud' },
+  { inputs: [{ id: 'seed', a: 1 }, { id: 'water', a: 1 }],              output: 'sprout' },
+  { inputs: [{ id: 'sprout', a: 1 }, { id: 'sun', a: 1 }],              output: 'sapling' },
+  { inputs: [{ id: 'sapling', a: 1 }, { id: 'forest', a: 1 }],          output: 'ancientGrove' },
+  { inputs: [{ id: 'possessedArmor', a: 1 }, { id: 'wraithLord', a: 1 }], output: 'deathKnight' },
+  // Альт-пути для бутылочных горлышек
+  { inputs: [{ id: 'ether', a: 1 }, { id: 'fire', a: 1 }],              output: 'light' },
+  { inputs: [{ id: 'spring', a: 1 }, { id: 'earth', a: 1 }],            output: 'life' },
+  { inputs: [{ id: 'ash', a: 1 }, { id: 'void', a: 1 }],                output: 'shadow' },
+  { inputs: [{ id: 'stone', a: 1 }, { id: 'lightning', a: 1 }],         output: 'crystal' },
+  { inputs: [{ id: 'mountain', a: 1 }, { id: 'life', a: 1 }],              output: 'wood' },
+  { inputs: [{ id: 'rift', a: 1 }, { id: 'stone', a: 1 }],              output: 'death' },
+  { inputs: [{ id: 'gale', a: 1 }, { id: 'fire', a: 1 }],               output: 'lightning' },
+  { inputs: [{ id: 'crystal', a: 1 }, { id: 'essence', a: 1 }],         output: 'rune' },
+  // Средоточие Стихий
+  { inputs: [{ id: 'fire', a: 1 }, { id: 'water', a: 1 }, { id: 'air', a: 1 }, { id: 'earth', a: 1 }], output: 'elementalConfluence' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'void', a: 1 }],  output: 'fifthElement' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'guardian', a: 1 }], output: 'elementalWarden' },
+  { inputs: [{ id: 'elementalConfluence', a: 1 }, { id: 'chaos', a: 1 }], output: 'elementalRupture' },
+  { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'essence', a: 1 }],    output: 'quintessence' },
+  // Мосты между базовыми и вторыми стихиями
+  { inputs: [{ id: 'fire', a: 1 }, { id: 'spirit', a: 1 }],             output: 'zeal' },
+  { inputs: [{ id: 'water', a: 1 }, { id: 'spirit', a: 1 }],            output: 'tears' },
+  { inputs: [{ id: 'time', a: 1 }, { id: 'space', a: 1 }],              output: 'locus' },
+  { inputs: [{ id: 'chaos', a: 1 }, { id: 'entropy', a: 1 }],           output: 'futility' },
+  { inputs: [{ id: 'void', a: 1 }, { id: 'spirit', a: 1 }],             output: 'hollow' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'chaos', a: 1 }],            output: 'volatileMatter' },
+  { inputs: [{ id: 'spirit', a: 1 }, { id: 'entropy', a: 1 }],          output: 'fading' },
+  { inputs: [{ id: 'matter', a: 1 }, { id: 'time', a: 1 }],             output: 'timeShard' },
+  { inputs: [{ id: 'timeShard', a: 1 }, { id: 'oneirograph', a: 1 }],   output: 'chronicle' },
+  { inputs: [{ id: 'tears', a: 1 }, { id: 'ghost', a: 1 }],             output: 'banshee' },
+  { inputs: [{ id: 'volatileMatter', a: 1 }, { id: 'fire', a: 1 }],     output: 'plasma' },
+  // Второй слой — соединения мостов друг с другом
+  { inputs: [{ id: 'locus', a: 1 }, { id: 'zeal', a: 1 }],              output: 'purpose' },
+  { inputs: [{ id: 'tears', a: 1 }, { id: 'fading', a: 1 }],            output: 'requiem' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'volatileMatter', a: 1 }],   output: 'husk' },
+  { inputs: [{ id: 'futility', a: 1 }, { id: 'chronicle', a: 1 }],      output: 'forgottenPage' },
+  { inputs: [{ id: 'elementalWarden', a: 1 }, { id: 'zeal', a: 1 }],    output: 'ardentGuardian' },
+  { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'locus', a: 1 }],      output: 'axis' },
+  { inputs: [{ id: 'husk', a: 1 }, { id: 'abyss', a: 1 }],              output: 'voidSpawn' },
+  // Развитие старых тупиковых веток
+  { inputs: [{ id: 'willOWisp', a: 1 }, { id: 'lighthouse', a: 1 }],    output: 'faithfulFlame' },
+  { inputs: [{ id: 'shroud', a: 1 }, { id: 'deathKnight', a: 1 }],      output: 'gravewarden' },
+  { inputs: [{ id: 'choirOfSorrow', a: 1 }, { id: 'eternalBlight', a: 1 }, { id: 'tears', a: 1 }], output: 'mourningGrove' },
+  { inputs: [{ id: 'fatebreaker', a: 1 }, { id: 'chronicle', a: 1 }],   output: 'eternalPunishment' },
+  { inputs: [{ id: 'virulentSwarm', a: 1 }, { id: 'primordialStorm', a: 1 }], output: 'plagueStorm' },
+  { inputs: [{ id: 'primordialStorm', a: 1 }, { id: 'primeMatter', a: 1 }, { id: 'fifthElement', a: 1 }], output: 'genesis' },
+  { inputs: [{ id: 'lighthouse', a: 1 }, { id: 'horizon', a: 1 }],      output: 'worldsEnd' },
+  { inputs: [{ id: 'axis', a: 1 }, { id: 'ardentGuardian', a: 1 }, { id: 'purpose', a: 1 }], output: 'axisKeeper' },
+  { inputs: [{ id: 'elementalRupture', a: 1 }, { id: 'husk', a: 1 }],   output: 'brokenVessel' },
+  { inputs: [{ id: 'forgottenPage', a: 1 }, { id: 'axis', a: 1 }],      output: 'cosmicArchive' },
+  // Расширение ветки Иллюзий
+  { inputs: [{ id: 'illusion', a: 1 }, { id: 'hollow', a: 1 }],         output: 'selfDeception' },
+  { inputs: [{ id: 'mirage', a: 1 }, { id: 'tears', a: 1 }],            output: 'phantomMemory' },
+  { inputs: [{ id: 'parallelWorld', a: 1 }, { id: 'locus', a: 1 }],     output: 'crossroads' },
+  { inputs: [{ id: 'dreamRealm', a: 1 }, { id: 'fading', a: 1 }],       output: 'forgottenDream' },
+  { inputs: [{ id: 'somnium', a: 1 }, { id: 'chronicle', a: 1 }],       output: 'prophecy' },
+  { inputs: [{ id: 'spectrum', a: 1 }, { id: 'fading', a: 1 }],         output: 'afterimage' },
+  { inputs: [{ id: 'crossroads', a: 1 }, { id: 'prophecy', a: 1 }],     output: 'fatewalker' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'mirror', a: 1 }],           output: 'illusion' },
+  // Категория: Чувства
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'tears', a: 1 }],              output: 'hope' },
+  { inputs: [{ id: 'hollow', a: 1 }, { id: 'shadow', a: 1 }],           output: 'fear' },
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'chaos', a: 1 }],              output: 'anger' },
+  { inputs: [{ id: 'purpose', a: 1 }, { id: 'tears', a: 1 }],           output: 'love' },
+  { inputs: [{ id: 'fear', a: 1 }, { id: 'purpose', a: 1 }],            output: 'courage' },
+  { inputs: [{ id: 'water', a: 1 }, { id: 'locus', a: 1 }],             output: 'serenity' },
+  { inputs: [{ id: 'mirror', a: 1 }, { id: 'fear', a: 1 }],             output: 'envy' },
+  { inputs: [{ id: 'phantomMemory', a: 1 }, { id: 'requiem', a: 1 }],   output: 'nostalgia' },
+  { inputs: [{ id: 'genesis', a: 1 }, { id: 'prophecy', a: 1 }],        output: 'wonder' },
+  { inputs: [{ id: 'zeal', a: 1 }, { id: 'axis', a: 1 }],               output: 'pride' },
+  { inputs: [{ id: 'requiem', a: 1 }, { id: 'hope', a: 1 }],            output: 'compassion' },
+  { inputs: [{ id: 'anger', a: 1 }, { id: 'serenity', a: 1 }],          output: 'catharsis' },
+  // Категория: Звук
+  { inputs: [{ id: 'air', a: 1 }, { id: 'hollow', a: 1 }],              output: 'whisper' },
+  { inputs: [{ id: 'void', a: 1 }, { id: 'shroud', a: 1 }],             output: 'silence' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'chaos', a: 1 }],         output: 'cacophony' },
+  { inputs: [{ id: 'resonator', a: 1 }, { id: 'purpose', a: 1 }],       output: 'harmony' },
+  { inputs: [{ id: 'thunder', a: 1 }, { id: 'echo', a: 1 }],            output: 'thunderclap' },
+  { inputs: [{ id: 'canyon', a: 1 }, { id: 'echo', a: 1 }],             output: 'reverberation' },
+  { inputs: [{ id: 'silence', a: 1 }, { id: 'hope', a: 1 }],            output: 'lullaby' },
+  { inputs: [{ id: 'echo', a: 1 }, { id: 'anger', a: 1 }],              output: 'warcry' },
+  { inputs: [{ id: 'harmony', a: 1 }, { id: 'cacophony', a: 1 }],       output: 'symphony' },
+  { inputs: [{ id: 'symphony', a: 1 }, { id: 'crossroads', a: 1 }],     output: 'resonanceOfWorlds' },
+  // Расширение ветки Металлов
+  { inputs: [{ id: 'metal', a: 1 }, { id: 'moss', a: 1 }],              output: 'copper' },
+  { inputs: [{ id: 'copper', a: 1 }, { id: 'steel', a: 1 }],            output: 'bronze' },
+  { inputs: [{ id: 'gold', a: 1 }, { id: 'silver', a: 1 }],             output: 'platinum' },
+  { inputs: [{ id: 'copper', a: 1 }, { id: 'air', a: 1 }],              output: 'wire' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'lightning', a: 1 }],          output: 'magnet' },
+  { inputs: [{ id: 'blade', a: 1 }, { id: 'zeal', a: 1 }],              output: 'temperedBlade' },
+  { inputs: [{ id: 'wire', a: 1 }, { id: 'steel', a: 1 }],              output: 'chainmail' },
+  { inputs: [{ id: 'wire', a: 1 }, { id: 'purpose', a: 1 }],            output: 'filigree' },
+  { inputs: [{ id: 'ironWill', a: 1 }, { id: 'diamond', a: 1 }, { id: 'purpose', a: 1 }], output: 'adamant' },
+  { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'adamant', a: 1 }],      output: 'worldsmith' },
+  { inputs: [{ id: 'temperedBlade', a: 1 }, { id: 'chronicle', a: 1 }], output: 'relicBlade' },
+  // Расширение ветки Духа
+  { inputs: [{ id: 'breath', a: 1 }, { id: 'whisper', a: 1 }],          output: 'invocation' },
+  { inputs: [{ id: 'spellbound', a: 1 }, { id: 'purpose', a: 1 }],      output: 'geas' },
+  { inputs: [{ id: 'astralForm', a: 1 }, { id: 'wonder', a: 1 }],       output: 'celestialBody' },
+  { inputs: [{ id: 'seance', a: 1 }, { id: 'whisper', a: 1 }],          output: 'spiritVoice' },
+  { inputs: [{ id: 'soulJar', a: 1 }, { id: 'adamant', a: 1 }],         output: 'eternalPrison' },
+  { inputs: [{ id: 'ancestralChorus', a: 1 }, { id: 'requiem', a: 1 }], output: 'eternalMourning' },
+  { inputs: [{ id: 'spiritRealm', a: 1 }, { id: 'crossroads', a: 1 }],  output: 'betweenWorlds' },
+  { inputs: [{ id: 'animatedFlesh', a: 1 }, { id: 'purpose', a: 1 }],   output: 'awakenedWill' },
+  { inputs: [{ id: 'exorcism', a: 1 }, { id: 'courage', a: 1 }],        output: 'banisher' },
+  { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'locus', a: 1 }],       output: 'wayfinder' },
+  { inputs: [{ id: 'betweenWorlds', a: 1 }, { id: 'wayfinder', a: 1 }], output: 'psychopomp' },
+  // Альт-пути
+  { inputs: [{ id: 'mud', a: 1 }, { id: 'stone', a: 1 }],              output: 'brick' },
+  { inputs: [{ id: 'fire', a: 1 }, { id: 'wood', a: 1 }],              output: 'ash' },
+  { inputs: [{ id: 'sludge', a: 1 }, { id: 'lightning', a: 1 }],       output: 'acid' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'water', a: 1 }],             output: 'rust' },
+  { inputs: [{ id: 'death', a: 1 }, { id: 'air', a: 1 }],              output: 'ghost' },
+  { inputs: [{ id: 'salt', a: 1 }, { id: 'essence', a: 1 }],           output: 'saltPhil' },
+  { inputs: [{ id: 'shadow', a: 1 }, { id: 'air', a: 1 }],             output: 'veil' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'stone', a: 1 }],             output: 'blade' },
+  { inputs: [{ id: 'star', a: 1 }, { id: 'earth', a: 1 }],             output: 'meteor' },
+  { inputs: [{ id: 'root', a: 1 }, { id: 'water', a: 1 }],             output: 'forest' },
+  { inputs: [{ id: 'moss', a: 1 }, { id: 'water', a: 1 }],             output: 'coral' },
+  { inputs: [{ id: 'moss', a: 1 }, { id: 'earth', a: 1 }],             output: 'root' },
+  { inputs: [{ id: 'magma', a: 1 }, { id: 'stone', a: 1 }],            output: 'rawSulfur' },
+  { inputs: [{ id: 'gale', a: 1 }, { id: 'mountain', a: 1 }],          output: 'canyon' },
+  { inputs: [{ id: 'blade', a: 1 }, { id: 'plasma', a: 1 }],           output: 'plasmaBlade' },
+  { inputs: [{ id: 'storm', a: 1 }, { id: 'geyser', a: 1 }],           output: 'maelstrom' },
+  { inputs: [{ id: 'ice', a: 1 }, { id: 'void', a: 1 }],               output: 'stasis' },
+  { inputs: [{ id: 'iron', a: 1 }, { id: 'diamond', a: 1 }],           output: 'platinum' },
+  { inputs: [{ id: 'steel', a: 1 }, { id: 'lightning', a: 1 }],        output: 'magnet' },
 ];
 
 export const VARIANTS = ['hotSteam', 'wetSteam', 'sludge', 'magma', 'scoria'];
@@ -377,6 +1102,54 @@ export const ACHIEVEMENTS = [
   { id: 'allVariants', name: '🔄 Вариативность',        desc: 'Создать все 5 элементов-вариантов',                check: s => VARIANTS.every(v => s.discovered.has(v)) },
   { id: 'chimera',     name: '🐉 Химера',                desc: 'Создать легендарную Химеру',                       check: s => s.discovered.has('chimera') },
   { id: 'massProd',    name: '🏭 Алхимическая фабрика',  desc: 'Создать 500 единиц элементов',                     check: s => s.stats.totalCreated >= 500 },
+  { id: 'triaPrima',   name: '🧪 Tria Prima',           desc: 'Очистить три первоначала',                         check: s => ['sulfurPhil','mercuryPhil','saltPhil'].every(e => s.discovered.has(e)) },
+  { id: 'magnumOpus',  name: '⚗ Magnum Opus',          desc: 'Провести все стадии Великого Делания',              check: s => ['nigredo','albedo','citrinitas','rubedo'].every(e => s.discovered.has(e)) },
+  { id: 'rebis',       name: '💑 Священный брак',       desc: 'Создать Ребиса',                                   check: s => s.discovered.has('rebis') },
+  { id: 'athanorFull', name: '🏺 Философское яйцо',     desc: 'Завершить создание сосуда',                         check: s => s.discovered.has('philosophersEgg') },
+  { id: 'quintessence',name: '✨ Квинтэссенция',        desc: 'Извлечь пятый элемент',                            check: s => s.discovered.has('quintessence') },
+  { id: 'lapis',       name: '👑 Философский Камень',   desc: 'Завершить Великое Делание',                        check: s => s.discovered.has('philosophersStone') },
+  { id: 'azothMade',   name: '🌀 Азот',                  desc: 'Извлечь Дух-Ртуть',                                check: s => s.discovered.has('azoth') },
+  { id: 'solveCoagula',name: '⚖️ Solve et Coagula',     desc: 'Освоить оба принципа Делания',                      check: s => ['solve','coagula'].every(e => s.discovered.has(e)) },
+  { id: 'homunculus',  name: '🧬 Гомункул',             desc: 'Создать искусственную жизнь',                       check: s => s.discovered.has('homunculus') },
+  { id: 'adept',       name: '🧙 Адепт',                desc: 'Достичь совершенного посвящения',                   check: s => s.discovered.has('adept') },
+  { id: 'ambrosia',    name: '🍯 Амброзия',             desc: 'Создать пищу богов',                                check: s => s.discovered.has('ambrosia') },
+  { id: 'leviathan',   name: '🐋 Левиафан',              desc: 'Создать повелителя глубин',                          check: s => s.discovered.has('leviathan') },
+  { id: 'singularity', name: '🕳 Сингулярность',         desc: 'Достичь точки бесконечности',                        check: s => s.discovered.has('singularity') },
+  { id: 'nemesis',     name: '⚔️ Немезида',              desc: 'Пробудить неотвратимое возмездие',                   check: s => s.discovered.has('nemesis') },
+  { id: 'paradox',     name: '⏳ Парадокс',               desc: 'Создать момент, противоречащий себе',                check: s => s.discovered.has('paradox') },
+  { id: 'parasite',    name: '🦠 Паразит',               desc: 'Вырастить жизнь на чужой жизни',                     check: s => s.discovered.has('parasite') },
+  { id: 'macrocosm',   name: '🌌 Макрокосм',            desc: 'Постичь вселенную как тело',                        check: s => s.discovered.has('macrocosm') },
+  { id: 'animaMundi',  name: '🌍 Мировая Душа',         desc: 'Достичь истинного завершения Делания',               check: s => s.discovered.has('animaMundi') },
+  { id: 'engine',      name: '⚙️ Двигатель',            desc: 'Обратить огонь в движение',                            check: s => s.discovered.has('engine') },
+  { id: 'revenant',    name: '👤 Ревенант',              desc: 'Пробудить вернувшегося из времени',                    check: s => s.discovered.has('revenant') },
+  { id: 'auroraCrown', name: '👑 Венец Авроры',          desc: 'Соткать регалию из полярного света',                   check: s => s.discovered.has('auroraCrown') },
+  { id: 'sentinel',    name: '🌲 Часовой Леса',          desc: 'Взрастить духа-хранителя рощи',                        check: s => s.discovered.has('sentinel') },
+  { id: 'banshee',     name: '👻 Банши',                 desc: 'Услышать крик, предвещающий конец',                    check: s => s.discovered.has('banshee') },
+  { id: 'overcharge',  name: '⚡ Перезаряд',              desc: 'Довести энергию до предела',                            check: s => s.discovered.has('overcharge') },
+  { id: 'cataclysm',   name: '🌪 Катаклизм',             desc: 'Устроить конец одного мира',                            check: s => s.discovered.has('cataclysm') },
+  { id: 'somnium',     name: '💤 Сомниум',               desc: 'Проникнуть в царство снов',                             check: s => s.discovered.has('somnium') },
+  { id: 'worldTree',   name: '🌳 Мировое Древо',         desc: 'Вырастить древо, держащее мир',                          check: s => s.discovered.has('worldTree') },
+  { id: 'lich',        name: '💀 Лич',                   desc: 'Обрести бессмертие через проклятие',                    check: s => s.discovered.has('lich') },
+  { id: 'abyssalSovereign',name: '🌊 Владыка Бездны',   desc: 'Слить Левиафана с его же водоворотом',                 check: s => s.discovered.has('abyssalSovereign') },
+  { id: 'eternalBlight',   name: '🥀 Вечная Порча',     desc: 'Заразить Мировое Древо бессмертием Лича',              check: s => s.discovered.has('eternalBlight') },
+  { id: 'choirOfSorrow',   name: '📖 Хор Скорби',       desc: 'Вписать крик Банши в книгу мёртвых',                  check: s => s.discovered.has('choirOfSorrow') },
+  { id: 'cosmicMonarch',   name: '👑 Космический Монарх', desc: 'Короновать точку бесконечности',                      check: s => s.discovered.has('cosmicMonarch') },
+  { id: 'apocalypse',      name: '☄️ Апокалипсис',       desc: 'Достичь конца, не пройдя Делания',                      check: s => s.discovered.has('apocalypse') },
+  { id: 'gateStone', name: '✨ Второе Начало',    desc: 'Открыть Дух и Материю через Философский Камень',                      check: s => s.discovered.has('spirit') && s.discovered.has('matter') },
+  { id: 'gateAnima', name: '🕰 Ткань Мира',       desc: 'Открыть Время и Пространство',                             check: s => s.discovered.has('time') && s.discovered.has('space') },
+  { id: 'gateApoc',  name: '🌀 Изнанка Порядка',   desc: 'Открыть Хаос и Энтропию',                                  check: s => s.discovered.has('chaos') && s.discovered.has('entropy') },
+  { id: 'exorcism',      name: '✋ Экзорцизм',           desc: 'Изгнать дух обратно за грань',        check: s => s.discovered.has('exorcism') },
+  { id: 'wraithLord',    name: '👑 Владыка Мороков',     desc: 'Создать духа, не желающего возврата',  check: s => s.discovered.has('wraithLord') },
+  { id: 'transcendence', name: '🕊 Трансценденция',      desc: 'Вывести дух за пределы формы',         check: s => s.discovered.has('transcendence') },
+  { id: 'titan',         name: '🗿 Титан',                desc: 'Пробудить волю в материи',             check: s => s.discovered.has('titan') },
+  { id: 'primeMatter',   name: '⬜ Прима Материя',        desc: 'Достичь материи до всякой формы',      check: s => s.discovered.has('primeMatter') },
+  { id: 'greatBinding',  name: '🌟 Великое Связывание',  desc: 'Соединить дух и материю воедино',      check: s => s.discovered.has('greatBinding') },
+  { id: 'masterOfTime',  name: '⏳ Владыка Времени',    desc: 'Подчинить себе течение времени',       check: s => s.discovered.has('masterOfTime') },
+  { id: 'masterOfSpace', name: '🌌 Владыка Пространства', desc: 'Подчинить себе бескрайние земли',    check: s => s.discovered.has('masterOfSpace') },
+  { id: 'continuum',     name: '♾ Континуум',          desc: 'Слить время и пространство воедино',   check: s => s.discovered.has('spacetimeContinuum') },
+  { id: 'chaosLord',   name: '🌀 Владыка Хаоса',      desc: 'Подчинить себе беспорядок',           check: s => s.discovered.has('chaosLord') },
+  { id: 'entropyLord', name: '⏳ Владыка Энтропии',   desc: 'Подчинить себе распад',               check: s => s.discovered.has('entropyLord') },
+  { id: 'oblivion',    name: '⚫ Забвение',            desc: 'Достичь того, что после конца',       check: s => s.discovered.has('oblivion') },
 ];
 
 export function recipeKey(recipe) {
@@ -385,4 +1158,53 @@ export function recipeKey(recipe) {
 
 export const SAVE_KEY = 'alchemic_save_v1';
 export const TREE_MAX_DEPTH = 3;
-export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'magic', 'cosmos', 'alchemy'];
+export const CAT_ORDER = ['starter', 'state', 'nature', 'metal', 'artifact', 'entities', 'spirit', 'chronomancy', 'illusion', 'magic', 'cosmos', 'alchemy', 'emotion', 'sound', 'legendary'];
+
+export const ELEMENT_DEPTHS = (() => {
+  const depths = {};
+  STARTER_IDS.forEach(id => depths[id] = 0);
+  const propagate = () => {
+    let anyChanged = false;
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const r of RECIPES) {
+        if (!r.inputs.every(i => depths[i.id] !== undefined)) continue;
+        const d = Math.max(...r.inputs.map(i => depths[i.id])) + 1;
+        if (depths[r.output] === undefined || depths[r.output] > d) {
+          depths[r.output] = d;
+          changed = true;
+        }
+      }
+      if (changed) anyChanged = true;
+    }
+    return anyChanged;
+  };
+  let progressed = true;
+  while (progressed) {
+    progressed = false;
+    UNLOCKABLE_STARTERS.forEach(u => {
+      const keyDepth = depths[u.unlockedBy];
+      if (keyDepth !== undefined && depths[u.id] === undefined) {
+        depths[u.id] = keyDepth + 1;
+        progressed = true;
+      }
+    });
+    if (propagate()) progressed = true;
+  }
+  return depths;
+})();
+
+export const MAX_DEPTH = Math.max(0, ...Object.values(ELEMENT_DEPTHS).filter(d => d !== undefined));
+
+export const DEPTH_GROUPS = (() => {
+  const groups = {};
+  for (const id of ELEMENT_IDS) {
+    const d = ELEMENT_DEPTHS[id];
+    if (d !== undefined) {
+      if (!groups[d]) groups[d] = [];
+      groups[d].push(id);
+    }
+  }
+  return groups;
+})();

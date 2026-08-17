@@ -38,6 +38,7 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
 .card .icon { width: 48px; height: 48px; margin-bottom: 6px; }
 .card .name { font-size: 11px; font-weight: 600; line-height: 1.2; color: #fff; }
 .card .color { font-size: 9px; color: #888; font-family: monospace; margin-top: 2px; }
+.card .desc { font-size: 8px; color: #666; line-height: 1.2; margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .card .id { font-size: 8px; color: #555; font-family: monospace; margin-top: 1px; }
 .card .tier {
   font-size: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;
@@ -141,7 +142,8 @@ function fmtRecipe(r) {
 function fmtTooltip(id) {
   const el = ELEMENTS[id];
   const name = el?.name || id;
-  let html = `<div class="tt-title" style="color:${el?.color || '#fff'}">${name}</div>`;
+const desc = el?.desc ? `<div class="tt-desc" style="margin:2px 0 4px;font-size:10px;color:#aaa">${el.desc}</div>` : '';
+  let html = `<div class="tt-title" style="color:${el?.color || '#fff'}">${name}</div>${desc}`;
 
   const asOutput = recipesByOutput[id];
   if (asOutput && asOutput.length > 0) {
@@ -249,6 +251,13 @@ CAT_ORDER.forEach(cat => {
     idEl.className = 'id';
     idEl.textContent = id;
     card.appendChild(idEl);
+
+if (el.desc) {
+      const descEl = document.createElement('div');
+      descEl.className = 'desc';
+      descEl.textContent = el.desc;
+      card.appendChild(descEl);
+    }
 
     if (t !== 'normal') {
       const badge = document.createElement('div');
