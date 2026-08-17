@@ -4,6 +4,7 @@ import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree
 import { setupEventListeners } from './events.js';
 import { loadNotebook } from './notebook.js';
 import { initSync } from './sync.js';
+import { maybeShowWelcome, finishWelcome } from './welcome.js';
 
 // Expose to window for onclick="" attributes in HTML
 window.openAchievements = openAchievements;
@@ -20,6 +21,7 @@ window.closeCraftRoadmap = closeCraftRoadmap;
 window.switchTab = switchTab;
 window.openGrimoire = openGrimoire;
 window.closeGrimoire = closeGrimoire;
+window.finishWelcome = finishWelcome;
 
 function init() {
   resizeCanvas();
@@ -42,6 +44,8 @@ function init() {
   if (!state.stats.startTime) state.stats.startTime = Date.now();
 
   updateUI();
+
+  maybeShowWelcome();
 
   if (loaded) {
     log('📥 Прогресс загружен', 'info');

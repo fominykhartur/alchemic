@@ -86,6 +86,7 @@ export function loadGame() {
 export function resetGame() {
   if (confirm('Сбросить весь прогресс? Все открытые элементы и рецепты будут потеряны.')) {
     localStorage.removeItem(SAVE_KEY);
+    localStorage.removeItem('alchemic_welcome_seen');
     location.reload();
   }
 }
