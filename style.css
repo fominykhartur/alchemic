@@ -32,9 +32,11 @@ body {
   grid-area: header;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  row-gap: 2px;
+  padding: 2px 12px;
   background: linear-gradient(180deg, #1a1a2e, #0f0f1f);
   border-bottom: 1px solid #ffd70033;
 }
