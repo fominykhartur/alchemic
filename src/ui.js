@@ -845,6 +845,21 @@ function renderSacrificeSection(content) {
   const box = document.createElement('div');
   box.className = 'sacrifice-box';
 
+  // Алтарь-превью: цель 🔥 жертва + прогресс цели
+  const altar = document.createElement('div');
+  altar.className = 'sacrifice-altar';
+  const tSide = document.createElement('div');
+  tSide.className = 'sacrifice-side s-target';
+  const dSide = document.createElement('div');
+  dSide.className = 'sacrifice-side s-donor';
+  const fire = document.createElement('div');
+  fire.className = 'sacrifice-fire';
+  fire.textContent = '🔥';
+  altar.appendChild(tSide);
+  altar.appendChild(fire);
+  altar.appendChild(dSide);
+  box.appendChild(altar);
+
   const targetRow = document.createElement('div');
   targetRow.className = 'sacrifice-row';
   const targetLabel = document.createElement('label');
@@ -901,25 +916,47 @@ function renderSacrificeSection(content) {
   note.textContent = 'Каждая жертва раскрывает один случайный рецепт — приносите жертвы повторно, чтобы раскрыть остальные. Рецепт появится в Книге рецептов, но засчитается только после реального крафта.';
   box.appendChild(note);
 
+  const updateAltar = () => {
+    const tId = targetSelect.value, dId = donorSelect.value;
+    const tEl = tId ? ELEMENTS[tId] : null, dEl = dId ? ELEMENTS[dId] : null;
+    const p = tId ? getRecipeProgressForOutput(tId) : null;
+    const pct = p && p.total > 0 ? Math.round((p.revealed / p.total) * 100) : 0;
+    tSide.innerHTML = tEl
+      ? `<div class="s-icon">${buildIconSVG(tId, 28)}</div><div class="s-name">${tEl.name}</div><div class="s-sub">раскрыто ${p.revealed}/${p.total}</div><div class="sacrifice-progress"><i style="width:${pct}%"></i></div>`
+      : `<div class="s-icon">?</div>`;
+    const dQty = dId ? (state.inventory[dId] || 0) : 0;
+    dSide.innerHTML = dEl
+      ? `<div class="s-icon">${buildIconSVG(dId, 28)}</div><div class="s-name">${dEl.name}</div><div class="s-sub">в наличии ×${dQty}</div>`
+      : `<div class="s-icon">?</div>`;
+  };
+
   const updateDeductNote = () => {
     const donorId = donorSelect.value;
     const donor = donorId ? ELEMENTS[donorId] : null;
     if (!donor || !sacrificeRolledRecipe) {
       deductNote.textContent = 'Спишется: —';
+      deductNote.classList.remove('bad');
+      btn.disabled = true;
+      updateAltar();
       return;
     }
     const required = getRequiredAmount(sacrificeRolledRecipe, donorId);
     const qty = state.inventory[donorId] || 0;
-    deductNote.textContent = required > qty
-      ? `Спишется: ${required} × ${donor.name} (недостаточно, есть ${qty})`
-      : `Спишется: ${required} × ${donor.name}`;
+    const bad = required > qty;
+    deductNote.textContent = bad
+      ? `🔥 Спишется: ${required} × ${donor.name} — не хватает (есть ${qty})`
+      : `🔥 Спишется: ${required} × ${donor.name}`;
+    deductNote.classList.toggle('bad', bad);
+    btn.disabled = bad || !targetSelect.value || !donorId;
+    btn.textContent = bad ? 'Не хватает жертвы' : '🔥 Пожертвовать и узнать';
+    updateAltar();
   };
   donorSelect.addEventListener('change', updateDeductNote);
 
   const rollRecipe = () => {
     sacrificeRolledRecipe = targetSelect.value ? pickSacrificeRecipe(targetSelect.value) : null;
     const cost = buildSacrificeDonors(donorSelect, sacrificeRolledRecipe);
-    costNote.textContent = `Стоимость рецепта: ${cost > 0 ? cost + ' очков силы' : '—'}`;
+    costNote.textContent = `✨ Стоимость рецепта: ${cost > 0 ? cost + ' очков силы' : '—'}`;
     updateDeductNote();
   };
   targetSelect.addEventListener('change', rollRecipe);

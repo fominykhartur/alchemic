@@ -822,11 +822,64 @@ body {
 .sacrifice-box {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px;
-  border: 1px solid #b8965a44;
-  border-radius: 6px;
-  background: #141220;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #b8965a55;
+  outline: 1px solid #ff444422;
+  outline-offset: -4px;
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,68,68,0.10), transparent 70%),
+    linear-gradient(180deg, #1c1420, #141220);
+  box-shadow: 0 0 24px rgba(255,68,68,0.08), inset 0 0 24px rgba(0,0,0,0.4);
+}
+.sacrifice-altar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 6px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #2a2a4e66;
+  border-radius: 10px;
+}
+.sacrifice-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.sacrifice-side .s-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a2a45, #12122a);
+  border: 1px solid #3a3a5e;
+}
+.sacrifice-side.s-target .s-icon { border-color: #ffd70066; box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.sacrifice-side.s-donor .s-icon { border-color: #ff444466; box-shadow: 0 0 12px rgba(255,68,68,0.2); }
+.sacrifice-side .s-name { font-size: 12px; font-weight: bold; color: #fff; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sacrifice-side .s-sub { font-size: 10.5px; color: #9a9ab5; }
+.sacrifice-fire {
+  font-size: 24px; flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(255,100,0,0.6));
+  animation: sac-fire 1.6s ease-in-out infinite;
+}
+@keyframes sac-fire {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+.sacrifice-progress {
+  height: 5px; border-radius: 3px;
+  background: #0d0d20; border: 1px solid #2a2a4e;
+  overflow: hidden; margin-top: 2px; width: 100%;
+}
+.sacrifice-progress i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, #c9a227, #ffd700);
+  border-radius: 3px; transition: width 0.25s;
 }
 .sacrifice-row {
   display: flex;
@@ -834,40 +887,59 @@ body {
   gap: 8px;
   font-size: 13px;
 }
-.sacrifice-row label { color: #9a9ab5; flex-shrink: 0; min-width: 48px; }
+.sacrifice-row label { color: #c8b890; flex-shrink: 0; min-width: 52px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
 .sacrifice-row select {
-  flex: 1;
+  flex: 1; min-width: 0;
   background: #0d0d20;
-  color: #d8d8e8;
-  border: 1px solid #2a2a4e;
-  border-radius: 4px;
-  padding: 4px 6px;
+  color: #e8e8f2;
+  border: 1px solid #3a3a5e;
+  border-radius: 8px;
+  padding: 7px 8px;
   font-size: 13px;
   font-family: inherit;
+  outline: none; cursor: pointer;
 }
+.sacrifice-row select:focus { border-color: #ffd70088; box-shadow: 0 0 0 2px rgba(255,215,0,0.12); }
 .sacrifice-row select:disabled { color: #555; }
-.sacrifice-row select option:disabled { color: #555; }
+.sacrifice-row select option:disabled { color: #666; }
 .sacrifice-cost {
-  font-size: 12px;
+  font-size: 12.5px;
   color: #ffd0a0;
   text-align: center;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #2a2a4e66;
+  border-radius: 8px;
+  padding: 5px 8px;
+  line-height: 1.4;
+}
+.sacrifice-cost.bad {
+  color: #ff9090;
+  border-color: #ff444466;
+  background: rgba(74,26,26,0.35);
 }
 .sacrifice-btn {
-  background: linear-gradient(135deg, #4a1a1a, #2a1a1a);
-  color: #ffd0d0;
-  border: 1px solid #ff444488;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 14px;
+  background: linear-gradient(135deg, #7a2222, #4a1a1a);
+  color: #ffe0e0;
+  border: 1px solid #ff5555aa;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14.5px;
+  font-weight: bold;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.18s;
+  box-shadow: 0 2px 14px rgba(255,68,68,0.2);
 }
-.sacrifice-btn:hover {
-  border-color: #ff4444;
-  box-shadow: 0 0 10px rgba(255,68,68,0.3);
+.sacrifice-btn:hover:not(:disabled) {
+  border-color: #ff6666;
+  box-shadow: 0 0 18px rgba(255,68,68,0.45);
+  transform: translateY(-1px);
 }
-.sacrifice-hint { font-size: 11px; color: #888; font-style: italic; }
+.sacrifice-btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+.sacrifice-btn:disabled {
+  opacity: 0.45; cursor: not-allowed; filter: grayscale(0.5);
+}
+.sacrifice-hint { font-size: 11px; color: #9a9ab5; font-style: italic; line-height: 1.5; }
 
 /* Recipe Tree */
 #tree-content { padding: 4px 2px 12px; }
