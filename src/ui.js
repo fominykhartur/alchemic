@@ -644,7 +644,7 @@ let legendSnapshot = null;
 
 function getLegendProgressInfo(id) {
   const recipes = RECIPES.filter(r => r.output === id);
-  if (recipes.length === 0) return { lines: ['Тайна откроется по мере ваших открытий'], progress: null, tier: 1 };
+  if (recipes.length === 0) return { lines: ['Тайна откроется по мере ваших открытий'], progress: null, tier: 1, total: 0, knownCount: 0, ratio: 0 };
   let best = null;
   for (const r of recipes) {
     const distinct = [...new Set(r.inputs.map(i => i.id))];
@@ -689,8 +689,10 @@ function getLegendProgressInfo(id) {
   }
 
   const progress = ratio > 0 && ratio < 1 ? `${knownCount}/${total}` : null;
-  return { lines, progress, tier };
+  return { lines, progress, tier, total, knownCount, ratio };
 }
+
+const LEGEND_TIER_LABEL = { 1: 'тайна', 2: 'след', 3: 'близко', 4: 'готово' };
 
 function renderLegendarySection(content) {
   const foundCount = LEGENDARY_IDS.filter(id => state.discovered.has(id)).length;
@@ -699,21 +701,33 @@ function renderLegendarySection(content) {
   title.innerHTML = `👑 Легенды <span class="nb-count">${foundCount}/${LEGENDARY_IDS.length}</span>`;
   content.appendChild(title);
 
-  LEGENDARY_IDS.forEach(id => {
+  // Ближайшие к открытию — сверху, найденные — первыми
+  const ordered = [...LEGENDARY_IDS].sort((a, b) => {
+    const fa = state.discovered.has(a) ? 1 : 0, fb = state.discovered.has(b) ? 1 : 0;
+    if (fa !== fb) return fb - fa;
+    const ia = getLegendProgressInfo(a), ib = getLegendProgressInfo(b);
+    if (ia.tier !== ib.tier) return ib.tier - ia.tier;
+    return (ib.ratio || 0) - (ia.ratio || 0);
+  });
+
+  ordered.forEach(id => {
     const el = ELEMENTS[id];
     if (!el) return;
     const found = state.discovered.has(id);
     const row = document.createElement('div');
-    row.className = `nb-entry nb-legend ${found ? 'found' : 'locked'}`;
     if (found) {
-      row.innerHTML = `<span class="nb-icon">${buildIconSVG(id, 18)}</span>
-        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-lore-desc">${el.desc}</span></span>
+      row.className = 'nb-entry nb-legend found';
+      row.innerHTML = `<span class="nb-icon nb-seal">${buildIconSVG(id, 22)}</span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name} <span class="nb-stars">★★★</span></span><span class="nb-lore-desc">${el.desc}</span></span>
         <span class="nb-target">✔</span>`;
     } else {
-      const { lines, progress } = getLegendProgressInfo(id);
+      const { lines, progress, tier, total, ratio } = getLegendProgressInfo(id);
+      row.className = `nb-entry nb-legend locked t${tier}` + (tier >= 3 ? ' near' : '');
       const hintHtml = lines.map(l => `<span class="nb-hint">${l}</span>`).join('');
-      row.innerHTML = `<span class="nb-icon">🔒</span>
-        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span>${hintHtml}</span>
+      const pct = Math.round((ratio || 0) * 100);
+      const icon = tier >= 4 ? '🗝' : tier === 3 ? '🔍' : '🔒';
+      row.innerHTML = `<span class="nb-icon nb-seal">${icon}</span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-meta"><span class="nb-tier">${LEGEND_TIER_LABEL[tier] || ''}</span>${total ? `<span class="nb-need">◆ ${total}</span>` : ''}</span>${hintHtml}<span class="nb-bar"><i style="width:${pct}%"></i></span></span>
         ${progress !== null ? `<span class="nb-progress">${progress}</span>` : ''}`;
     }
     content.appendChild(row);

@@ -803,13 +803,35 @@ body {
 .nb-lore-name { color: #ddd; font-weight: bold; font-size: 13px; }
 .nb-lore-desc { color: #9a9ab5; font-size: 12px; font-style: italic; }
 .nb-target { flex-shrink: 0; color: #ffd70088; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
-.nb-legend { align-items: center; }
-.nb-legend.locked { border-color: #c9a22733; background: #18141f; }
-.nb-legend.locked .nb-lore-name { color: #c9a227cc; }
-.nb-legend.found { border-color: #c9a22755; }
+.nb-legend { align-items: center; gap: 10px; padding: 8px 10px; }
+.nb-legend.locked { border-color: #c9a22730; background: linear-gradient(180deg, #17141f, #12101a); }
+.nb-legend.locked .nb-lore-name { color: #e8c93a; font-size: 13.5px; }
+.nb-legend.found { border-color: #c9a22766; background: linear-gradient(180deg, #1d1a14, #141220); box-shadow: 0 0 14px rgba(201,162,39,0.12); }
 .nb-legend .nb-progress { flex-shrink: 0; font-size: 11px; color: #c9a227aa; }
 .nb-legend .nb-hint { display: block; color: #9a9ab5; font-size: 12px; font-style: italic; line-height: 1.4; }
 .nb-legend.locked .nb-hint:first-of-type { color: #c8b890; }
+.nb-seal {
+  width: 34px; height: 34px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; font-size: 16px;
+  background: radial-gradient(circle at 35% 35%, #2a2438, #12101a);
+  border: 1px solid #c9a22744;
+}
+.nb-legend.found .nb-seal { border-color: #c9a22788; box-shadow: 0 0 10px rgba(201,162,39,0.25); }
+.nb-legend.near { border-color: #ffd70077; box-shadow: 0 0 14px rgba(255,215,0,0.12); }
+.nb-legend.t1 { opacity: 0.85; }
+.nb-meta { display: flex; gap: 6px; align-items: center; margin: 1px 0 2px; }
+.nb-tier {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  color: #8a7a3a; background: #c9a22714; border: 1px solid #c9a22733;
+  border-radius: 8px; padding: 0 7px; font-style: normal;
+}
+.nb-legend.near .nb-tier { color: #ffd700; border-color: #ffd70066; }
+.nb-need { font-size: 10.5px; color: #77779a; font-style: normal; }
+.nb-stars { font-size: 10px; color: #ffd700; letter-spacing: 1px; margin-left: 4px; }
+.nb-bar { display: block; height: 4px; border-radius: 2px; background: #0d0d1c; border: 1px solid #2a2a4e55; margin-top: 5px; overflow: hidden; }
+.nb-bar i { display: block; height: 100%; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 2px; transition: width 0.3s; }
+.nb-legend.near .nb-bar i { box-shadow: 0 0 6px rgba(255,215,0,0.6); }
 
 /* ─── Sacrifice ritual ─── */
 .recipe-entry.known {
