@@ -1,6 +1,6 @@
 import { state, loadGame, resetGame } from './state.js';
 import { resizeCanvas, gameLoop } from './canvas.js';
-import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap, switchTab, openGrimoire, closeGrimoire, updateNotebookBadge, initLegendSnapshot } from './ui.js';
+import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree, hideElementInfo, closeQtyPopup, openStats, closeStats, openCraftRoadmap, closeCraftRoadmap, switchTab, openGrimoire, closeGrimoire, updateNotebookBadge, initLegendSnapshot, openModalAnimated, closeModalAnimated } from './ui.js';
 import { setupEventListeners } from './events.js';
 import { loadNotebook } from './notebook.js';
 import { initSync } from './sync.js';
@@ -21,6 +21,8 @@ window.closeCraftRoadmap = closeCraftRoadmap;
 window.switchTab = switchTab;
 window.openGrimoire = openGrimoire;
 window.closeGrimoire = closeGrimoire;
+window.openModalAnimated = openModalAnimated;
+window.closeModalAnimated = closeModalAnimated;
 window.finishWelcome = finishWelcome;
 
 function init() {

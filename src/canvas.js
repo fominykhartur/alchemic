@@ -146,16 +146,27 @@ function drawCapacityIndicator() {
     ctx.restore();
   }
 
-  // Text indicator
-  const textAlpha = 0.5 + 0.4 * frac;
+  // Text indicator — пилюля по центру сверху, чтобы 10/10 не обрезалось и не читалось как 18/10
+  const label = `${total}/${cap}`;
   ctx.save();
-  ctx.globalAlpha = textAlpha;
-  ctx.fillStyle = '#ffd700';
-  ctx.font = '9px sans-serif';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`${total}/${cap}`, CX + RADIUS - 2, CY - RADIUS + 16);
+  ctx.font = 'bold 11px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const w = ctx.measureText(label).width + 16;
+  const px = CX, py = CY - RADIUS - 2;
+  ctx.globalAlpha = 0.92;
+  ctx.fillStyle = total >= cap ? 'rgba(74,26,26,0.9)' : 'rgba(10,10,26,0.85)';
+  ctx.strokeStyle = total >= cap ? 'rgba(255,68,68,0.7)' : 'rgba(255,215,0,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  // @ts-ignore roundRect may be missing
+  if (ctx.roundRect) ctx.roundRect(px - w / 2, py - 10, w, 20, 10);
+  else ctx.rect(px - w / 2, py - 10, w, 20);
+  ctx.fill();
+  ctx.stroke();
   ctx.globalAlpha = 1;
+  ctx.fillStyle = total >= cap ? '#ff8080' : '#ffd700';
+  ctx.fillText(label, px, py + 1);
   ctx.restore();
 }
 

@@ -1,7 +1,7 @@
 import { ELEMENTS } from './data.js';
 import { state } from './state.js';
 import { performMix, canvas, W, H, CX, CY, RADIUS } from './canvas.js';
-import { log, updateUI, hideElementInfo, closeAchievements, closeTree, closeGrimoire, closeStats, closeCraftRoadmap, isDraggingElement } from './ui.js';
+import { log, updateUI, hideElementInfo, closeModalAnimated, isDraggingElement } from './ui.js';
 import { finishWelcome } from './welcome.js';
 
 const CANVAS_LONG_PRESS_MS = 500;
@@ -125,13 +125,18 @@ export function setupEventListeners() {
     if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !welcomeOpen) performMix();
     if (e.key === 'Escape') {
       if (welcomeOpen) { finishWelcome(); return; }
-      document.getElementById('qty-popup').style.display = 'none';
+      const qty = document.getElementById('qty-popup');
+      if (qty && qty.style.display === 'block') { qty.style.display = 'none'; return; }
+      // Закрываем только верхнюю модалку с анимацией (дерево выше roadmap)
+      const order = ['tree-modal', 'roadmap-modal', 'grimoire-modal', 'stats-modal', 'achievement-modal'];
+      for (const mid of order) {
+        const m = document.getElementById(mid);
+        if (m && m.style.display !== 'none' && !m.classList.contains('modal-closing')) {
+          closeModalAnimated(m);
+          return;
+        }
+      }
       hideElementInfo();
-      closeAchievements();
-      closeTree();
-      closeGrimoire();
-      closeStats();
-      closeCraftRoadmap();
     }
   });
 

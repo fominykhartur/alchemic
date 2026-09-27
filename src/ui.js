@@ -478,15 +478,15 @@ export function showElementInfo(id) {
     const addSection = document.createElement('div');
     addSection.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px solid #2a2a4e44';
     const addLabel = document.createElement('div');
-    addLabel.style.cssText = 'font-size:10px;color:#888;margin-bottom:4px';
+    addLabel.style.cssText = 'font-size:10px;color:#a8a8c2;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px';
     addLabel.textContent = '📥 Добавить в котёл:';
     addSection.appendChild(addLabel);
     const btnRow = document.createElement('div');
-    btnRow.style.cssText = 'display:flex;gap:3px;flex-wrap:wrap';
+    btnRow.className = 'el-add-row';
     for (let i = 1; i <= maxAdd && i <= 5; i++) {
       const btn = document.createElement('button');
-      btn.style.cssText = 'background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:3px 8px;font-size:11px;cursor:pointer';
       btn.textContent = `×${i}`;
+      btn.title = `Добавить ${i} шт. в котёл`;
       btn.addEventListener('click', () => { addToCauldron(id, i); hideElementInfo(); });
       btnRow.appendChild(btn);
     }
@@ -495,8 +495,9 @@ export function showElementInfo(id) {
   }
 
   const treeBtn = document.createElement('button');
-  treeBtn.style.cssText = 'margin-top:8px;width:100%;background:#1a1a2e;border:1px solid #3a2a5e;border-radius:4px;color:#ccc;padding:5px;font-size:11px;cursor:pointer';
+  treeBtn.className = 'el-tree-btn';
   treeBtn.textContent = '🌳 Древо рецептов';
+  treeBtn.title = `Открыть древо: ${el.name}`;
   treeBtn.addEventListener('click', () => { openTree(id); });
   list.appendChild(treeBtn);
 }
@@ -603,12 +604,12 @@ export function openGrimoire() {
   notebook.hasUnseen = false;
   saveNotebook();
   updateNotebookBadge();
-  document.getElementById('grimoire-modal').style.display = '';
+  openModalAnimated(document.getElementById('grimoire-modal'));
 }
 
 export function closeGrimoire(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById('grimoire-modal').style.display = 'none';
+  closeModalAnimated('grimoire-modal');
 }
 
 const SOURCE_ICONS = { ambient: '❓', oracle: '🔮', prophecy: '✨' };
@@ -981,15 +982,52 @@ function renderAchievements() {
 
 export function openAchievements() {
   renderAchievements();
-  document.getElementById('achievement-modal').style.display = '';
+  openModalAnimated(document.getElementById('achievement-modal'));
 }
 
 export function closeAchievements(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById('achievement-modal').style.display = 'none';
+  closeModalAnimated('achievement-modal');
 }
 
 // ─── Recipe Tree ───
+const TREE_MAX_ITEMS = 10;
+
+function bringModalToFront(modal) {
+  // Дерево всегда выше roadmap (фикс «модалка под модалкой»)
+  const base = modal.id === 'tree-modal' ? 1200 : modal.id === 'roadmap-modal' ? 1050 : modal.id === 'welcome-modal' ? 1300 : 1000;
+  modal.style.zIndex = String(base);
+  modal.classList.remove('modal-closing');
+  const t = modal._closeTimer;
+  if (t) { clearTimeout(t); modal._closeTimer = null; }
+}
+
+const MODAL_CLOSE_MS = 160;
+
+export function openModalAnimated(modal) {
+  bringModalToFront(modal);
+  modal.style.display = '';
+  // Перезапуск open-анимации при быстром переоткрытии
+  const box = modal.querySelector('.modal-box');
+  if (box) {
+    box.style.animation = 'none';
+    // eslint-disable-next-line no-unused-expressions
+    box.offsetHeight;
+    box.style.animation = '';
+  }
+}
+
+export function closeModalAnimated(idOrEl) {
+  const modal = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
+  if (!modal || modal.style.display === 'none' || modal.classList.contains('modal-closing')) return;
+  modal.classList.add('modal-closing');
+  modal._closeTimer = setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('modal-closing');
+    modal._closeTimer = null;
+  }, MODAL_CLOSE_MS);
+}
+
 export function openTree(id) {
   const modal = document.getElementById('tree-modal');
   const content = document.getElementById('tree-content');
@@ -998,32 +1036,52 @@ export function openTree(id) {
   if (!el) return;
   const header = modal.querySelector('.modal-header span');
   header.textContent = `🌳 Древо: ${el.name}`;
-  renderTreeNode(id, 0, new Set(), content);
-  modal.style.display = '';
+  renderTreeNode(id, 0, new Set([id]), content, true);
+  openModalAnimated(modal);
+  content.parentElement.scrollTop = 0;
 }
 
 export function closeTree(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById('tree-modal').style.display = 'none';
+  closeModalAnimated('tree-modal');
 }
 
-function renderTreeNode(id, depth, visited, container) {
-  if (depth > TREE_MAX_DEPTH) {
+function treeCycleBadge(name) {
+  const d = document.createElement('div');
+  d.className = 'tree-leaf tree-cycle';
+  d.textContent = `${name} · уже выше`;
+  d.title = 'Уже показано выше, чтобы не зацикливать древо';
+  return d;
+}
+
+function treeFormulaRow(r) {
+  const div = document.createElement('div');
+  div.className = 'tree-formula';
+  const formula = r.inputs.map(i => `${ELEMENTS[i.id]?.name || i.id}${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
+  div.textContent = formula + ` → ${ELEMENTS[r.output]?.name || r.output}`;
+  div.title = formula + ` → ${ELEMENTS[r.output]?.name || r.output}`;
+  return div;
+}
+
+function renderTreeNode(id, depth, visited, container, isRoot = false) {
+  if (depth > 2) {
     const div = document.createElement('div');
-    div.className = 'tree-leaf';
-    div.textContent = '···';
+    div.className = 'tree-more';
+    div.textContent = '··· глубже — откройте карточку элемента';
     container.appendChild(div);
     return;
   }
   const el = ELEMENTS[id];
   if (!el) return;
   const knownKeys = new Set(notebook.knownRecipes);
+  const isKnownRecipe = (r) => state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r));
   const node = document.createElement('div');
   node.className = 'tree-node';
   const content = document.createElement('div');
-  content.className = 'tree-node-content';
+  content.className = 'tree-node-content' + (isRoot ? ' tree-root' : '');
   content.innerHTML = `${buildIconSVG(id, 18)}<span style="color:#fff">${el.name}</span>`;
-  content.addEventListener('click', () => openTree(id));
+  content.title = isRoot ? el.name : `Открыть древо: ${el.name}`;
+  if (!isRoot) content.addEventListener('click', () => openTree(id));
   node.appendChild(content);
   container.appendChild(node);
 
@@ -1031,45 +1089,57 @@ function renderTreeNode(id, depth, visited, container) {
   children.className = 'tree-children';
 
   if (!el.starter) {
-    const producing = RECIPES.filter(r => r.output === id && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
+    const producing = RECIPES.filter(r => r.output === id && isKnownRecipe(r)).slice(0, TREE_MAX_ITEMS);
+    const producingAll = RECIPES.filter(r => r.output === id && isKnownRecipe(r)).length;
     if (producing.length > 0) {
       const title = document.createElement('div');
       title.className = 'tree-section-title';
       title.textContent = '🧪 Получается из:';
       children.appendChild(title);
-      producing.forEach(r => r.inputs.forEach(inp => {
-        if (!visited.has(inp.id)) {
-          const nextVisited = new Set(visited);
-          nextVisited.add(inp.id);
-          renderTreeNode(inp.id, depth + 1, nextVisited, children);
-        } else {
-          const d = document.createElement('div');
-          d.className = 'tree-leaf';
-          d.textContent = `${ELEMENTS[inp.id]?.name || inp.id} (цикл)`;
-          children.appendChild(d);
-        }
-      }));
+      producing.forEach(r => {
+        children.appendChild(treeFormulaRow(r));
+        r.inputs.forEach(inp => {
+          if (visited.has(inp.id)) {
+            children.appendChild(treeCycleBadge(ELEMENTS[inp.id]?.name || inp.id));
+          } else {
+            const nextVisited = new Set(visited);
+            nextVisited.add(inp.id);
+            renderTreeNode(inp.id, depth + 1, nextVisited, children);
+          }
+        });
+      });
+      if (producingAll > producing.length) {
+        const more = document.createElement('div');
+        more.className = 'tree-more';
+        more.textContent = `+ ещё ${producingAll - producing.length} рецептов`;
+        children.appendChild(more);
+      }
     }
   }
 
-  const usedIn = RECIPES.filter(r => r.inputs.some(i => i.id === id) && (state.foundRecipes.has(recipeKey(r)) || knownKeys.has(recipeKey(r))));
+  const usedInAll = RECIPES.filter(r => r.inputs.some(i => i.id === id) && isKnownRecipe(r));
+  const usedIn = usedInAll.slice(0, TREE_MAX_ITEMS);
   if (usedIn.length > 0) {
     const title = document.createElement('div');
     title.className = 'tree-section-title';
     title.textContent = '🔗 Создаёт:';
     children.appendChild(title);
     usedIn.forEach(r => {
-      if (!visited.has(r.output)) {
+      children.appendChild(treeFormulaRow(r));
+      if (visited.has(r.output)) {
+        children.appendChild(treeCycleBadge(ELEMENTS[r.output]?.name || r.output));
+      } else {
         const nextVisited = new Set(visited);
         nextVisited.add(r.output);
         renderTreeNode(r.output, depth + 1, nextVisited, children);
-      } else {
-        const d = document.createElement('div');
-        d.className = 'tree-leaf';
-        d.textContent = `${ELEMENTS[r.output]?.name || r.output} (цикл)`;
-        children.appendChild(d);
       }
     });
+    if (usedInAll.length > usedIn.length) {
+      const more = document.createElement('div');
+      more.className = 'tree-more';
+      more.textContent = `+ ещё ${usedInAll.length - usedIn.length} рецептов`;
+      children.appendChild(more);
+    }
   }
 
   if (children.children.length > 0) container.appendChild(children);
@@ -1112,12 +1182,12 @@ function renderStats() {
 
 export function openStats() {
   renderStats();
-  document.getElementById('stats-modal').style.display = '';
+  openModalAnimated(document.getElementById('stats-modal'));
 }
 
 export function closeStats(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById('stats-modal').style.display = 'none';
+  closeModalAnimated('stats-modal');
 }
 
 // ─── Craft Roadmap ───
@@ -1221,12 +1291,13 @@ export function openCraftRoadmap() {
   const checkbox = document.getElementById('roadmap-spoiler');
   checkbox.onchange = renderCraftRoadmap;
   renderCraftRoadmap();
-  modal.style.display = '';
+  openModalAnimated(modal);
+  content.scrollTop = 0;
 }
 
 export function closeCraftRoadmap(e) {
   if (e && e.target !== e.currentTarget) return;
-  document.getElementById('roadmap-modal').style.display = 'none';
+  closeModalAnimated('roadmap-modal');
 }
 
 // ─── Mobile tab switching ───
