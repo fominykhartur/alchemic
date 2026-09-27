@@ -454,7 +454,8 @@ export function showElementInfo(id) {
     const gBtn = document.createElement('button');
     gBtn.style.cssText = 'margin-top:6px;width:100%;background:#1a1a2e;border:1px solid #ffd70055;border-radius:4px;color:#ffd700;padding:5px;font-size:11px;cursor:pointer';
     gBtn.textContent = '🔮 Узнать в Гримуаре';
-    gBtn.addEventListener('click', openGrimoire);
+    gBtn.title = `Открыть ритуал для «${el.name}»`;
+    gBtn.addEventListener('click', () => openGrimoire(id));
     list.appendChild(gBtn);
   }
 
@@ -629,13 +630,20 @@ export function updateNotebookBadge() {
   badge.style.display = notebook.hasUnseen ? '' : 'none';
 }
 
-export function openGrimoire() {
+export function openGrimoire(presetTargetId = null) {
   lastSacrificeReveal = null;
+  grimoirePresetTarget = presetTargetId;
   renderNotebook();
   notebook.hasUnseen = false;
   saveNotebook();
   updateNotebookBadge();
   openModalAnimated(document.getElementById('grimoire-modal'));
+  if (presetTargetId) {
+    requestAnimationFrame(() => {
+      const box = document.querySelector('#notebook-content .sacrifice-box');
+      if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 }
 
 export function closeGrimoire(e) {
@@ -830,6 +838,7 @@ function showLegendToast({ id, info }) {
 // ─── Sacrifice ritual ───
 let sacrificeRolledRecipe = null;
 let lastSacrificeReveal = null;
+let grimoirePresetTarget = null;
 
 function getSacrificeTargets() {
   return ELEMENT_IDS.filter(id => {
@@ -956,6 +965,11 @@ function renderSacrificeSection(content) {
     opt.textContent = `${ELEMENTS[id].name} (${p.revealed}/${p.total} рецептов)`;
     targetSelect.appendChild(opt);
   });
+  // Переход из инфо-панели: подставляем нужный элемент целью ритуала
+  if (grimoirePresetTarget && targets.includes(grimoirePresetTarget)) {
+    targetSelect.value = grimoirePresetTarget;
+  }
+  grimoirePresetTarget = null;
   targetRow.appendChild(targetLabel);
   targetRow.appendChild(targetSelect);
   box.appendChild(targetRow);
