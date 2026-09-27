@@ -245,7 +245,8 @@ export function renderInventory() {
   if (!window._sortMode) window._sortMode = 'category';
   const sortToggle = document.createElement('div');
   sortToggle.className = 'inv-full-row';
-  sortToggle.style.cssText = 'width:100%;text-align:center;margin-bottom:4px;font-size:9px;color:#555;cursor:pointer';
+  sortToggle.style.cssText = 'width:100%;text-align:center;margin-bottom:4px;font-size:10px;color:#77779a;cursor:pointer;padding:2px;border-radius:4px';
+  sortToggle.title = 'Переключить сортировку';
   sortToggle.textContent = window._sortMode === 'category' ? '🔽 По категориям' : '🔤 По алфавиту';
   sortToggle.addEventListener('click', () => {
     window._sortMode = window._sortMode === 'category' ? 'alpha' : 'category';
@@ -270,7 +271,7 @@ export function renderInventory() {
       if (ids.length === 0) return;
       const catInfo = CATEGORIES[cat];
       const header = document.createElement('div');
-      header.className = 'inv-full-row';
+      header.className = 'inv-full-row inv-cat-header';
       header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${hexRgba(catInfo.color, 0.13)};margin-top:2px;text-transform:uppercase;letter-spacing:1px`;
       header.textContent = catInfo.label;
       grid.appendChild(header);
@@ -281,13 +282,14 @@ export function renderInventory() {
     discovered.forEach(id => renderItem(grid, id));
   }
 
-  if (undiscovered.length > 0) {
-    const sep = document.createElement('div');
-    sep.className = 'inv-full-row';
-    sep.style.cssText = 'width:100%;font-size:9px;color:#2a2a4e;padding:4px 2px 2px;border-bottom:1px solid #1a1a2e;margin-top:4px;text-transform:uppercase;letter-spacing:1px';
-    sep.textContent = '❓ Неоткрыто';
-    grid.appendChild(sep);
-    undiscovered.forEach(id => renderItem(grid, id));
+  // Пустышки «?» больше не рисуем: 300+ слотов давали огромный скролл и лаги на мобилке.
+  // Вместо них — одна строка-итог.
+  if (undiscovered.length > 0 && !q) {
+    const more = document.createElement('div');
+    more.className = 'inv-full-row inv-more';
+    more.textContent = `❓ Неоткрыто: ${undiscovered.length} — смешивай элементы`;
+    more.title = 'Новые элементы откроются смешиванием';
+    grid.appendChild(more);
   }
 }
 
