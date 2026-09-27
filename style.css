@@ -538,6 +538,9 @@ button.hbtn { font-size: 15px; }
   color: #a8a8c2;
   font-style: italic;
 }
+.recipe-entry .recipe-ing svg { vertical-align: -2px; margin-right: 2px; }
+.recipe-entry.clickable { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+.recipe-entry.clickable:hover { border-color: #ffd70066 !important; background: #181830; }
 
 /* Log */
 #log-panel {

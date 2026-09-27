@@ -425,7 +425,10 @@ export function showElementInfo(id) {
   header.style.cssText = 'text-align:center;padding:8px;margin-bottom:6px;border-bottom:1px solid rgba(42,42,78,0.27)';
   const wrapCls = 'card-icon-wrap' + (id === 'void' ? ' void' : id === 'abyss' ? ' abyss' : '');
   const wrapStyle = `background:linear-gradient(135deg, ${hexRgba(el.color, 0.27)}, ${hexRgba(el.color, 0.07)});` + (id === 'void' || id === 'abyss' ? '' : `border-color:${hexRgba(el.color, 0.4)}`);
-  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div>`;
+  const cat = ELEMENT_CATS[id];
+  const catInfo = CATEGORIES[cat];
+  const qtyHave = el.starter || el.infinite ? '∞ в запасе' : `×${state.inventory[id] || 0} в наличии`;
+  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div><div style="font-size:10px;color:#ffd70088;margin-top:3px">${catInfo ? catInfo.label : ''} · ${qtyHave}</div>`;
   list.appendChild(header);
 
   const knownKeys = new Set(notebook.knownRecipes);
@@ -433,13 +436,13 @@ export function showElementInfo(id) {
   if (producing.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:6px 0 4px;text-transform:uppercase;letter-spacing:1px';
-    title.textContent = '🧪 Получается из:';
+    title.textContent = `🧪 Получается из: ${producing.length}`;
     list.appendChild(title);
     producing.forEach(r => {
       const key = recipeKey(r);
       const isFound = state.foundRecipes.has(key);
       const isKnown = !isFound && knownKeys.has(key);
-      const formula = r.inputs.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
+      const formula = r.inputs.map(i => `<span class="recipe-ing" style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${buildIconSVG(i.id, 13)}${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
       const entry = document.createElement('div');
       entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
@@ -463,17 +466,25 @@ export function showElementInfo(id) {
   if (usedIn.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:8px 0 4px;text-transform:uppercase;letter-spacing:1px';
-    title.textContent = '🔗 Можно создать:';
+    title.textContent = `🔗 Можно создать: ${usedIn.length}`;
     list.appendChild(title);
     usedIn.forEach(r => {
       const key = recipeKey(r);
       const isFound = state.foundRecipes.has(key);
       const isKnown = !isFound && knownKeys.has(key);
       const output = ELEMENTS[r.output];
+      const others = r.inputs.filter(i => i.id !== id);
+      const coFormula = others.length > 0
+        ? others.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ') + ' + '
+        : '';
       const entry = document.createElement('div');
-      entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
+      entry.className = 'recipe-entry clickable ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
-      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>`;
+      entry.title = state.discovered.has(r.output) ? `Открыть: ${output ? output.name : r.output}` : '';
+      entry.innerHTML = `${buildIconSVG(r.output, 18)}<span class="recipe-formula">${coFormula}</span><span class="recipe-arrow">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${isKnown ? ' <span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}`;
+      if (state.discovered.has(r.output)) {
+        entry.addEventListener('click', () => showElementInfo(r.output));
+      }
       list.appendChild(entry);
     });
   }
