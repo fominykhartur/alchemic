@@ -149,7 +149,7 @@ function drawCapacityIndicator() {
   // Text indicator — пилюля по центру сверху, чтобы 10/10 не обрезалось и не читалось как 18/10
   const label = `${total}/${cap}`;
   ctx.save();
-  ctx.font = 'bold 11px Inter, sans-serif';
+  ctx.font = '700 11px Inter, system-ui, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   const w = ctx.measureText(label).width + 16;
@@ -174,7 +174,7 @@ function drawDropHint() {
   const t = time * 0.001;
   const alpha = 0.3 + 0.15 * Math.sin(t);
   ctx.fillStyle = `rgba(255,215,0,${alpha})`;
-  ctx.font = '16px Alegreya, serif';
+  ctx.font = '16px Alegreya, Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('Перетащите элементы сюда', CX, CY);
@@ -360,7 +360,7 @@ function drawCauldronElements() {
 
     // Подпись: крупнее, контрастная плашка с цветной каймой
     const label = el.name;
-    ctx.font = '600 10px Inter, sans-serif';
+    ctx.font = '600 10.5px Inter, system-ui, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowBlur = 0;
@@ -387,7 +387,7 @@ function drawCauldronElements() {
 
     if (qty > 1) {
       const badgeText = '×' + qty;
-      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.font = '700 9px Inter, system-ui, sans-serif';
       const bw = ctx.measureText(badgeText).width;
       const br = Math.max(8, bw / 2 + 5);
       const bx = x + r - 2;

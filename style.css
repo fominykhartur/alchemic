@@ -743,7 +743,7 @@ body {
 .ach-desc { color: #9a9ab5; font-size: 12px; margin-top: 1px; line-height: 1.4; }
 .ach-bar { height: 4px; border-radius: 2px; background: #0d0d1c; border: 1px solid #2a2a4e55; margin-top: 5px; overflow: hidden; }
 .ach-bar i { display: block; height: 100%; background: linear-gradient(90deg, #8a6f1f, #ffd700); }
-.ach-prog { font-size: 10.5px; color: #c9a227; margin-top: 2px; font-family: Inter, sans-serif; }
+.ach-prog { font-size: 10.5px; color: #c9a227; margin-top: 2px; font-family: 'Inter', system-ui, sans-serif; }
 .ach-check { font-size: 15px; flex-shrink: 0; opacity: 0.9; }
 
 /* Toast notification */
