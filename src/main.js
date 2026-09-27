@@ -42,6 +42,11 @@ function init() {
   });
 
   if (!state.stats.startTime) state.stats.startTime = Date.now();
+  state.stats.sessionStart = Date.now();
+  if (typeof state.stats.totalPlayMs !== 'number') state.stats.totalPlayMs = 0;
+  // Периодически фиксируем наигранное время, чтобы не терять при краше
+  setInterval(() => { try { state.stats.totalPlayMs = (state.stats.totalPlayMs || 0) + Math.max(0, Date.now() - state.stats.sessionStart); state.stats.sessionStart = Date.now(); } catch {} }, 30000);
+  window.addEventListener('beforeunload', () => { try { const s = state.stats; if (s.sessionStart) { s.totalPlayMs = (s.totalPlayMs || 0) + Math.max(0, Date.now() - s.sessionStart); s.sessionStart = Date.now(); } } catch {} });
 
   updateUI();
 

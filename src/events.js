@@ -1,7 +1,7 @@
 import { ELEMENTS } from './data.js';
 import { state } from './state.js';
 import { performMix, canvas, W, H, CX, CY, RADIUS } from './canvas.js';
-import { log, updateUI, hideElementInfo, closeAchievements, closeTree, closeGrimoire, isDraggingElement } from './ui.js';
+import { log, updateUI, hideElementInfo, closeAchievements, closeTree, closeGrimoire, closeStats, closeCraftRoadmap, isDraggingElement } from './ui.js';
 import { finishWelcome } from './welcome.js';
 
 const CANVAS_LONG_PRESS_MS = 500;
@@ -125,10 +125,13 @@ export function setupEventListeners() {
     if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !welcomeOpen) performMix();
     if (e.key === 'Escape') {
       if (welcomeOpen) { finishWelcome(); return; }
+      document.getElementById('qty-popup').style.display = 'none';
       hideElementInfo();
       closeAchievements();
       closeTree();
       closeGrimoire();
+      closeStats();
+      closeCraftRoadmap();
     }
   });
 

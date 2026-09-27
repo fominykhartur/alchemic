@@ -179,6 +179,7 @@ function merge(local, cloud) {
     startTime: lStats.startTime && cStats.startTime
       ? Math.min(lStats.startTime, cStats.startTime)
       : (lStats.startTime || cStats.startTime || null),
+    totalPlayMs: Math.max(lStats.totalPlayMs || 0, cStats.totalPlayMs || 0),
     elementCreatedCount,
   };
 

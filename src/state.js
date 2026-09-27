@@ -21,6 +21,8 @@ export const state = {
     discoveryFromExplosion: 0,
     totalCreated: 0,
     startTime: null,
+    totalPlayMs: 0,
+    sessionStart: null,
     elementCreatedCount: {},
   },
 };
@@ -39,7 +41,8 @@ export function exportGameData() {
   });
   const achievements = [...state.achievements];
   const triedPairs = [...state.triedPairs].slice(-MAX_TRIED_PAIRS);
-  const stats = { ...state.stats, elementCreatedCount: { ...state.stats.elementCreatedCount } };
+  const { sessionStart: _sess, ...persistStats } = state.stats;
+  const stats = { ...persistStats, elementCreatedCount: { ...state.stats.elementCreatedCount } };
   return { v: 1, discovered, foundRecipes, inventory, achievements, triedPairs, stats };
 }
 
@@ -60,14 +63,38 @@ export function importGameData(data) {
     state.triedPairs = new Set([...state.triedPairs].slice(-MAX_TRIED_PAIRS));
   }
   if (data.stats) {
-    Object.assign(state.stats, data.stats);
+    const { sessionStart: _sess, ...rest } = data.stats;
+    Object.assign(state.stats, rest);
     if (!data.stats.elementCreatedCount) state.stats.elementCreatedCount = {};
+    // Миграция со старого подсчёта (Date.now - startTime считал офлайн): не даём абсурдным значениям перетечь
+    if (typeof state.stats.totalPlayMs !== 'number') {
+      const mixCount = state.stats.mixCount || 0;
+      const rough = mixCount * 45 * 1000 + 5 * 60 * 1000;
+      const sinceStart = state.stats.startTime ? Date.now() - state.stats.startTime : 0;
+      state.stats.totalPlayMs = Math.max(0, Math.min(sinceStart, rough, 12 * 3600 * 1000));
+    }
   }
   return true;
 }
 
+export function flushPlayTime() {
+  const s = state.stats;
+  if (s.sessionStart) {
+    s.totalPlayMs = (s.totalPlayMs || 0) + Math.max(0, Date.now() - s.sessionStart);
+    s.sessionStart = Date.now();
+  }
+}
+
+export function getPlayMs() {
+  const s = state.stats;
+  const base = s.totalPlayMs || 0;
+  if (s.sessionStart) return base + Math.max(0, Date.now() - s.sessionStart);
+  return base;
+}
+
 export function saveGame() {
   try {
+    flushPlayTime();
     localStorage.setItem(SAVE_KEY, JSON.stringify(exportGameData()));
   } catch {}
   window.dispatchEvent(new CustomEvent('alchemy:saved'));

@@ -1,6 +1,6 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER, textSafeColor } from './icons.js';
-import { state, saveGame } from './state.js';
+import { state, saveGame, getPlayMs } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
 import { playDrop, playAchievement } from './audio.js';
 
@@ -643,7 +643,7 @@ let legendSnapshot = null;
 
 function getLegendProgressInfo(id) {
   const recipes = RECIPES.filter(r => r.output === id);
-  if (recipes.length === 0) return { lines: ['Тайна откроется в глубине Делания'], progress: null, tier: 1 };
+  if (recipes.length === 0) return { lines: ['Тайна откроется по мере ваших открытий'], progress: null, tier: 1 };
   let best = null;
   for (const r of recipes) {
     const distinct = [...new Set(r.inputs.map(i => i.id))];
@@ -662,7 +662,7 @@ function getLegendProgressInfo(id) {
     lines.push('Все составляющие собраны — отправляйтесь к котлу');
   } else if (ratio === 0) {
     tier = 1;
-    lines.push('Тайна откроется в глубине Делания');
+    lines.push(`Нужны редкие составляющие (${total}). Открывайте новые элементы — подсказки появятся сами`);
   } else {
     tier = 2;
     const counts = {};
@@ -692,9 +692,10 @@ function getLegendProgressInfo(id) {
 }
 
 function renderLegendarySection(content) {
+  const foundCount = LEGENDARY_IDS.filter(id => state.discovered.has(id)).length;
   const title = document.createElement('div');
   title.className = 'nb-section-title';
-  title.textContent = '👑 Легенды';
+  title.innerHTML = `👑 Легенды <span class="nb-count">${foundCount}/${LEGENDARY_IDS.length}</span>`;
   content.appendChild(title);
 
   LEGENDARY_IDS.forEach(id => {
@@ -1075,11 +1076,21 @@ function renderTreeNode(id, depth, visited, container) {
 }
 
 // ─── Statistics ───
-function formatTime(ms) {
-  if (!ms) return '—';
-  const totalSec = Math.floor((Date.now() - ms) / 1000);
-  const h = Math.floor(totalSec / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
+function formatTime(msOrStart) {
+  // Новый режим: msOrStart — это уже миллисекунды наигранного времени.
+  // Старый режим (timestamp старта) поддерживаем для совместимости, но режем офлайн-накрутку.
+  let playMs;
+  if (typeof msOrStart === 'number' && msOrStart > 100000000000) {
+    // Похоже на timestamp → считаем как раньше, но кап 24ч, чтобы не было «1532ч»
+    playMs = Math.min(Date.now() - msOrStart, 24 * 3600 * 1000);
+  } else {
+    playMs = msOrStart || 0;
+  }
+  if (!playMs || playMs < 60000) return playMs > 0 ? 'меньше минуты' : '—';
+  const totalMin = Math.floor(playMs / 60000);
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h >= 100) return `${h}ч`;
   if (h > 0) return `${h}ч ${m}м`;
   return `${m}м`;
 }
@@ -1088,7 +1099,7 @@ function renderStats() {
   const s = state.stats;
   const mostCreated = Object.entries(s.elementCreatedCount).sort((a, b) => b[1] - a[1]);
   const top = mostCreated.length > 0 && mostCreated[0][1] > 0 ? `${ELEMENTS[mostCreated[0][0]]?.name || mostCreated[0][0]} (${mostCreated[0][1]})` : '—';
-  document.getElementById('stats-time').textContent = formatTime(s.startTime);
+  document.getElementById('stats-time').textContent = formatTime(getPlayMs());
   document.getElementById('stats-discovered').textContent = `${state.discovered.size} / ${ELEMENT_IDS.length}`;
   document.getElementById('stats-recipes').textContent = `${state.foundRecipes.size} / ${RECIPES.length}`;
   document.getElementById('stats-mixes').textContent = s.mixCount;
@@ -1124,10 +1135,13 @@ function createRoadmapCard(id) {
 
   if (discovered) {
     card.style.borderColor = catColor;
-    card.innerHTML = `${buildIconSVG(id, 20)}<span class="roadmap-name">${el.name}</span>`;
+    const parentNames = parents.map(pid => ELEMENTS[pid]?.name || pid).join(' + ');
+    card.title = parentNames ? `${el.name} ← ${parentNames}` : el.name;
+    card.innerHTML = `${buildIconSVG(id, 22)}<span class="roadmap-name" title="${el.name}">${el.name}</span>`;
     if (parents.length > 0) {
       const parentDots = document.createElement('div');
       parentDots.className = 'roadmap-parents';
+      parentDots.title = `Из: ${parentNames}`;
       parents.forEach(pid => {
         const pel = ELEMENTS[pid];
         if (!pel) return;
@@ -1141,6 +1155,7 @@ function createRoadmapCard(id) {
     }
     card.addEventListener('click', () => openTree(id));
   } else {
+    card.title = 'Не открыт — смешивайте элементы, чтобы открыть';
     card.innerHTML = `<div class="roadmap-unknown">?</div><span class="roadmap-name">???</span>`;
   }
 
@@ -1164,7 +1179,8 @@ function renderCraftRoadmap() {
 
     const label = document.createElement('div');
     label.className = 'roadmap-depth-label';
-    label.textContent = `${d}`;
+    label.innerHTML = `Ур.${d}`;
+    label.title = d === 0 ? 'Базовые стихии' : `Глубина крафта ${d}`;
     const labelHint = document.createElement('div');
     labelHint.className = 'roadmap-depth-hint';
     labelHint.textContent = showAll ? `${ids.length} эл.` : `${toShow.length}/${ids.length}`;
@@ -1182,6 +1198,18 @@ function renderCraftRoadmap() {
       row.appendChild(cards);
       content.appendChild(row);
     }
+  }
+
+  if (content.children.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'nb-empty';
+    empty.textContent = 'Пока ничего не открыто на этой глубине. Включите «Показать всё», чтобы увидеть спойлеры.';
+    content.appendChild(empty);
+  } else {
+    const legend = document.createElement('div');
+    legend.className = 'roadmap-legend';
+    legend.innerHTML = '● — цвет точки = родительский элемент (наведите, чтобы увидеть имя). Клик по карточке — древо рецепта.';
+    content.appendChild(legend);
   }
 
 }
