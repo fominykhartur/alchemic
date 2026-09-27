@@ -225,19 +225,19 @@ function drawCauldronElements() {
   });
   if (items.length === 0) return;
 
-  // Connecting constellation lines with animated dashes
+  // Connecting constellation lines with animated dashes — чуть ярче, чтобы связь читалась
   if (items.length > 1) {
     ctx.save();
-    ctx.setLineDash([2, 6]);
-    ctx.lineDashOffset = -t * 12;
+    ctx.setLineDash([3, 7]);
+    ctx.lineDashOffset = -t * 10;
     for (let i = 0; i < items.length; i++) {
       const a = items[i];
       const b = items[(i + 1) % items.length];
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = 'rgba(255,215,0,0.12)';
-      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = 'rgba(255,215,0,0.20)';
+      ctx.lineWidth = 1;
       ctx.stroke();
     }
     ctx.setLineDash([]);
@@ -260,17 +260,27 @@ function drawCauldronElements() {
     });
   }
 
+  // Динамический радиус и размер: чем больше элементов, тем шире круг, иконки чуть компактнее
+  const dynDist = RADIUS * (count <= 4 ? 0.38 : count <= 6 ? 0.44 : count <= 8 ? 0.5 : 0.55);
+  items.forEach((it) => {
+    const dx = it.baseX - CX, dy = it.baseY - CY;
+    const len = Math.hypot(dx, dy) || 1;
+    it.x = CX + (dx / len) * dynDist;
+    it.y = it.baseY + it.floatY + (dynDist - RADIUS * 0.4) * (dy / len);
+  });
+
   items.forEach(({ id, qty, el, design, i, x, y, alpha }) => {
     const gData = design ? GLYPH_PATHS[design.glyph] : null;
-    const pulse = 1 + 0.05 * Math.sin(t * 0.5 + i);
-    const r = 14 * pulse;
+    const pulse = 1 + 0.04 * Math.sin(t * 0.5 + i);
+    const baseR = count <= 4 ? 19 : count <= 6 ? 17 : count <= 8 ? 15 : 13.5;
+    const r = baseR * pulse;
     ctx.globalAlpha = alpha;
 
-    // Pulsing ambient glow
+    // Pulsing ambient glow в цвете элемента
     const glowPulse = 0.7 + 0.3 * Math.sin(t * 0.6 + i * 1.1);
-    const glowR = gData?.useShapeFill ? 14 : 22;
+    const glowR = r + 14;
     const glowGrad = ctx.createRadialGradient(x, y, 0, x, y, glowR * (0.85 + 0.15 * glowPulse));
-    glowGrad.addColorStop(0, el.glow || 'rgba(255,255,255,0.2)');
+    glowGrad.addColorStop(0, el.glow || 'rgba(255,255,255,0.22)');
     glowGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = glowGrad;
     ctx.beginPath();
@@ -279,9 +289,9 @@ function drawCauldronElements() {
 
     // Enhanced outer glow for legendary elements
     if (design?.glow) {
-      const legendR = 26;
+      const legendR = r + 14;
       const legendGrad = ctx.createRadialGradient(x, y, 0, x, y, legendR);
-      legendGrad.addColorStop(0, el.glow || 'rgba(255,215,0,0.15)');
+      legendGrad.addColorStop(0, el.glow || 'rgba(255,215,0,0.18)');
       legendGrad.addColorStop(1, 'transparent');
       ctx.fillStyle = legendGrad;
       ctx.beginPath();
@@ -290,8 +300,8 @@ function drawCauldronElements() {
     }
 
     if (design?.shape) {
-      const lighter = lightenColor(el.color, 40);
-      const shapeGrad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, 0, x, y, r);
+      const lighter = lightenColor(el.color, 45);
+      const shapeGrad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, 0, x, y, r);
       shapeGrad.addColorStop(0, lighter);
       shapeGrad.addColorStop(1, el.color);
 
@@ -299,7 +309,7 @@ function drawCauldronElements() {
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.shadowColor = el.color;
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 14;
       ctx.fillStyle = shapeGrad;
       ctx.fill();
       ctx.shadowBlur = 0;
@@ -310,65 +320,86 @@ function drawCauldronElements() {
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.clip();
       const hlGrad = ctx.createRadialGradient(x - r * 0.4, y - r * 0.4, 0, x, y, r * 0.7);
-      hlGrad.addColorStop(0, 'rgba(255,255,255,0.12)');
+      hlGrad.addColorStop(0, 'rgba(255,255,255,0.22)');
       hlGrad.addColorStop(1, 'transparent');
       ctx.fillStyle = hlGrad;
       ctx.fillRect(x - r, y - r, r * 2, r * 2);
       ctx.restore();
 
-      // Goldish rim
+      // Рим в цвете элемента + тонкая золотая окантовка
       ctx.beginPath();
-      ctx.arc(x, y, r * 0.9, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+      ctx.arc(x, y, r - 0.5, 0, Math.PI * 2);
+      ctx.strokeStyle = el.color || 'rgba(255,215,0,0.5)';
+      ctx.globalAlpha = alpha * 0.9;
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.arc(x, y, r * 0.82, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.22)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
       ctx.restore();
+    } else {
+      // Fallback-кольцо, если нет shape
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.strokeStyle = el.color || '#ffd700';
+      ctx.lineWidth = 1.6;
+      ctx.shadowColor = el.color || '#ffd700';
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+      ctx.restore();
     }
 
-    // Glyph
-    drawGlyph(ctx, id, x, y, 0.8);
+    // Glyph чуть крупнее
+    const glyphScale = count <= 6 ? 1.0 : 0.9;
+    drawGlyph(ctx, id, x, y - 1, glyphScale);
 
-    // Name plate with quantity badge
+    // Подпись: крупнее, контрастная плашка с цветной каймой
     const label = el.name;
-    ctx.font = '8px sans-serif';
+    ctx.font = '600 10px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowBlur = 0;
     const textW = ctx.measureText(label).width;
-    const plateW = textW + 8;
-    const plateH = 12;
+    const plateW = textW + 14;
+    const plateH = 15;
     const plateX = x - plateW / 2;
-    const plateY = y + 19;
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    const plateY = y + r + 5;
+    ctx.fillStyle = 'rgba(8,8,22,0.82)';
     ctx.beginPath();
     if (ctx.roundRect) {
-      ctx.roundRect(plateX, plateY, plateW, plateH, 3);
+      ctx.roundRect(plateX, plateY, plateW, plateH, 7);
     } else {
       ctx.rect(plateX, plateY, plateW, plateH);
     }
     ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.fillText(label, x, y + 25);
+    ctx.strokeStyle = el.color ? el.color + '' : 'rgba(255,215,0,0.35)';
+    ctx.globalAlpha = alpha * 0.85;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(label, x, plateY + plateH / 2 + 0.5);
 
     if (qty > 1) {
-      const badgeText = '' + qty;
-      ctx.font = 'bold 7px sans-serif';
+      const badgeText = '×' + qty;
+      ctx.font = 'bold 9px Inter, sans-serif';
       const bw = ctx.measureText(badgeText).width;
-      const bpad = 3;
-      const br = Math.max(5, bw / 2 + bpad);
-      const bx = x + plateW / 2 + br + 1;
-      const by = y + 25;
-      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      const br = Math.max(8, bw / 2 + 5);
+      const bx = x + r - 2;
+      const by = y - r + 2;
+      ctx.fillStyle = '#ffd700';
       ctx.beginPath();
       ctx.arc(bx, by, br, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,215,0,0.4)';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+      ctx.lineWidth = 1.2;
       ctx.stroke();
-      ctx.fillStyle = 'rgba(255,215,0,0.9)';
+      ctx.fillStyle = '#1a1a00';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(badgeText, bx, by + 0.5);

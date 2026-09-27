@@ -29,7 +29,7 @@ function getEntryAt(cx, cy) {
     const d = (cx - ox) ** 2 + (cy - oy) ** 2;
     if (d < bestDist) { bestDist = d; best = { id, qty }; }
   });
-  return best && bestDist < 25 * 25 ? best : null;
+  return best && bestDist < 30 * 30 ? best : null;
 }
 
 function returnOne(id) {
