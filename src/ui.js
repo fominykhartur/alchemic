@@ -578,6 +578,8 @@ function updateStats() {
   document.getElementById('total-count').textContent = ELEMENT_IDS.length;
   document.getElementById('recipe-count').textContent = state.foundRecipes.size;
   document.getElementById('ach-count').textContent = state.achievements.size;
+  const fill = document.getElementById('hprog-fill');
+  if (fill) fill.style.width = (ELEMENT_IDS.length ? Math.round((state.discovered.size / ELEMENT_IDS.length) * 100) : 0) + '%';
 }
 
 export function updateCauldronIndicator() {

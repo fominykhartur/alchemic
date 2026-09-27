@@ -4,7 +4,8 @@ import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree
 import { setupEventListeners } from './events.js';
 import { loadNotebook } from './notebook.js';
 import { initSync } from './sync.js';
-import { maybeShowWelcome, finishWelcome } from './welcome.js';
+import { maybeShowWelcome, finishWelcome, showWelcome } from './welcome.js';
+import { isMuted, toggleMute } from './audio.js';
 
 // Expose to window for onclick="" attributes in HTML
 window.openAchievements = openAchievements;
@@ -24,6 +25,12 @@ window.closeGrimoire = closeGrimoire;
 window.openModalAnimated = openModalAnimated;
 window.closeModalAnimated = closeModalAnimated;
 window.finishWelcome = finishWelcome;
+window.replayHelp = () => showWelcome();
+window.toggleSound = () => {
+  const muted = toggleMute();
+  const btn = document.getElementById('mute-btn');
+  if (btn) { btn.textContent = muted ? '🔇' : '🔊'; btn.title = muted ? 'Включить звук' : 'Выключить звук'; }
+};
 
 function init() {
   resizeCanvas();
@@ -42,6 +49,9 @@ function init() {
     updateNotebookBadge();
     log('☁ Облачный прогресс применён', 'info');
   });
+
+  const muteBtn = document.getElementById('mute-btn');
+  if (muteBtn && isMuted()) { muteBtn.textContent = '🔇'; muteBtn.title = 'Включить звук'; }
 
   if (!state.stats.startTime) state.stats.startTime = Date.now();
   state.stats.sessionStart = Date.now();

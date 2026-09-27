@@ -97,6 +97,11 @@ function renderWelcomeContent() {
   content.appendChild(tips);
 }
 
+export function showWelcome() {
+  renderWelcomeContent();
+  getModal().style.display = '';
+}
+
 export function finishWelcome() {
   try { localStorage.setItem(WELCOME_KEY, '1'); } catch {}
   getModal().style.display = 'none';

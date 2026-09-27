@@ -81,7 +81,16 @@ function setStatus(status) {
     el.textContent = labels[status] || '☁';
     el.className = 'sync-status ' + status;
   }
-  if (ind) ind.className = 'sync-indicator ' + status;
+  if (ind) ind.className = 'hbtn sync-indicator ' + status;
+  const shortLabels = {
+    disabled: 'синк выкл',
+    syncing: 'синхронизация…',
+    online: 'синхронизировано',
+    offline: 'офлайн',
+    denied: 'неверный ключ',
+  };
+  const lab = document.getElementById('sync-label');
+  if (lab) lab.textContent = shortLabels[status] || 'синхронизация';
 }
 
 // ─── Document ───

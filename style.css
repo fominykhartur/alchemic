@@ -32,11 +32,41 @@ body {
   grid-area: header;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
   background: linear-gradient(180deg, #1a1a2e, #0f0f1f);
   border-bottom: 1px solid #ffd70033;
-  gap: 16px;
 }
+.brand-block { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.progress-line { display: flex; align-items: center; gap: 10px; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; color: #8888aa; white-space: nowrap; }
+.progress-line .plabel span { color: #ffd700; font-weight: bold; }
+.hprog { display: inline-block; width: 140px; height: 6px; border-radius: 3px; background: #0d0d1c; border: 1px solid #2a2a4e66; overflow: hidden; vertical-align: middle; }
+.hprog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 3px; transition: width 0.3s; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.hgroup { display: flex; align-items: center; gap: 2px; }
+.hdiv { width: 1px; height: 22px; background: #2a2a4e; }
+.hbtn {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  min-width: 32px; height: 32px; padding: 0 6px;
+  background: transparent; border: 1px solid transparent; border-radius: 8px;
+  color: #ffd700; font-size: 15px; line-height: 1; cursor: pointer;
+  text-decoration: none; font-family: 'Inter', system-ui, sans-serif;
+  transition: all 0.15s;
+}
+button.hbtn { font-size: 15px; }
+.hbtn:hover { background: #ffd70014; border-color: #ffd70044; }
+.hbtn .hbadge {
+  font-size: 11px; font-weight: bold; color: #ffd700;
+  background: #ffd70018; border-radius: 8px; padding: 0 5px;
+}
+.hbtn.danger { color: #ff8080; opacity: 0.75; }
+.hbtn.danger:hover { background: #ff444418; border-color: #ff444466; color: #ff6b6b; opacity: 1; }
+.hbtn .sync-label { font-size: 10.5px; color: #9a9ab5; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbtn.sync-indicator.online .sync-label { color: #7dff7d; }
+.hbtn.sync-indicator.syncing .sync-label { color: #ffd700; }
+.hbtn.sync-indicator.offline .sync-label, .hbtn.sync-indicator.denied .sync-label { color: #ff8080; }
 .header h1 {
   font-family: 'Yeseva One', 'Georgia', serif;
   font-size: 30px;
@@ -49,14 +79,7 @@ body {
   background-clip: text;
   text-shadow: none;
 }
-.header .stats {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 14px;
-  color: #8888aa;
-  display: flex;
-  gap: 16px;
-}
-.header .stats span { color: #ffd700; font-weight: bold; }
+
 
 /* Cloud sync */
 .sync-indicator {
@@ -1390,11 +1413,12 @@ body {
     font-size: 15px;
     letter-spacing: 3px;
   }
-  .header .stats {
-    font-size: 10px;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .brand-block { flex-wrap: wrap; gap: 6px; }
+  .progress-line { font-size: 10px; }
+  .hprog { width: 90px; }
+  .header-actions { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; gap: 4px; }
+  .hbtn { min-width: 30px; height: 30px; }
+  .hbtn .sync-label { display: none; }
   .sync-key-input {
     width: 90px;
     font-size: 11px;

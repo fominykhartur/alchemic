@@ -1,5 +1,16 @@
 let audioCtx = null;
 
+const MUTE_KEY = 'alchemic_muted';
+let muted = false;
+try { muted = localStorage.getItem(MUTE_KEY) === '1'; } catch {}
+
+export function isMuted() { return muted; }
+export function toggleMute() {
+  muted = !muted;
+  try { localStorage.setItem(MUTE_KEY, muted ? '1' : '0'); } catch {}
+  return muted;
+}
+
 function initAudio() {
   if (!audioCtx) {
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch {}
@@ -7,7 +18,7 @@ function initAudio() {
 }
 
 function playNote(freq, dur, type, vol) {
-  if (!audioCtx) return;
+  if (muted || !audioCtx) return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.type = type || 'sine';
@@ -21,7 +32,7 @@ function playNote(freq, dur, type, vol) {
 }
 
 function playNoise(dur, vol) {
-  if (!audioCtx) return;
+  if (muted || !audioCtx) return;
   const bufSize = audioCtx.sampleRate * dur;
   const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
   const data = buf.getChannelData(0);
