@@ -707,23 +707,44 @@ body {
 .welcome-cta:active { transform: scale(0.97); }
 
 /* Achievement list */
+.ach-summary {
+  padding: 8px 10px 10px; margin-bottom: 8px;
+  background: #12122a; border: 1px solid #2a2a4e;
+  border-radius: 8px; font-size: 12.5px; color: #a8a8c2;
+}
+.ach-summary-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.ach-summary-top b { color: #ffd700; }
+.ach-summary-bar { height: 6px; border-radius: 3px; background: #0d0d1c; border: 1px solid #2a2a4e55; overflow: hidden; }
+.ach-summary-bar i { display: block; height: 100%; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 3px; }
 .ach-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; margin-bottom: 4px; border-radius: 6px;
-  background: #1a1a2e44; border: 1px solid transparent;
+  padding: 8px 10px; margin-bottom: 5px; border-radius: 8px;
+  background: #151530; border: 1px solid #23233e;
   font-size: 14px; transition: 0.2s;
 }
 .ach-item.unlocked {
-  background: #1a2a1e44; border-color: #4a8a4a44;
+  background: linear-gradient(180deg, #182418, #141a14);
+  border-color: #4a8a4a55;
+  box-shadow: 0 0 10px rgba(74,138,74,0.12);
 }
-.ach-item.locked {
-  filter: grayscale(0.6); opacity: 0.5;
+.ach-item.unlocked .ach-icon { border-color: #4a8a4a77; box-shadow: 0 0 10px rgba(125,255,125,0.15); }
+.ach-item.locked { opacity: 0.82; }
+.ach-item.near { border-color: #ffd70066; box-shadow: 0 0 10px rgba(255,215,0,0.12); }
+.ach-icon {
+  font-size: 19px; width: 36px; height: 36px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: radial-gradient(circle at 35% 35%, #23233e, #101022);
+  border: 1px solid #3a3a5e;
 }
-.ach-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
-.ach-info { flex: 1; }
-.ach-name { color: #ddd; font-weight: bold; font-size: 13px; }
-.ach-desc { color: #9a9ab5; font-size: 12px; margin-top: 1px; }
-.ach-check { font-size: 16px; flex-shrink: 0; }
+.ach-lock-emoji { filter: grayscale(1); opacity: 0.6; }
+.ach-info { flex: 1; min-width: 0; }
+.ach-name { color: #f0f0fa; font-weight: bold; font-size: 13px; }
+.ach-item.locked .ach-name { color: #b8b8cc; }
+.ach-desc { color: #9a9ab5; font-size: 12px; margin-top: 1px; line-height: 1.4; }
+.ach-bar { height: 4px; border-radius: 2px; background: #0d0d1c; border: 1px solid #2a2a4e55; margin-top: 5px; overflow: hidden; }
+.ach-bar i { display: block; height: 100%; background: linear-gradient(90deg, #8a6f1f, #ffd700); }
+.ach-prog { font-size: 10.5px; color: #c9a227; margin-top: 2px; font-family: Inter, sans-serif; }
+.ach-check { font-size: 15px; flex-shrink: 0; opacity: 0.9; }
 
 /* Toast notification */
 #ach-toast {

@@ -1019,14 +1019,65 @@ function showAchievementToast(a) {
   toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+function achEmoji(a) {
+  const m = /^(\p{Extended_Pictographic}\uFE0F?|\p{Emoji_Presentation}|\S)/u.exec(a.name.trim());
+  return m ? m[1] : '🏆';
+}
+
+function achText(a) {
+  return a.name.replace(/^\S+\s+/, '');
+}
+
+function getAchProgress(a) {
+  const s = state;
+  const num = (cur, max) => ({ cur: Math.min(cur, max), max });
+  switch (a.id) {
+    case 'firstMix': return num(s.stats.mixCount, 1);
+    case 'discover10': return num(s.discovered.size, 10);
+    case 'discover25': return num(s.discovered.size, 25);
+    case 'discover40': return num(s.discovered.size, 40);
+    case 'discoverAll': return num(s.discovered.size, ELEMENT_IDS.length);
+    case 'recipes10': return num(s.foundRecipes.size, 10);
+    case 'recipes25': return num(s.foundRecipes.size, 25);
+    case 'recipes50': return num(s.foundRecipes.size, 50);
+    case 'recipesAll': return num(s.foundRecipes.size, RECIPES.length);
+    case 'firstBoom': return num(s.stats.explosionCount, 1);
+    case 'boom10': return num(s.stats.explosionCount, 10);
+    case 'fromAshes': return num(s.stats.discoveryFromExplosion, 1);
+    case 'massProd': return num(s.stats.totalCreated, 500);
+    case 'allVariants': return num(VARIANTS.filter(v => s.discovered.has(v)).length, VARIANTS.length);
+    default: {
+      // Общий случай: вытаскиваем все has('id') из check и считаем долю
+      try {
+        const ids = [...new Set([...a.check.toString().matchAll(/has\('([^']+)'\)/g)].map(m => m[1]))];
+        if (ids.length > 0) return num(ids.filter(id => s.discovered.has(id)).length, ids.length);
+      } catch {}
+      return null;
+    }
+  }
+}
+
 function renderAchievements() {
   const list = document.getElementById('achievement-list');
   list.innerHTML = '';
+  const total = ACHIEVEMENTS.length;
+  const got = state.achievements.size;
+  const head = document.createElement('div');
+  head.className = 'ach-summary';
+  const pct = total ? Math.round((got / total) * 100) : 0;
+  head.innerHTML = `<div class="ach-summary-top"><span>Открыто <b>${got}/${total}</b></span><span>${pct}%</span></div><div class="ach-summary-bar"><i style="width:${pct}%"></i></div>`;
+  list.appendChild(head);
   ACHIEVEMENTS.forEach(a => {
     const unlocked = state.achievements.has(a.id);
+    const p = !unlocked ? getAchProgress(a) : null;
     const item = document.createElement('div');
-    item.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked');
-    item.innerHTML = `<div class="ach-icon">🏆</div><div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${unlocked ? a.desc : '???'}</div></div><div class="ach-check">${unlocked ? '✅' : '🔒'}</div>`;
+    item.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked') + (p && p.max > 1 && p.cur >= p.max - 1 && p.cur < p.max ? ' near' : '');
+    const icon = unlocked ? achEmoji(a) : `<span class="ach-lock-emoji">${achEmoji(a)}</span>`;
+    const bar = (!unlocked && p && p.max > 1)
+      ? `<div class="ach-bar"><i style="width:${Math.round((p.cur / p.max) * 100)}%"></i></div><div class="ach-prog">${p.cur}/${p.max}</div>`
+      : ((!unlocked && p && p.max === 1) ? '' : '');
+    item.innerHTML = `<div class="ach-icon">${icon}</div><div class="ach-info"><div class="ach-name">${achText(a)}</div><div class="ach-desc">${unlocked ? a.desc : (p && p.max > 1 ? `${a.desc} · ${p.cur}/${p.max}` : '???')}</div>${bar}</div><div class="ach-check">${unlocked ? '✅' : '🔒'}</div>`;
+    item.title = unlocked ? a.desc : (p ? `${a.desc} — ${p.cur}/${p.max}` : '???');
     list.appendChild(item);
   });
 }
