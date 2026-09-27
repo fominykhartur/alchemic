@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, FINAL_IDS, CATEGORIES, RECIPES, ACHIEVEMENTS, VARIANTS, recipeKey, CAT_ORDER, TREE_MAX_DEPTH, DEPTH_GROUPS, MAX_DEPTH } from './data.js';
 import { buildIconSVG, ICON_DESIGNS, TIER, textSafeColor } from './icons.js';
 import { state, saveGame, getPlayMs } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
@@ -302,13 +302,15 @@ function showTooltip(id, e) {
   const cat = ELEMENT_CATS[id];
   const catInfo = CATEGORIES[cat];
   const qty = state.inventory[id] || 0;
+  const isFinal = FINAL_IDS.includes(id);
   tip.innerHTML = `
     <div class="tt-header">
       ${buildIconSVG(id, 16)}
       <span class="tt-name">${el.name}</span>
     </div>
-    <div class="tt-cat">${catInfo ? catInfo.label : ''}</div>
+    <div class="tt-cat">${catInfo ? catInfo.label : ''}${isFinal ? ' · 🏁 финал' : ''}</div>
     <div class="tt-desc">${el.desc}</div>
+    ${isFinal ? '<div class="tt-final" title="Из этого элемента ничего не крафтится — можно не пробовать">🏁 Финальный: ни во что не входит</div>' : ''}
     <div class="tt-qty">${el.starter || el.infinite ? '∞ в запасе' : 'В наличии: ' + qty}</div>
   `;
   tip.style.display = 'block';
@@ -380,6 +382,13 @@ function renderItem(grid, id) {
     label.className = 'name-label';
     label.textContent = el.name;
     item.appendChild(label);
+    if (FINAL_IDS.includes(id)) {
+      const fin = document.createElement('div');
+      fin.className = 'final-mark';
+      fin.textContent = '🏁';
+      fin.title = 'Финальный элемент — ни во что не входит';
+      item.appendChild(fin);
+    }
     item.addEventListener('pointerdown', onItemPointerDown);
     item.addEventListener('dblclick', (e) => {
       if (touchDoubleTapFired) { touchDoubleTapFired = false; return; }
@@ -464,6 +473,14 @@ export function showElementInfo(id) {
       entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-arrow" style="margin:0">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>`;
       list.appendChild(entry);
     });
+  }
+
+  if (FINAL_IDS.includes(id)) {
+    const fin = document.createElement('div');
+    fin.className = 'final-note';
+    fin.title = 'Из этого элемента ничего не крафтится — можно не пробовать';
+    fin.textContent = '🏁 Финальный элемент — ни во что не входит, время на пробы не тратьте';
+    list.appendChild(fin);
   }
 
   if (producing.length === 0 && usedIn.length === 0 && !el.starter) {
@@ -584,9 +601,18 @@ export function updateCauldronIndicator() {
 // ─── Whisper toast ───
 let whisperToastTimer = null;
 
-export function showWhisperToast() {
+export function showWhisperToast(mode = 'solved') {
   const toast = document.getElementById('whisper-toast');
   if (!toast) return;
+  const title = toast.querySelector('.whisper-toast-title');
+  const desc = toast.querySelector('.whisper-toast-desc');
+  if (mode === 'new') {
+    if (title) title.textContent = '📖 Новый шёпот';
+    if (desc) desc.textContent = 'Хаос шепчет — откройте Гримуар, чтобы прочесть намёк';
+  } else {
+    if (title) title.textContent = '📖 Загадка из книжки разгадана';
+    if (desc) desc.textContent = 'Откройте Гримуар, чтобы прочесть намёк';
+  }
   toast.classList.add('show');
   clearTimeout(whisperToastTimer);
   whisperToastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
@@ -622,8 +648,14 @@ function renderNotebook() {
   if (unresolved.length > 0) {
     const title = document.createElement('div');
     title.className = 'nb-section-title';
-    title.textContent = '❓ Неразгаданные шёпоты';
+    title.textContent = `❓ Неразгаданные шёпоты (${unresolved.length}/4)`;
     content.appendChild(title);
+    if (unresolved.length >= 4) {
+      const cap = document.createElement('div');
+      cap.className = 'sacrifice-hint';
+      cap.textContent = 'Новых шёпотов не будет, пока не разгадаешь старые — старые со временем становятся точнее.';
+      content.appendChild(cap);
+    }
     unresolved.forEach(e => {
       const row = document.createElement('div');
       row.className = `nb-entry nb-whisper unresolved ${e.source}`;

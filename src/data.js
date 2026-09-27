@@ -535,6 +535,14 @@ export const LEGENDARY_IDS = Object.entries(ELEMENT_CATS)
   .filter(([id, cat]) => cat === 'legendary' && ELEMENTS[id])
   .map(([id]) => id);
 
+// Намеренные финалы: из них ничего не крафтится — игра честно помечает их,
+// чтобы не тратить время на попытки. Не путать с обычными тупиками (ждут рецептов).
+export const FINAL_IDS = [
+  'greatBinding', 'spacetimeContinuum', 'oblivion',
+  'love', 'envy', 'nostalgia', 'pride', 'compassion', 'catharsis',
+  'eternalPrison', 'resonanceOfWorlds',
+];
+
 export const UNLOCKABLE_STARTERS = [
   { id: 'spirit',  unlockedBy: 'philosophersStone' },
   { id: 'matter',  unlockedBy: 'philosophersStone' },
@@ -754,6 +762,7 @@ export const RECIPES = [
   { inputs: [{ id: 'diamond', a: 1 }, { id: 'gold', a: 1 }], output: 'crown' },
   { inputs: [{ id: 'filigree', a: 1 }, { id: 'crystal', a: 1 }], output: 'crown' },
   { inputs: [{ id: 'clockwork', a: 1 }, { id: 'essence', a: 1 }], output: 'golem' },
+  { inputs: [{ id: 'worldsmith', a: 1 }, { id: 'clay', a: 1 }], output: 'golem' },
   { inputs: [{ id: 'flower', a: 1 }, { id: 'shadow', a: 1 }], output: 'curse' },
   { inputs: [{ id: 'mountain', a: 1 }, { id: 'earth', a: 1 }], output: 'stone' },
   // Tria Prima
@@ -793,6 +802,7 @@ export const RECIPES = [
   // Микрокосм
   { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'clay', a: 1 }, { id: 'life', a: 1 }], output: 'vesselOfLife' },
   { inputs: [{ id: 'vesselOfLife', a: 1 }, { id: 'azoth', a: 1 }], output: 'homunculus' },
+  { inputs: [{ id: 'brokenVessel', a: 1 }, { id: 'spirit', a: 1 }], output: 'homunculus' },
   { inputs: [{ id: 'homunculus', a: 1 }, { id: 'panacea', a: 1 }], output: 'adept' },
   // Эликсиры
   { inputs: [{ id: 'philosophersStone', a: 1 }, { id: 'gold', a: 1 }, { id: 'sun', a: 1 }, { id: 'phoenix', a: 1 }, { id: 'cosmicMonarch', a: 1 }], output: 'aurumPotabile' },
@@ -814,6 +824,7 @@ export const RECIPES = [
   // Поглощение
   { inputs: [{ id: 'eclipse', a: 1 }, { id: 'abyss', a: 1 }], output: 'voidRift' },
   { inputs: [{ id: 'voidRift', a: 1 }, { id: 'star', a: 1 }], output: 'blackHole' },
+  { inputs: [{ id: 'celestialBody', a: 1 }, { id: 'void', a: 1 }], output: 'blackHole' },
   { inputs: [{ id: 'blackHole', a: 1 }, { id: 'galaxy', a: 1 }], output: 'singularity' },
   // Иллюзия
   { inputs: [{ id: 'siren', a: 1 }, { id: 'mirror', a: 1 }], output: 'illusion' },
@@ -855,10 +866,12 @@ export const RECIPES = [
   // Катаклизмы
   { inputs: [{ id: 'geyser', a: 1 }, { id: 'hurricane', a: 1 }], output: 'maelstrom' },
   { inputs: [{ id: 'maelstrom', a: 1 }, { id: 'storm', a: 1 }], output: 'tempest' },
+  { inputs: [{ id: 'thunderclap', a: 1 }, { id: 'storm', a: 1 }], output: 'tempest' },
   { inputs: [{ id: 'tempest', a: 1 }, { id: 'earth', a: 1 }], output: 'cataclysm' },
   // Сон/заморозка
   { inputs: [{ id: 'frost', a: 1 }, { id: 'bubble', a: 1 }], output: 'stasis' },
   { inputs: [{ id: 'stasis', a: 1 }, { id: 'ghost', a: 1 }], output: 'dreamRealm' },
+  { inputs: [{ id: 'lullaby', a: 1 }, { id: 'ghost', a: 1 }], output: 'dreamRealm' },
   { inputs: [{ id: 'dreamRealm', a: 1 }, { id: 'moon', a: 1 }], output: 'somnium' },
   // Древний лес
   { inputs: [{ id: 'forest', a: 1 }, { id: 'moss', a: 1 }], output: 'ancientGrove' },
@@ -868,10 +881,12 @@ export const RECIPES = [
   { inputs: [{ id: 'scroll', a: 1 }, { id: 'phantom', a: 1 }], output: 'grimoire' },
   { inputs: [{ id: 'grimoire', a: 1 }, { id: 'curse', a: 1 }], output: 'necronomicon' },
   { inputs: [{ id: 'necronomicon', a: 1 }, { id: 'death', a: 1 }], output: 'lich' },
+  { inputs: [{ id: 'gravewarden', a: 1 }, { id: 'death', a: 1 }], output: 'lich' },
   // Кросс-комбо
   { inputs: [{ id: 'leviathan', a: 1 }, { id: 'maelstrom', a: 1 }], output: 'abyssalSovereign' },
   { inputs: [{ id: 'lich', a: 1 }, { id: 'worldTree', a: 1 }], output: 'eternalBlight' },
   { inputs: [{ id: 'banshee', a: 1 }, { id: 'necronomicon', a: 1 }], output: 'choirOfSorrow' },
+  { inputs: [{ id: 'spiritVoice', a: 1 }, { id: 'requiem', a: 1 }], output: 'choirOfSorrow' },
   { inputs: [{ id: 'singularity', a: 1 }, { id: 'auroraCrown', a: 1 }], output: 'cosmicMonarch' },
   { inputs: [{ id: 'nemesis', a: 1 }, { id: 'paradox', a: 1 }], output: 'fatebreaker' },
   { inputs: [{ id: 'parasite', a: 1 }, { id: 'overcharge', a: 1 }], output: 'virulentSwarm' },
@@ -887,6 +902,7 @@ export const RECIPES = [
   { inputs: [{ id: 'exorcism', a: 1 }, { id: 'amulet', a: 1 }],   output: 'soulJar' },
   { inputs: [{ id: 'astralForm', a: 1 }, { id: 'breath', a: 1 }, { id: 'fairy', a: 1 }], output: 'spiritGuide' },
   { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'mirror', a: 1 }, { id: 'scroll', a: 1 }], output: 'seance' },
+  { inputs: [{ id: 'invocation', a: 1 }, { id: 'ghost', a: 1 }], output: 'seance' },
   { inputs: [{ id: 'possession', a: 1 }, { id: 'livingShield', a: 1 }, { id: 'metal', a: 1 }], output: 'possessedArmor' },
   { inputs: [{ id: 'exorcism', a: 1 }, { id: 'phantom', a: 1 }, { id: 'curse', a: 1 }], output: 'wraithLord' },
   { inputs: [{ id: 'spiritGuide', a: 3 }], output: 'ancestralChorus' },
@@ -905,6 +921,7 @@ export const RECIPES = [
   { inputs: [{ id: 'monolith', a: 2 }, { id: 'worldTree', a: 1 }], output: 'worldAnvil' },
   { inputs: [{ id: 'compression', a: 3 }], output: 'absoluteMass' },
   { inputs: [{ id: 'forgeHeart', a: 1 }, { id: 'worldAnvil', a: 1 }], output: 'titan' },
+  { inputs: [{ id: 'awakenedWill', a: 1 }, { id: 'golem', a: 1 }], output: 'titan' },
   { inputs: [{ id: 'titan', a: 1 }, { id: 'absoluteMass', a: 1 }, { id: 'matter', a: 2 }], output: 'primeMatter' },
   // Слияние
   { inputs: [{ id: 'spirit', a: 1 }, { id: 'matter', a: 1 }], output: 'animatedFlesh' },
@@ -966,6 +983,7 @@ export const RECIPES = [
   { inputs: [{ id: 'relicBlade', a: 1 }, { id: 'spirit', a: 1 }], output: 'deathKnight' },
   // Альт-пути для бутылочных горлышек
   { inputs: [{ id: 'ether', a: 1 }, { id: 'fire', a: 1 }],              output: 'light' },
+  { inputs: [{ id: 'banisher', a: 1 }, { id: 'shadow', a: 1 }],          output: 'light' },
   { inputs: [{ id: 'spring', a: 1 }, { id: 'earth', a: 1 }],            output: 'life' },
   { inputs: [{ id: 'ash', a: 1 }, { id: 'void', a: 1 }],                output: 'shadow' },
   { inputs: [{ id: 'stone', a: 1 }, { id: 'lightning', a: 1 }],         output: 'crystal' },
@@ -997,6 +1015,7 @@ export const RECIPES = [
   { inputs: [{ id: 'hollow', a: 1 }, { id: 'volatileMatter', a: 1 }],   output: 'husk' },
   { inputs: [{ id: 'futility', a: 1 }, { id: 'chronicle', a: 1 }],      output: 'forgottenPage' },
   { inputs: [{ id: 'elementalWarden', a: 1 }, { id: 'zeal', a: 1 }],    output: 'ardentGuardian' },
+  { inputs: [{ id: 'geas', a: 1 }, { id: 'guardian', a: 1 }],    output: 'ardentGuardian' },
   { inputs: [{ id: 'fifthElement', a: 1 }, { id: 'locus', a: 1 }],      output: 'axis' },
   { inputs: [{ id: 'husk', a: 1 }, { id: 'abyss', a: 1 }],              output: 'voidSpawn' },
   // Развитие старых тупиковых веток
@@ -1032,6 +1051,7 @@ export const RECIPES = [
   { inputs: [{ id: 'zeal', a: 1 }, { id: 'axis', a: 1 }],               output: 'pride' },
   { inputs: [{ id: 'requiem', a: 1 }, { id: 'hope', a: 1 }],            output: 'compassion' },
   { inputs: [{ id: 'anger', a: 1 }, { id: 'serenity', a: 1 }],          output: 'catharsis' },
+  { inputs: [{ id: 'eternalMourning', a: 1 }, { id: 'hope', a: 1 }],     output: 'catharsis' },
   // Категория: Звук
   { inputs: [{ id: 'air', a: 1 }, { id: 'hollow', a: 1 }],              output: 'whisper' },
   { inputs: [{ id: 'void', a: 1 }, { id: 'shroud', a: 1 }],             output: 'silence' },
@@ -1042,6 +1062,7 @@ export const RECIPES = [
   { inputs: [{ id: 'silence', a: 1 }, { id: 'hope', a: 1 }],            output: 'lullaby' },
   { inputs: [{ id: 'echo', a: 1 }, { id: 'anger', a: 1 }],              output: 'warcry' },
   { inputs: [{ id: 'harmony', a: 1 }, { id: 'cacophony', a: 1 }],       output: 'symphony' },
+  { inputs: [{ id: 'reverberation', a: 1 }, { id: 'harmony', a: 1 }], output: 'symphony' },
   { inputs: [{ id: 'symphony', a: 1 }, { id: 'crossroads', a: 1 }],     output: 'resonanceOfWorlds' },
   // Расширение ветки Металлов
   { inputs: [{ id: 'metal', a: 1 }, { id: 'moss', a: 1 }],              output: 'copper' },
@@ -1050,6 +1071,7 @@ export const RECIPES = [
   { inputs: [{ id: 'copper', a: 1 }, { id: 'air', a: 1 }],              output: 'wire' },
   { inputs: [{ id: 'iron', a: 1 }, { id: 'lightning', a: 1 }],          output: 'magnet' },
   { inputs: [{ id: 'blade', a: 1 }, { id: 'zeal', a: 1 }],              output: 'temperedBlade' },
+  { inputs: [{ id: 'faithfulFlame', a: 1 }, { id: 'blade', a: 1 }],  output: 'temperedBlade' },
   { inputs: [{ id: 'wire', a: 1 }, { id: 'steel', a: 1 }],              output: 'chainmail' },
   { inputs: [{ id: 'wire', a: 1 }, { id: 'purpose', a: 1 }],            output: 'filigree' },
   { inputs: [{ id: 'ironWill', a: 1 }, { id: 'diamond', a: 1 }, { id: 'purpose', a: 1 }], output: 'adamant' },
@@ -1067,6 +1089,7 @@ export const RECIPES = [
   { inputs: [{ id: 'exorcism', a: 1 }, { id: 'courage', a: 1 }],        output: 'banisher' },
   { inputs: [{ id: 'spiritGuide', a: 1 }, { id: 'locus', a: 1 }],       output: 'wayfinder' },
   { inputs: [{ id: 'betweenWorlds', a: 1 }, { id: 'wayfinder', a: 1 }], output: 'psychopomp' },
+  { inputs: [{ id: 'fatewalker', a: 1 }, { id: 'ghost', a: 1 }], output: 'psychopomp' },
   // Альт-пути
   { inputs: [{ id: 'mud', a: 1 }, { id: 'stone', a: 1 }],              output: 'brick' },
   { inputs: [{ id: 'fire', a: 1 }, { id: 'wood', a: 1 }],              output: 'ash' },

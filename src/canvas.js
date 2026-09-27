@@ -850,8 +850,20 @@ function finishMix() {
       log('✨ Хрономант прозревает нити времени — предвидение обострилось', 'discovery');
     }
   }
-  if (resolveWhispers(outputId) > 0) showWhisperToast();
-  maybeAddWhisper();
+  if (isNew) {
+    state.stats.consecExplosions = 0;
+    state.stats.mixesSinceDiscovery = 0;
+  } else {
+    state.stats.mixesSinceDiscovery = (state.stats.mixesSinceDiscovery || 0) + 1;
+    state.stats.consecExplosions = 0;
+  }
+  const solved = resolveWhispers(outputId) > 0;
+  // Подсказки в первую очередь застрявшим, успех — вторичный источник
+  const stuck = stuckRetry || (state.stats.mixesSinceDiscovery || 0) >= STUCK_DROUGHT;
+  stuckRetry = false;
+  const arrived = stuck ? maybeAddWhisper(true) : maybeAddWhisper();
+  if (solved) showWhisperToast('solved');
+  else if (arrived) showWhisperToast('new');
 
   if (isNew) {
     startDiscoveryAnimation(outputId);
@@ -897,15 +909,25 @@ function finishExplosion() {
     });
     checkLegendProgress();
     state.stats.discoveryFromExplosion++;
+    state.stats.consecExplosions = 0;
+    state.stats.mixesSinceDiscovery = 0;
+    stuckRetry = false;
     playDiscover();
     startDiscoveryAnimation(picked);
     state.stats.explosionCount++;
     checkAchievements();
     return;
   }
+  state.stats.consecExplosions = (state.stats.consecExplosions || 0) + 1;
+  state.stats.mixesSinceDiscovery = (state.stats.mixesSinceDiscovery || 0) + 1;
 
   state.stats.explosionCount++;
   checkAchievements();
+  // Неудача тоже учит: серия взрывов или повтор пробы — шёпот в помощь
+  if (stuckRetry || (state.stats.consecExplosions || 0) >= STUCK_STREAK) {
+    stuckRetry = false;
+    if (maybeAddWhisper(true)) showWhisperToast('new');
+  }
   updateUI();
   state.animating = false;
   animData = null;
@@ -957,10 +979,17 @@ function getDominantElement(cauldron) {
   return dominant;
 }
 
+let stuckRetry = false;
+const STUCK_STREAK = 3;
+const STUCK_DROUGHT = 12;
+
 export function performMix() {
   const entries = Object.entries(state.cauldron);
   const totalTypes = entries.length;
   const totalUnits = entries.reduce((s, [,v]) => s + v, 0);
+  // Чел жмёт «Смешать» по уже пробованной комбинации с варнингом — явное застревание
+  const key = Object.keys(state.cauldron).sort().join('+');
+  if (totalTypes > 1 && state.triedPairs.has(key)) stuckRetry = true;
 
   if (totalUnits < 2) {
     log('⚠ Нужно минимум 2 единицы элементов в котле!', 'fail');

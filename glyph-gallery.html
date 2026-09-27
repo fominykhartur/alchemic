@@ -159,6 +159,7 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
   <button class="fbtn" data-f="dupColor">Дубли цвета <span class="n" id="n-dupColor"></span></button>
   <button class="fbtn" data-f="orphan">Сироты <span class="n" id="n-orphan"></span></button>
   <button class="fbtn" data-f="dead">Тупики <span class="n" id="n-dead"></span></button>
+  <button class="fbtn" data-f="final">🏁 Финалы <span class="n" id="n-final"></span></button>
   <button class="fbtn" data-f="nodesc">Без описания <span class="n" id="n-nodesc"></span></button>
   <span id="result-count"></span>
 </div>
@@ -174,7 +175,7 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
 <div class="tooltip" id="tooltip"></div>
 
 <script type="module">
-import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES, ELEMENT_DEPTHS } from './src/data.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES, ELEMENT_DEPTHS, FINAL_IDS } from './src/data.js';
 import { buildIconSVG, GLYPH_PATHS, TIER, ICON_DESIGNS } from './src/icons.js';
 
 // ─── Stats ───
@@ -217,7 +218,8 @@ const STARTER_SET = new Set(['fire', 'water', 'earth', 'air', 'void']);
 const inCount = id => (recipesByInput[id] || []).length;
 const outCount = id => (recipesByOutput[id] || []).length;
 const isOrphan = id => !STARTER_SET.has(id) && outCount(id) === 0;
-const isDead = id => inCount(id) === 0 && outCount(id) > 0;
+const isFinal = id => (FINAL_IDS || []).includes(id);
+const isDead = id => !isFinal(id) && inCount(id) === 0 && outCount(id) > 0;
 const noDesc = id => !(ELEMENTS[id]?.desc || '').trim();
 // Дубли глифа
 const glyphUse = {};
@@ -250,6 +252,7 @@ const setCount = (el, s) => { if (el) el.textContent = s.size ? `(${s.size})` : 
 setCount(document.getElementById('n-dupGlyph'), dupGlyphSet);
 setCount(document.getElementById('n-orphan'), orphanSet);
 setCount(document.getElementById('n-dead'), deadSet);
+setCount(document.getElementById('n-final'), new Set(ELEMENT_IDS.filter(isFinal)));
 setCount(document.getElementById('n-nodesc'), nodescSet);
 setCount(document.getElementById('n-dupColor'), dupColorSet);
 
@@ -357,6 +360,7 @@ CAT_ORDER.forEach(cat => {
       dupColorSet.has(id) ? 'dupColor' : '',
       orphanSet.has(id) ? 'orphan' : '',
       deadSet.has(id) ? 'dead' : '',
+      isFinal(id) ? 'final' : '',
       nodescSet.has(id) ? 'nodesc' : '',
     ].filter(Boolean).join(' ');
     card.dataset.search = `${el.name} ${id} ${el.color} ${el.desc || ''}`.toLowerCase();
@@ -406,7 +410,8 @@ CAT_ORDER.forEach(cat => {
     let bh = `<span class="badge d" title="Глубина крафта">D${d ?? '?'}</span>`;
     bh += `<span class="badge io" title="Рецептов: производит / используется в">→${outCount(id)} · ${inCount(id)}→</span>`;
     if (orphanSet.has(id)) bh += `<span class="badge warn" title="Ни из чего не получается">сирота</span>`;
-    if (deadSet.has(id)) bh += `<span class="badge warn" title="Ни во что не входит">тупик</span>`;
+    if (isFinal(id)) bh += `<span class="badge" style="background:#c9a22722;color:#ffd700" title="Намеренный финал — ни во что не входит">🏁 финал</span>`;
+    else if (deadSet.has(id)) bh += `<span class="badge warn" title="Ни во что не входит">тупик</span>`;
     if (dupGlyphSet.has(id)) {
       const g = ICON_DESIGNS[id]?.glyph || '?';
       const n = (glyphUse[g] || []).length;

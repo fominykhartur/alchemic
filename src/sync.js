@@ -180,6 +180,8 @@ function merge(local, cloud) {
       ? Math.min(lStats.startTime, cStats.startTime)
       : (lStats.startTime || cStats.startTime || null),
     totalPlayMs: Math.max(lStats.totalPlayMs || 0, cStats.totalPlayMs || 0),
+    consecExplosions: Math.max(lStats.consecExplosions || 0, cStats.consecExplosions || 0),
+    mixesSinceDiscovery: Math.max(lStats.mixesSinceDiscovery || 0, cStats.mixesSinceDiscovery || 0),
     elementCreatedCount,
   };
 

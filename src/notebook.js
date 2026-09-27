@@ -409,23 +409,26 @@ function upgradeWhisper(entry, level) {
   saveNotebook();
 }
 
-export function maybeAddWhisper() {
+export function maybeAddWhisper(force = false) {
   const level = getOracleLevel();
-  const every = level === 'prophecy' ? 5 : level === 'oracle' ? 8 : 12;
-  if (state.stats.mixCount % every !== 0) return;
+  if (!force) {
+    const every = level === 'prophecy' ? 5 : level === 'oracle' ? 8 : 12;
+    if (state.stats.mixCount % every !== 0) return false;
+  }
 
   const upgrade = pickWhisperUpgrade();
   if (upgrade) {
     upgradeWhisper(upgrade, level);
-    return;
+    return true;
   }
 
   const target = pickWhisperTarget();
-  if (!target) return;
+  if (!target) return false;
   addWhisper({
     pointsTo: target.output,
     source: level,
   });
+  return true;
 }
 
 export function onOracleUnlocked(level) {

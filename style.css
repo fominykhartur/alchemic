@@ -1061,6 +1061,21 @@ body {
   padding: 2px 8px; font-weight: bold;
 }
 #cauldron-indicator { color: #b0b0cc; font-size: 13.5px; }
+.inv-item .final-mark {
+  position: absolute; top: 2px; left: 3px;
+  font-size: 10px; line-height: 1; opacity: 0.85;
+  filter: grayscale(0.2); pointer-events: none;
+}
+#tooltip .tt-final {
+  color: #ffd700; font-size: 11px; margin: 3px 0;
+  background: #c9a22718; border: 1px solid #c9a22744;
+  border-radius: 4px; padding: 2px 6px;
+}
+.final-note {
+  font-size: 11px; color: #ffd700; text-align: center;
+  background: #c9a22714; border: 1px dashed #c9a22755;
+  border-radius: 6px; padding: 5px 8px; margin-top: 8px; line-height: 1.4;
+}
 
 /* Tooltip */
 #tooltip {

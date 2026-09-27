@@ -23,6 +23,8 @@ export const state = {
     startTime: null,
     totalPlayMs: 0,
     sessionStart: null,
+    consecExplosions: 0,
+    mixesSinceDiscovery: 0,
     elementCreatedCount: {},
   },
 };
@@ -65,6 +67,8 @@ export function importGameData(data) {
   if (data.stats) {
     const { sessionStart: _sess, ...rest } = data.stats;
     Object.assign(state.stats, rest);
+    if (typeof state.stats.consecExplosions !== 'number') state.stats.consecExplosions = 0;
+    if (typeof state.stats.mixesSinceDiscovery !== 'number') state.stats.mixesSinceDiscovery = 0;
     if (!data.stats.elementCreatedCount) state.stats.elementCreatedCount = {};
     // Миграция со старого подсчёта (Date.now - startTime считал офлайн): не даём абсурдным значениям перетечь
     if (typeof state.stats.totalPlayMs !== 'number') {
