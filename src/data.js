@@ -752,6 +752,7 @@ export const RECIPES = [
   { inputs: [{ id: 'amber', a: 1 }, { id: 'life', a: 1 }], output: 'fossil' },
   { inputs: [{ id: 'thunder', a: 1 }, { id: 'gale', a: 1 }], output: 'storm' },
   { inputs: [{ id: 'diamond', a: 1 }, { id: 'gold', a: 1 }], output: 'crown' },
+  { inputs: [{ id: 'filigree', a: 1 }, { id: 'crystal', a: 1 }], output: 'crown' },
   { inputs: [{ id: 'clockwork', a: 1 }, { id: 'essence', a: 1 }], output: 'golem' },
   { inputs: [{ id: 'flower', a: 1 }, { id: 'shadow', a: 1 }], output: 'curse' },
   { inputs: [{ id: 'mountain', a: 1 }, { id: 'earth', a: 1 }], output: 'stone' },
@@ -829,6 +830,7 @@ export const RECIPES = [
   // Катализ
   { inputs: [{ id: 'catalyst', a: 1 }, { id: 'lightning', a: 1 }], output: 'ignition' },
   { inputs: [{ id: 'ignition', a: 1 }, { id: 'metal', a: 1 }], output: 'engine' },
+  { inputs: [{ id: 'ignition', a: 1 }, { id: 'bronze', a: 1 }], output: 'engine' },
   // Янтарь
   { inputs: [{ id: 'amber', a: 1 }, { id: 'fossil', a: 1 }], output: 'amberRelic' },
   { inputs: [{ id: 'amberRelic', a: 1 }, { id: 'life', a: 1 }], output: 'revenant' },
@@ -839,6 +841,7 @@ export const RECIPES = [
   // Страж
   { inputs: [{ id: 'shield', a: 1 }, { id: 'vine', a: 1 }], output: 'livingShield' },
   { inputs: [{ id: 'livingShield', a: 1 }, { id: 'root', a: 1 }], output: 'guardian' },
+  { inputs: [{ id: 'chainmail', a: 1 }, { id: 'life', a: 1 }], output: 'guardian' },
   { inputs: [{ id: 'guardian', a: 1 }, { id: 'forest', a: 1 }], output: 'sentinel' },
   // Эхо
   { inputs: [{ id: 'echo', a: 1 }, { id: 'mountain', a: 1 }], output: 'canyon' },
@@ -848,6 +851,7 @@ export const RECIPES = [
   { inputs: [{ id: 'obsidian', a: 1 }, { id: 'plasma', a: 1 }], output: 'plasmaBlade' },
   { inputs: [{ id: 'plasmaBlade', a: 1 }, { id: 'crystal', a: 1 }], output: 'resonator' },
   { inputs: [{ id: 'resonator', a: 1 }, { id: 'lightning', a: 1 }], output: 'overcharge' },
+  { inputs: [{ id: 'magnet', a: 1 }, { id: 'storm', a: 1 }], output: 'overcharge' },
   // Катаклизмы
   { inputs: [{ id: 'geyser', a: 1 }, { id: 'hurricane', a: 1 }], output: 'maelstrom' },
   { inputs: [{ id: 'maelstrom', a: 1 }, { id: 'storm', a: 1 }], output: 'tempest' },
@@ -959,6 +963,7 @@ export const RECIPES = [
   { inputs: [{ id: 'sprout', a: 1 }, { id: 'sun', a: 1 }],              output: 'sapling' },
   { inputs: [{ id: 'sapling', a: 1 }, { id: 'forest', a: 1 }],          output: 'ancientGrove' },
   { inputs: [{ id: 'possessedArmor', a: 1 }, { id: 'wraithLord', a: 1 }], output: 'deathKnight' },
+  { inputs: [{ id: 'relicBlade', a: 1 }, { id: 'spirit', a: 1 }], output: 'deathKnight' },
   // Альт-пути для бутылочных горлышек
   { inputs: [{ id: 'ether', a: 1 }, { id: 'fire', a: 1 }],              output: 'light' },
   { inputs: [{ id: 'spring', a: 1 }, { id: 'earth', a: 1 }],            output: 'life' },
