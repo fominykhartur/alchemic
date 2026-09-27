@@ -96,6 +96,53 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
 }
 .top-link:hover { background: #ffd70033; }
 .top-link.visible { display: flex; }
+
+/* ─── P1: приёмка контента ─── */
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(10,10,26,0.95); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 18px;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.toolbar input[type="search"] {
+  flex: 1 1 180px; min-width: 140px;
+  background: #12122a; border: 1px solid #2a2a4e; border-radius: 6px;
+  color: #e8e8f2; font-size: 12px; padding: 6px 9px; outline: none;
+}
+.toolbar input[type="search"]:focus { border-color: #ffd70088; }
+.fbtn {
+  background: #15152a; border: 1px solid #2a2a4e; border-radius: 16px;
+  color: #aaa; font-size: 11px; padding: 5px 11px; cursor: pointer; white-space: nowrap;
+}
+.fbtn:hover { border-color: #ffd70066; color: #ffd700; }
+.fbtn.active { background: #ffd70022; border-color: #ffd70088; color: #ffd700; }
+.fbtn .n { opacity: 0.65; font-size: 10px; }
+#result-count { font-size: 11px; color: #777; margin-left: auto; }
+.badges { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; margin-top: 5px; }
+.badge {
+  font-size: 8px; font-weight: bold; padding: 1px 5px; border-radius: 3px;
+  background: #ffffff10; color: #999; letter-spacing: 0.3px; white-space: nowrap;
+}
+.badge.d { background: #4a90d922; color: #7fb3e8; }
+.badge.io { background: #ffffff0d; color: #888; }
+.badge.warn { background: #ff450022; color: #ff8c69; }
+.badge.dup { background: #9370db2e; color: #c39bff; }
+.card.flagged { border-color: #ff450055; }
+.card.hidden { display: none; }
+.cat-flags { font-size: 10px; font-weight: normal; opacity: 0.75; margin-left: 6px; }
+.cat-flags .w { color: #ff8c69; }
+.audit {
+  background: #101022; border: 1px solid #2a2a4e; border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 20px; font-size: 12px; line-height: 1.6;
+}
+.audit h2 { font-size: 14px; color: #ffd700; margin-bottom: 6px; }
+.audit .ok { color: #7dff7d; }
+.audit .bad { color: #ff8c69; }
+.audit details { margin-top: 6px; }
+.audit summary { cursor: pointer; color: #aaa; font-size: 12px; }
+.audit summary:hover { color: #ffd700; }
+.audit code { font-family: monospace; font-size: 11px; color: #c8c8e8; }
 </style>
 </head>
 <body>
@@ -104,6 +151,19 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
 <p class="subtitle">Галерея всех элементов и глифов</p>
 
 <div class="stats" id="stats">Загрузка…</div>
+
+<div class="toolbar" id="toolbar">
+  <input type="search" id="q" placeholder="🔍 Поиск: имя / id / цвет…" autocomplete="off">
+  <button class="fbtn active" data-f="all">Все</button>
+  <button class="fbtn" data-f="dupGlyph">Дубли глифа <span class="n" id="n-dupGlyph"></span></button>
+  <button class="fbtn" data-f="dupColor">Дубли цвета <span class="n" id="n-dupColor"></span></button>
+  <button class="fbtn" data-f="orphan">Сироты <span class="n" id="n-orphan"></span></button>
+  <button class="fbtn" data-f="dead">Тупики <span class="n" id="n-dead"></span></button>
+  <button class="fbtn" data-f="nodesc">Без описания <span class="n" id="n-nodesc"></span></button>
+  <span id="result-count"></span>
+</div>
+
+<div class="audit" id="audit">Считаю аудит…</div>
 
 <div id="gallery"></div>
 
@@ -114,8 +174,8 @@ h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size:
 <div class="tooltip" id="tooltip"></div>
 
 <script type="module">
-import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES } from './src/data.js';
-import { buildIconSVG, GLYPH_PATHS, TIER } from './src/icons.js';
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES, ELEMENT_DEPTHS } from './src/data.js';
+import { buildIconSVG, GLYPH_PATHS, TIER, ICON_DESIGNS } from './src/icons.js';
 
 // ─── Stats ───
 document.getElementById('stats').innerHTML =
@@ -135,6 +195,63 @@ RECIPES.forEach(r => {
     recipesByInput[inp.id].push({ recipe: r, amount: inp.a });
   });
 });
+
+// ─── P1: анализ для приёмки ───
+function hexToHsl(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  let r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  return { h: h * 360, s, l };
+}
+const STARTER_SET = new Set(['fire', 'water', 'earth', 'air', 'void']);
+const inCount = id => (recipesByInput[id] || []).length;
+const outCount = id => (recipesByOutput[id] || []).length;
+const isOrphan = id => !STARTER_SET.has(id) && outCount(id) === 0;
+const isDead = id => inCount(id) === 0 && outCount(id) > 0;
+const noDesc = id => !(ELEMENTS[id]?.desc || '').trim();
+// Дубли глифа
+const glyphUse = {};
+ELEMENT_IDS.forEach(id => {
+  const g = ICON_DESIGNS[id]?.glyph || '?';
+  (glyphUse[g] = glyphUse[g] || []).push(id);
+});
+const dupGlyphSet = new Set(Object.values(glyphUse).filter(a => a.length > 1).flat());
+// Дубли цвета: точные + близкие по hue (±10°) при похожей насыщенности/светлоте
+const colorUse = {};
+ELEMENT_IDS.forEach(id => {
+  const c = (ELEMENTS[id]?.color || '').toUpperCase();
+  (colorUse[c] = colorUse[c] || []).push(id);
+});
+const dupColorSet = new Set(Object.values(colorUse).filter(a => a.length > 1).flat());
+{
+  const hsl = ELEMENT_IDS.map(id => ({ id, h: hexToHsl(ELEMENTS[id]?.color) })).filter(x => x.h);
+  for (let i = 0; i < hsl.length; i++) for (let j = i + 1; j < hsl.length; j++) {
+    const a = hsl[i], b = hsl[j];
+    let dh = Math.abs(a.h.h - b.h.h); dh = Math.min(dh, 360 - dh);
+    if (dh <= 10 && Math.abs(a.h.s - b.h.s) < 0.15 && Math.abs(a.h.l - b.h.l) < 0.12) {
+      dupColorSet.add(a.id); dupColorSet.add(b.id);
+    }
+  }
+}
+const orphanSet = new Set(ELEMENT_IDS.filter(isOrphan));
+const deadSet = new Set(ELEMENT_IDS.filter(isDead));
+const nodescSet = new Set(ELEMENT_IDS.filter(noDesc));
+const setCount = (el, s) => { if (el) el.textContent = s.size ? `(${s.size})` : ''; };
+setCount(document.getElementById('n-dupGlyph'), dupGlyphSet);
+setCount(document.getElementById('n-orphan'), orphanSet);
+setCount(document.getElementById('n-dead'), deadSet);
+setCount(document.getElementById('n-nodesc'), nodescSet);
+setCount(document.getElementById('n-dupColor'), dupColorSet);
 
 // ─── Recipe Formatting ───
 const tooltipEl = document.getElementById('tooltip');
@@ -221,7 +338,10 @@ CAT_ORDER.forEach(cat => {
   const header = document.createElement('div');
   header.className = 'cat-header';
   header.style.color = catColor;
-  header.innerHTML = `${info?.label || cat} <span class="cat-count">${ids.length}</span>`;
+  const cOrph = ids.filter(id => orphanSet.has(id)).length;
+  const cDead = ids.filter(id => deadSet.has(id)).length;
+  const flags = (cOrph || cDead) ? `<span class="cat-flags">(<span class="w">сирот ${cOrph}</span> · <span class="w">тупиков ${cDead}</span>)</span>` : '';
+  header.innerHTML = `${info?.label || cat} <span class="cat-count">${ids.length}</span>${flags}`;
   section.appendChild(header);
 
   const grid = document.createElement('div');
@@ -231,8 +351,15 @@ CAT_ORDER.forEach(cat => {
     const el = ELEMENTS[id];
     const t = TIER[id] || 'normal';
     const card = document.createElement('div');
-    card.className = 'card';
-    card.title = el.desc ? `${el.name} — ${el.desc}` : el.name;
+    card.className = 'card' + ((orphanSet.has(id) || deadSet.has(id)) ? ' flagged' : '');
+    card.dataset.flags = [
+      dupGlyphSet.has(id) ? 'dupGlyph' : '',
+      dupColorSet.has(id) ? 'dupColor' : '',
+      orphanSet.has(id) ? 'orphan' : '',
+      deadSet.has(id) ? 'dead' : '',
+      nodescSet.has(id) ? 'nodesc' : '',
+    ].filter(Boolean).join(' ');
+    card.dataset.search = `${el.name} ${id} ${el.color} ${el.desc || ''}`.toLowerCase();
     card.addEventListener('mouseenter', e => showTooltip(e, id));
     card.addEventListener('mouseleave', hideTooltip);
     card.addEventListener('mousemove', posTooltip);
@@ -272,12 +399,83 @@ CAT_ORDER.forEach(cat => {
       card.appendChild(badge);
     }
 
+    // P1-бейджи приёмки
+    const d = ELEMENT_DEPTHS[id];
+    const badges = document.createElement('div');
+    badges.className = 'badges';
+    let bh = `<span class="badge d" title="Глубина крафта">D${d ?? '?'}</span>`;
+    bh += `<span class="badge io" title="Рецептов: производит / используется в">→${outCount(id)} · ${inCount(id)}→</span>`;
+    if (orphanSet.has(id)) bh += `<span class="badge warn" title="Ни из чего не получается">сирота</span>`;
+    if (deadSet.has(id)) bh += `<span class="badge warn" title="Ни во что не входит">тупик</span>`;
+    if (dupGlyphSet.has(id)) {
+      const g = ICON_DESIGNS[id]?.glyph || '?';
+      const n = (glyphUse[g] || []).length;
+      bh += `<span class="badge dup" title="Глиф ${g} используется ${n} раз">глиф×${n}</span>`;
+    }
+    if (dupColorSet.has(id)) bh += `<span class="badge dup" title="Цвет совпадает/близок с другим">цвет×</span>`;
+    badges.innerHTML = bh;
+    card.appendChild(badges);
+
     grid.appendChild(card);
   });
 
   section.appendChild(grid);
   gallery.appendChild(section);
 });
+
+// ─── P1: фильтры + поиск + аудит ───
+{
+  let active = 'all';
+  const q = document.getElementById('q');
+  const count = document.getElementById('result-count');
+  const apply = () => {
+    const query = (q.value || '').trim().toLowerCase();
+    let shown = 0, total = 0;
+    document.querySelectorAll('#gallery .card').forEach(card => {
+      total++;
+      const okF = active === 'all' || (card.dataset.flags || '').split(' ').includes(active);
+      const okQ = !query || (card.dataset.search || '').includes(query);
+      const vis = okF && okQ;
+      card.classList.toggle('hidden', !vis);
+      if (vis) shown++;
+    });
+    document.querySelectorAll('#gallery .category').forEach(sec => {
+      const any = [...sec.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      sec.style.display = any ? '' : 'none';
+    });
+    count.textContent = `показано ${shown}/${total}`;
+  };
+  document.querySelectorAll('#toolbar .fbtn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#toolbar .fbtn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    active = b.dataset.f;
+    apply();
+  }));
+  q.addEventListener('input', apply);
+  apply();
+}
+{
+  const dupList = Object.entries(glyphUse).filter(([, a]) => a.length > 1)
+    .sort((a, b) => b[1].length - a[1].length).slice(0, 8)
+    .map(([g, a]) => `<code>${g}×${a.length}</code> ${a.slice(0, 6).join(', ')}${a.length > 6 ? '…' : ''}`).join('<br>');
+  const orph = [...orphanSet].slice(0, 12).join(', ') || '—';
+  const dead = [...deadSet].slice(0, 12).join(', ') || '—';
+  const noD = [...nodescSet].slice(0, 12).join(', ') || '—';
+  const depths = {};
+  ELEMENT_IDS.forEach(id => { const k = ELEMENT_DEPTHS[id] ?? '?'; depths[k] = (depths[k] || 0) + 1; });
+  const dLine = Object.keys(depths).sort((a, b) => (a === '?' ? 99 : a) - (b === '?' ? 99 : b))
+    .map(k => `D${k}:${depths[k]}`).join(' · ');
+  document.getElementById('audit').innerHTML =
+    `<h2>📋 Аудит приёмки (P1)</h2>` +
+    `<div>Дубли глифа: <span class="bad">${dupGlyphSet.size}</span> · Дубли цвета: <span class="bad">${dupColorSet.size}</span> · ` +
+    `Сироты: <span class="bad">${orphanSet.size}</span> · Тупики: <span class="bad">${deadSet.size}</span> · ` +
+    `Без описания: <span class="bad">${nodescSet.size}</span></div>` +
+    `<div style="color:#777;font-size:11px;margin-top:2px">Глубины: ${dLine}</div>` +
+    `<details><summary>Топ дублей глифа</summary>${dupList || '—'}</details>` +
+    `<details><summary>Сироты (первые 12)</summary><code>${orph}</code></details>` +
+    `<details><summary>Тупики (первые 12)</summary><code>${dead}</code></details>` +
+    (nodescSet.size ? `<details><summary>Без описания (первые 12)</summary><code>${noD}</code></details>` : `<div class="ok">Описания у всех ✓</div>`);
+}
 
 // ─── Glyph Reference ───
 const glyphGrid = document.getElementById('glyph-grid');
