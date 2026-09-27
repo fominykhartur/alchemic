@@ -2,7 +2,7 @@ import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, LEGENDARY_IDS, FINAL_IDS, CATEGORI
 import { buildIconSVG, ICON_DESIGNS, TIER, textSafeColor } from './icons.js';
 import { state, saveGame, getPlayMs } from './state.js';
 import { notebook, saveNotebook, renderWhisperText, revealRecipe, pickSacrificeRecipe, getRecipeProgressForOutput, getRemainingRecipes, getRevealCost, canSacrifice, getRequiredAmount, getCategoryHint, getCategoryLabel } from './notebook.js';
-import { playDrop, playAchievement } from './audio.js';
+import { playDrop, playAchievement, playDiscover } from './audio.js';
 
 function hexRgba(hex, alpha) {
   return `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${alpha})`;
@@ -630,6 +630,7 @@ export function updateNotebookBadge() {
 }
 
 export function openGrimoire() {
+  lastSacrificeReveal = null;
   renderNotebook();
   notebook.hasUnseen = false;
   saveNotebook();
@@ -639,6 +640,7 @@ export function openGrimoire() {
 
 export function closeGrimoire(e) {
   if (e && e.target !== e.currentTarget) return;
+  lastSacrificeReveal = null;
   closeModalAnimated('grimoire-modal');
 }
 
@@ -827,6 +829,7 @@ function showLegendToast({ id, info }) {
 
 // ─── Sacrifice ritual ───
 let sacrificeRolledRecipe = null;
+let lastSacrificeReveal = null;
 
 function getSacrificeTargets() {
   return ELEMENT_IDS.filter(id => {
@@ -915,6 +918,29 @@ function renderSacrificeSection(content) {
   altar.appendChild(fire);
   altar.appendChild(dSide);
   box.appendChild(altar);
+
+  if (lastSacrificeReveal && lastSacrificeReveal.recipe) {
+    const rev = lastSacrificeReveal;
+    const r = rev.recipe;
+    const formula = r.inputs.map(i => `${ELEMENTS[i.id]?.name || i.id}${i.a > 1 ? '×' + i.a : ''}`).join(' + ') +
+      ` → ${ELEMENTS[r.output]?.name || r.output}`;
+    const revBox = document.createElement('div');
+    revBox.className = 'sacrifice-reveal' + (rev.fresh ? ' fresh' : '');
+    revBox.innerHTML = `<div class="rev-fire">🔥</div><div class="rev-title">Жертва принята!</div><div class="rev-formula">${formula}</div>`;
+    for (let i = 0; i < 14; i++) {
+      const em = document.createElement('span');
+      em.className = 'ember';
+      em.style.left = (4 + Math.random() * 92) + '%';
+      em.style.animationDelay = (Math.random() * 0.9).toFixed(2) + 's';
+      em.style.animationDuration = (1.4 + Math.random() * 1.2).toFixed(2) + 's';
+      const sz = 3 + Math.round(Math.random() * 3);
+      em.style.width = sz + 'px';
+      em.style.height = sz + 'px';
+      revBox.appendChild(em);
+    }
+    box.appendChild(revBox);
+    rev.fresh = false;
+  }
 
   const targetRow = document.createElement('div');
   targetRow.className = 'sacrifice-row';
@@ -1034,6 +1060,8 @@ function performSacrifice(targetId, donorId, amount) {
   if (revealed) {
     const p = getRecipeProgressForOutput(targetId);
     log(`🔥 Жертва принесена: раскрыт ${p.revealed} из ${p.total} рецептов «${target?.name || targetId}»`, 'info');
+    lastSacrificeReveal = { recipe: sacrificeRolledRecipe, targetId, fresh: true };
+    playDiscover();
   }
   updateUI();
   renderNotebook();
