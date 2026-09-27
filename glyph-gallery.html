@@ -232,6 +232,7 @@ CAT_ORDER.forEach(cat => {
     const t = TIER[id] || 'normal';
     const card = document.createElement('div');
     card.className = 'card';
+    card.title = el.desc ? `${el.name} — ${el.desc}` : el.name;
     card.addEventListener('mouseenter', e => showTooltip(e, id));
     card.addEventListener('mouseleave', hideTooltip);
     card.addEventListener('mousemove', posTooltip);
@@ -260,6 +261,7 @@ CAT_ORDER.forEach(cat => {
       const descEl = document.createElement('div');
       descEl.className = 'desc';
       descEl.textContent = el.desc;
+      descEl.title = el.desc;
       card.appendChild(descEl);
     }
 

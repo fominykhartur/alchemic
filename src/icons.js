@@ -538,14 +538,14 @@ export const ICON_DESIGNS = {
   seed:     { shape: 'diamond',  glyph: 'seed',     rot: 0 },
   // metal (square)
   metal:    { shape: 'square',   glyph: 'ingot',    rot: 0 },
-  steel:    { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  steel:    { shape: 'square',   glyph: 'ingot',    rot: 0, glow: 0.08 },
   blade:    { shape: 'square',   glyph: 'sword',    rot: 0 },
   rust:     { shape: 'square',   glyph: 'ingotRust', rot: 0 },
   stone:    { shape: 'square',   glyph: 'roughgem',  rot: 0 },
   crystal:  { shape: 'square',   glyph: 'gemfacets', rot: 0 },
   diamond:  { shape: 'square',   glyph: 'gemdia',    rot: 0 },
-  gold:     { shape: 'square',   glyph: 'ingot',    rot: 0 },
-  silver:   { shape: 'square',   glyph: 'ingot',    rot: 0 },
+  gold:     { shape: 'square',   glyph: 'ingot',    rot: 0, glow: 0.2 },
+  silver:   { shape: 'square',   glyph: 'ingot',    rot: 0, glow: 0.15 },
   iron:     { shape: 'square',   glyph: 'ingotIron', rot: 0 },
   // artifact (hexagon)
   glass:    { shape: 'hexagon',  glyph: 'glasspn',   rot: 0 },
@@ -678,7 +678,7 @@ export const ICON_DESIGNS = {
   guardian:     { shape: 'diamond', glyph: 'guardianSym',    rot: 0 },
   sentinel:     { shape: 'star',    glyph: 'sentinelSym',    rot: 0 },
   // Эхо
-  canyon:       { shape: 'diamond', glyph: 'peak',           rot: 0 },
+  canyon:       { shape: 'diamond', glyph: 'peak',           rot: 180 },
   whisperingWinds:{ shape: 'diamond', glyph: 'whisperingWindsSym', rot: 0 },
   banshee:      { shape: 'star',    glyph: 'ghostsym',       rot: 0 },
   // Технологии
@@ -784,7 +784,7 @@ export const ICON_DESIGNS = {
   parallelWorld: { shape: 'circle',  glyph: 'parallelWorldSym',  rot: 0 },
   infiniteRealms:{ shape: 'diamond',  glyph: 'infiniteRealmsSym', rot: 0 },
   spatialAnchor: { shape: 'hexagon', glyph: 'anchorSym',         rot: 0 },
-  masterOfSpace: { shape: 'star',    glyph: 'masterOfSpaceSym',  rot: 0, glow: 0.25 },
+  masterOfSpace: { shape: 'hexagon', glyph: 'masterOfSpaceSym',  rot: 0, glow: 0.25 },
   // Финальное слияние
   spacetimeContinuum:{ shape: 'hexagon', glyph: 'continuumSym',     rot: 0, glow: 0.3 },
   // Ветка Хаоса
