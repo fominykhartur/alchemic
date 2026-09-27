@@ -656,10 +656,16 @@ function renderNotebook() {
       cap.textContent = 'Новых шёпотов не будет, пока не разгадаешь старые — старые со временем становятся точнее.';
       content.appendChild(cap);
     }
+    const SOURCE_LABEL = { ambient: 'шёпот', oracle: 'оракул', prophecy: 'пророчество' };
+    const STAGE_ROMAN = ['I', 'II', 'III'];
     unresolved.forEach(e => {
       const row = document.createElement('div');
-      row.className = `nb-entry nb-whisper unresolved ${e.source}`;
-      row.innerHTML = `<span class="nb-icon">${SOURCE_ICONS[e.source] || '❓'}</span><span class="nb-text">${renderWhisperText(e)}</span>`;
+      row.className = `nb-entry nb-whisper unresolved ${e.source || 'ambient'}`;
+      const stage = STAGE_ROMAN[Math.min(Math.max(e.stage || 1, 1), 3) - 1];
+      row.innerHTML = `<span class="nb-icon nb-seal nb-seal-whisper">${SOURCE_ICONS[e.source] || '❓'}</span>` +
+        `<span class="nb-lore-body"><span class="nb-meta"><span class="nb-tier">${SOURCE_LABEL[e.source] || 'шёпот'} · ${stage} ступень</span></span>` +
+        `<span class="nb-text">${renderWhisperText(e)}</span></span>`;
+      row.title = 'Разгадай — смешай то, на что намекает шёпот';
       content.appendChild(row);
     });
   }
@@ -715,7 +721,7 @@ function getLegendProgressInfo(id) {
         const sub = RECIPES.find(r => r.output === i);
         if (!sub) return;
         const subCats = [...new Set(sub.inputs.map(inp => getCategoryHint(inp.id)))];
-        lines.push(`${ELEMENTS[i].name}: создаётся из ${subCats.join(' и ')}`);
+        lines.push(`${ELEMENTS[i].name}: создаётся из «${subCats.join('», «')}»`);
       });
     }
   }
