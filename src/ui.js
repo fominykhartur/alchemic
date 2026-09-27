@@ -1374,7 +1374,21 @@ function renderStats() {
   document.getElementById('stats-from-ashes').textContent = s.discoveryFromExplosion;
   document.getElementById('stats-created').textContent = s.totalCreated;
   document.getElementById('stats-achievements').textContent = `${state.achievements.size} / ${ACHIEVEMENTS.length}`;
-  document.getElementById('stats-top-element').textContent = top;
+  const topEl = document.getElementById('stats-top-element');
+  const topId = mostCreated.length > 0 && mostCreated[0][1] > 0 ? mostCreated[0][0] : null;
+  topEl.innerHTML = topId ? `${buildIconSVG(topId, 20)}<span>${top}</span>` : top;
+  const setBar = (id, cur, max) => {
+    const b = document.getElementById(id);
+    if (b) b.style.width = (max ? Math.min(100, Math.round((cur / max) * 100)) : 0) + '%';
+  };
+  setBar('bar-discovered', state.discovered.size, ELEMENT_IDS.length);
+  setBar('bar-recipes', state.foundRecipes.size, RECIPES.length);
+  setBar('bar-achievements', state.achievements.size, ACHIEVEMENTS.length);
+  const sess = document.getElementById('stats-session');
+  if (sess) {
+    const sessMs = s.sessionStart ? Math.max(0, Date.now() - s.sessionStart) : 0;
+    sess.textContent = sessMs >= 60000 ? `сессия ${formatTime(sessMs)}` : '';
+  }
 }
 
 export function openStats() {

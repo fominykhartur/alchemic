@@ -366,8 +366,13 @@ export function initSync() {
         tokenInput?.focus();
         return;
       }
+      const done = () => {
+        const old = copyBtn.textContent;
+        copyBtn.textContent = '✓';
+        setTimeout(() => { copyBtn.textContent = old; }, 1200);
+      };
       if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(syncToken).catch(() => {});
+        navigator.clipboard.writeText(syncToken).then(done).catch(() => {});
       } else {
         tokenInput?.select();
       }

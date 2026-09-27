@@ -1134,6 +1134,10 @@ button.hbtn { font-size: 15px; }
 .stat-label {
   font-size: 12px; color: #a8a8c2; margin-top: 4px;
 }
+.stat-sub { font-size: 10.5px; color: #77779a; margin-top: 2px; min-height: 14px; }
+.stat-bar { height: 5px; border-radius: 3px; background: #0d0d1c; border: 1px solid #2a2a4e55; margin-top: 6px; overflow: hidden; }
+.stat-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 3px; transition: width 0.3s; }
+.stat-top { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .nb-count {
   font-size: 11px; color: #c9a227; background: #c9a22718;
   border: 1px solid #c9a22744; border-radius: 10px; padding: 1px 8px;
