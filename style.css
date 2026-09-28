@@ -43,8 +43,8 @@ body {
 .brand-block { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .progress-line { display: flex; align-items: center; gap: 10px; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; color: #8888aa; white-space: nowrap; }
 .progress-line .plabel span { color: #ffd700; font-weight: bold; }
-.hprog { display: inline-block; width: 140px; height: 6px; border-radius: 3px; background: #0d0d1c; border: 1px solid #2a2a4e66; overflow: hidden; vertical-align: middle; }
-.hprog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 3px; transition: width 0.3s; }
+.hprog { display: inline-block; width: 140px; height: 7px; border-radius: 4px; background: rgba(201,162,39,0.16); border: 1px solid #c9a22744; overflow: hidden; vertical-align: middle; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5); }
+.hprog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8a6f1f, #ffd700); border-radius: 4px; transition: width 0.3s; box-shadow: 0 0 6px rgba(255,215,0,0.55); }
 .header-actions { display: flex; align-items: center; gap: 8px; }
 .hgroup { display: flex; align-items: center; gap: 2px; }
 .hdiv { width: 1px; height: 22px; background: #2a2a4e; }
