@@ -102,7 +102,9 @@ const invSearchClear = document.getElementById('inv-search-clear');
 if (invSearch && invSearchClear && typeof invSearchClear.addEventListener === 'function') {
   invSearchClear.addEventListener('click', () => {
     invSearch.value = '';
-    invSearch.focus();
+    // Фокус — только на десктопе: на таче он дёргает вьюпорт и поднимает клавиатуру
+    if (window.matchMedia('(pointer: fine)').matches) invSearch.focus();
+    else invSearch.blur();
     renderInventory();
   });
 }
