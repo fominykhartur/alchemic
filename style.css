@@ -240,10 +240,15 @@ button.hbtn { font-size: 15px; }
   grid-column: 1 / -1;
 }
 .inv-more {
-  text-align: center; font-size: 10.5px; color: #77779a;
+  text-align: center; font-size: 10.5px; color: #9a9ab5;
   padding: 8px 6px; margin-top: 4px;
-  border: 1px dashed #2a2a4e; border-radius: 8px;
-  background: #10102266; font-style: italic;
+  border: 1px dashed #3a3a5e; border-radius: 8px;
+  background: #111128; font-style: italic;
+}
+.inv-footer {
+  flex-shrink: 0;
+  margin: 4px;
+  border-top: none;
 }
 #inv-search:focus { border-color: #ffd70088 !important; box-shadow: 0 0 0 2px rgba(255,215,0,0.12); }
 #inventory-grid .inv-cat-header { position: sticky; top: 0; background: #111128; z-index: 2; }

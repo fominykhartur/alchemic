@@ -110,10 +110,27 @@ if (invSearch && invSearchClear && typeof invSearchClear.addEventListener === 'f
 document.addEventListener('pointermove', (e) => {
   const g = activeGesture;
   if (!g || e.pointerId !== g.pointerId) return;
+  // Ручной скролл: палец шёл вертикально — крутим сетку вместо перетаскивания
+  if (g.scrolling) {
+    const grid = document.getElementById('inventory-grid');
+    if (grid) grid.scrollTop -= e.clientY - g.startY;
+    g.startX = e.clientX;
+    g.startY = e.clientY;
+    e.preventDefault();
+    return;
+  }
   const dx = e.clientX - g.startX;
   const dy = e.clientY - g.startY;
-  if (!g.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+  const threshold = e.pointerType === 'mouse' ? DRAG_THRESHOLD : DRAG_THRESHOLD * 2;
+  if (!g.dragging && Math.hypot(dx, dy) > threshold) {
     g.moved = true;
+    // Тач идёт строго вертикально — это скролл инвентаря, а не drag
+    if (e.pointerType !== 'mouse' && Math.abs(dy) > Math.abs(dx) * 1.4) {
+      g.scrolling = true;
+      clearTimeout(g.longPressTimer);
+      e.preventDefault();
+      return;
+    }
     if (!g.addable) return;
     g.dragging = true;
     clearTimeout(g.longPressTimer);
@@ -283,13 +300,16 @@ export function renderInventory() {
   }
 
   // Пустышки «?» больше не рисуем: 300+ слотов давали огромный скролл и лаги на мобилке.
-  // Вместо них — одна строка-итог.
-  if (undiscovered.length > 0 && !q) {
-    const more = document.createElement('div');
-    more.className = 'inv-full-row inv-more';
-    more.textContent = `❓ Неоткрыто: ${undiscovered.length} — смешивай элементы`;
-    more.title = 'Новые элементы откроются смешиванием';
-    grid.appendChild(more);
+  // Вместо них — фиксированный подвал панели (всегда виден, вне скролла сетки).
+  const bar = document.getElementById('inv-undiscovered-bar');
+  if (bar) {
+    if (undiscovered.length > 0 && !q) {
+      bar.style.display = '';
+      bar.textContent = `❓ Неоткрыто: ${undiscovered.length} — смешивай элементы`;
+      bar.title = 'Новые элементы откроются смешиванием';
+    } else {
+      bar.style.display = 'none';
+    }
   }
 }
 
