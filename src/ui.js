@@ -428,7 +428,7 @@ export function showElementInfo(id) {
   const cat = ELEMENT_CATS[id];
   const catInfo = CATEGORIES[cat];
   const qtyHave = el.starter || el.infinite ? '∞ в запасе' : `×${state.inventory[id] || 0} в наличии`;
-  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:10px;color:#888;margin-top:2px">${el.desc}</div><div style="font-size:10px;color:#ffd70088;margin-top:3px">${catInfo ? catInfo.label : ''} · ${qtyHave}</div>`;
+  header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13.5px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:11px;color:#a8a8c2;margin-top:2px">${el.desc}</div><div style="font-size:10.5px;color:#ffd700aa;margin-top:3px">${catInfo ? catInfo.label : ''} · ${qtyHave}</div>`;
   list.appendChild(header);
 
   const knownKeys = new Set(notebook.knownRecipes);

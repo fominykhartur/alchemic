@@ -172,7 +172,7 @@ function drawCapacityIndicator() {
 
 function drawDropHint() {
   const t = time * 0.001;
-  const alpha = 0.3 + 0.15 * Math.sin(t);
+  const alpha = 0.48 + 0.14 * Math.sin(t);
   ctx.fillStyle = `rgba(255,215,0,${alpha})`;
   ctx.font = '16px Alegreya, Georgia, serif';
   ctx.textAlign = 'center';

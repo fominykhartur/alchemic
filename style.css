@@ -212,7 +212,7 @@ button.hbtn { font-size: 15px; }
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 3px;
-  color: #ffd70088;
+  color: #ffd700aa;
   text-align: center;
   padding-bottom: 6px;
   border-bottom: 1px solid #2a2a4e44;
@@ -511,7 +511,7 @@ button.hbtn { font-size: 15px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: #88889a;
   font-size: 13px;
   text-align: center;
   padding: 0 16px;
