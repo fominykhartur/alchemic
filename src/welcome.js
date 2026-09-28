@@ -1,6 +1,13 @@
 import { RADIUS } from './canvas.js';
 import { buildIconSVG } from './icons.js';
-import { ELEMENTS, STARTER_IDS } from './data.js';
+import { ELEMENTS, STARTER_IDS, ELEMENT_IDS } from './data.js';
+
+function plural(n, one, few, many) {
+  const m = n % 10, h = n % 100;
+  if (m === 1 && h !== 11) return one;
+  if (m >= 2 && m <= 4 && (h < 12 || h > 14)) return few;
+  return many;
+}
 
 export const WELCOME_KEY = 'alchemic_welcome_seen';
 const HIGHLIGHT_MS = 10000;
@@ -57,7 +64,7 @@ function renderWelcomeContent() {
   const intro = welcomeSection();
   const subtitle = document.createElement('div');
   subtitle.className = 'welcome-subtitle';
-  subtitle.textContent = 'Смешивайте стихии и откройте все 342 элемента';
+  subtitle.textContent = `Смешивайте стихии и откройте все ${ELEMENT_IDS.length} ${plural(ELEMENT_IDS.length, 'элемент', 'элемента', 'элементов')}`;
   intro.appendChild(subtitle);
 
   const starters = document.createElement('div');
@@ -69,8 +76,13 @@ function renderWelcomeContent() {
     chip.innerHTML = buildIconSVG(id, 30);
     starters.appendChild(chip);
   });
+  const mobile = window.matchMedia('(max-width: 767px)').matches;
   intro.appendChild(starters);
-  intro.appendChild(welcomeList([
+  intro.appendChild(welcomeList(mobile ? [
+    'Начните с пяти стихий: <b>Огонь, Вода, Земля, Воздух, Пустота</b>',
+    'Откройте вкладку <b>📦</b> внизу, перетащите элемент в круг-котёл и нажмите <b>«Смешать»</b>',
+    'Пара стихий рождает новый элемент — а иногда взрыв, который тоже может открыть новое'
+  ] : [
     'Начните с пяти стихий: <b>Огонь, Вода, Земля, Воздух, Пустота</b>',
     'Перетащите элемент из инвентаря в круг-котёл и нажмите <b>«Смешать»</b> (или Enter)',
     'Пара стихий рождает новый элемент — а иногда взрыв, который тоже может открыть новое'
@@ -78,9 +90,17 @@ function renderWelcomeContent() {
   content.appendChild(intro);
 
   const controls = welcomeSection('Управление');
-  controls.appendChild(welcomeList([
+  controls.appendChild(welcomeList(mobile ? [
+    '<b>Двойной тап</b> по элементу — добавить 1 в котёл',
+    '<b>Тап</b> по элементу — информация и рецепты',
+    '<b>Долгое нажатие</b> по элементу — выбрать количество',
+    '<b>Тап</b> по элементу в котле — вернуть 1, <b>долгое нажатие</b> — вернуть всё',
+    '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
+    '<span class="welcome-key">🔍 Поиск</span> — фильтр инвентаря по названию'
+  ] : [
     '<b>Двойной клик / двойной тап</b> по элементу — добавить 1 в котёл',
     '<b>Клик</b> по элементу — информация и рецепты',
+    '<b>Shift+клик</b> по элементу — выбрать количество',
     '<b>Клик</b> по элементу в котле — вернуть 1, <b>ПКМ / долгое нажатие</b> — вернуть всё',
     '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
     '<span class="welcome-key">🔍 Поиск</span> — фильтр инвентаря по названию'
@@ -92,6 +112,8 @@ function renderWelcomeContent() {
     'Провалы не страшны: из взрывов иногда рождаются новые элементы',
     'Клик по открытому элементу подскажет, из чего его создают',
     'Гримуар <span class="welcome-key">📖</span> даёт намёки по мере вашего прогресса',
+    'Застряли? Загляните в Гримуар: шёпоты подскажут, а жертвенный ритуал раскроет рецепт',
+    'Элементы с меткой <span class="welcome-key">🏁</span> — финальные: из них ничего не крафтится',
     'Прогресс сохраняется автоматически — можно продолжать в любой момент'
   ]));
   content.appendChild(tips);
