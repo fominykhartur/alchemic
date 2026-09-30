@@ -128,7 +128,7 @@ export function setupEventListeners() {
       const qty = document.getElementById('qty-popup');
       if (qty && qty.style.display === 'block') { qty.style.display = 'none'; return; }
       // Закрываем только верхнюю модалку с анимацией (дерево выше roadmap)
-      const order = ['tree-modal', 'roadmap-modal', 'grimoire-modal', 'stats-modal', 'achievement-modal'];
+      const order = ['tree-modal', 'furnace-modal', 'roadmap-modal', 'grimoire-modal', 'stats-modal', 'achievement-modal'];
       for (const mid of order) {
         const m = document.getElementById(mid);
         if (m && m.style.display !== 'none' && !m.classList.contains('modal-closing')) {

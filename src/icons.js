@@ -666,6 +666,10 @@ export const ICON_DESIGNS = {
   // Катализ
   ignition:     { shape: 'diamond', glyph: 'ignitionSym',    rot: 0 },
   engine:       { shape: 'square',  glyph: 'pistonEngineSym',rot: 0 },
+  furnace:      { shape: 'square',  glyph: 'athanorSym',     rot: 0, glow: 0.15 },
+  coal:         { shape: 'diamond', glyph: 'cinder',         rot: 0 },
+  briquette:    { shape: 'diamond', glyph: 'brickblk',       rot: 0 },
+  aetherCore:   { shape: 'diamond', glyph: 'ethersym',       rot: 0, glow: 0.2 },
   // Янтарь
   amberRelic:   { shape: 'hexagon', glyph: 'ambersym',       rot: 0 },
   revenant:     { shape: 'star',    glyph: 'ghostsym',       rot: 0 },

@@ -4,6 +4,7 @@ import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
 import { log, updateUI, checkAchievements, showWhisperToast, checkLegendProgress } from './ui.js';
 import { maybeAddWhisper, resolveWhispers, onOracleUnlocked } from './notebook.js';
+import { unlockFurnace, openFurnace } from './furnace.js';
 
 export const canvas = document.getElementById('game-canvas');
 export const ctx = canvas.getContext('2d');
@@ -839,6 +840,9 @@ function finishMix() {
   state.stats.mixCount++;
   state.stats.totalCreated += 3;
   state.stats.elementCreatedCount[outputId] = (state.stats.elementCreatedCount[outputId] || 0) + 3;
+  if (isNew && outputId === 'furnace' && unlockFurnace()) {
+    setTimeout(() => { try { openFurnace(); } catch {} }, 1500);
+  }
   checkAchievements();
 
   if (isNew) {
@@ -892,6 +896,7 @@ function finishExplosion() {
     !state.discovered.has(id) &&
     !LEGENDARY_IDS.includes(id) &&
     !gateIds.has(id) &&
+    id !== 'furnace' &&
     (ELEMENT_DEPTHS[id] ?? Infinity) <= 4
   );
   const chaosChance = Math.max(0, 0.25 + totalUnits * 0.02 - (types - 1) * 0.05);

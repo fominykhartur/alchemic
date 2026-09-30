@@ -191,7 +191,20 @@ function merge(local, cloud) {
     totalPlayMs: Math.max(lStats.totalPlayMs || 0, cStats.totalPlayMs || 0),
     consecExplosions: Math.max(lStats.consecExplosions || 0, cStats.consecExplosions || 0),
     mixesSinceDiscovery: Math.max(lStats.mixesSinceDiscovery || 0, cStats.mixesSinceDiscovery || 0),
+    autoCreated: Math.max(lStats.autoCreated || 0, cStats.autoCreated || 0),
     elementCreatedCount,
+  };
+
+  const lf = ls.furnace || {};
+  const cf = cs.furnace || {};
+  const pickFuel = (k) => useCloud ? (cf.fuel?.[k] || 0) : (lf.fuel?.[k] || 0);
+  const furnace = {
+    level: Math.max(lf.level || 0, cf.level || 0),
+    fuel: { coal: pickFuel('coal'), briquette: pickFuel('briquette'), aetherCore: pickFuel('aetherCore') },
+    charges: useCloud ? (cf.charges || 0) : (lf.charges || 0),
+    queue: (useCloud ? (cf.queue || []) : (lf.queue || [])).filter(q => q && q.key),
+    introSeen: !!(lf.introSeen || cf.introSeen),
+    hasUnseen: !!(lf.hasUnseen || cf.hasUnseen),
   };
 
   const lnb = local.notebook || {};
@@ -211,6 +224,7 @@ function merge(local, cloud) {
       achievements: unionArrays(ls.achievements || [], cs.achievements || []),
       triedPairs: unionArrays(ls.triedPairs || [], cs.triedPairs || []).slice(-MAX_TRIED_PAIRS),
       stats,
+      furnace,
     },
     notebook: {
       v: 1,

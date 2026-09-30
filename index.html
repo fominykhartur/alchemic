@@ -44,6 +44,7 @@
         <a href="#" class="hbtn" id="notebook-link" onclick="openGrimoire();return false" title="Гримуар">📖<span id="notebook-badge" style="display:none"></span></a>
         <a href="#" class="hbtn" onclick="openCraftRoadmap();return false" title="Полное древо крафта">🗺</a>
         <a href="#" class="hbtn" onclick="openStats();return false" title="Статистика и синхронизация">📊</a>
+        <button class="hbtn furnace-locked" id="furnace-btn" onclick="openFurnace();return false" title="Алхимическая печь">🏭<span id="furnace-badge" style="display:none"></span></button>
       </div>
       <div class="hdiv"></div>
       <div class="hgroup" role="group" aria-label="Сервис">
@@ -91,6 +92,7 @@
     <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory')">📦</button>
     <button class="tab-btn" data-tab="recipes" onclick="switchTab('recipes')">📜</button>
     <button class="tab-btn" data-tab="log" onclick="switchTab('log')">📋</button>
+    <button class="tab-btn" onclick="openFurnace();return false" title="Алхимическая печь">🏭</button>
   </div>
 </div>
 
@@ -185,6 +187,16 @@
       <span class="modal-close" onclick="closeCraftRoadmap()">&times;</span>
     </div>
     <div class="modal-body" id="roadmap-content"></div>
+  </div>
+</div>
+
+<div id="furnace-modal" class="modal-overlay" style="display:none;z-index:1060" onclick="closeFurnace(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span>🏭 Алхимическая печь</span>
+      <span class="modal-close" onclick="closeFurnace()">&times;</span>
+    </div>
+    <div class="modal-body" id="furnace-content"></div>
   </div>
 </div>
 

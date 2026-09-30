@@ -20,6 +20,7 @@ export const state = {
     explosionCount: 0,
     discoveryFromExplosion: 0,
     totalCreated: 0,
+    autoCreated: 0,
     startTime: null,
     totalPlayMs: 0,
     sessionStart: null,
@@ -27,7 +28,19 @@ export const state = {
     mixesSinceDiscovery: 0,
     elementCreatedCount: {},
   },
+  furnace: {
+    level: 0,
+    fuel: { coal: 0, briquette: 0, aetherCore: 0 },
+    charges: 0,
+    queue: [],
+    introSeen: false,
+    hasUnseen: false,
+  },
 };
+
+export function defaultFurnace() {
+  return { level: 0, fuel: { coal: 0, briquette: 0, aetherCore: 0 }, charges: 0, queue: [], introSeen: false, hasUnseen: false };
+}
 
 STARTER_IDS.forEach(id => {
   state.discovered.add(id);
@@ -45,7 +58,16 @@ export function exportGameData() {
   const triedPairs = [...state.triedPairs].slice(-MAX_TRIED_PAIRS);
   const { sessionStart: _sess, ...persistStats } = state.stats;
   const stats = { ...persistStats, elementCreatedCount: { ...state.stats.elementCreatedCount } };
-  return { v: 1, discovered, foundRecipes, inventory, achievements, triedPairs, stats };
+  const f = state.furnace || defaultFurnace();
+  const furnace = {
+    level: f.level || 0,
+    fuel: { coal: f.fuel?.coal || 0, briquette: f.fuel?.briquette || 0, aetherCore: f.fuel?.aetherCore || 0 },
+    charges: f.charges || 0,
+    queue: (f.queue || []).map(q => ({ ...q })),
+    introSeen: !!f.introSeen,
+    hasUnseen: !!f.hasUnseen,
+  };
+  return { v: 1, discovered, foundRecipes, inventory, achievements, triedPairs, stats, furnace };
 }
 
 export function importGameData(data) {
@@ -64,11 +86,15 @@ export function importGameData(data) {
   if (state.triedPairs.size > MAX_TRIED_PAIRS) {
     state.triedPairs = new Set([...state.triedPairs].slice(-MAX_TRIED_PAIRS));
   }
+  Object.assign(state.furnace, defaultFurnace(), data.furnace || {});
+  state.furnace.fuel = { coal: 0, briquette: 0, aetherCore: 0, ...(data.furnace?.fuel || {}) };
+  state.furnace.queue = Array.isArray(data.furnace?.queue) ? data.furnace.queue.filter(q => q && q.key).map(q => ({ progress: 0, ...q })) : [];
   if (data.stats) {
     const { sessionStart: _sess, ...rest } = data.stats;
     Object.assign(state.stats, rest);
     if (typeof state.stats.consecExplosions !== 'number') state.stats.consecExplosions = 0;
     if (typeof state.stats.mixesSinceDiscovery !== 'number') state.stats.mixesSinceDiscovery = 0;
+    if (typeof state.stats.autoCreated !== 'number') state.stats.autoCreated = 0;
     if (!data.stats.elementCreatedCount) state.stats.elementCreatedCount = {};
     // Миграция со старого подсчёта (Date.now - startTime считал офлайн): не даём абсурдным значениям перетечь
     if (typeof state.stats.totalPlayMs !== 'number') {

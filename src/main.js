@@ -4,6 +4,7 @@ import { log, updateUI, openAchievements, closeAchievements, openTree, closeTree
 import { setupEventListeners } from './events.js';
 import { loadNotebook } from './notebook.js';
 import { initSync } from './sync.js';
+import { startFurnaceLoop, openFurnace, closeFurnace, refreshFurnaceBadge } from './furnace.js';
 import { maybeShowWelcome, finishWelcome, showWelcome } from './welcome.js';
 import { isMuted, toggleMute } from './audio.js';
 
@@ -24,6 +25,8 @@ window.openGrimoire = openGrimoire;
 window.closeGrimoire = closeGrimoire;
 window.openModalAnimated = openModalAnimated;
 window.closeModalAnimated = closeModalAnimated;
+window.openFurnace = openFurnace;
+window.closeFurnace = closeFurnace;
 window.finishWelcome = finishWelcome;
 window.replayHelp = () => showWelcome();
 window.toggleSound = () => {
@@ -61,6 +64,9 @@ function init() {
   window.addEventListener('beforeunload', () => { try { const s = state.stats; if (s.sessionStart) { s.totalPlayMs = (s.totalPlayMs || 0) + Math.max(0, Date.now() - s.sessionStart); s.sessionStart = Date.now(); } } catch {} });
 
   updateUI();
+  startFurnaceLoop();
+  refreshFurnaceBadge();
+  setInterval(() => { try { refreshFurnaceBadge(); } catch {} }, 2000);
 
   maybeShowWelcome();
 
