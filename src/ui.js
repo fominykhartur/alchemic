@@ -468,6 +468,7 @@ export function showElementInfo(id) {
       const entry = document.createElement('div');
       entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
+      if (isKnown) entry.title = 'Раскрыто жертвой — засчитается после реального крафта';
       entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span>`;
       list.appendChild(entry);
     });
@@ -583,13 +584,18 @@ export function renderRecipes() {
     const entry = document.createElement('div');
     entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
     const formula = r.inputs.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
+    if (isKnown) entry.title = 'Раскрыто жертвой — засчитается после реального крафта';
     entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
     list.appendChild(entry);
   });
 }
 
 // ─── Log ───
+const LOG_DEDUP_MS = 8000;
 export function log(text, type = 'info') {
+  // Троттлинг одинаковых подряд (напр. «Облачный прогресс применён» пуллом и фокусом)
+  const prev = state.messages[state.messages.length - 1];
+  if (prev && prev.text === text && prev.type === type && Date.now() - prev.time < LOG_DEDUP_MS) return;
   state.messages.push({ text, type, time: Date.now() });
   const content = document.getElementById('log-content');
   const entry = document.createElement('div');
@@ -622,7 +628,7 @@ export function updateCauldronIndicator() {
   const indicator = document.getElementById('cauldron-indicator');
   const entries = Object.entries(state.cauldron);
   if (entries.length === 0) {
-    indicator.innerHTML = 'Перетащите элементы в круг';
+    indicator.innerHTML = 'Котёл пуст · вместимость 10';
   } else {
     const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${id === state.pendingReveal ? '❔' : buildIconSVG(id, 14)} ${id === state.pendingReveal ? '???' : ELEMENTS[id].name} <b>×${qty}</b></span>`);
     indicator.innerHTML = parts.join(' ');

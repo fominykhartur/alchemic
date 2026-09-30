@@ -936,10 +936,12 @@ button.hbtn { font-size: 15px; }
 /* ─── Sacrifice ritual ─── */
 .recipe-entry.known {
   opacity: 1;
-  border-color: #b8965a44;
-  background: #141220;
+  border-color: #b8965a66;
+  border-left: 2px solid #b8965a;
+  background: linear-gradient(180deg, #17141f, #12101c);
 }
 .recipe-entry.known .recipe-formula { color: #c8b890; }
+.recipe-reveal-mark { margin-right: 3px; font-size: 12px; filter: drop-shadow(0 0 3px rgba(184,150,90,0.7)); }
 .recipe-reveal-mark { margin-right: 3px; font-size: 11px; }
 .sacrifice-box {
   display: flex;

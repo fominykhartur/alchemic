@@ -171,14 +171,34 @@ function drawCapacityIndicator() {
   ctx.restore();
 }
 
+const DROP_TIPS = [
+  'Перетащите элементы сюда',
+  'Пара стихий рождает новое',
+  'Провалы тоже открывают — хаос рождает',
+  'Повторы ведут к взрывам',
+  'Гримуар шепчет подсказки',
+  'Клик по элементу расскажет рецепт',
+  'Как вверху, так и внизу',
+  'Великое Делание начинается с малого',
+  'Терпение — первый металл алхимика',
+  'Каждая легенда была когда-то паром',
+  'Хаос — тоже инструмент',
+  'Взвесь. Смешай. Наблюдай.',
+  'Золото любит терпеливых',
+  'Тишина перед открытием',
+  'Три начала ждут своего часа',
+  'Котёл помнит все попытки',
+];
+
 function drawDropHint() {
   const t = time * 0.001;
   const alpha = 0.48 + 0.14 * Math.sin(t);
+  const tip = DROP_TIPS[Math.floor(time / 4000) % DROP_TIPS.length];
   ctx.fillStyle = `rgba(255,215,0,${alpha})`;
   ctx.font = '16px Alegreya, Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('Перетащите элементы сюда', CX, CY);
+  ctx.fillText(tip, CX, CY);
   ctx.font = '28px serif';
   ctx.fillStyle = `rgba(255,215,0,${alpha * 0.5})`;
   ctx.fillText('⟐', CX, CY - 30);
