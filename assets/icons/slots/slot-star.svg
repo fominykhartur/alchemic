@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><defs>
+<linearGradient id="stasg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3bd"/><stop offset=".5" stop-color="#f0c050"/><stop offset="1" stop-color="#a86a14"/></linearGradient>
+<linearGradient id="stasr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8dd90"/><stop offset=".5" stop-color="#9c6a16"/><stop offset="1" stop-color="#f0c050"/></linearGradient>
+<radialGradient id="stasb" cx=".5" cy=".38" r=".75"><stop offset="0" stop-color="#1b2356"/><stop offset="1" stop-color="#080b20"/></radialGradient>
+<filter id="stasglow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><rect x="8" y="8" width="48" height="48" rx="9" fill="url(#stasb)" stroke="url(#stasr)" stroke-width="1.6"/><rect x="11.5" y="11.5" width="41" height="41" rx="6.5" fill="none" stroke="#e8c25a" stroke-opacity=".22" stroke-width=".7"/><g><path d="M32.0 19.0L35.9 28.1L45.0 32.0L35.9 35.9L32.0 45.0L28.1 35.9L19.0 32.0L28.1 28.1Z" fill="url(#stasg)" filter="url(#stasglow)"/></g></svg>

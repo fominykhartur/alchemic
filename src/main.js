@@ -29,10 +29,19 @@ window.openFurnace = openFurnace;
 window.closeFurnace = closeFurnace;
 window.finishWelcome = finishWelcome;
 window.replayHelp = () => showWelcome();
+const SOUND_ICONS = {
+  on: ['assets/icons/sound-on.svg', 'assets/icons/sound-on-active.svg'],
+  off: ['assets/icons/sound-off.svg', 'assets/icons/sound-off.svg'],
+};
 window.toggleSound = () => {
   const muted = toggleMute();
   const btn = document.getElementById('mute-btn');
-  if (btn) { btn.textContent = muted ? '🔇' : '🔊'; btn.title = muted ? 'Включить звук' : 'Выключить звук'; }
+  if (btn) {
+    const [i, ia] = muted ? SOUND_ICONS.off : SOUND_ICONS.on;
+    btn.style.setProperty('--i', `url(${i})`);
+    btn.style.setProperty('--ia', `url(${ia})`);
+    btn.title = muted ? 'Включить звук' : 'Выключить звук';
+  }
 };
 
 function init() {
@@ -54,7 +63,11 @@ function init() {
   });
 
   const muteBtn = document.getElementById('mute-btn');
-  if (muteBtn && isMuted()) { muteBtn.textContent = '🔇'; muteBtn.title = 'Включить звук'; }
+  if (muteBtn && isMuted()) {
+    muteBtn.style.setProperty('--i', 'url(assets/icons/sound-off.svg)');
+    muteBtn.style.setProperty('--ia', 'url(assets/icons/sound-off.svg)');
+    muteBtn.title = 'Включить звук';
+  }
 
   if (!state.stats.startTime) state.stats.startTime = Date.now();
   state.stats.sessionStart = Date.now();

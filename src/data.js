@@ -404,21 +404,21 @@ export const ELEMENT_IDS = Object.keys(ELEMENTS);
 export const STARTER_IDS = ELEMENT_IDS.filter(id => ELEMENTS[id].starter);
 
 export const CATEGORIES = {
-  starter:   { label: '🔥 Стихии', color: '#ffd700' },
-  state:     { label: '🌊 Состояния', color: '#88ddff' },
-  nature:    { label: '🌿 Природа', color: '#32cd32' },
-  metal:     { label: '⛰ Металлы', color: '#708090' },
-  artifact:  { label: '🏺 Артефакты', color: '#d2691e' },
-  entities:  { label: '👤 Сущности', color: '#c0508a' },
-  spirit:    { label: '👻 Дух', color: '#b8a0ff' },
-  chronomancy:{ label: '⏳ Хрономантия', color: '#b8965a' },
-  illusion:  { label: '🎭 Иллюзии', color: '#e0a0e0' },
-  magic:     { label: '🔮 Магия', color: '#9370db' },
-  cosmos:    { label: '🌌 Космос', color: '#4a6fa5' },
-  alchemy:   { label: '⚗ Алхимия', color: '#7cfc00' },
-  emotion:   { label: '💗 Чувства', color: '#E85A8A' },
-  sound:     { label: '🔔 Звук', color: '#5FB8D8' },
-  legendary: { label: '👑 Легендарное', color: '#C9A227' },
+  starter:   { label: 'Стихии', color: '#ffd700' },
+  state:     { label: 'Состояния', color: '#88ddff' },
+  nature:    { label: 'Природа', color: '#32cd32' },
+  metal:     { label: 'Металлы', color: '#708090' },
+  artifact:  { label: 'Артефакты', color: '#d2691e' },
+  entities:  { label: 'Сущности', color: '#c0508a' },
+  spirit:    { label: 'Дух', color: '#b8a0ff' },
+  chronomancy:{ label: 'Хрономантия', color: '#b8965a' },
+  illusion:  { label: 'Иллюзии', color: '#e0a0e0' },
+  magic:     { label: 'Магия', color: '#9370db' },
+  cosmos:    { label: 'Космос', color: '#4a6fa5' },
+  alchemy:   { label: 'Алхимия', color: '#7cfc00' },
+  emotion:   { label: 'Чувства', color: '#E85A8A' },
+  sound:     { label: 'Звук', color: '#5FB8D8' },
+  legendary: { label: 'Легендарное', color: '#C9A227' },
 };
 
 export const ELEMENT_CATS = {

@@ -1,7 +1,7 @@
 import { ELEMENTS, RECIPES, recipeKey, ELEMENT_DEPTHS, LEGENDARY_IDS, FINAL_IDS } from './data.js';
 import { state, saveGame } from './state.js';
 import { notebook } from './notebook.js';
-import { log, updateUI, checkAchievements, checkLegendProgress, openModalAnimated, closeModalAnimated } from './ui.js';
+import { log, updateUI, checkAchievements, checkLegendProgress, openModalAnimated, closeModalAnimated, alcDivider } from './ui.js';
 import { buildIconSVG, textSafeColor } from './icons.js';
 import { playDiscover } from './audio.js';
 
@@ -228,7 +228,7 @@ function furnaceToastDone() {
   if (!toast) return;
   const title = toast.querySelector('.legend-toast-title');
   const desc = toast.querySelector('.legend-toast-desc');
-  if (title) title.textContent = '🏭 Печь отработала очередь';
+  if (title) title.innerHTML = '<img class="toast-ico" src="assets/icons/glyph/factory.svg" alt="">Печь отработала очередь';
   if (desc) desc.textContent = 'Загляните в печь — можно закрывать вкладку спокойно';
   toast.classList.add('show');
   clearTimeout(toast._furnTimer);
@@ -276,7 +276,7 @@ export function renderFurnace() {
   if (lvl === 0) {
     const lock = document.createElement('div');
     lock.className = 'nb-empty';
-    lock.textContent = '🔒 Постройте Печь: кирпич + сталь + глина + инферно — и она будет крафтить за вас.';
+    lock.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/lock.svg" alt="">Постройте Печь: кирпич + сталь + глина + инферно — и она будет крафтить за вас.';
     content.appendChild(lock);
     return;
   }
@@ -284,7 +284,7 @@ export function renderFurnace() {
   if (!state.furnace.introSeen) {
     const intro = document.createElement('div');
     intro.className = 'sacrifice-box';
-    intro.innerHTML = `<div style="text-align:center;font-size:15px;font-weight:bold;color:#ffd700">🏭 Печь построена!</div>
+    intro.innerHTML = `<div style="text-align:center;font-size:15px;font-weight:bold;color:#ffd700"><img class="sec-ico" style="width:18px;height:18px" src="assets/icons/glyph/factory.svg" alt="">Печь построена!</div>
       <div style="font-size:12.5px;color:#c8c8e8;line-height:1.6">1. Загрузите топливо (уголь, брикеты, ядра).<br>2. Выберите известный рецепт в очередь.<br>3. Печь работает сама — вкладку можно закрывать, о готовности сообщим.</div>`;
     const ok = document.createElement('button');
     ok.className = 'sacrifice-btn';
@@ -302,13 +302,14 @@ export function renderFurnace() {
   const status = document.createElement('div');
   status.className = 'furn-status';
   const speed = Math.round(cfg.intervalMs / 1000);
-  status.innerHTML = `Уровень <b>${lvl}</b> · ⚡ зарядов: <b id="furn-charges">${state.furnace.charges || 0}</b> · крафт / ${speed}с · очередь ${state.furnace.queue.length}/${cfg.slots}`;
+  status.innerHTML = `Уровень <b>${lvl}</b> · <img class="sec-ico" src="assets/icons/glyph/bolt.svg" alt=""> зарядов: <b id="furn-charges">${state.furnace.charges || 0}</b> · крафт / ${speed}с · очередь ${state.furnace.queue.length}/${cfg.slots}`;
   content.appendChild(status);
 
   // Топливо
+  content.appendChild(alcDivider());
   const fTitle = document.createElement('div');
   fTitle.className = 'nb-section-title';
-  fTitle.textContent = '🔥 Топливо';
+  fTitle.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Топливо';
   content.appendChild(fTitle);
   FUEL_ORDER.forEach(fid => {
     const el = ELEMENTS[fid];
@@ -317,7 +318,7 @@ export function renderFurnace() {
     row.className = 'sacrifice-row furn-fuel-row';
     const inv = state.inventory[fid] || 0;
     const inF = state.furnace.fuel[fid] || 0;
-    row.innerHTML = `<span>${buildIconSVG(fid, 20)}</span><span class="furn-fuel-name">${el.name} <span class="furn-fuel-val">(+${FUEL_VALUE[fid]}⚡)</span></span><span class="furn-fuel-count">в печи ${inF} · рюкзак ${inv}</span>`;
+    row.innerHTML = `<span>${buildIconSVG(fid, 24)}</span><span class="furn-fuel-name">${el.name} <span class="furn-fuel-val">(+${FUEL_VALUE[fid]}<img class="sec-ico" src="assets/icons/glyph/bolt.svg" alt="">)</span></span><span class="furn-fuel-count">в печи ${inF} · рюкзак ${inv}</span>`;
     [1, 5].forEach(n => {
       const b = document.createElement('button');
       b.className = 'sync-btn';
@@ -335,9 +336,10 @@ export function renderFurnace() {
 
   // Улучшение
   if (lvl < 3) {
+    content.appendChild(alcDivider());
     const upTitle = document.createElement('div');
     upTitle.className = 'nb-section-title';
-    upTitle.textContent = `⬆ Улучшение до ${lvl + 1}`;
+    upTitle.innerHTML = `<img class="sec-ico" src="assets/icons/glyph/upgrade.svg" alt="">Улучшение до ${lvl + 1}`;
     content.appendChild(upTitle);
     const cost = UPGRADE_COST[lvl + 1];
     const upRow = document.createElement('div');
@@ -353,9 +355,10 @@ export function renderFurnace() {
   }
 
   // Очередь
+  content.appendChild(alcDivider());
   const qTitle = document.createElement('div');
   qTitle.className = 'nb-section-title';
-  qTitle.textContent = '📋 Очередь';
+  qTitle.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/clipboard.svg" alt="">Очередь';
   content.appendChild(qTitle);
   if (state.furnace.queue.length === 0) {
     const empty = document.createElement('div');
@@ -425,7 +428,7 @@ export function renderFurnace() {
   errLine.className = 'sacrifice-hint';
   addB.addEventListener('click', () => {
     const err = addToQueue(sel.value, parseInt(cnt.value, 10) || 1);
-    if (err) { errLine.textContent = '⚠ ' + err; return; }
+    if (err) { errLine.innerHTML = `<img class="sec-ico" src="assets/icons/glyph/warning.svg" alt="">${err}`; return; }
     renderFurnace();
   });
   addRow.appendChild(sel);

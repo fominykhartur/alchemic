@@ -96,14 +96,14 @@ function renderWelcomeContent() {
     '<b>Долгое нажатие</b> по элементу — выбрать количество',
     '<b>Тап</b> по элементу в котле — вернуть 1, <b>долгое нажатие</b> — вернуть всё',
     '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
-    '<span class="welcome-key">🔍 Поиск</span> — фильтр инвентаря по названию'
+    '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/magnify.svg" alt="">Поиск</span> — фильтр инвентаря по названию'
   ] : [
     '<b>Двойной клик / двойной тап</b> по элементу — добавить 1 в котёл',
     '<b>Клик</b> по элементу — информация и рецепты',
     '<b>Shift+клик</b> по элементу — выбрать количество',
     '<b>Клик</b> по элементу в котле — вернуть 1, <b>ПКМ / долгое нажатие</b> — вернуть всё',
     '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
-    '<span class="welcome-key">🔍 Поиск</span> — фильтр инвентаря по названию'
+    '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/magnify.svg" alt="">Поиск</span> — фильтр инвентаря по названию'
   ]));
   content.appendChild(controls);
 
@@ -111,9 +111,9 @@ function renderWelcomeContent() {
   tips.appendChild(welcomeList([
     'Провалы не страшны: из взрывов иногда рождаются новые элементы',
     'Клик по открытому элементу подскажет, из чего его создают',
-    'Гримуар <span class="welcome-key">📖</span> даёт намёки по мере вашего прогресса',
+    'Гримуар <span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/openbook.svg" alt=""></span> даёт намёки по мере вашего прогресса',
     'Застряли? Загляните в Гримуар: шёпоты подскажут, а жертвенный ритуал раскроет рецепт',
-    'Элементы с меткой <span class="welcome-key">🏁</span> — финальные: из них ничего не крафтится',
+    'Элементы с меткой <span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/flag.svg" alt=""></span> — финальные: из них ничего не крафтится',
     'Прогресс сохраняется автоматически — можно продолжать в любой момент'
   ]));
   content.appendChild(tips);

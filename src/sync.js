@@ -71,17 +71,17 @@ function setStatus(status) {
   const el = document.getElementById('sync-status');
   const ind = document.getElementById('sync-indicator');
   const labels = {
-    disabled: '☁ не настроено',
-    syncing: '⟳ синхронизация…',
-    online: '☁ синхронизировано',
-    offline: '⚠ офлайн',
-    denied: '⚠ неверный ключ',
+    disabled: 'не настроено',
+    syncing: 'синхронизация…',
+    online: 'синхронизировано',
+    offline: 'офлайн',
+    denied: 'неверный ключ',
   };
   if (el) {
-    el.textContent = labels[status] || '☁';
+    el.textContent = labels[status] || '';
     el.className = 'sync-status ' + status;
   }
-  if (ind) ind.className = 'hbtn sync-indicator ' + status;
+  if (ind) ind.className = 'alc-tool sync-indicator ' + status;
   const shortLabels = {
     disabled: 'синк выкл',
     syncing: 'синхронизация…',
@@ -91,6 +91,15 @@ function setStatus(status) {
   };
   const lab = document.getElementById('sync-label');
   if (lab) lab.textContent = shortLabels[status] || 'синхронизация';
+  // Иконка кита по статусу (sync.svg — нейтральная, sync-active — занят)
+  const pick = status === 'online'
+    ? ['assets/icons/sync-ok.svg', 'assets/icons/sync-active.svg']
+    : status === 'syncing'
+      ? ['assets/icons/sync.svg', 'assets/icons/sync-active.svg']
+      : ['assets/icons/sync-offline.svg', 'assets/icons/sync-offline.svg'];
+  ind.style.setProperty('--i', `url(${pick[0]})`);
+  ind.style.setProperty('--ia', `url(${pick[1]})`);
+  ind.title = `Синхронизация: ${shortLabels[status] || status} — открыть настройки`;
 }
 
 // ─── Document ───
@@ -381,9 +390,8 @@ export function initSync() {
         return;
       }
       const done = () => {
-        const old = copyBtn.textContent;
-        copyBtn.textContent = '✓';
-        setTimeout(() => { copyBtn.textContent = old; }, 1200);
+        copyBtn.style.borderColor = '#7dff7d';
+        setTimeout(() => { copyBtn.style.borderColor = ''; }, 1200);
       };
       if (navigator.clipboard?.writeText) {
         navigator.clipboard.writeText(syncToken).then(done).catch(() => {});
@@ -398,6 +406,9 @@ export function initSync() {
     revealBtn.addEventListener('click', () => {
       const reveal = tokenInput.type === 'password';
       tokenInput.type = reveal ? 'text' : 'password';
+      const ico = document.getElementById('sync-reveal-ico');
+      if (ico) ico.src = reveal ? 'assets/icons/glyph/eye-off.svg' : 'assets/icons/glyph/eye.svg';
+      revealBtn.title = reveal ? 'Скрыть ключ' : 'Показать ключ';
       tokenInput.focus();
     });
   }

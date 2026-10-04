@@ -8,6 +8,24 @@ function hexRgba(hex, alpha) {
   return `rgba(${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)},${alpha})`;
 }
 
+// Медали категорий по маппингу кита (assets/icons/cat/*.svg)
+const CAT_MEDAL = {
+  starter: 'stikhii', state: 'sostoyaniya', nature: 'priroda', metal: 'metally',
+  artifact: 'artefakty', entities: 'sushchnosti', spirit: 'dukh',
+  chronomancy: 'khronomantiya', illusion: 'illyuzii', magic: 'magiya',
+  cosmos: 'kosmos', alchemy: 'alkhimiya', emotion: 'chuvstva',
+  sound: 'zvuk', legendary: 'legendarnoe',
+};
+
+export function alcDivider() {
+  const img = document.createElement('img');
+  img.className = 'alc-divider';
+  img.src = 'assets/ornaments/divider-star.svg';
+  img.alt = '';
+  img.setAttribute('aria-hidden', 'true');
+  return img;
+}
+
 // ─── Drag & gesture state (Pointer Events) ───
 const DRAG_THRESHOLD = 8;
 const LONG_PRESS_MS = 500;
@@ -264,9 +282,11 @@ export function renderInventory() {
   if (!window._sortMode) window._sortMode = 'category';
   const sortToggle = document.createElement('div');
   sortToggle.className = 'inv-full-row';
-  sortToggle.style.cssText = 'width:100%;text-align:center;margin-bottom:4px;font-size:10px;color:#77779a;cursor:pointer;padding:2px;border-radius:4px';
+  sortToggle.style.cssText = 'width:100%;text-align:center;margin-bottom:4px;font-size:15px;color:#77779a;cursor:pointer;padding:4px;border-radius:4px';
   sortToggle.title = 'Переключить сортировку';
-  sortToggle.textContent = window._sortMode === 'category' ? '🔽 По категориям' : '🔤 По алфавиту';
+  sortToggle.innerHTML = window._sortMode === 'category'
+    ? '<img class="sec-ico" style="width:20px;height:20px" src="assets/icons/glyph/sort-cat.svg" alt="">По категориям'
+    : '<img class="sec-ico" style="width:20px;height:20px" src="assets/icons/glyph/sort-alpha.svg" alt="">По алфавиту';
   sortToggle.addEventListener('click', () => {
     window._sortMode = window._sortMode === 'category' ? 'alpha' : 'category';
     renderInventory();
@@ -291,8 +311,8 @@ export function renderInventory() {
       const catInfo = CATEGORIES[cat];
       const header = document.createElement('div');
       header.className = 'inv-full-row inv-cat-header';
-      header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${hexRgba(catInfo.color, 0.13)};margin-top:2px;text-transform:uppercase;letter-spacing:1px`;
-      header.textContent = catInfo.label;
+      header.style.cssText = `width:100%;font-size:9px;color:${catInfo.color};padding:4px 2px 2px;border-bottom:1px solid ${hexRgba(catInfo.color, 0.13)};margin-top:0;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:4px`;
+      header.innerHTML = `${CAT_MEDAL[cat] ? `<img class="cat-medal" src="assets/icons/cat/${CAT_MEDAL[cat]}.svg" alt="">` : ''}<span>${catInfo.label}</span>`;
       grid.appendChild(header);
       ids.forEach(id => renderItem(grid, id));
     });
@@ -302,16 +322,13 @@ export function renderInventory() {
   }
 
   // Пустышки «?» больше не рисуем: 300+ слотов давали огромный скролл и лаги на мобилке.
-  // Вместо них — фиксированный подвал панели (всегда виден, вне скролла сетки).
-  const bar = document.getElementById('inv-undiscovered-bar');
-  if (bar) {
-    if (undiscovered.length > 0 && !q) {
-      bar.style.display = '';
-      bar.textContent = `❓ Неоткрыто: ${undiscovered.length} — смешивай элементы`;
-      bar.title = 'Новые элементы откроются смешиванием';
-    } else {
-      bar.style.display = 'none';
-    }
+  // Вместо них — одна строка-итог в самом низу списка (видна только при прокрутке до конца).
+  if (undiscovered.length > 0 && !q) {
+    const more = document.createElement('div');
+    more.className = 'inv-full-row inv-more';
+    more.innerHTML = `<img class="sec-ico" src="assets/icons/glyph/question.svg" alt="">Неоткрыто: ${undiscovered.length} — смешивай элементы`;
+    more.title = 'Новые элементы откроются смешиванием';
+    grid.appendChild(more);
   }
 }
 
@@ -335,7 +352,7 @@ function showTooltip(id, e) {
     <div class="tt-cat">${catInfo ? catInfo.label : ''}${isFinal ? ' · 🏁 финал' : ''}</div>
     <div class="tt-desc">${el.desc}</div>
     ${isFinal ? '<div class="tt-final" title="Из этого элемента ничего не крафтится — можно не пробовать">🏁 Финальный: ни во что не входит</div>' : ''}
-    <div class="tt-qty">${el.starter || el.infinite ? '∞ в запасе' : 'В наличии: ' + qty}</div>
+    <div class="tt-qty">${el.starter || el.infinite ? '<img class="sec-ico" src="assets/icons/glyph/infinity.svg" alt=""> в запасе' : 'В наличии: ' + qty}</div>
   `;
   tip.style.display = 'block';
   positionTooltip(e);
@@ -371,8 +388,7 @@ function renderItem(grid, id) {
       item.style.borderColor = 'rgba(160,160,190,0.35)';
       const iconDiv = document.createElement('div');
       iconDiv.className = 'icon-container';
-      iconDiv.textContent = '❔';
-      iconDiv.style.fontSize = '28px';
+      iconDiv.innerHTML = '<img src="assets/icons/glyph/unknown.svg" alt="" style="width:28px;height:28px">';
       iconDiv.style.lineHeight = '32px';
       item.appendChild(iconDiv);
       const label = document.createElement('div');
@@ -400,7 +416,11 @@ function renderItem(grid, id) {
     item.appendChild(iconDiv);
     const qtyEl = document.createElement('div');
     qtyEl.className = 'quantity';
-    qtyEl.textContent = el.starter || el.infinite ? '∞' : qty;
+    if (el.starter || el.infinite) {
+      qtyEl.innerHTML = '<img src="assets/icons/glyph/infinity.svg" alt="∞" style="width:11px;height:11px">';
+    } else {
+      qtyEl.textContent = qty;
+    }
     if (qty > 0 || el.starter || el.infinite) item.appendChild(qtyEl);
     const label = document.createElement('div');
     label.className = 'name-label';
@@ -409,7 +429,7 @@ function renderItem(grid, id) {
     if (FINAL_IDS.includes(id)) {
       const fin = document.createElement('div');
       fin.className = 'final-mark';
-      fin.textContent = '🏁';
+      fin.innerHTML = '<img src="assets/icons/glyph/flag.svg" alt="">';
       fin.title = 'Финальный элемент — ни во что не входит';
       item.appendChild(fin);
     }
@@ -449,7 +469,7 @@ export function showElementInfo(id) {
   const wrapStyle = `background:linear-gradient(135deg, ${hexRgba(el.color, 0.27)}, ${hexRgba(el.color, 0.07)});` + (id === 'void' || id === 'abyss' ? '' : `border-color:${hexRgba(el.color, 0.4)}`);
   const cat = ELEMENT_CATS[id];
   const catInfo = CATEGORIES[cat];
-  const qtyHave = el.starter || el.infinite ? '∞ в запасе' : `×${state.inventory[id] || 0} в наличии`;
+  const qtyHave = el.starter || el.infinite ? '<img class="sec-ico" src="assets/icons/glyph/infinity.svg" alt=""> в запасе' : `×${state.inventory[id] || 0} в наличии`;
   header.innerHTML = `<div style="text-align:center;margin:0 auto 6px"><span class="${wrapCls}" style="${wrapStyle}">${buildIconSVG(id, 44)}</span></div><div style="font-size:13.5px;font-weight:bold;color:#fff">${el.name}</div><div style="font-size:11px;color:#a8a8c2;margin-top:2px">${el.desc}</div><div style="font-size:10.5px;color:#ffd700aa;margin-top:3px">${catInfo ? catInfo.label : ''} · ${qtyHave}</div>`;
   list.appendChild(header);
 
@@ -458,7 +478,7 @@ export function showElementInfo(id) {
   if (producing.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:6px 0 4px;text-transform:uppercase;letter-spacing:1px';
-    title.textContent = `🧪 Получается из: ${producing.length}`;
+    title.textContent = `Получается из: ${producing.length}`;
     list.appendChild(title);
     producing.forEach(r => {
       const key = recipeKey(r);
@@ -469,17 +489,17 @@ export function showElementInfo(id) {
       entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
       if (isKnown) entry.title = 'Раскрыто жертвой — засчитается после реального крафта';
-      entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span>`;
+      entry.innerHTML = `${isKnown ? '<img class="sec-ico" src="assets/icons/glyph/crystal.svg" alt="" title="Раскрыто жертвой">' : ''}<span class="recipe-formula">${formula}</span>`;
       list.appendChild(entry);
     });
   } else if (!el.starter) {
     const none = document.createElement('div');
     none.style.cssText = 'font-size:10px;color:#555;margin:4px 0';
-    none.textContent = '🔒 Рецепт ещё не открыт';
+    none.textContent = 'Рецепт ещё не открыт';
     list.appendChild(none);
     const gBtn = document.createElement('button');
     gBtn.style.cssText = 'margin-top:6px;width:100%;background:#1a1a2e;border:1px solid #ffd70055;border-radius:4px;color:#ffd700;padding:5px;font-size:11px;cursor:pointer';
-    gBtn.textContent = '🔮 Узнать в Гримуаре';
+    gBtn.innerHTML = '<img class="sec-ico" src="assets/icons/elements/star.svg" alt="">Узнать в Гримуаре';
     gBtn.title = `Открыть ритуал для «${el.name}»`;
     gBtn.addEventListener('click', () => openGrimoire(id));
     list.appendChild(gBtn);
@@ -489,7 +509,7 @@ export function showElementInfo(id) {
   if (usedIn.length > 0) {
     const title = document.createElement('div');
     title.style.cssText = 'font-size:10px;color:#ffd70088;margin:8px 0 4px;text-transform:uppercase;letter-spacing:1px';
-    title.textContent = `🔗 Можно создать: ${usedIn.length}`;
+    title.textContent = `Можно создать: ${usedIn.length}`;
     list.appendChild(title);
     usedIn.forEach(r => {
       const key = recipeKey(r);
@@ -504,7 +524,7 @@ export function showElementInfo(id) {
       entry.className = 'recipe-entry clickable ' + (isFound ? 'found' : 'known');
       entry.style.marginBottom = '2px';
       entry.title = state.discovered.has(r.output) ? `Открыть: ${output ? output.name : r.output}` : '';
-      entry.innerHTML = `${buildIconSVG(r.output, 18)}<span class="recipe-formula">${coFormula}</span><span class="recipe-arrow">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${isKnown ? ' <span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}`;
+      entry.innerHTML = `${buildIconSVG(r.output, 18)}<span class="recipe-formula">${coFormula}</span><span class="recipe-arrow">→</span> <span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${isKnown ? ' <img class="sec-ico" src="assets/icons/glyph/crystal.svg" alt="" title="Раскрыто жертвой">' : ''}`;
       if (state.discovered.has(r.output)) {
         entry.addEventListener('click', () => showElementInfo(r.output));
       }
@@ -516,14 +536,14 @@ export function showElementInfo(id) {
     const fin = document.createElement('div');
     fin.className = 'final-note';
     fin.title = 'Из этого элемента ничего не крафтится — можно не пробовать';
-    fin.textContent = '🏁 Финальный элемент — ни во что не входит, время на пробы не тратьте';
+    fin.textContent = 'Финальный элемент — ни во что не входит, время на пробы не тратьте';
     list.appendChild(fin);
   }
 
   if (producing.length === 0 && usedIn.length === 0 && !el.starter) {
     const none = document.createElement('div');
     none.style.cssText = 'font-size:10px;color:#555;text-align:center;padding:10px';
-    none.textContent = '🔒 Нет открытых рецептов';
+    none.textContent = 'Нет открытых рецептов';
     list.appendChild(none);
   }
 
@@ -533,7 +553,7 @@ export function showElementInfo(id) {
     addSection.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px solid #2a2a4e44';
     const addLabel = document.createElement('div');
     addLabel.style.cssText = 'font-size:10px;color:#a8a8c2;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px';
-    addLabel.textContent = '📥 Добавить в котёл:';
+    addLabel.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/add.svg" alt="">Добавить в котёл:';
     addSection.appendChild(addLabel);
     const btnRow = document.createElement('div');
     btnRow.className = 'el-add-row';
@@ -550,7 +570,7 @@ export function showElementInfo(id) {
 
   const treeBtn = document.createElement('button');
   treeBtn.className = 'el-tree-btn';
-  treeBtn.textContent = '🌳 Древо рецептов';
+  treeBtn.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/map.svg" alt="">Древо рецептов';
   treeBtn.title = `Открыть древо: ${el.name}`;
   treeBtn.addEventListener('click', () => { openTree(id); });
   list.appendChild(treeBtn);
@@ -585,7 +605,7 @@ export function renderRecipes() {
     entry.className = 'recipe-entry ' + (isFound ? 'found' : 'known');
     const formula = r.inputs.map(i => `<span style="color:${textSafeColor(ELEMENTS[i.id]?.color || '#888')}">${ELEMENTS[i.id]?.name || i.id}</span>${i.a > 1 ? '×' + i.a : ''}`).join(' + ');
     if (isKnown) entry.title = 'Раскрыто жертвой — засчитается после реального крафта';
-    entry.innerHTML = `${isKnown ? '<span class="recipe-reveal-mark" title="Раскрыто жертвой">🔮</span>' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
+    entry.innerHTML = `${isKnown ? '<img class="sec-ico" src="assets/icons/glyph/crystal.svg" alt="" title="Раскрыто жертвой">' : ''}<span class="recipe-formula">${formula}</span><span class="recipe-arrow">→</span><span class="recipe-result" style="color:${textSafeColor(output ? output.color : '#888')}">${output ? output.name : r.output}</span>${r.ratio ? `<div class="recipe-dominance-hint">${ELEMENTS[r.ratio.id]?.name || r.ratio.id} преобладает</div>` : ''}`;
     list.appendChild(entry);
   });
 }
@@ -593,6 +613,8 @@ export function renderRecipes() {
 // ─── Log ───
 const LOG_DEDUP_MS = 8000;
 export function log(text, type = 'info') {
+  // Журнал без эмодзи: смысл несёт цвет типа, иконки живут в UI кита
+  text = String(text).replace(/^(\p{Extended_Pictographic}\uFE0F?\s*)+/u, '');
   // Троттлинг одинаковых подряд (напр. «Облачный прогресс применён» пуллом и фокусом)
   const prev = state.messages[state.messages.length - 1];
   if (prev && prev.text === text && prev.type === type && Date.now() - prev.time < LOG_DEDUP_MS) return;
@@ -630,13 +652,13 @@ export function updateCauldronIndicator() {
   if (entries.length === 0) {
     indicator.innerHTML = 'Котёл пуст · вместимость 10';
   } else {
-    const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${id === state.pendingReveal ? '❔' : buildIconSVG(id, 14)} ${id === state.pendingReveal ? '???' : ELEMENTS[id].name} <b>×${qty}</b></span>`);
+    const parts = entries.map(([id, qty]) => `<span class="cauldron-item-qty">${id === state.pendingReveal ? '<img src="assets/icons/glyph/unknown.svg" alt="" style="width:14px;height:14px">' : buildIconSVG(id, 14)} ${id === state.pendingReveal ? '???' : ELEMENTS[id].name} <b>×${qty}</b></span>`);
     indicator.innerHTML = parts.join(' ');
     const types = Object.keys(state.cauldron).sort();
     if (types.length > 1 && state.triedPairs.has(types.join('+'))) {
       const warn = document.createElement('span');
       warn.className = 'tried-warning';
-      warn.textContent = '⚠ Эту комбинацию уже пробовали — возможен взрыв';
+      warn.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/warning.svg" alt="">Эту комбинацию уже пробовали — возможен взрыв';
       indicator.appendChild(warn);
     }
   }
@@ -645,16 +667,18 @@ export function updateCauldronIndicator() {
 // ─── Whisper toast ───
 let whisperToastTimer = null;
 
+const TOAST_ICON = '<img class="toast-ico" src="assets/icons/glyph/openbook.svg" alt="">';
+
 export function showWhisperToast(mode = 'solved') {
   const toast = document.getElementById('whisper-toast');
   if (!toast) return;
   const title = toast.querySelector('.whisper-toast-title');
   const desc = toast.querySelector('.whisper-toast-desc');
   if (mode === 'new') {
-    if (title) title.textContent = '📖 Новый шёпот';
+    if (title) title.innerHTML = `${TOAST_ICON}Новый шёпот`;
     if (desc) desc.textContent = 'Хаос шепчет — откройте Гримуар, чтобы прочесть намёк';
   } else {
-    if (title) title.textContent = '📖 Загадка из книжки разгадана';
+    if (title) title.innerHTML = `${TOAST_ICON}Загадка из книжки разгадана`;
     if (desc) desc.textContent = 'Откройте Гримуар, чтобы прочесть намёк';
   }
   toast.classList.add('show');
@@ -691,7 +715,11 @@ export function closeGrimoire(e) {
   closeModalAnimated('grimoire-modal');
 }
 
-const SOURCE_ICONS = { ambient: '❓', oracle: '🔮', prophecy: '✨' };
+const SOURCE_ICONS = {
+  ambient: '<img class="sec-ico" src="assets/icons/glyph/question.svg" alt="">',
+  oracle: '<img class="sec-ico" src="assets/icons/glyph/crystal.svg" alt="">',
+  prophecy: '<img class="sec-ico" src="assets/icons/glyph/sparkles.svg" alt="">',
+};
 
 function renderNotebook() {
   const content = document.getElementById('notebook-content');
@@ -715,7 +743,7 @@ function renderNotebook() {
       const row = document.createElement('div');
       row.className = `nb-entry nb-whisper unresolved ${e.source || 'ambient'}`;
       const stage = STAGE_ROMAN[Math.min(Math.max(e.stage || 1, 1), 3) - 1];
-      row.innerHTML = `<span class="nb-icon nb-seal nb-seal-whisper">${SOURCE_ICONS[e.source] || '❓'}</span>` +
+      row.innerHTML = `<span class="nb-icon nb-seal nb-seal-whisper">${SOURCE_ICONS[e.source] || '<img class="sec-ico" src="assets/icons/glyph/question.svg" alt="">'}</span>` +
         `<span class="nb-lore-body"><span class="nb-meta"><span class="nb-tier">${SOURCE_LABEL[e.source] || 'шёпот'} · ${stage} ступень</span></span>` +
         `<span class="nb-text">${renderWhisperText(e)}</span></span>`;
       row.title = 'Разгадай — смешай то, на что намекает шёпот';
@@ -787,9 +815,10 @@ const LEGEND_TIER_LABEL = { 1: 'тайна', 2: 'след', 3: 'близко', 4
 
 function renderLegendarySection(content) {
   const foundCount = LEGENDARY_IDS.filter(id => state.discovered.has(id)).length;
+  content.appendChild(alcDivider());
   const title = document.createElement('div');
   title.className = 'nb-section-title';
-  title.innerHTML = `👑 Легенды <span class="nb-count">${foundCount}/${LEGENDARY_IDS.length}</span>`;
+  title.innerHTML = `<img class="sec-ico" src="assets/icons/glyph/crown.svg" alt="">Легенды <span class="nb-count">${foundCount}/${LEGENDARY_IDS.length}</span>`;
   content.appendChild(title);
 
   // Ближайшие к открытию — сверху, найденные — первыми
@@ -808,7 +837,7 @@ function renderLegendarySection(content) {
     const row = document.createElement('div');
     if (found) {
       row.className = 'nb-entry nb-legend found';
-      row.innerHTML = `<span class="nb-icon nb-seal">${buildIconSVG(id, 22)}</span>
+      row.innerHTML = `<span class="nb-icon nb-seal">${buildIconSVG(id, 40)}</span>
         <span class="nb-lore-body"><span class="nb-lore-name">${el.name} <span class="nb-stars">★★★</span></span><span class="nb-lore-desc">${el.desc}</span></span>
         <span class="nb-target">✔</span>`;
     } else {
@@ -816,9 +845,9 @@ function renderLegendarySection(content) {
       row.className = `nb-entry nb-legend locked t${tier}` + (tier >= 3 ? ' near' : '');
       const hintHtml = lines.map(l => `<span class="nb-hint">${l}</span>`).join('');
       const pct = Math.round((ratio || 0) * 100);
-      const icon = tier >= 4 ? '🗝' : tier === 3 ? '🔍' : '🔒';
+      const icon = `<img class="sec-ico" src="assets/icons/glyph/${tier >= 4 ? 'key' : tier === 3 ? 'magnify' : 'lock'}.svg" alt="">`;
       row.innerHTML = `<span class="nb-icon nb-seal">${icon}</span>
-        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-meta"><span class="nb-tier">${LEGEND_TIER_LABEL[tier] || ''}</span>${total ? `<span class="nb-need">◆ ${total}</span>` : ''}</span>${hintHtml}<span class="nb-bar"><i style="width:${pct}%"></i></span></span>
+        <span class="nb-lore-body"><span class="nb-lore-name">${el.name}</span><span class="nb-meta"><span class="nb-tier">${tier >= 4 ? '<img class="sec-ico" src="assets/icons/glyph/key.svg" alt="">' : tier === 3 ? '<img class="sec-ico" src="assets/icons/glyph/magnify.svg" alt="">' : ''}${LEGEND_TIER_LABEL[tier] || ''}</span>${total ? `<span class="nb-need"><img class="sec-ico" src="assets/icons/glyph/gem.svg" alt="">${total}</span>` : ''}</span>${hintHtml}<span class="nb-bar"><i style="width:${pct}%"></i></span></span>
         ${progress !== null ? `<span class="nb-progress">${progress}</span>` : ''}`;
     }
     content.appendChild(row);
@@ -863,7 +892,7 @@ function showLegendToast({ id, info }) {
   if (!toast || !el) return;
   const title = toast.querySelector('.legend-toast-title');
   const desc = toast.querySelector('.legend-toast-desc');
-  if (title) title.textContent = `⚗ Шаг к ${el.name}`;
+  if (title) title.innerHTML = `<img class="toast-ico" src="assets/icons/glyph/flask-red.svg" alt="">Шаг к ${el.name}`;
   if (desc) {
     desc.textContent = info.tier >= 3
       ? (info.lines.find(l => l.startsWith('Не хватает')) || info.lines[0])
@@ -926,9 +955,10 @@ function buildSacrificeDonors(donorSelect, recipe) {
 }
 
 function renderSacrificeSection(content) {
+  content.appendChild(alcDivider());
   const title = document.createElement('div');
   title.className = 'nb-section-title';
-  title.textContent = '🔥 Жертвенный ритуал';
+  title.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Жертвенный ритуал';
   content.appendChild(title);
 
   const targets = getSacrificeTargets();
@@ -961,7 +991,7 @@ function renderSacrificeSection(content) {
   dSide.className = 'sacrifice-side s-donor';
   const fire = document.createElement('div');
   fire.className = 'sacrifice-fire';
-  fire.textContent = '🔥';
+  fire.innerHTML = '<img src="assets/icons/glyph/flame.svg" alt="">';
   altar.appendChild(tSide);
   altar.appendChild(fire);
   altar.appendChild(dSide);
@@ -974,7 +1004,7 @@ function renderSacrificeSection(content) {
       ` → ${ELEMENTS[r.output]?.name || r.output}`;
     const revBox = document.createElement('div');
     revBox.className = 'sacrifice-reveal' + (rev.fresh ? ' fresh' : '');
-    revBox.innerHTML = `<div class="rev-fire">🔥</div><div class="rev-title">Жертва принята!</div><div class="rev-formula">${formula}</div>`;
+    revBox.innerHTML = `<div class="rev-fire"><img src="assets/icons/glyph/flame.svg" alt=""></div><div class="rev-title">Жертва принята!</div><div class="rev-formula">${formula}</div>`;
     for (let i = 0; i < 14; i++) {
       const em = document.createElement('span');
       em.className = 'ember';
@@ -1035,7 +1065,7 @@ function renderSacrificeSection(content) {
 
   const btn = document.createElement('button');
   btn.className = 'sacrifice-btn';
-  btn.textContent = 'Пожертвовать и узнать';
+  btn.innerHTML = '<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Пожертвовать и узнать';
   btn.addEventListener('click', () => {
     const target = targetSelect.value;
     const donor = donorSelect.value;
@@ -1078,12 +1108,14 @@ function renderSacrificeSection(content) {
     const required = getRequiredAmount(sacrificeRolledRecipe, donorId);
     const qty = state.inventory[donorId] || 0;
     const bad = required > qty;
-    deductNote.textContent = bad
-      ? `🔥 Спишется: ${required} × ${donor.name} — не хватает (есть ${qty})`
-      : `🔥 Спишется: ${required} × ${donor.name}`;
+    deductNote.innerHTML = bad
+      ? `<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Спишется: ${required} × ${donor.name} — не хватает (есть ${qty})`
+      : `<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Спишется: ${required} × ${donor.name}`;
     deductNote.classList.toggle('bad', bad);
     btn.disabled = bad || !targetSelect.value || !donorId;
-    btn.textContent = bad ? 'Не хватает жертвы' : '🔥 Пожертвовать и узнать';
+    btn.innerHTML = bad
+      ? 'Не хватает жертвы'
+      : '<img class="sec-ico" src="assets/icons/glyph/flame.svg" alt="">Пожертвовать и узнать';
     updateAltar();
   };
   donorSelect.addEventListener('change', updateDeductNote);
@@ -1091,7 +1123,7 @@ function renderSacrificeSection(content) {
   const rollRecipe = () => {
     sacrificeRolledRecipe = targetSelect.value ? pickSacrificeRecipe(targetSelect.value) : null;
     const cost = buildSacrificeDonors(donorSelect, sacrificeRolledRecipe);
-    costNote.textContent = `✨ Стоимость рецепта: ${cost > 0 ? cost + ' очков силы' : '—'}`;
+    costNote.innerHTML = `<img class="sec-ico" src="assets/icons/glyph/sparkles.svg" alt="">Стоимость рецепта: ${cost > 0 ? cost + ' очков силы' : '—'}`;
     updateDeductNote();
   };
   targetSelect.addEventListener('change', rollRecipe);
@@ -1135,7 +1167,7 @@ export function checkAchievements() {
 
 function showAchievementToast(a) {
   const toast = document.getElementById('ach-toast');
-  toast.querySelector('.ach-toast-title').textContent = `🏆 ${a.name}`;
+  toast.querySelector('.ach-toast-title').innerHTML = `<img class="toast-ico" src="${achKitIcon(a)}" alt="">${achText(a)}`;
   toast.querySelector('.ach-toast-desc').textContent = a.desc;
   toast.classList.add('show');
   clearTimeout(toast._hideTimer);
@@ -1149,6 +1181,24 @@ function achEmoji(a) {
 
 function achText(a) {
   return a.name.replace(/^\S+\s+/, '');
+}
+
+// Иконки достижений по маппингу кита (assets/icons/ach/*.svg)
+const ACH_ICONS = {
+  '✨': 'sparkles', '🔍': 'magnify', '🧭': 'compass', '📚': 'books', '👑': 'crown',
+  '📜': 'scroll', '📖': 'openbook', '📕': 'book-red', '🏛': 'temple', '💥': 'burst',
+  '☄': 'comet', '🔥': 'flame', '🔄': 'cycle', '🐉': 'dragon', '🏭': 'factory',
+  '🧪': 'flask-green', '⚗': 'alembic', '💑': 'rings', '🏺': 'amphora', '🌀': 'vortex',
+  '⚖': 'scales', '🧬': 'dna', '🧙': 'wizard', '🍯': 'honey', '🐋': 'whale',
+  '🕳': 'blackhole', '⚔': 'swords', '⏳': 'hourglass', '🦠': 'germ', '🌌': 'galaxy',
+  '🌍': 'globe', '⚙': 'gear', '👤': 'person', '🌲': 'fir', '👻': 'ghost',
+  '⚡': 'bolt', '🌪': 'tornado', '💤': 'zzz', '✋': 'hand', '🕊': 'dove',
+  '🗿': 'moai', '⬜': 'cube', '🌟': 'star-great', '♾': 'infinity', '⚫': 'void-orb',
+  '🥀': 'rose', '💀': 'skull', '🕰': 'clock',
+};
+function achKitIcon(a) {
+  const key = Object.keys(ACH_ICONS).find(k => a.name.startsWith(k));
+  return `assets/icons/ach/${key ? ACH_ICONS[key] : 'sparkles'}.svg`;
 }
 
 function getAchProgress(a) {
@@ -1195,11 +1245,11 @@ function renderAchievements() {
     const p = !unlocked ? getAchProgress(a) : null;
     const item = document.createElement('div');
     item.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked') + (p && p.max > 1 && p.cur >= p.max - 1 && p.cur < p.max ? ' near' : '');
-    const icon = unlocked ? achEmoji(a) : `<span class="ach-lock-emoji">${achEmoji(a)}</span>`;
+    const icon = `<img class="ach-kit-ico${unlocked ? '' : ' locked-ico'}" src="${achKitIcon(a)}" alt="">`;
     const bar = (!unlocked && p && p.max > 1)
       ? `<div class="ach-bar"><i style="width:${Math.round((p.cur / p.max) * 100)}%"></i></div><div class="ach-prog">${p.cur}/${p.max}</div>`
       : ((!unlocked && p && p.max === 1) ? '' : '');
-    item.innerHTML = `<div class="ach-icon">${icon}</div><div class="ach-info"><div class="ach-name">${achText(a)}</div><div class="ach-desc">${unlocked ? a.desc : (p && p.max > 1 ? `${a.desc} · ${p.cur}/${p.max}` : '???')}</div>${bar}</div><div class="ach-check">${unlocked ? '✅' : '🔒'}</div>`;
+    item.innerHTML = `<div class="ach-icon">${icon}</div><div class="ach-info"><div class="ach-name">${achText(a)}</div><div class="ach-desc">${unlocked ? a.desc : (p && p.max > 1 ? `${a.desc} · ${p.cur}/${p.max}` : '???')}</div>${(!unlocked && p && p.max > 1) ? `<div class="ach-bar"><i style="width:${Math.round((p.cur / p.max) * 100)}%"></i></div><div class="ach-prog">${p.cur}/${p.max}</div>` : ''}</div><div class="ach-check"><img src="assets/icons/glyph/${unlocked ? 'check' : 'lock'}.svg" alt=""></div>`;
     item.title = unlocked ? a.desc : (p ? `${a.desc} — ${p.cur}/${p.max}` : '???');
     list.appendChild(item);
   });
@@ -1260,7 +1310,7 @@ export function openTree(id) {
   const el = ELEMENTS[id];
   if (!el) return;
   const header = modal.querySelector('.modal-header span');
-  header.textContent = `🌳 Древо: ${el.name}`;
+  header.innerHTML = `<img class="mhead-ico" src="assets/icons/glyph/map.svg" alt="">Древо: ${el.name}`;
   renderTreeNode(id, 0, new Set([id]), content, true);
   openModalAnimated(modal);
   content.parentElement.scrollTop = 0;
