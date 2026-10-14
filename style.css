@@ -1552,6 +1552,7 @@ body {
   border-color: #ffd70088 !important;
   box-shadow: 0 4px 14px rgba(255,215,0,0.25);
 }
+.roadmap-card .roadmap-medal { width: 36px; height: 36px; display: block; }
 .roadmap-card .roadmap-name {
   font-size: 10px;
   color: #e8e8f2;

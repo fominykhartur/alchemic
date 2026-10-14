@@ -2073,7 +2073,7 @@ function renderTreeNode(id, depth, visited, container, isRoot = false) {
   node.className = 'tree-node';
   const content = document.createElement('div');
   content.className = 'tree-node-content' + (isRoot ? ' tree-root' : '');
-  content.innerHTML = `${buildIconSVG(id, 18)}<span style="color:#fff">${el.name}</span>`;
+  content.innerHTML = `${kitGlyph(id, 18) || buildIconSVG(id, 18)}<span style="color:#fff">${el.name}</span>`;
   content.title = isRoot ? el.name : `Открыть древо: ${el.name}`;
   if (!isRoot) content.addEventListener('click', () => openTree(id));
   node.appendChild(content);
@@ -2215,7 +2215,7 @@ function createRoadmapCard(id) {
     card.style.borderColor = catColor;
     const parentNames = parents.map(pid => ELEMENTS[pid]?.name || pid).join(' + ');
     card.title = parentNames ? `${el.name} ← ${parentNames}` : el.name;
-    card.innerHTML = `${buildIconSVG(id, 22)}<span class="roadmap-name" title="${el.name}">${el.name}</span>`;
+    card.innerHTML = `${KIT_MEDAL[id] ? `<img class="roadmap-medal" src="assets/icons/${KIT_MEDAL[id]}" alt="${el.name}">` : buildIconSVG(id, 22)}<span class="roadmap-name" title="${el.name}">${el.name}</span>`;
     if (parents.length > 0) {
       const parentDots = document.createElement('div');
       parentDots.className = 'roadmap-parents';
