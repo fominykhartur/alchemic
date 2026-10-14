@@ -1710,6 +1710,7 @@ body {
     gap: 4px;
     flex-wrap: wrap;
     justify-content: center;
+    order: -1;
   }
   #cauldron-controls button:not(.alc-btn) {
     padding: 5px 12px;
