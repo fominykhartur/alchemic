@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Медали — Алхимия</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a1a; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 20px; min-height: 100vh;
+}
+h1 { text-align: center; color: #ffd700; font-family: Georgia, serif; font-size: 28px; margin-bottom: 4px; }
+.subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 24px; }
+
+/* stats */
+.stats { text-align: center; margin-bottom: 28px; font-size: 14px; color: #aaa; }
+.stats span { color: #ffd700; font-weight: bold; }
+
+/* category */
+.category { margin-bottom: 32px; }
+.cat-header {
+  font-size: 18px; font-weight: bold; padding: 8px 12px; margin-bottom: 10px;
+  border-bottom: 2px solid currentColor; display: flex; align-items: center; gap: 8px;
+}
+.cat-count { font-size: 12px; font-weight: normal; opacity: 0.5; }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+.card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 10px 6px 8px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: background 0.15s;
+}
+.card:hover { background: rgba(255,255,255,0.08); }
+.card .icon { width: 48px; height: 48px; margin-bottom: 6px; }
+.card .icon.kit-only { width: 60px; height: 60px; margin-bottom: 8px; }
+.card .icon.kit-only img { width: 56px; height: 56px; display: block; }
+.card .icon .tag { font-size: 8px; color: #666; }
+.card .icon svg { width: 48px; height: 48px; display: block; }
+.card .name { font-size: 11px; font-weight: 600; line-height: 1.2; color: #fff; }
+.card .color { font-size: 9px; color: #888; font-family: monospace; margin-top: 2px; }
+.card .desc { font-size: 8px; color: #666; line-height: 1.2; margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card .id { font-size: 8px; color: #555; font-family: monospace; margin-top: 1px; }
+.card .tier {
+  font-size: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 1px 5px; border-radius: 3px; margin-top: 4px;
+}
+.tier-starter { background: #ffd70022; color: #ffd700; }
+.tier-normal { background: transparent; color: transparent; display: none; }
+.tier-self { background: #9370db33; color: #b388ff; }
+.tier-variant { background: #32cd3233; color: #32cd32; }
+.tier-legendary { background: #ff450033; color: #ff6347; }
+
+/* glyph reference */
+.section-title { font-size: 22px; color: #ffd700; font-family: Georgia, serif; text-align: center; margin: 48px 0 20px; }
+.glyph-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px; max-width: 700px; margin: 0 auto;
+}
+.glyph-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 14px 8px 10px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.glyph-card svg { width: 44px; height: 44px; margin-bottom: 6px; }
+.glyph-card .glyph-name { font-size: 12px; font-weight: 600; color: #ccc; }
+.glyph-card .glyph-type { font-size: 9px; color: #666; font-family: monospace; }
+
+/* tooltip */
+.tooltip {
+  position: fixed; z-index: 100; pointer-events: none;
+  background: #15152a; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 10px 12px; max-width: 300px;
+  font-size: 11px; line-height: 1.5; opacity: 0;
+  transition: opacity 0.12s; box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+.tooltip.visible { opacity: 1; }
+.tooltip .tt-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #fff; }
+.tooltip .tt-section { margin-top: 6px; }
+.tooltip .tt-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 2px; }
+.tooltip .tt-recipe { color: #ccc; }
+.tooltip .tt-recipe span { color: #ffd700; }
+.tooltip .tt-none { color: #555; font-style: italic; }
+.tooltip .tt-arrow { display: inline-block; margin: 0 4px; color: #888; }
+
+/* scroll to top */
+.top-link {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #ffd70022; color: #ffd700; border: 1px solid #ffd70044;
+  font-size: 18px; cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+}
+.top-link:hover { background: #ffd70033; }
+.top-link.visible { display: flex; }
+
+/* ─── P1: приёмка контента ─── */
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(10,10,26,0.95); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 18px;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.toolbar input[type="search"] {
+  flex: 1 1 180px; min-width: 140px;
+  background: #12122a; border: 1px solid #2a2a4e; border-radius: 6px;
+  color: #e8e8f2; font-size: 12px; padding: 6px 9px; outline: none;
+}
+.toolbar input[type="search"]:focus { border-color: #ffd70088; }
+.fbtn {
+  background: #15152a; border: 1px solid #2a2a4e; border-radius: 16px;
+  color: #aaa; font-size: 11px; padding: 5px 11px; cursor: pointer; white-space: nowrap;
+}
+.fbtn:hover { border-color: #ffd70066; color: #ffd700; }
+.fbtn.active { background: #ffd70022; border-color: #ffd70088; color: #ffd700; }
+.fbtn .n { opacity: 0.65; font-size: 10px; }
+#result-count { font-size: 11px; color: #777; margin-left: auto; }
+.badges { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; margin-top: 5px; }
+.badge {
+  font-size: 8px; font-weight: bold; padding: 1px 5px; border-radius: 3px;
+  background: #ffffff10; color: #999; letter-spacing: 0.3px; white-space: nowrap;
+}
+.badge.d { background: #4a90d922; color: #7fb3e8; }
+.badge.io { background: #ffffff0d; color: #888; }
+.badge.warn { background: #ff450022; color: #ff8c69; }
+.badge.dup { background: #9370db2e; color: #c39bff; }
+.card.flagged { border-color: #ff450055; }
+.card.hidden { display: none; }
+.cat-flags { font-size: 10px; font-weight: normal; opacity: 0.75; margin-left: 6px; }
+.cat-flags .w { color: #ff8c69; }
+.audit {
+  background: #101022; border: 1px solid #2a2a4e; border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 20px; font-size: 12px; line-height: 1.6;
+}
+.audit h2 { font-size: 14px; color: #ffd700; margin-bottom: 6px; }
+.audit .ok { color: #7dff7d; }
+.audit .bad { color: #ff8c69; }
+.audit details { margin-top: 6px; }
+.audit summary { cursor: pointer; color: #aaa; font-size: 12px; }
+.audit summary:hover { color: #ffd700; }
+.audit code { font-family: monospace; font-size: 11px; color: #c8c8e8; }
+</style>
+</head>
+<body>
+
+<h1>✦ Алхимия</h1>
+<p class="subtitle">Галерея медалей кита — новый дизайн иконок + приёмка</p>
+
+<div class="stats" id="stats">Загрузка…</div>
+
+<div class="toolbar" id="toolbar">
+  <input type="search" id="q" placeholder="🔍 Поиск: имя / id / цвет…" autocomplete="off">
+  <button class="fbtn active" data-f="all">Все</button>
+  <button class="fbtn" data-f="dupGlyph">Дубли глифа <span class="n" id="n-dupGlyph"></span></button>
+  <button class="fbtn" data-f="dupColor">Дубли цвета <span class="n" id="n-dupColor"></span></button>
+  <button class="fbtn" data-f="orphan">Сироты <span class="n" id="n-orphan"></span></button>
+  <button class="fbtn" data-f="dead">Тупики <span class="n" id="n-dead"></span></button>
+  <button class="fbtn" data-f="final">🏁 Финалы <span class="n" id="n-final"></span></button>
+  <button class="fbtn" data-f="nokit">Без кита <span class="n" id="n-nokit"></span></button>
+  <button class="fbtn" data-f="nodesc">Без описания <span class="n" id="n-nodesc"></span></button>
+  <span id="result-count"></span>
+</div>
+
+<div class="audit" id="audit">Считаю аудит…</div>
+
+<div id="gallery"></div>
+
+<button class="top-link" id="top-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="tooltip" id="tooltip"></div>
+
+<script type="module">
+import { ELEMENTS, ELEMENT_IDS, ELEMENT_CATS, CATEGORIES, CAT_ORDER, RECIPES, ELEMENT_DEPTHS, FINAL_IDS } from './src/data.js';
+import { buildIconSVG, GLYPH_PATHS, TIER, ICON_DESIGNS } from './src/icons.js';
+
+// ─── Kit medals (elements.json + states.json) ───
+let kitMedal = {};
+for (const jf of ['alchemy-ui/elements.json', 'alchemy-ui/states.json', 'alchemy-ui/nature.json', 'alchemy-ui/metal.json', 'alchemy-ui/artifact.json', 'alchemy-ui/entity.json', 'alchemy-ui/legendary.json', 'alchemy-ui/alchemy.json', 'alchemy-ui/cosmos.json', 'alchemy-ui/magic.json', 'alchemy-ui/chronomancy.json', 'alchemy-ui/illusion.json', 'alchemy-ui/emotion.json', 'alchemy-ui/sound.json', 'alchemy-ui/spirit.json']) {
+  try {
+    const arr = await (await fetch(jf)).json();
+    arr.forEach(e => {
+      if (!e.id || !e.medal) return;
+      // Кит пишет graveWarden/fateWalker, игра хранит gravewarden/fatewalker (регистр!),
+      // в assets/ лежат нижнерегистровые копии — нормализуем обе стороны
+      const fix = { graveWarden: 'gravewarden', fateWalker: 'fatewalker' };
+      const id = fix[e.id] || e.id;
+      const medal = 'assets/' + e.medal.replace(fix[e.id] || e.id, id);
+      kitMedal[id] = medal;
+    });
+  } catch {}
+}
+const kitCount = Object.keys(kitMedal).length;
+document.getElementById('stats').innerHTML += ` · с китом: <span>${kitCount}</span>`;
+
+// ─── Stats ───
+document.getElementById('stats').innerHTML =
+  `Всего: <span>${ELEMENT_IDS.length}</span> элементов · ` +
+  `<span>${Object.keys(GLYPH_PATHS).length}</span> глифов · ` +
+  `<span>${CAT_ORDER.length}</span> категорий`;
+
+// ─── Recipe Index ───
+const recipesByOutput = {};
+const recipesByInput = {};
+RECIPES.forEach(r => {
+  const out = r.output;
+  if (!recipesByOutput[out]) recipesByOutput[out] = [];
+  recipesByOutput[out].push(r);
+  r.inputs.forEach(inp => {
+    if (!recipesByInput[inp.id]) recipesByInput[inp.id] = [];
+    recipesByInput[inp.id].push({ recipe: r, amount: inp.a });
+  });
+});
+
+// ─── P1: анализ для приёмки ───
+function hexToHsl(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  let r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  return { h: h * 360, s, l };
+}
+const STARTER_SET = new Set(['fire', 'water', 'earth', 'air', 'void']);
+const inCount = id => (recipesByInput[id] || []).length;
+const outCount = id => (recipesByOutput[id] || []).length;
+const isOrphan = id => !STARTER_SET.has(id) && outCount(id) === 0;
+const isFinal = id => (FINAL_IDS || []).includes(id);
+const isDead = id => !isFinal(id) && inCount(id) === 0 && outCount(id) > 0;
+const noDesc = id => !(ELEMENTS[id]?.desc || '').trim();
+// Дубли глифа
+const glyphUse = {};
+ELEMENT_IDS.forEach(id => {
+  const g = ICON_DESIGNS[id]?.glyph || '?';
+  (glyphUse[g] = glyphUse[g] || []).push(id);
+});
+const dupGlyphSet = new Set(Object.values(glyphUse).filter(a => a.length > 1).flat());
+// Дубли цвета: точные + близкие по hue (±10°) при похожей насыщенности/светлоте
+const colorUse = {};
+ELEMENT_IDS.forEach(id => {
+  const c = (ELEMENTS[id]?.color || '').toUpperCase();
+  (colorUse[c] = colorUse[c] || []).push(id);
+});
+const dupColorSet = new Set(Object.values(colorUse).filter(a => a.length > 1).flat());
+{
+  const hsl = ELEMENT_IDS.map(id => ({ id, h: hexToHsl(ELEMENTS[id]?.color) })).filter(x => x.h);
+  for (let i = 0; i < hsl.length; i++) for (let j = i + 1; j < hsl.length; j++) {
+    const a = hsl[i], b = hsl[j];
+    let dh = Math.abs(a.h.h - b.h.h); dh = Math.min(dh, 360 - dh);
+    if (dh <= 10 && Math.abs(a.h.s - b.h.s) < 0.15 && Math.abs(a.h.l - b.h.l) < 0.12) {
+      dupColorSet.add(a.id); dupColorSet.add(b.id);
+    }
+  }
+}
+const orphanSet = new Set(ELEMENT_IDS.filter(isOrphan));
+const deadSet = new Set(ELEMENT_IDS.filter(isDead));
+const nodescSet = new Set(ELEMENT_IDS.filter(noDesc));
+const setCount = (el, s) => { if (el) el.textContent = s.size ? `(${s.size})` : ''; };
+setCount(document.getElementById('n-dupGlyph'), dupGlyphSet);
+setCount(document.getElementById('n-orphan'), orphanSet);
+setCount(document.getElementById('n-dead'), deadSet);
+setCount(document.getElementById('n-final'), new Set(ELEMENT_IDS.filter(isFinal)));
+setCount(document.getElementById('n-nodesc'), nodescSet);
+setCount(document.getElementById('n-nokit'), new Set(ELEMENT_IDS.filter(id => !kitMedal[id])));
+setCount(document.getElementById('n-dupColor'), dupColorSet);
+
+// ─── Recipe Formatting ───
+const tooltipEl = document.getElementById('tooltip');
+
+function fmtRecipe(r) {
+  return r.inputs.map(i => `<span>${ELEMENTS[i.id]?.name || i.id}</span> ×${i.a}`).join(' + ');
+}
+
+function fmtTooltip(id) {
+  const el = ELEMENTS[id];
+  const name = el?.name || id;
+  const desc = el?.desc ? `<div class="tt-desc" style="margin:2px 0 4px;font-size:10px;color:#aaa">${el.desc}</div>` : '';
+  let html = `<div class="tt-title" style="color:${el?.color || '#fff'}">${name}</div>${desc}`;
+
+  const asOutput = recipesByOutput[id];
+  if (asOutput && asOutput.length > 0) {
+    html += `<div class="tt-section"><div class="tt-section-title">Как получить</div>`;
+    asOutput.forEach(r => {
+      html += `<div class="tt-recipe">${fmtRecipe(r)} <span class="tt-arrow">→</span> <span>${name}</span></div>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="tt-section"><div class="tt-section-title">Как получить</div>`;
+    html += `<div class="tt-none">Базовый элемент (стартовый)</div></div>`;
+  }
+
+  const asInput = recipesByInput[id];
+  if (asInput && asInput.length > 0) {
+    html += `<div class="tt-section"><div class="tt-section-title">Используется в рецептах</div>`;
+    asInput.forEach(({ recipe: r, amount }) => {
+      const outName = ELEMENTS[r.output]?.name || r.output;
+      html += `<div class="tt-recipe"><span>${name}</span> ×${amount} <span class="tt-arrow">→</span> <span>${outName}</span></div>`;
+    });
+    html += `</div>`;
+  }
+
+  return html;
+}
+
+function showTooltip(e, id) {
+  tooltipEl.innerHTML = fmtTooltip(id);
+  tooltipEl.classList.add('visible');
+  posTooltip(e);
+}
+
+function posTooltip(e) {
+  const pad = 12;
+  let x = e.clientX + pad;
+  let y = e.clientY + pad;
+  const tw = tooltipEl.offsetWidth;
+  const th = tooltipEl.offsetHeight;
+  if (x + tw > window.innerWidth - 10) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 10) y = e.clientY - th - pad;
+  tooltipEl.style.left = x + 'px';
+  tooltipEl.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  tooltipEl.classList.remove('visible');
+}
+
+// ─── Gallery ───
+const gallery = document.getElementById('gallery');
+
+const tierLabel = { starter: 'Стартер', normal: '', self: 'Само-рец.', variant: 'Вариант', legendary: 'Легенда' };
+const tierClass = t => 'tier-' + t;
+
+const byCat = {};
+ELEMENT_IDS.forEach(id => {
+  const cat = ELEMENT_CATS[id] || 'alchemy';
+  if (!byCat[cat]) byCat[cat] = [];
+  byCat[cat].push(id);
+});
+
+CAT_ORDER.forEach(cat => {
+  const ids = byCat[cat] || [];
+  if (ids.length === 0) return;
+  const info = CATEGORIES[cat];
+  const catColor = info?.color || '#888';
+
+  const section = document.createElement('div');
+  section.className = 'category';
+
+  const header = document.createElement('div');
+  header.className = 'cat-header';
+  header.style.color = catColor;
+  const cOrph = ids.filter(id => orphanSet.has(id)).length;
+  const cDead = ids.filter(id => deadSet.has(id)).length;
+  const flags = (cOrph || cDead) ? `<span class="cat-flags">(<span class="w">сирот ${cOrph}</span> · <span class="w">тупиков ${cDead}</span>)</span>` : '';
+  header.innerHTML = `${info?.label || cat} <span class="cat-count">${ids.length}</span>${flags}`;
+  section.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  ids.forEach(id => {
+    const el = ELEMENTS[id];
+    const t = TIER[id] || 'normal';
+    const card = document.createElement('div');
+    card.className = 'card' + ((orphanSet.has(id) || deadSet.has(id)) ? ' flagged' : '');
+    card.dataset.flags = [
+      dupGlyphSet.has(id) ? 'dupGlyph' : '',
+      dupColorSet.has(id) ? 'dupColor' : '',
+      orphanSet.has(id) ? 'orphan' : '',
+      deadSet.has(id) ? 'dead' : '',
+      isFinal(id) ? 'final' : '',
+      nodescSet.has(id) ? 'nodesc' : '',
+      kitMedal[id] ? '' : 'nokit',
+    ].filter(Boolean).join(' ');
+    card.dataset.search = `${el.name} ${id} ${el.color} ${el.desc || ''}`.toLowerCase();
+    card.addEventListener('mouseenter', e => showTooltip(e, id));
+    card.addEventListener('mouseleave', hideTooltip);
+    card.addEventListener('mousemove', posTooltip);
+
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'icon kit-only';
+    if (kitMedal[id]) {
+      const img = document.createElement('img');
+      img.src = kitMedal[id];
+      img.alt = el.name;
+      img.style.width = '56px';
+      img.style.height = '56px';
+      iconDiv.appendChild(img);
+    } else {
+      iconDiv.innerHTML = buildIconSVG(id, 48) + '<span class="tag">нет кита</span>';
+    }
+    card.appendChild(iconDiv);
+
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = el.name;
+    card.appendChild(name);
+
+    const color = document.createElement('div');
+    color.className = 'color';
+    color.textContent = el.color;
+    card.appendChild(color);
+
+    const idEl = document.createElement('div');
+    idEl.className = 'id';
+    idEl.textContent = id;
+    card.appendChild(idEl);
+
+    if (el.desc) {
+      const descEl = document.createElement('div');
+      descEl.className = 'desc';
+      descEl.textContent = el.desc;
+      descEl.title = el.desc;
+      card.appendChild(descEl);
+    }
+
+    if (t !== 'normal') {
+      const badge = document.createElement('div');
+      badge.className = 'tier ' + tierClass(t);
+      badge.textContent = tierLabel[t];
+      card.appendChild(badge);
+    }
+
+    // P1-бейджи приёмки
+    const d = ELEMENT_DEPTHS[id];
+    const badges = document.createElement('div');
+    badges.className = 'badges';
+    let bh = `<span class="badge d" title="Глубина крафта">D${d ?? '?'}</span>`;
+    bh += `<span class="badge io" title="Рецептов: производит / используется в">→${outCount(id)} · ${inCount(id)}→</span>`;
+    if (orphanSet.has(id)) bh += `<span class="badge warn" title="Ни из чего не получается">сирота</span>`;
+    if (isFinal(id)) bh += `<span class="badge" style="background:#c9a22722;color:#ffd700" title="Намеренный финал — ни во что не входит">🏁 финал</span>`;
+    else if (deadSet.has(id)) bh += `<span class="badge warn" title="Ни во что не входит">тупик</span>`;
+    if (dupGlyphSet.has(id)) {
+      const g = ICON_DESIGNS[id]?.glyph || '?';
+      const n = (glyphUse[g] || []).length;
+      bh += `<span class="badge dup" title="Глиф ${g} используется ${n} раз">глиф×${n}</span>`;
+    }
+    if (dupColorSet.has(id)) bh += `<span class="badge dup" title="Цвет совпадает/близок с другим">цвет×</span>`;
+    badges.innerHTML = bh;
+    card.appendChild(badges);
+
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  gallery.appendChild(section);
+});
+
+// ─── P1: фильтры + поиск + аудит ───
+{
+  let active = 'all';
+  const q = document.getElementById('q');
+  const count = document.getElementById('result-count');
+  const apply = () => {
+    const query = (q.value || '').trim().toLowerCase();
+    let shown = 0, total = 0;
+    document.querySelectorAll('#gallery .card').forEach(card => {
+      total++;
+      const okF = active === 'all' || (card.dataset.flags || '').split(' ').includes(active);
+      const okQ = !query || (card.dataset.search || '').includes(query);
+      const vis = okF && okQ;
+      card.classList.toggle('hidden', !vis);
+      if (vis) shown++;
+    });
+    document.querySelectorAll('#gallery .category').forEach(sec => {
+      const any = [...sec.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      sec.style.display = any ? '' : 'none';
+    });
+    count.textContent = `показано ${shown}/${total}`;
+  };
+  document.querySelectorAll('#toolbar .fbtn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#toolbar .fbtn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    active = b.dataset.f;
+    apply();
+  }));
+  q.addEventListener('input', apply);
+  apply();
+}
+{
+  const dupList = Object.entries(glyphUse).filter(([, a]) => a.length > 1)
+    .sort((a, b) => b[1].length - a[1].length).slice(0, 8)
+    .map(([g, a]) => `<code>${g}×${a.length}</code> ${a.slice(0, 6).join(', ')}${a.length > 6 ? '…' : ''}`).join('<br>');
+  const orph = [...orphanSet].slice(0, 12).join(', ') || '—';
+  const dead = [...deadSet].slice(0, 12).join(', ') || '—';
+  const noD = [...nodescSet].slice(0, 12).join(', ') || '—';
+  const depths = {};
+  ELEMENT_IDS.forEach(id => { const k = ELEMENT_DEPTHS[id] ?? '?'; depths[k] = (depths[k] || 0) + 1; });
+  const dLine = Object.keys(depths).sort((a, b) => (a === '?' ? 99 : a) - (b === '?' ? 99 : b))
+    .map(k => `D${k}:${depths[k]}`).join(' · ');
+  document.getElementById('audit').innerHTML =
+    `<h2>📋 Аудит приёмки (P1)</h2>` +
+    `<div>Медали кита: <span class="ok">${kitCount}</span> / ${ELEMENT_IDS.length}</div>` +
+    `<div>Дубли глифа: <span class="bad">${dupGlyphSet.size}</span> · Дубли цвета: <span class="bad">${dupColorSet.size}</span> · ` +
+    `Сироты: <span class="bad">${orphanSet.size}</span> · Тупики: <span class="bad">${deadSet.size}</span> · ` +
+    `Без описания: <span class="bad">${nodescSet.size}</span></div>` +
+    `<div style="color:#777;font-size:11px;margin-top:2px">Глубины: ${dLine}</div>` +
+    `<details><summary>Топ дублей глифа</summary>${dupList || '—'}</details>` +
+    `<details><summary>Сироты (первые 12)</summary><code>${orph}</code></details>` +
+    `<details><summary>Тупики (первые 12)</summary><code>${dead}</code></details>` +
+    (nodescSet.size ? `<details><summary>Без описания (первые 12)</summary><code>${noD}</code></details>` : `<div class="ok">Описания у всех ✓</div>`);
+}
+
+// ─── Scroll-to-top ───
+const topLink = document.getElementById('top-link');
+window.addEventListener('scroll', () => {
+  topLink.classList.toggle('visible', window.scrollY > 400);
+});
+</script>
+</body>
+</html>

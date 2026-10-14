@@ -29,6 +29,56 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="boot" aria-hidden="true">
+  <div class="boot-inner">
+    <div class="boot-logo">✦ Алхимия</div>
+    <div class="alc-bar" id="boot-bar"><i class="alc-bar__gem"></i><div class="alc-bar__track"><div class="alc-bar__fill"></div></div><b class="alc-bar__count" id="boot-pct">0%</b></div>
+    <div class="boot-tip" id="boot-tip">Разжигаем котёл…</div>
+  </div>
+</div>
+<noscript><style>#boot { display: none; }</style></noscript>
+<script>
+(function () {
+  var bars = [
+    { cls: 'alc-bar--fire', gem: 'assets/icons/elements/fire.svg' },
+    { cls: 'alc-bar--water', gem: 'assets/icons/elements/water.svg' },
+    { cls: 'alc-bar--nature', gem: 'assets/icons/elements/nature.svg' },
+    { cls: 'alc-bar--void', gem: 'assets/icons/elements/void.svg' },
+    { cls: 'alc-bar--gold', gem: 'assets/icons/elements/star.svg' },
+    { cls: 'alc-bar--earth', gem: 'assets/icons/elements/earth.svg' },
+    { cls: 'alc-bar--air', gem: 'assets/icons/elements/air.svg' },
+    { cls: 'alc-bar--spirit', gem: 'assets/icons/elements/spirit.svg' }
+  ];
+  var tips = [
+    'Разжигаем котёл…', 'Толчём звёздную пыль…', 'Полируем реторты…',
+    'Будим гомункула…', 'Расставляем руны…', 'Настраиваем весы судьбы…',
+    'Протираем зеркало оракула…', 'Подбрасываем угля в печь…'
+  ];
+  var pick = bars[Math.floor(Math.random() * bars.length)];
+  var bar = document.getElementById('boot-bar');
+  bar.classList.add(pick.cls);
+  bar.querySelector('.alc-bar__gem').style.backgroundImage = 'url(' + pick.gem + ')';
+  document.getElementById('boot-tip').textContent = tips[Math.floor(Math.random() * tips.length)];
+  var pct = document.getElementById('boot-pct'), p = 0;
+  var timer = setInterval(function () {
+    p = Math.min(90, p + 4 + Math.random() * 9);
+    bar.style.setProperty('--p', p + '%');
+    pct.textContent = Math.round(p) + '%';
+    if (p >= 90 || !document.getElementById('boot')) clearInterval(timer);
+  }, 160);
+  window.__bootDone = function () {
+    clearInterval(timer);
+    bar.style.setProperty('--p', '100%');
+    pct.textContent = '100%';
+    var boot = document.getElementById('boot');
+    if (!boot) return;
+    boot.classList.add('done');
+    setTimeout(function () { boot.remove(); }, 550);
+  };
+  // Страховка: если модуль не загрузился — не держать вечный экран
+  setTimeout(function () { if (document.getElementById('boot') && !window.__booted) window.__bootDone(); }, 9000);
+})();
+</script>
 <div id="app">
   <div class="header">
     <div class="brand-block">

@@ -1,5 +1,6 @@
 import { RADIUS } from './canvas.js';
 import { buildIconSVG } from './icons.js';
+import { KIT_MEDAL } from './ui.js';
 import { ELEMENTS, STARTER_IDS, ELEMENT_IDS } from './data.js';
 
 function plural(n, one, few, many) {
@@ -73,7 +74,9 @@ function renderWelcomeContent() {
     const chip = document.createElement('span');
     chip.className = 'welcome-starter';
     chip.title = ELEMENTS[id].name;
-    chip.innerHTML = buildIconSVG(id, 30);
+    chip.innerHTML = KIT_MEDAL[id]
+      ? `<img src="assets/icons/${KIT_MEDAL[id]}" alt="${ELEMENTS[id].name}" style="width:34px;height:34px">`
+      : buildIconSVG(id, 30);
     starters.appendChild(chip);
   });
   const mobile = window.matchMedia('(max-width: 767px)').matches;
@@ -95,14 +98,14 @@ function renderWelcomeContent() {
     '<b>Тап</b> по элементу — информация и рецепты',
     '<b>Долгое нажатие</b> по элементу — выбрать количество',
     '<b>Тап</b> по элементу в котле — вернуть 1, <b>долгое нажатие</b> — вернуть всё',
-    '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
+    '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/x.svg" alt="">Очистить</span> — вернуть всё в инвентарь',
     '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/magnify.svg" alt="">Поиск</span> — фильтр инвентаря по названию'
   ] : [
     '<b>Двойной клик / двойной тап</b> по элементу — добавить 1 в котёл',
     '<b>Клик</b> по элементу — информация и рецепты',
     '<b>Shift+клик</b> по элементу — выбрать количество',
     '<b>Клик</b> по элементу в котле — вернуть 1, <b>ПКМ / долгое нажатие</b> — вернуть всё',
-    '<span class="welcome-key">✕ Очистить</span> — вернуть всё в инвентарь',
+    '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/x.svg" alt="">Очистить</span> — вернуть всё в инвентарь',
     '<span class="welcome-key"><img class="sec-ico" src="assets/icons/glyph/magnify.svg" alt="">Поиск</span> — фильтр инвентаря по названию'
   ]));
   content.appendChild(controls);
@@ -176,7 +179,9 @@ function ghostDrag(id) {
 
   const ghost = document.createElement('div');
   ghost.className = 'tutorial-ghost';
-  ghost.innerHTML = buildIconSVG(id, 36);
+  ghost.innerHTML = KIT_MEDAL[id]
+    ? `<img src="assets/icons/${KIT_MEDAL[id]}" alt="" style="width:40px;height:40px">`
+    : buildIconSVG(id, 36);
   ghost.style.transform = `translate(${start.x}px, ${start.y}px) translate(-50%, -50%)`;
   ghost.style.opacity = '0';
   document.body.appendChild(ghost);

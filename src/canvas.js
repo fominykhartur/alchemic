@@ -1,4 +1,33 @@
 import { ELEMENTS, ELEMENT_IDS, ELEMENT_DEPTHS, LEGENDARY_IDS, RECIPES, recipeKey, UNLOCKABLE_STARTERS } from './data.js';
+import { KIT_MEDAL, KIT_GLYPH } from './ui.js';
+
+// Медальоны кита в котле: кэш картинок, пока грузится — старый рендер
+const medalCache = new Map();
+function medalImage(id) {
+  const rel = KIT_MEDAL[id];
+  if (!rel) return null;
+  if (!medalCache.has(id)) {
+    const img = new Image();
+    img.src = 'assets/icons/' + rel;
+    medalCache.set(id, img);
+  }
+  const img = medalCache.get(id);
+  return img.complete && img.naturalWidth ? img : 'loading';
+}
+
+// Глифы кита для орбитальных сигилов (единообразие вместо старых глифов)
+const glyphCache = new Map();
+function glyphImage(id) {
+  const rel = KIT_GLYPH[id];
+  if (!rel) return null;
+  if (!glyphCache.has(id)) {
+    const img = new Image();
+    img.src = 'assets/icons/' + rel;
+    glyphCache.set(id, img);
+  }
+  const img = glyphCache.get(id);
+  return img.complete && img.naturalWidth ? img : 'loading';
+}
 import { drawGlyph, lightenColor, GLYPH_PATHS, ICON_DESIGNS, SHAPE_POLYGONS } from './icons.js';
 import { state } from './state.js';
 import { playMix, playExplode, playDiscover } from './audio.js';
@@ -282,7 +311,7 @@ function drawCauldronElements() {
   }
 
   // Динамический радиус и размер: чем больше элементов, тем шире круг, иконки чуть компактнее
-  const dynDist = RADIUS * (count <= 4 ? 0.38 : count <= 6 ? 0.44 : count <= 8 ? 0.5 : 0.55);
+  const dynDist = RADIUS * (count <= 4 ? 0.38 : count <= 6 ? 0.44 : count <= 8 ? 0.5 : 0.58);
   items.forEach((it) => {
     const dx = it.baseX - CX, dy = it.baseY - CY;
     const len = Math.hypot(dx, dy) || 1;
@@ -320,7 +349,19 @@ function drawCauldronElements() {
       ctx.fill();
     }
 
-    if (design?.shape) {
+    // Медальон кита вместо старого диска (пока грузится — старый рендер)
+    const medal = medalImage(id);
+    const useMedal = medal && medal !== 'loading';
+    if (useMedal) {
+      const s = r * 2;
+      ctx.save();
+      ctx.shadowColor = el.color || '#ffd700';
+      ctx.shadowBlur = 12;
+      ctx.drawImage(medal, x - s / 2, y - s / 2, s, s);
+      ctx.restore();
+    }
+
+    if (!useMedal && design?.shape) {
       const lighter = lightenColor(el.color, 45);
       const shapeGrad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, 0, x, y, r);
       shapeGrad.addColorStop(0, lighter);
@@ -375,9 +416,11 @@ function drawCauldronElements() {
       ctx.restore();
     }
 
-    // Glyph чуть крупнее
-    const glyphScale = count <= 6 ? 1.0 : 0.9;
-    drawGlyph(ctx, id, x, y - 1, glyphScale);
+    // Glyph чуть крупнее (для старого рендера; у медальона свой глиф внутри)
+    if (!useMedal) {
+      const glyphScale = count <= 6 ? 1.0 : 0.9;
+      drawGlyph(ctx, id, x, y - 1, glyphScale);
+    }
 
     // Подпись: крупнее, контрастная плашка с цветной каймой
     const label = el.name;
@@ -445,7 +488,15 @@ function drawCauldronSigils() {
     const sx = CX + Math.cos(angle) * dist;
     const sy = CY + Math.sin(angle) * dist;
     const alpha = 0.2 + 0.15 * Math.sin(t + k * 0.7);
-    drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
+    const gimg = glyphImage(id);
+    if (gimg && gimg !== 'loading') {
+      ctx.save();
+      ctx.globalAlpha = alpha + 0.25;
+      ctx.drawImage(gimg, sx - 8, sy - 8, 16, 16);
+      ctx.restore();
+    } else if (!gimg) {
+      drawGlyph(ctx, id, sx, sy, 0.7, color, alpha);
+    }
   }
 }
 

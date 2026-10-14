@@ -79,6 +79,10 @@ function init() {
   updateUI();
   startFurnaceLoop();
   refreshFurnaceBadge();
+  window.__booted = true;
+  if (typeof window.__bootDone === 'function') {
+    requestAnimationFrame(() => requestAnimationFrame(() => window.__bootDone()));
+  }
   setInterval(() => { try { refreshFurnaceBadge(); } catch {} }, 2000);
 
   maybeShowWelcome();
